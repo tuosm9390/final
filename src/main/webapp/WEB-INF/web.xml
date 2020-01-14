@@ -29,5 +29,35 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping> -->
+	<servlet>
+		<servlet-name>hotelmain</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/hotelmain-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>hotelmain</servlet-name>
+		<url-pattern>*.hmain</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>hoteladmin</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/hoteladmin-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>hoteladmin</servlet-name>
+		<url-pattern>*.hadmin</url-pattern>
+	</servlet-mapping>
 
 </web-app>
