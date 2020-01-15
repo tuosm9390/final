@@ -18,17 +18,5 @@ public class HotelMainContoller {
 		
 		return "hotelmain/main/main";
 	}
-	
-	@RequestMapping("goRooms.hmain")
-	public String showHotelRooms() {
-		
-		return "hotelmain/rooms/roomList";
-	}
-	
-	@RequestMapping("roomdetail.hmain")
-	public String showHotelRoomsDetail() {
-		
-		return "hotelmain/rooms/roomDetail";
-	}
-	
+
 }
