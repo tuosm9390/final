@@ -4,12 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HotelMainContoller {
+public class HotelAdminController {
 
-	@GetMapping("goMain.hmain")
-	public String showHotelMain() {
+	@GetMapping("goMain.hadmin")
+	public String showHotelAdmin() {
 		
-		return "hotelmain/main/main";
+		return "hoteladmin/main/main";
 	}
-
+	
 }
