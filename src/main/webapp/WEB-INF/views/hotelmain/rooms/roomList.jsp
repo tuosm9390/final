@@ -36,7 +36,7 @@
 		<jsp:include page="../common/menubar.jsp" />
 	</header>
 	<section>
-		<div style="background: black; border: 6px solid black; padding: 6px;">
+		<div class="room-img-box" style="background: black; border: 6px solid black; padding: 6px;">
 			<div class="room-img">
 				<a href="roomdetail.hmain">
 					<img src="${ contextPath }/resources/images/room1.png">
