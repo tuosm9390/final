@@ -16,12 +16,17 @@
 	}
 	.productMenubar{
 		list-style: none;
+		padding-left:15px;
 	}
 	.productMenubar ul{
-		padding-bottom:30px;
+		padding-bottom:10px;
 	}
 	.productMenubar li{
+		padding-bottom:20px;
+	}
+	.productMenubar li ul li{
 		padding-bottom:10px;
+		padding-left:30px;
 	}
 	.productMenubar label{
 		padding-left:30px;
