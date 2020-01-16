@@ -19,7 +19,7 @@
 	.settingMenubar{
 		list-style: none;
 		position: relative;
-		padding-left:0;
+		padding-left:10px;
 	}
 	.settingMenubar ul{
 		padding-bottom:30px;
@@ -38,6 +38,15 @@
 	.settingMenubar ul li:hover{
 		background:#C7C0C0;
 		cursor:pointer;
+	}
+	.room li{
+		padding-left:30px;
+	}
+	.setting li{
+		padding-left:30px;
+	}
+	.hotel li{
+		padding-left:30px;
 	}
 </style>
 <body>
