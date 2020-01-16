@@ -152,7 +152,7 @@
 				<label>전자결재</label>
 				<div class="subnav2">
 					▲<br>
-					<a>결재함</a><br>
+					<a href="documentApproval.ap">결재함</a><br>
 					<a>참여결재함</a>
 				</div>
 		</li>
