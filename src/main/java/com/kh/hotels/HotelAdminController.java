@@ -12,4 +12,10 @@ public class HotelAdminController {
 		return "hoteladmin/main/main";
 	}
 	
+	@GetMapping("documentApproval.ap")
+	public String goApproval() {
+		
+		return "hoteladmin/approval/approval";
+	}
+	
 }
