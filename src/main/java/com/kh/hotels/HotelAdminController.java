@@ -12,10 +12,19 @@ public class HotelAdminController {
 		return "hoteladmin/main/main";
 	}
 	
+
+	@GetMapping("goMateriel.hadmin")
+	public String showMateriel() {
+		
+		return "hoteladmin/stockMng/MaterielMng";
+		
+	}
+
 	@GetMapping("documentApproval.ap")
 	public String goApproval() {
 		
 		return "hoteladmin/approval/approval";
 	}
 	
+
 }

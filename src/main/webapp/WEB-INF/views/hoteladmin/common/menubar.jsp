@@ -135,7 +135,7 @@
 					<a>예약현황</a>
 				</div>
 		</li>
-		<li class="menu tab t3">
+		<li class="menu tab t3 materiel">
 				<img alt="" src="${ contextPath }/resources/images/iconWMS.png"  class="tabimg"><br>
 				<label>재고관리</label>
 		</li>
@@ -195,6 +195,14 @@
 	});
 	console.log($(".t1").offset().top);
 	console.log($(".t1").offset().left);
+	</script>
+	
+	<script>
+		$(function(){
+			$(".materiel").click(function(){
+				location.href='goMateriel.hadmin';
+			})
+		})
 	</script>
 </body>
 </html>
