@@ -5,11 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
 <style type="text/css">
 	.menubar{
 		width:300px;
-		height:900px;
+		height:1000px;
 		background:#060E33;
 		margin-top:-18px;
 		margin-left:-8px;
@@ -18,9 +19,15 @@
 	.logoArea{
 		width:300px;
 		height:70px;
+		text-align:center;
 		border-bottom-width:1px;
 		border-bottom-style:solid;
 		border-bottom-color:white;
+	}
+	.logoImg{
+		width:280px;
+		height:60px;
+		margin-top:10px;
 	}
 	.text{
 		color:#EAC064;
@@ -34,7 +41,7 @@
 <c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 	<div class="menubar">
 		<div class="logoArea">
-			<img alt="" src="${ contextPath }/resources/images/logo.png" width="300px" height="70px">
+			<img alt="" src="${ contextPath }/resources/images/logo.png" width="280px" height="60px" class="logoImg">
 		</div>
 		<div class="text Area1">
 			<p align="center">1. 호텔 정보 설정</p>
