@@ -96,5 +96,9 @@
 		<url-pattern>*.ro</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>hoteladmin</servlet-name>
+		<url-pattern>*.st</url-pattern>
+	</servlet-mapping>
 
 </web-app>
