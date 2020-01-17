@@ -43,6 +43,22 @@
 		<servlet-name>hotelmain</servlet-name>
 		<url-pattern>*.hmain</url-pattern>
 	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>hotelSetting</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/hotelSetting-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>hotelSetting</servlet-name>
+		<url-pattern>*.set</url-pattern>
+	</servlet-mapping>
 	
 	
 	<servlet>
@@ -63,6 +79,21 @@
 	<servlet-mapping>
 		<servlet-name>hoteladmin</servlet-name>
 		<url-pattern>*.ap</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>mngRooms</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/mngrooms-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>mngRooms</servlet-name>
+		<url-pattern>*.ro</url-pattern>
 	</servlet-mapping>
 	
 
