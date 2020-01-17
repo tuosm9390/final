@@ -51,18 +51,49 @@
 		<br>
 		<br>
 			<ul class="productMenubar subNavv product">
-				<li><img alt="" src="${ contextPath }/resources/images/productSub.png" width="30px" height="30px" style="margin-right:10px;">물품현황</li>
-				<li><img alt="" src="${ contextPath }/resources/images/productSub.png" width="30px" height="30px" style="margin-right:10px;">구매내역</li>
-				<li><img alt="" src="${ contextPath }/resources/images/productSub.png" width="30px" height="30px" style="margin-right:10px;">재고변동이력</li>
+				<li class="stockNow"><img alt="" src="${ contextPath }/resources/images/productSub.png" width="30px" height="30px" style="margin-right:10px;">물품현황</li>
+				<li class="purchaseHis"><img alt="" src="${ contextPath }/resources/images/productSub.png" width="30px" height="30px" style="margin-right:10px;">구매내역</li>
+				<li class="stockHis"><img alt="" src="${ contextPath }/resources/images/productSub.png" width="30px" height="30px" style="margin-right:10px;">재고변동이력</li>
 			</ul>
 		</li>
-		<li class="company">
+		<li class="company account">
 			<img alt="" src="${ contextPath }/resources/images/company.png" width="30px" height="30px" style="margin-right:10px;">거래처관리
 		</li>
-		<li class="factory">
+		<li class="factory warehouse">
 			<img alt="" src="${ contextPath }/resources/images/factory.png" width="30px" height="30px" style="margin-right:10px;">창고관리
 		</li>
 	</ul>
 </div>
+<script>
+		$(function(){
+			$(".stockNow").click(function(){
+				location.href='goStockNow.st';
+			});
+		});
+		
+		$(function(){
+			$(".purchaseHis").click(function(){
+				location.href='goPurchaseHis.st';
+			});
+		});
+		
+		$(function(){
+			$(".stockHis").click(function(){
+				location.href='goStockHis.st';
+			});
+		});
+		
+		$(function(){
+			$(".account").click(function(){
+				location.href='goAccount.st';
+			});
+		});
+		
+		$(function(){
+			$(".warehouse").click(function(){
+				location.href='goWarehouse.st';
+			});
+		});
+</script>
 </body>
 </html>
