@@ -31,42 +31,20 @@
 </style>
 </head>
 <body>
-	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"></c:set>
+	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
+	<c:set var="roomCount" value="6"/>
 	<header>
 		<jsp:include page="../common/menubar.jsp" />
 	</header>
 	<section>
 		<div class="room-img-box" style="background: black; border: 6px solid black; padding: 6px;">
-			<div class="room-img">
-				<a href="roomdetail.hmain">
-					<img src="${ contextPath }/resources/images/room1.png">
-				</a>
-			</div>
-			<div class="room-img">
-				<a href="roomdetail.hmain">
-					<img src="${ contextPath }/resources/images/room2.png">
-				</a>
-			</div>
-			<div class="room-img">
-				<a href="roomdetail.hmain">
-					<img src="${ contextPath }/resources/images/room3.png">
-				</a>
-			</div>
-			<div class="room-img">
-				<a href="roomdetail.hmain">
-					<img src="${ contextPath }/resources/images/room4.png">
-				</a>
-			</div>
-			<div class="room-img">
-				<a href="roomdetail.hmain">
-					<img src="${ contextPath }/resources/images/room5.png">
-				</a>
-			</div>
-			<div class="room-img">
-				<a href="roomdetail.hmain">
-					<img src="${ contextPath }/resources/images/room6.png">
-				</a>
-			</div>
+			<c:forEach var="i" begin="1" end="${ roomCount }">
+				<div class="room-img">
+					<a href="roomdetail.hmain">
+						<img src="${ contextPath }/resources/images/room${ i }.png">
+					</a>
+				</div>
+			</c:forEach>
 		</div>
 	</section>
 	<footer></footer>
