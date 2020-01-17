@@ -9,7 +9,8 @@
 <title>HotelsCompile</title>
 <style type="text/css">
 	.menubar{
-		width:100%;
+		/* width:100%; */
+		width:98.5%;
 		height:100px;
 		background:#060E33;
 		margin-left:-8px;
@@ -122,7 +123,7 @@
 		<li class="menu logo">
 				<img alt="" src="${ contextPath }/resources/images/logo.png"  class="logoimg">
 		</li>
-		<li class="menu tab t1">
+		<li class="menu tab t1" onclick="location.href='view.ro'">
 				<img alt="" src="${ contextPath }/resources/images/iconRoom.png"  class="tabimg"><br>
 				<label>객실관리</label>
 		</li>
