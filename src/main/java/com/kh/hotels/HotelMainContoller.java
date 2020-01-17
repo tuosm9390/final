@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -36,6 +37,36 @@ public class HotelMainContoller {
 		request.setAttribute("checkOut", checkOut);
 		
 		return "hotelmain/rooms/roomReservation";
+	}
+	
+	@RequestMapping("reservationResult.hmain")
+	public String showHotelRoomReservationResult() {
+		
+		return "hotelmain/rooms/roomReservationResult";
+	}
+	
+	@RequestMapping("ReservationCheck.hmain")
+	public String showHotelReservationCheck() {
+		 
+		return "hotelmain/rooms/ReservationCheck";
+	}
+	
+	@RequestMapping("goQnA.hmain")
+	public String showHotelQnA() {
+		
+		return "hotelmain/QnA/QnAList";
+	}
+	
+	@RequestMapping("qnadetail.hmain")
+	public String showHotelQnADetail() {
+		
+		return "hotelmain/QnA/QnADetail";
+	}
+	
+	@RequestMapping("qnaInsert.hmain")
+	public String showHotelQnAInsert() {
+		
+		return "hotelmain/QnA/InsertQnA";
 	}
 	
 }

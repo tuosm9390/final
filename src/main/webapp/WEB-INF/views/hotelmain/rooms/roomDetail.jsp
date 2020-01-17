@@ -65,11 +65,7 @@
 }
 
 input[type=text], select {
-	border: none;
-}
-
-input[type=text]:active, select:active {
-	border: none;
+	border: none !important;
 }
 
 input[type=text] {
@@ -105,12 +101,12 @@ input[type=text] {
 .detail-img {
 	border-right: 1px solid black;
 	width: 45%;
+	height: 100%;
 	padding: 5px;
 }
 
 .detail-img-item {
 	width: 47%;
-	height: 38%;
 	margin: 10px;
 	display: inline-table;
 }
@@ -235,6 +231,9 @@ input[type=text] {
 		<div class="roomDetailIntroduce" >
 			<!-- 좌측 이미지 -->
 			<div class="detail-img">
+				<div class="detail-img-item">
+					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
+				</div>
 				<div class="detail-img-item">
 					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
 				</div>

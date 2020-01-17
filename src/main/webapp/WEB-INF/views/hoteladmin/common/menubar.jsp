@@ -143,7 +143,7 @@
 				<img alt="" src="${ contextPath }/resources/images/iconCS.png"  class="tabimg"><br>
 				<label>고객관리</label>
 		</li>
-		<li class="menu tab t5">
+		<li class="menu tab t5 analys">
 				<img alt="" src="${ contextPath }/resources/images/iconFinance.png"  class="tabimg"><br>
 				<label>판매분석</label>
 		</li>
@@ -202,7 +202,12 @@
 			$(".materiel").click(function(){
 				location.href='goMateriel.hadmin';
 			})
-		})
+			
+			$(".analys").click(function(){
+				location.href='viewTrendList.hadmin?Condition=sales';
+			});
+		});
+		
 	</script>
 </body>
 </html>

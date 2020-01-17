@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>오우쒜에에에엣</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
@@ -161,6 +161,19 @@ section{
 body{
 	margin: 0;
 }
+
+input[type=text], select, button, textarea{
+	border: 1px solid #919191;
+	border-radius: 4px;
+	height: 24px;
+	resize: none;
+}
+
+button{
+	background: #E5E5E5;
+	border-radius: 4px;
+	border: none;
+}
 </style>
 </head>
 <body>
@@ -182,10 +195,10 @@ body{
 		<ul id="menu-main-menu" class="nav  nav--main  sub-menu"
 			data-level="1">
 			<li><a href="goMain.hmain">HOME</a></li>
-			<li><a href="">RESERVATION</a></li>
+			<li><a href="ReservationCheck.hmain">RESERVATION</a></li>
 			<li><a href="goRooms.hmain">ROOMS</a></li>
 			<li><a href="">SURROUNDINGS</a></li>
-			<li><a href="">1:1</a></li>
+			<li><a href="goQnA.hmain">1:1</a></li>
 		</ul>
 	</div>
 	
