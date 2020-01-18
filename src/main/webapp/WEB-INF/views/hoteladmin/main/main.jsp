@@ -8,12 +8,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-
 	<jsp:include page="../common/menubar.jsp"/>
 	<jsp:include page="../common/settingMenubar.jsp"/>
 	<%-- <jsp:include page="../common/productMenubar.jsp"/> 
 	<jsp:include page="../common/cmsMenubar.jsp"/> --%>
+	
+	<jsp:forward page="login.jsp"/>
 	
 </body>
 </html>
