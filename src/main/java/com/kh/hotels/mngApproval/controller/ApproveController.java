@@ -2,30 +2,31 @@ package com.kh.hotels.mngApproval.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ApproveController {
 	
-	@GetMapping("documentApproval.ap")
+	@RequestMapping("documentApproval.ap")
 	public String goApproval() {
 		
 		return "hoteladmin/mngApprove/allApprove";
 	}
-	@GetMapping("writeApprove.ap")
+	@RequestMapping("writePurchaseApprove.ap")
 	public String goWrite() {
-		return "hoteladmin/mngApprove/writePurchaseApprove";
+		return "hoteladmin/mngApprove/writeApprove/writePurchaseApprove";
 	}
-	@GetMapping("writeFixApprove")
+	@RequestMapping("writeFixApprove")
 	public String goWriteFixApprove() {
 		
-		return "hoteladmin/mngApprove/writeFixApprove";
+		return "hoteladmin/mngApprove/writeApprove/writeFixApprove";
 	}
-	@GetMapping("writeOrderApprove")
+	@RequestMapping("writeOrderApprove")
 	public String goWriteOrderApprove() {
 		
-		return "hoteladmin/mngApprove/writeOrderApprove";
+		return "hoteladmin/mngApprove/writeApprove/writeOrderApprove";
 	}
-	@GetMapping("allApproveDetail.ap")
+	@RequestMapping("allApproveDetail.ap")
 	public String showApproveDetail() {
 		
 		return "hoteladmin/mngApprove/allApproveDetail";

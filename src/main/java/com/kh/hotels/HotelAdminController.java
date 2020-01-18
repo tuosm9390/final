@@ -23,15 +23,10 @@ public class HotelAdminController {
 		return "hoteladmin/stockMng/MaterielMng";
 		
 	}
-	/*
-	 * @GetMapping("documentApproval.ap") public String goApproval() {
-	 * 
-	 * return "hoteladmin/approval/approval"; }
-	 */
-	
+
 	@RequestMapping("viewTrendList.hadmin")
 	public String goAnalys(@RequestParam("Condition") String Condition, HttpServletRequest request) {
-
+		
 		request.setAttribute("Condition", Condition);
 		
 		return "hoteladmin/mngAnalys/trend";
