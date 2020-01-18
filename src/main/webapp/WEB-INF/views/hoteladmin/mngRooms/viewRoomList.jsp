@@ -266,7 +266,7 @@ input[type=checkbox] {
 		<jsp:include page="../common/menubar.jsp" />
 	</header>
 	<section>
-		<jsp:include page="../common/modalForm.jsp"></jsp:include>
+		<jsp:include page="modalCheckIn.jsp"></jsp:include>
 		<!-- topSec -->
 		<div class="topSec">
 			<!-- searchSec -->
