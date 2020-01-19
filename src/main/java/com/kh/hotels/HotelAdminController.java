@@ -24,10 +24,16 @@ public class HotelAdminController {
 		
 	}
 
-	@RequestMapping("viewTrendList.hadmin")
+	@RequestMapping("viewDetailList.hadmin")
 	public String goAnalys(@RequestParam("Condition") String Condition, HttpServletRequest request) {
 		
 		request.setAttribute("Condition", Condition);
+		
+		return "hoteladmin/mngAnalys/detailList";
+	}
+	
+	@RequestMapping("viewTrendList.hadmin")
+	public String goTrend() {
 		
 		return "hoteladmin/mngAnalys/trend";
 	}
