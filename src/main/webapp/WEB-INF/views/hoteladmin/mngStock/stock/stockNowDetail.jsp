@@ -1,113 +1,127 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style> 
-	 .top-div{
+	 .top-divv{
 	width: 63.7%;
-	margin-left: 17%; 
-	height: 100px; 
-	margin-top: -50px;
+
+	height: 70px; 
+
 	}
 
-	.searchCondition{
 
-	margin-top: -50px;
-	display: inline-block; 
-	width: 100px;
-	
-	}
 
-	#titlemsg{
+	#titlemsgg{
 		width: 220px;
 		height: 50px;
-		margin-top: 60px;
+		margin-top: 40px;
+
+	}
 	
-	}
-	#searchZone{
-	float: right;
-	}
-	#stockTb{
+	#stockTbb{
 	width: 1000px;
-	height: 560px;
+	height: 300px;
 	border-collapse: collapse;
 	border: 1px solid black;
-	margin-left: 17%;
 	}
-	td,th{
-		border: 1px solid lightgray;
-		align-content: center;
-		text-align: center;
-	}
-	th{
-	background-color: #f7f7f7;
-	}
-	#hrDiv{
+	
+	.hrDivv{
 	border-bottom: 1px solid black;
 	width: 1000px;
-	margin-left: 17%;
 	margin-top: 20px;
 	}
-	.btns{
-	margin-left: 17%;
+	.btnss{
 	margin-top: 10px;
 
 	}
-	.tabClass{
-	display: inline-block;
-	width: 120px;
-	height: 30px;
-	border: 1px solid gray;
-	border-radius: 10px 10px 0px 0px;
-	border-bottom: none;
-	font-weight: bold;
-
+	#zonee{
+	border-bottom: 1px solid black;
+	margin-bottom: 10px;
+	width: 128px;  
 	}
-	#tclass{
-	margin-left: 20px;
+	#hdivv{
+	margin-bottom: 20px;
 	}
-
-
 	
 </style>
 </head>
 <body>
-	<header>
+	
+		
+	
+
+	<header>	
+		
+	
 	</header>
 	<section>
+	<div class="hrDivv" id="hdivv"></div> 
 		<div>
-			<table id="stockTb">  
+			<table id="stockTbb">  
 				<tr>  
 					<th><input type="checkbox"></th>
-					<th style="color: #005B9E">품목코드</th>
-					<th style="color: #005B9E">품목명</th>
-					<th style="color: #005B9E">소분류</th>
-					<th style="color: #005B9E">재고수량</th>
+					<th style="color: #005B9E">대분류</th>
+					<th style="color: #005B9E">중분류</th>
+					<th style="color: #005B9E">소부륜</th>
+					<th style="color: #005B9E">제품번호</th>
 					<th style="color: #005B9E">공급가액</th>
+					<th style="color: #005B9E">부가세</th>
+					<th style="color: #005B9E">단가</th>
 					<th style="color: #005B9E">제조사</th>
 					<th style="color: #005B9E">매입처</th>
-					<th style="color: #005B9E">품목구분</th>
+					<th style="color: #005B9E">창고명</th>
+					<th style="color: #005B9E">위치</th>
 				</tr>
-				<c:forEach var="i" begin="1" end="10">
+				<c:forEach var="i" begin="1" end="6">
 					<tr>
 						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="품목코드"/></td>
-						<td style="color: #005B9E"><c:out value="익스트림 울트라 명품조립 pc"/></td>
-						<td><c:out value="소분류"/></td>
-						<td><c:out value="재고수량"/></td>
-						<td><c:out value="공급가액"/></td>
-						<td><c:out value="제조사"/></td>
-						<td><c:out value="매입처"/></td>
-						<td><c:out value="품목구분"/></td>
+						<td style="color: #005B9E"><c:out value="전자제품"/></td>
+						<td style="color: #005B9E"><c:out value="TV"/></td>
+						<td><c:out value="36인치 TV"/></td>
+						<td><c:out value="1231251253"/></td>
+						<td><c:out value="500,000"/></td>
+						<td><c:out value="5000"/></td>
+						<td><c:out value="500,000"/></td>
+						<td><c:out value="삼성전자"/></td>
+						<td><c:out value="상찬마트"/></td>
+						<td><c:out value="창고A"/></td>
+						<td><c:out value="A진열대"/></td>
+						
 					</tr>
 				</c:forEach>
 			</table>
-		<div id="hrDiv"></div>
+		<div class="hrDivv"></div>
 		</div>
+			<div class="btnss"><button>수정</button>&nbsp;<button>닫기</button></div> 
+	
+	 
+	
+	
 	</section>
+	
+	<script>
+	
+		
+		$(function(){
+			$("#stockTbb").find("td").mouseenter(function(){
+				$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
+			}).mouseout(function(){
+				$(this).parent("tr").css({"background":"white"});
+			}).click(function(){
+				var bid = $(this).parent().children("td").eq(1).text();
+			
+				console.log(bid);
+			});
+		});
+		
+		
+	</script>
+	
 </body>
 </html>

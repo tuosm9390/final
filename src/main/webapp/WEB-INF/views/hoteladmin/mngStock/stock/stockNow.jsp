@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 <style> 
 	 .top-div{
-	width: 63.7%;
+	width: 70.8%;
 	margin-left: 17%; 
 	height: 100px; 
 	margin-top: -50px;
@@ -20,7 +20,7 @@
 	margin-top: -50px;
 	display: inline-block; 
 	width: 100px;
-	
+
 	}
 
 	#titlemsg{
@@ -41,11 +41,11 @@
 	}
 	td,th{
 		border: 1px solid lightgray;
-		align-content: center;
 		text-align: center;
 	}
 	th{
 	background-color: #f7f7f7;
+	color: #005B9E;
 	}
 	#hrDiv{
 	border-bottom: 1px solid black;
@@ -70,8 +70,14 @@
 	}
 	#tclass{
 	margin-left: 20px;
+	
 	}
-
+	#rclass{
+	background-color: lightgray; 
+	}
+	#sbtn{
+	margin-right: 110px;
+	}
 
 	
 	
@@ -84,6 +90,13 @@
 	<header>	
 		<jsp:include page="../../common/menubar.jsp"/>
 		<jsp:include page="../../common/productMenubar.jsp"/>
+		
+		<jsp:include page="../modal/mStockNowDetail.jsp"/>
+		<jsp:include page="../modal/mStockNowEnroll.jsp"/>
+		
+	</header>
+	<section>
+		
 		<div class="tabClass" id="tclass" align="center">물품현황
 		</div>
 		<div class="tabClass" id="rclass" align="center">수리현황
@@ -101,19 +114,18 @@
 			<button class="searchCondition" style="width: 50px; height: 25px" id="sbtn">검색</button>
 		</div>
 	</div><!-- top div end -->
-	</header>
 		<div>
 			<table id="stockTb">  
 				<tr>  
 					<th><input type="checkbox"></th>
-					<th style="color: #005B9E">품목코드</th>
-					<th style="color: #005B9E">품목명</th>
-					<th style="color: #005B9E">소분류</th>
-					<th style="color: #005B9E">재고수량</th>
-					<th style="color: #005B9E">공급가액</th>
-					<th style="color: #005B9E">제조사</th>
-					<th style="color: #005B9E">매입처</th>
-					<th style="color: #005B9E">품목구분</th>
+					<th >품목코드</th>
+					<th>품목명</th>
+					<th>소분류</th>
+					<th>재고수량</th>
+					<th>공급가액</th>
+					<th>제조사</th>
+					<th>매입처</th>
+					<th>품목구분</th>
 				</tr>
 				<c:forEach var="i" begin="1" end="10">
 					<tr>
@@ -131,26 +143,15 @@
 			</table>
 		<div id="hrDiv"></div>
 		</div>
-			<div class="btns"><button>신규</button>&nbsp;<button>Excel</button><button>선택삭제</button></div> 
+			<div class="btns"><button id="new">신규</button>&nbsp;<button>Excel</button><button>선택삭제</button></div> 
 	
 	
 	
-	<section>
 	
 	</section>
 	
 	<script>
-		$(function(){
-	       $("tr").click(function(){
-	         $('.ui.modal').modal('show');
-	         
-	  	    });  
-		   }); 
-		$(function(){
-			$("tr[0]").click(function(){
-				  $('.ui.modal').modal('hide');
-			})
-		})
+	
 		//테이블
 		$(function(){
 			$("#stockTb").find("td").mouseenter(function(){
@@ -159,20 +160,12 @@
 				$(this).parent("tr").css({"background":"white"});
 			}).click(function(){
 				var bid = $(this).parent().children("td").eq(1).text();
-			
 				console.log(bid);
+				$(".modal").fadeIn();
 			});
 		});
-		//수리현황탭
-		$(function(){
-			$("#tclass").mouseenter(function(){
-				$(this).css({"background":"lightgray","cursor":"pointer"});
-			}).mouseout(function(){
-				$(this).css({"background":"white"});
-			}).click(function(){
-			
-			});
-		});
+		
+
 		
 		//수리현황탭
 		$(function(){
@@ -181,9 +174,16 @@
 			}).mouseout(function(){
 				$(this).css({"background":"white"});
 			}).click(function(){
-			
+				location.href='goRepairRequest.st';
 			});
 		});
+		
+		//신규등록
+		$("#new").click(function(){
+			$(".modalEnroll").fadeIn();
+		});
+		
+		
 		
 		
 	</script>

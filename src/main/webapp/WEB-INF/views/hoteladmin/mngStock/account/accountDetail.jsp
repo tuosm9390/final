@@ -9,19 +9,26 @@
 <style>
 	#TopTable{
 		width: 1000px;
-		height: 600px;
+		height: 400px;
 		border-collapse: collapse;
 	} 
 	th{
-		background-color: #f0f0f0;
+		background-color: #f7f7f7;
+		color: #005B9E;
 		height: 40px;
 	}
+	td,th{
+		border: 1px solid lightgray;
+		text-align: center;
+	
+	}
+	
 	#mainDiv{
 		height: 600px;
 		border: 1px solid black;
 		width: 1000px;
 	}
-	.btns{
+	.btnss{
 	margin-top: 5px;
 	}
 	.topbar{
@@ -57,7 +64,7 @@
 				<option>ff</option>
 			</select>
 		</div>
-		<div><b>이체정보리스트</b></div>  
+	  
 	</div>
 	<div id="hr"></div>
 	<div id="mainDiv" style="overflow: auto;">
@@ -80,10 +87,13 @@
 			</c:forEach>
 		</table>
 	</div><!-- end -->
-	<div class="btns"><button>신규</button>&nbsp;<button>닫기</button></div> 
+	<div class="btnss"><button>신규</button>&nbsp;<button>닫기</button></div> 
 	</section>
 	<footer>
 	
 	</footer>
+	<script>
+		
+	</script>
 </body>
 </html>

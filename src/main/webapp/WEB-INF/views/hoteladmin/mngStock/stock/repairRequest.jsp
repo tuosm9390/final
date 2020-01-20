@@ -33,7 +33,7 @@
 	float: right;
 	}
 	#stockTb{
-	width: 600px;
+	width: 700px;
 	height: 460px;
 	border-collapse: collapse;
 	border: 1px solid black;
@@ -50,7 +50,7 @@
 	}
 	#hrDiv{
 	border-bottom: 1px solid black;
-	width: 1000px;
+	width: 700px;
 	margin-left: 17%;
 	margin-top: 20px;
 	}
@@ -85,6 +85,10 @@
 	<header>	
 		<jsp:include page="../../common/menubar.jsp"/>
 		<jsp:include page="../../common/productMenubar.jsp"/>
+		 <jsp:include page="../modal/mRepairDetail.jsp"/> 
+	</header>
+	<section>
+		
 		<div class="tabClass" id="tclass" align="center">물품현황
 		</div>
 		<div class="tabClass" id="rclass" align="center">수리현황
@@ -97,7 +101,6 @@
 				<option>상태</option>
 			</select>
 	</div><!-- top div end -->
-	</header>
 		<div>
 			<table id="stockTb">  
 				<tr>  
@@ -119,26 +122,15 @@
 			</table>
 		<div id="hrDiv"></div>
 		</div>
-			<div class="btns"><button>신규</button>&nbsp;<button>Excel</button><button>선택삭제</button></div> 
+			<div class="btns"><button>Excel</button><button>선택삭제</button></div> 
 	
 	
 	
-	<section>
 	
 	</section>
 	
 	<script>
-		$(function(){
-	       $("tr").click(function(){
-	         $('.ui.modal').modal('show');
-	         
-	  	    });  
-		   }); 
-		$(function(){
-			$("tr[0]").click(function(){
-				  $('.ui.modal').modal('hide');
-			})
-		})
+	
 		//테이블
 		$(function(){
 			$("#stockTb").find("td").mouseenter(function(){
@@ -147,29 +139,19 @@
 				$(this).parent("tr").css({"background":"white"});
 			}).click(function(){
 				var bid = $(this).parent().children("td").eq(1).text();
-			
+				$(".modal").fadeIn();
 				console.log(bid);
 			});
 		});
-		//수리현황탭
+		
+		//물품현황탭
 		$(function(){
 			$("#tclass").mouseenter(function(){
 				$(this).css({"background":"lightgray","cursor":"pointer"});
 			}).mouseout(function(){
 				$(this).css({"background":"white"});
 			}).click(function(){
-			
-			});
-		});
-		
-		//수리현황탭
-		$(function(){
-			$("#rclass").mouseenter(function(){
-				$(this).css({"background":"lightgray","cursor":"pointer"});
-			}).mouseout(function(){
-				$(this).css({"background":"white"});
-			}).click(function(){
-			
+				location.href='goStockNow.st';
 			});
 		});
 		

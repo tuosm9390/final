@@ -7,8 +7,8 @@
 <meta charset="UTF-8">
 <title>구매상세</title>
 <style>
-	.top-div{
-		background-color: lightgray;
+	.top-divv{
+		background-color: #f7f7f7;
 		width:1100px;
 		margin-bottom: 20px;
 	} 
@@ -20,11 +20,11 @@
 	
 	}
 	#resultTap{
-	background-color: lightgray;
+	background-color: #f7f7f7;
 	
 	height: 30px;
 	}
-	#Table {
+	#Tablee {
 	width: 1200px;
 	border-collapse: collapse;
 	}
@@ -41,13 +41,32 @@
 	#etcText{
 	margin-left: 20px;
 	}
+	#Tablee th{
+	background-color: #f7f7f7;
+	color: #005B9E;
+	}
+	#Tablee td,#Tablee th{
+		border: 1px solid lightgray;
+		text-align: center;
+	}
+	#mainMsg{
+	font-size: 20px;
+	}
+	.hrodiv{
+	width: 1220px;
+	border-bottom: 1px solid black;
+	margin-bottom: 10px;
+	}
+	#hrodiv2{
+	margin-top: 10px;
+	}
 </style>
 </head>
 <body>
-	<header><h1><u>구매 상세</u></h1></header>
-	<hr>
+	
 	<section>
-		<div class="top-div">
+	<div class="hrodiv"></div>
+		<div class="top-divv">
 		<div id="day" class="same">
 			일자
 			<input type="text" id="day1" name="day1">
@@ -63,7 +82,7 @@
 			<input type="text" name="person2" id="person2">
 			</div>
 		</div><!-- top-div end -->
-		<table id="Table" border="1px solid black;">
+		<table id="Tablee" border="1px solid black;">
 			<tr>
 				<th>NO</th>
 				<th>번호</th>
@@ -110,8 +129,8 @@
 				<td><c:out value=""/></td>
 			</tr>
 		</table>
-		<hr>
-		<div class="btns"><button>수정</button>&nbsp;<button>다시작성</button></div>
+		<div class="hrodiv" id="hrodiv2"></div>
+		<div class="btns"><button>전표</button>&nbsp;<button>다시작성</button></div>
 		
 		
 	</section>

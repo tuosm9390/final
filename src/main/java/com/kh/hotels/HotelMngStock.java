@@ -9,7 +9,7 @@ public class HotelMngStock {
 	@GetMapping("goStockNow.st")
 	public String showStockNow() {
 		
-		return "hoteladmin/mngStock/stock/stockNowEnroll";
+		return "hoteladmin/mngStock/stock/stockNow";
 	}
 	
 	
@@ -34,6 +34,12 @@ public class HotelMngStock {
 	@GetMapping("goWarehouse.st")
 	public String showWarehouse() {
 		
-		return "hoteladmin/mngStock/warehouse";
+		return "hoteladmin/mngStock/warehouse/warehouse";
+	}
+	
+	@GetMapping("goRepairRequest.st")
+	public String showRepairRequest() {
+		
+		return "hoteladmin/mngStock/stock/repairRequest";
 	}
 }
