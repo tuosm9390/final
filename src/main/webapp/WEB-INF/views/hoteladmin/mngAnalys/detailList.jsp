@@ -99,10 +99,11 @@
 					<td>남윤진</td>
 					<td>2020-01-19</td>
 					<td>2020-01-12</td>
-					<td><input type="text" class="price" value="300000" readonly></td>
+					<td><input type="text" class="price" value="${ price }" readonly></td>
 					<td>2020-01-10</td>
 					<td></td>
 				</tr>
+				<c:set var="sum" value="${ sum + price }"></c:set>
 				</c:forEach>
 				<tr>
 					<td>합계</td>
@@ -110,7 +111,8 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><input type="text" class="summary" readonly></td>
+					<td><input type="text" class="summary" 
+						value="${ sum }" readonly></td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -150,6 +152,7 @@
 					<td>송기준</td>
 					<td>예약번호 : 2001806</td>
 				</tr>
+				<c:set var="sum" value="${ sum + price }"></c:set>
 				</c:forEach>
 				<tr>
 					<td>합계</td>
@@ -158,9 +161,7 @@
 					<td></td>
 					<td></td>
 					<td><input type="text" class="summary"
-					value="<c:forEach var="i" begin="1" end="10" step="1">
-						${ sum += price }
-					</c:forEach>" readonly></td>
+					value="${ sum }" readonly></td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -172,6 +173,10 @@
 	<footer>
 	</footer>
 	<script>
+		$("#datepicker").datepicker();
+		$("#datepicker2").datepicker();
+		
+		
 	</script>
 </body>
 </html>

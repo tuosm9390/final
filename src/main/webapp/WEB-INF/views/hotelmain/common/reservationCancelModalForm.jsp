@@ -110,7 +110,7 @@ cursor: pointer;
 			</div>
 			
 			<div class="modal-btn" align="right">
-				<button>취소</button>
+				<button onclick="cancel();">취소</button>
 				<button onclick="goReservationCancel();">확인</button>
 			</div>
 		</div>
@@ -122,6 +122,10 @@ cursor: pointer;
 				$(".reservation-check-modal").fadeOut();
 			});
 		});
+		
+		function cancel(){
+			$(".reservation-check-modal").fadeOut();
+		};
 		
 		function goReservationCancel(){
 			$(".reservation-check-modal").fadeOut();
