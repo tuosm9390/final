@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>HotelsCompile</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
 .searchSec {
 	float: right;
@@ -267,6 +266,7 @@ input[type=checkbox] {
 	</header>
 	<section>
 		<jsp:include page="modalCheckIn.jsp"></jsp:include>
+		<jsp:include page="modalBroken.jsp"></jsp:include>
 		<!-- topSec -->
 		<div class="topSec">
 			<!-- searchSec -->
@@ -411,6 +411,7 @@ input[type=checkbox] {
 				$(".modal").fadeIn();
 			});
 			$("#roomBox31").click(function(){
+				$(".modalBroken").fadeIn();
 			});
 			$("#roomBox61").click(function(){
 			});
