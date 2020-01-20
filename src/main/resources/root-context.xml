@@ -22,9 +22,9 @@
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-		<property name="username" value="test123"/>
-		<property name="password" value="test123"/>
+		<property name="url" value="jdbc:oracle:thin:@programmer7771.iptime.org:1521:xe"/>
+		<property name="username" value="osung"/>
+		<property name="password" value="osung"/>
 		<property name="defaultAutoCommit" value="false"/>
 	</bean>
 	

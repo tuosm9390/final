@@ -13,7 +13,7 @@
 	<%-- <jsp:include page="../common/productMenubar.jsp"/> 
 	<jsp:include page="../common/cmsMenubar.jsp"/> --%>
 	
-	<jsp:forward page="login.jsp"/>
-	
+	<%-- <jsp:forward page="login.jsp"/> --%>
+	<jsp:forward page="../mngSettings/abtHotel/userInsert.jsp"/>
 </body>
 </html>

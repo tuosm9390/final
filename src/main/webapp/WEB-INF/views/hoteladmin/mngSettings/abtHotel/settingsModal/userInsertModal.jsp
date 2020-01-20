@@ -5,8 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>MODAL</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
 .modal {
 	display: none;
@@ -119,9 +118,7 @@ input[type=text] {
 .autoBtn1 {
 	position:relative;
 	border-radius:5px;
-	border:1px solid orange;
-	color:orange;
-	background:white;
+	border:1px solid black;
 	
 }
 .autoBtn2  {
@@ -150,7 +147,7 @@ div.autoBtn1 {
 div.autoBtn1 span.tooltiptext {
 	visibility:hidden;
 	width:120px;
-	background:orange;
+	background:black;
 	color:white;
 	text-align:center;
 	border-radius:6px;
@@ -210,89 +207,77 @@ div.autoBtn2:hover span.tooltiptext2 {
 			<div class="modal_content_real">
 
 				<div class="modalTbl">
-				<form action="" method="">
-					<table id="tbl_modal">
-						<tr>
-							<td>사용자 ID</td>
-							<td><input type="text" name=""></td>
-							<td><button type="button" onclick="confirm();" id="idBtn">중복확인</button></td>
-						</tr>
-						<tr>
-							<td>비밀번호</td>
-							<td colspan="2"><input type="text" name=""
-								style="width: 250px;"></td>
-						</tr>
-						<tr>
-							<td>비밀번호 확인</td>
-							<td colspan="2"><input type="text" name=""
-								style="width: 250px;"></td>
-						</tr>
-						<tr>
-							<td>사용자명</td>
-							<td colspan="2"><input type="text" name=""
-								style="width: 250px;"></td>
-						</tr>
-						<tr>
-							<td>전화</td>
-							<td colspan="2"><input type="text" name=""
-								style="width: 250px;"></td>
-						</tr>
-						<tr>
-							<td>이메일</td>
-							<td colspan="2"><input type="text" name=""
-								style="width: 250px;"></td>
-						</tr>
-						<tr>
-							<td>언어</td>
-							<td>
-								<select>
-									<option>프론트</option>
-									<option>구매팀</option>
-									<option>시설/관리팀</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td>사용</td>
-							<td><input type="checkbox" id="" name="">예&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="checkbox" id="" name="">아니오</td>
-						</tr>
-
-
-
-					</table>
-					<button id="submt">저장</button>
-					</form>
-					<div class="secTable">
-						<h4 style="margin-left:10px;">사용자 권한</h4>
-						<table id="secTbl">
-							<colgroup>
-								<col width="30%">
-								<col width="35%">
-								<col width="35%">
-
-							</colgroup>
-
-
-							<tr style="background:#F3F3F3;">
-								<td></td>
-								<td colspan="2" >권한명</td>
+				<form action="insertMember.me" method="post">
+						<table id="tbl_modal">
+							<tr>
+								<td>사용자 ID</td>
+								<td><input type="text" class="userId" name="userId"></td>
+								<td><button type="button" onclick="idCheck();" id="idBtn">중복확인</button></td>
 							</tr>
 							<tr>
-								<td><input type="radio" id="" name="authority"></td>
-								<td style="float:right"><a style="color:orange;">호텔 관리자</a></td>
-								<td><div class="autoBtn1">권한보기<span class="tooltiptext">모든 메뉴 사용</span></div></td>
+								<td>비밀번호</td>
+								<td colspan="2"><input type="password" class="userPwd" name="userPwd" style="width: 250px;"></td>
 							</tr>
 							<tr>
-								<td><input type="radio" id="" name="authority"></td>
-								<td style="float:right">호텔 사용자</td>
-								<td><div class="autoBtn2">권한보기<span class="tooltiptext2">이전 예약 데이터 수정 불가<br>사용자 추가 등록 불가</span></div></td>
+								<td>비밀번호 확인</td>
+								<td colspan="2"><input type="password" class="userPwd2" name="userPwd2" style="width: 250px;"></td>
+							</tr>
+							<tr>
+								<td>사용자명</td>
+								<td colspan="2"><input type="text" class="userNames" name="userName" style="width: 250px;"></td>
+							</tr>
+							<tr>
+								<td>전화</td>
+								<td colspan="2"><input type="tel" name="phone" class="phone" style="width: 250px;"></td>
+							</tr>
+							<tr>
+								<td>이메일</td>
+								<td colspan="2"><input type="email" name="email" class="email" style="width: 250px;"></td>
+							</tr>
+							<tr>
+								<td>부서</td>
+								<td>
+									<select name="deptNo" class="deptNo">
+										<option value="">== 선택 ==</option>
+										<option value="2">구매팀</option>
+										<option value="3">시설/관리팀</option>
+										<option value="4">프론트</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>사용</td>
+								<td>
+								<input type="radio" name="status" class="use" id="yes" value="Y"><label for="yes">예</label>
+								<input type="radio" name="status" class="use" id="no" value="N"><label for="no">아니오</label></td>
 							</tr>
 						</table>
-					</div>
-
-
-
+						<button type="submit" onclick="return insertMember();">저장</button>
+						<div class="secTable">
+							<h4 style="margin-left:10px;">사용자 권한</h4>
+							<table id="secTbl">
+								<colgroup>
+									<col width="30%">
+									<col width="35%">
+									<col width="35%">
+								</colgroup>
+								<tr style="background:#F3F3F3;">
+									<td></td>
+									<td colspan="2" >권한명</td>
+								</tr>
+								<tr>
+									<td><input type="radio" id="deptMember" name="authNo" value="AUTH1" class="authority"></td>
+									<td style="float:right"><label for="deptMember">부서원</label></td>
+									<td><div class="autoBtn1">권한보기<span class="tooltiptext">결재신청가능<br>사용자 추가 등록 불가</span></div></td>
+								</tr>
+								<tr>
+									<td><input type="radio" id="deptHeader" name="authNo" value="AUTH2" class="authority"></td>
+									<td style="float:right"><label for="deptHeader">부서장</label></td>
+									<td><div class="autoBtn2">권한보기<span class="tooltiptext2">전자결재가능<br>사용자 추가 등록 불가</span></div></td>
+								</tr>
+							</table>
+						</div>
+					</form>
 				</div>
 				<div class="emptyDiv"></div>
 			</div>
@@ -302,23 +287,120 @@ div.autoBtn2:hover span.tooltiptext2 {
 	<br>
 	<br>
 
-	<script>
-		$(document).ready(function() {
-			$(".btn_close").click(function() {
-				$(".modal").fadeOut();
+<script>
+
+
+	$(document).ready(function() {
+		
+		window.idCheckResult = false;
+		
+		$(".btn_close").click(function() {
+			$(".modal").fadeOut();
+		});
+	});
+	
+	function idCheck() {
+
+		var userId = $(".userId").val();
+
+		if($(".userId").val() == ""){
+			
+			alert("아이디를 입력해주세요.");
+			
+		}else{
+			$.ajax({
+				url : "idCheck.me",
+				type : "post",
+				data : {
+					userId : userId
+				},
+				success : function(data) {
+					console.log(data);
+	
+					if (data === "success") {
+						alert("중복된 아이디입니다.");
+					} else {
+						alert("사용가능한 아이디 입니다.");
+						idCheckResult = true;
+					}
+				},
+				error : function(data) {
+	
+				}
+	
 			});
-			
-		});
-		function confirm() {
-			alert("사용하실 수 있는 아이디 입니다.");
-			return false;
-			
 		}
-		$("#autoBtn1").mouseenter(function(){
-			
-		}).mouseout(function(){
-			
-		});
-	</script>
+	}
+	function insertMember() {
+
+		if (idCheckResult == false) {
+			alert("아이디 중복확인을 해주세요");
+			return false;
+		}
+
+		var pwd1 = $(".userPwd").val();
+		var pwd2 = $(".userPwd2").val();
+		
+		
+		if (pwd1 != pwd2) {
+			alert("비밀번호가 일치하지 않습니다.");
+			return false;
+		}
+
+		if ( $(".userNames").val() == "" ) {
+			alert("이름을 입력해주세요");
+			console.log($(".userNames").val());
+			$(".userNames").focus();
+			return false;
+		}
+		var regExpName = /^[가-힣]{2,}/;
+		if (!regExpName.test($(".userNames").val())) {
+			alert("이름을 다시 입력해주세요");
+			$(".userName").focus();
+			$(".userName").select();
+			return false;
+		}
+
+		if ($(".phone").val() == "") {
+			alert("전화번호를 입력해주세요.");
+			$(".phone").focus();
+			return false;
+		}
+		var regExpName = /^[0-9]{9,}/;
+		if (!regExpName.test($(".phone").val())) {
+			alert("전화번호를 다시 입력해주세요.");
+			$(".phone").focus();
+			$(".phone").select();
+			return false;
+		}
+		if ($(".email").val() == "") {
+			alert("이메일을 입력해주세요");
+			$(".email").focus();
+			return false;
+		}
+		var regExpEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+		if (!regExpEmail.test($(".email").val())) {
+			alert("이메일을 다시 입력해주세요");
+			$(".email").focus();
+			$(".email").select();
+			return false;
+		}
+		if ($(".dept").val() == "") {
+			alert("부서를 선택해주세요");
+			return false;
+		}
+		if($(".use").prop("checked") == false){
+			alert("사용여부를 선택해주세요.");
+			return false;
+		}
+
+		if($(".authority").prop("checked") == false){
+			alert("권한을 선택해주세요.");
+			return false;
+		}
+		
+		return true;
+	}
+</script>
 </body>
 </html>
