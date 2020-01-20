@@ -25,10 +25,10 @@
 	transform: translate(-50%, -50%);
 	width: 800px;
 	height:auto;
-	max-height: 500px;
+	max-height: auto;
 	border: 20px solid white;
 	background-color: white;
-	overflow-y: auto;
+	
 }
 
 .modal_content_real {

@@ -113,8 +113,8 @@
 			
 			<!-- 결재 승인/반려 버튼 -->
 			<div class="approveBtn">
-				<button>결재승인</button>
-				<button>결재반려</button>
+				<button onclick="submit();">결재승인</button>
+				<button onclick="reject();">결재반려</button>
 			</div>
 			<!-- 결재 버튼 end -->
 			
@@ -219,7 +219,24 @@
 			$(".btn_close").click(function() {
 				$(".modal").fadeOut();
 			});
+			
 		});
+		function submit() {
+			
+			if(window.confirm("승인 하시겠습니까?") == true) {
+				location.href="joinDocumentApproval.ap";
+			}else {
+				return false;
+			}
+			
+		}
+		function reject() {
+			if(window.confirm("반려 하시겠습니까?") == true) {
+				location.href="joinDocumentApproval.ap";
+			}else {
+				return false;
+			}
+		}
 	</script>
 </body>
 </html>

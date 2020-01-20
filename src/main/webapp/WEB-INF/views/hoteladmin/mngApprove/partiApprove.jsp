@@ -77,9 +77,13 @@
 
 </head>
 <body>
+<header>
 	 <jsp:include page="../common/menubar.jsp" />
-	 <jsp:include page="allApproveDetail.jsp"/> 
-	<c:set var="contextPath"
+</header>
+		<jsp:include page="approveModal/partiPurchaseApproveModal.jsp"/>
+	
+<%-- 	 <jsp:include page="allApproveDetail.jsp"/> 
+ --%>	<c:set var="contextPath"
 		value="${pageContext.servletContext.contextPath }" scope="application" />
 
 	<div class="approval">
@@ -234,13 +238,18 @@
 	$(function(){
 		
 		
-		 $(".tbl_tit").click(function(){
-			 var except = $(this).find("td").eq(0);
-				console.log(except);
-			$('.ui.modal').modal('show');
-		});  
-		
-		
+		$(".tbl_tit").mouseenter(function() {
+			$(this).css({
+				"background" : "lightgray",
+				"cursor" : "pointer"
+			})
+		}).mouseout(function() {
+			$(this).css({
+				"background" : "white"
+			})
+		}).click(function() {
+			$(".modal").fadeIn();
+		});
 	});
 	</script> 
 
