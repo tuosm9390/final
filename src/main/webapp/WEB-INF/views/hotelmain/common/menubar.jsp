@@ -179,6 +179,7 @@ button{
 </head>
 <body>
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"></c:set>
+	<jsp:include page="reservationModalForm.jsp"></jsp:include>
 	<div class="fixed-bar horizontal-bar top-bar">
 			<div align="center" class="title_image">
 				<a href="">
@@ -196,7 +197,8 @@ button{
 		<ul id="menu-main-menu" class="nav  nav--main  sub-menu"
 			data-level="1">
 			<li><a href="goMain.hmain">HOME</a></li>
-			<li><a href="ReservationCheck.hmain">RESERVATION</a></li>
+			<li><a >RESERVATION</a></li>
+<!-- 			href="ReservationCheck.hmain" -->
 			<li><a href="goRooms.hmain">ROOMS</a></li>
 			<li><a href="">SURROUNDINGS</a></li>
 			<li><a href="goQnA.hmain">1:1</a></li>
@@ -231,6 +233,12 @@ button{
 	<script>
 		$(".site-navigation").click(function(){
 			$(".navigation").toggle('fast');
+		});
+		
+		$(function(){
+			$(".nav--main li:nth-child(2)").click(function(){
+				$(".modal").fadeIn();
+			});
 		});
 	</script>
 </body>

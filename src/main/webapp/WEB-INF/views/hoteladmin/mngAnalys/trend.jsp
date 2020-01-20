@@ -46,7 +46,6 @@
 }
 
 .monthly{
-	padding: 20px;
 	width: 100%;
 }
 

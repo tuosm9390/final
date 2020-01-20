@@ -54,8 +54,8 @@
 </head>
 <body>
 	<header>
-		<jsp:include page="../common/menubar.jsp"/>
 		<jsp:include page="../common/analysMenubar.jsp"/>
+		<jsp:include page="../common/menubar.jsp"/>
 	</header>
 	<section>
 		<c:set var="price" value="300000"></c:set>
