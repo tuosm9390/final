@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.kh.hotels.mngMember.model.exception.LoginException;
 import com.kh.hotels.mngMember.model.service.MemberService;
@@ -32,13 +34,23 @@ public class MemberController {
 			loginUser = ms.loginMember(m);
 			
 			model.addAttribute("loginUser", loginUser);
+
+			if(loginUser.getPwdStatus().equals("Y")) {
+				
+				return "hoteladmin/main/main";
+				
+			}else{
+
+				return "hoteladmin/main/pwdReset";
+				
+			}
 			
-			return "hoteladmin/main/main";
+			
 		} catch (LoginException e) {
 			
-			model.addAttribute("msg", "등록된 계정이 아닙니다.");
+			model.addAttribute("msg", "아이디 비밀번호를 확인해주세요.");
 			
-			return "index";
+			return "hoteladmin/main/login";
 		}
 		
 	}
@@ -75,9 +87,32 @@ public class MemberController {
 			return "redirect:index.jsp";
 		}else {
 			request.setAttribute("msg", "회원가입실패");
-			return "";
+			return "common/errorPage";
 		}
 		
+	}
+	
+	@PostMapping("pwdReset.me")
+	public String updatePassword(Member m, Model model) {
+		
+		int result = ms.updateMemberPwd(m);
+		
+		if(result > 0) {
+			model.addAttribute("msg", "다시 로그인 해주세요.");
+			return "hoteladmin/main/login";
+		}else {
+			model.addAttribute("msg", "비밀번호 변경 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
+	@RequestMapping("logout.me")
+	public String logoutMember(SessionStatus status) {
+	
+		status.setComplete();
+		
+		return "redirect:index.jsp";
 	}
 	
 }

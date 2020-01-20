@@ -13,12 +13,12 @@ public class Member implements java.io.Serializable {
 	private String userPwd;
 	private String authNo;
 	private int deptNo;
-	private String emailYN;
+	private String pwdStatus;
 	
 	public Member() {}
 
 	public Member(int mno, String userName, String phone, String email, String status, String type, String mmemo,
-			String userId, String userPwd, String authNo, int deptNo, String emailYN) {
+			String userId, String userPwd, String authNo, int deptNo, String pwdStatus) {
 		super();
 		this.mno = mno;
 		this.userName = userName;
@@ -31,7 +31,7 @@ public class Member implements java.io.Serializable {
 		this.userPwd = userPwd;
 		this.authNo = authNo;
 		this.deptNo = deptNo;
-		this.emailYN = emailYN;
+		this.pwdStatus = pwdStatus;
 	}
 
 	public int getMno() {
@@ -122,19 +122,19 @@ public class Member implements java.io.Serializable {
 		this.deptNo = deptNo;
 	}
 
-	public String getEmailYN() {
-		return emailYN;
+	public String getPwdStatus() {
+		return pwdStatus;
 	}
 
-	public void setEmailYN(String emailYN) {
-		this.emailYN = emailYN;
+	public void setPwdStatus(String pwdStatus) {
+		this.pwdStatus = pwdStatus;
 	}
 
 	@Override
 	public String toString() {
 		return "Member [mno=" + mno + ", userName=" + userName + ", phone=" + phone + ", email=" + email + ", status="
 				+ status + ", type=" + type + ", mmemo=" + mmemo + ", userId=" + userId + ", userPwd=" + userPwd
-				+ ", authNo=" + authNo + ", deptNo=" + deptNo + ", emailYN=" + emailYN + "]";
+				+ ", authNo=" + authNo + ", deptNo=" + deptNo + ", pwdStatus=" + pwdStatus + "]";
 	}
 
 	

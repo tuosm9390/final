@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
 <style type="text/css">
 	body{
@@ -22,7 +21,7 @@
 		width:300px;
 		height:70px;
 	}
-	.idInput, .pwdInput{
+	.pwdInput, .pwdInput2{
 		width:300px;
 		height:40px;
 		border-radius: 10px;
@@ -50,52 +49,64 @@
 </head>
 <body>
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
-	<c:set var="msg" value="${ msg }"/>
 	<div class="loginArea">
-	<form action="login.me" method="post">
+	<form action="pwdReset.me" method="post">
 		<table align="center">
 			<tr>
 				<td>
 					<img alt="" src="${ contextPath }/resources/images/logo.png" class="logoImg">
 				</td>
 			</tr>
-			<tr>
+			<tr>	
 				<td>
-					<input type="text" placeholder="  ID" class="idInput" name="userId">
+					<input type="password" placeholder="  New PASSWORD" class="pwdInput" name="userPwd">
 				</td>
 			</tr>
 			<tr>	
 				<td>
-					<input type="password" placeholder="  PASSWORD" class="pwdInput" name="userPwd">
+					<input type="password" placeholder="  New PASSWORD CHECK" class="pwdInput2" name="">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<button onclick="return loginCheck();">Login</button>
+					<input type="hidden" name="mno" value="${ sessionScope.loginUser.mno }">
+					<button onclick="return pwdCheck();">DONE</button>
 				</td>
 			</tr>
 		</table>
 	</form>
 	</div>
 	<script type="text/javascript">
-		function loginCheck(){
+		function pwdCheck(){
 			
-			if($(".idInput").val() == ""){
-				alert("아이디를 입력해주세요.");
-				return false;
-			}
 			if($(".pwdInput").val() == ""){
 				alert("비밀번호를 입력해주세요.");
 				return false;
 			}
+			if($(".pwdInput2").val() == ""){
+				alert("비밀번호확인을 입력해주세요.");
+				return false;
+			}
+			if($(".pwdInput").val() == "0000"){
+				alert("초기비밀번호로 변경 불가능 합니다.");
+				return false;
+			}
+			
+			var pwd1 = $(".pwdInput").val();
+			var pwd2 = $(".pwdInput2").val();
+			
+			if(pwd1 != pwd2){
+				alert("비밀번호를 확인해주세요.");
+				return false;
+			}
+			
+			var regExpName = /^[0-9]{4,}/;
+			if (!regExpName.test($(".pwdInput").val())) {
+				alert("비밀번호를 4자리 이상 입력해주세요.");
+				return false;
+			}
 			
 		};
-		$(function(){
-			
-			if( "${msg}" != "" ){
-				alert("${msg}");
-			}
-		});
 	</script>
 </body>
 </html>

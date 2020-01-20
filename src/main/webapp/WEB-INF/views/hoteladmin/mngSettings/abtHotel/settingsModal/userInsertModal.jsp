@@ -95,7 +95,7 @@ input[type=text] {
 	height: 200px;
 	float: right;
 	margin-right: 10px;
-	margin-top: -377px;
+	margin-top: -277px;
 }
 
 #secTbl {
@@ -214,14 +214,14 @@ div.autoBtn2:hover span.tooltiptext2 {
 								<td><input type="text" class="userId" name="userId"></td>
 								<td><button type="button" onclick="idCheck();" id="idBtn">중복확인</button></td>
 							</tr>
-							<tr>
+<!-- 							<tr>
 								<td>비밀번호</td>
 								<td colspan="2"><input type="password" class="userPwd" name="userPwd" style="width: 250px;"></td>
-							</tr>
-							<tr>
+							</tr> -->
+							<!-- <tr>
 								<td>비밀번호 확인</td>
 								<td colspan="2"><input type="password" class="userPwd2" name="userPwd2" style="width: 250px;"></td>
-							</tr>
+							</tr> -->
 							<tr>
 								<td>사용자명</td>
 								<td colspan="2"><input type="text" class="userNames" name="userName" style="width: 250px;"></td>
@@ -252,6 +252,7 @@ div.autoBtn2:hover span.tooltiptext2 {
 								<input type="radio" name="status" class="use" id="no" value="N"><label for="no">아니오</label></td>
 							</tr>
 						</table>
+						<input type="hidden" class="userPwd" name="userPwd" value="0000" style="width: 250px;">
 						<button type="submit" onclick="return insertMember();">저장</button>
 						<div class="secTable">
 							<h4 style="margin-left:10px;">사용자 권한</h4>
@@ -271,7 +272,7 @@ div.autoBtn2:hover span.tooltiptext2 {
 									<td><div class="autoBtn1">권한보기<span class="tooltiptext">결재신청가능<br>사용자 추가 등록 불가</span></div></td>
 								</tr>
 								<tr>
-									<td><input type="radio" id="deptHeader" name="authNo" value="AUTH2" class="authority"></td>
+									<td><input type="radio" id="deptHeader" name="authNo" value="AUTH2" class="authority2"></td>
 									<td style="float:right"><label for="deptHeader">부서장</label></td>
 									<td><div class="autoBtn2">권한보기<span class="tooltiptext2">전자결재가능<br>사용자 추가 등록 불가</span></div></td>
 								</tr>
@@ -338,15 +339,6 @@ div.autoBtn2:hover span.tooltiptext2 {
 			return false;
 		}
 
-		var pwd1 = $(".userPwd").val();
-		var pwd2 = $(".userPwd2").val();
-		
-		
-		if (pwd1 != pwd2) {
-			alert("비밀번호가 일치하지 않습니다.");
-			return false;
-		}
-
 		if ( $(".userNames").val() == "" ) {
 			alert("이름을 입력해주세요");
 			console.log($(".userNames").val());
@@ -394,7 +386,7 @@ div.autoBtn2:hover span.tooltiptext2 {
 			return false;
 		}
 
-		if($(".authority").prop("checked") == false){
+		if($(".authority").prop("checked") == false && $(".authority2").prop("checked") == false){
 			alert("권한을 선택해주세요.");
 			return false;
 		}

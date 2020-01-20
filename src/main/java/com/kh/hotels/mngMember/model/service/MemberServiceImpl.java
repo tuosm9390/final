@@ -72,6 +72,17 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.SERIALIZABLE)
+	public int updateMemberPwd(Member m) {
+		
+		String encPassword = bcryptPasswordEncoder.encode(m.getUserPwd());
+		
+		m.setUserPwd(encPassword);
+		
+		return md.updateMemberPwd(sqlSession, m);
+	}
 	
 	
 
