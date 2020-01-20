@@ -16,7 +16,6 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <!-- 데이트피커 -->
 <link href="${ contextPath }/resources/css/datepicker.min.css" rel="stylesheet" type="text/css">
 <script src="${ contextPath }/resources/js/datepicker.min.js"></script>
@@ -197,8 +196,7 @@ button{
 		<ul id="menu-main-menu" class="nav  nav--main  sub-menu"
 			data-level="1">
 			<li><a href="goMain.hmain">HOME</a></li>
-			<li><a >RESERVATION</a></li>
-<!-- 			href="ReservationCheck.hmain" -->
+			<li><a>RESERVATION</a></li>
 			<li><a href="goRooms.hmain">ROOMS</a></li>
 			<li><a href="">SURROUNDINGS</a></li>
 			<li><a href="goQnA.hmain">1:1</a></li>
