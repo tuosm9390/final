@@ -4,9 +4,58 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="Member">
+	
+	<resultMap type="com.kh.hotels.mngMember.model.vo.Member" id="resultSetMember">
+	
+		<id property="mno" column="MNO"/>
+		<result property="userName" column="NAME"/>
+		<result property="phone" column="PHONE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="status" column="STATUS"/>
+		<result property="type" column="TYPE"/>
+		<result property="mmemo" column="MMEMO"/>
+		<result property="userId" column="STF_ID"/>
+		<result property="userPwd" column="STF_PWD"/>
+		<result property="authNo" column="AUTH_NO"/>
+		<result property="deptNo" column="DEPT_NO"/>
+		<result property="emailYN" column="EMAIL_STATUS"/>
+	
+	</resultMap>
 
-	<select id="select"></select>
+	<select id="selectMemberPwd" parameterType="Member" resultType="java.lang.String">
+		SELECT STF_PWD
+		FROM STAFF
+		WHERE STF_ID = #{userId}
+	</select>
 
+	<select id="selectMemberId" parameterType="java.lang.String" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER M
+		JOIN STAFF S ON(M.MNO = S.MNO)
+		WHERE S.STF_ID = #{userId}
+	</select>
+
+	<select id="insertMember" parameterType="Member">
+		INSERT INTO MEMBER
+		VALUES(SEQ_MNO.NEXTVAL,#{userName},#{phone},#{email},#{status},'STAFF',NULL)	
+	</select>
+	
+	<select id="selectMno" parameterType="Member" resultType="_int">
+		SELECT MNO
+		FROM MEMBER
+		WHERE NAME = #{userName} AND PHONE = #{phone} AND EMAIL = #{email} AND TYPE = 'STAFF'
+	</select>
+	
+	<select id="insertStaff" parameterType="Member">
+		INSERT INTO STAFF
+		VALUES(#{mno}, #{userId}, #{userPwd}, #{authNo}, #{deptNo}, DEFAULT)
+	</select>
+	
+	<select id="selectMember" parameterType="Member" resultMap="resultSetMember">
+		SELECT *
+		FROM MEMBER M 
+		JOIN STAFF S ON(M.MNO = S.MNO)
+	</select>
 </mapper>
 
 

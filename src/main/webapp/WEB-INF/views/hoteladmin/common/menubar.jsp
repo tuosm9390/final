@@ -5,8 +5,10 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- 데이트피커 -->
 <link href="${ contextPath }/resources/css/datepicker.min.css" rel="stylesheet" type="text/css">
 <script src="${ contextPath }/resources/js/datepicker.min.js"></script>
+
 <!-- Korean language -->
 <script src="${ contextPath }/resources/js/datepicker.kr.js"></script>
 <meta charset="UTF-8">
@@ -19,6 +21,7 @@
 		background:#060E33;
 		margin-left:-8px;
 		margin-top:-8px;
+		position: fixed;
 	}
 	.menu{
 		display:inline-block;
@@ -119,6 +122,16 @@
 	.contract{
 		position: relative;
 	}
+	/* 판매분석 */
+	.analys{
+		position: relative;
+	}
+	.subnav-analys{
+		width: 130px;
+	}
+	section{
+		padding-top: 92px;
+	}
 </style>
 </head>
 <body>
@@ -151,6 +164,11 @@
 		<li class="menu tab t5 analys">
 				<img alt="" src="${ contextPath }/resources/images/iconFinance.png"  class="tabimg"><br>
 				<label>판매분석</label>
+				<div class="subnav subnav-analys">
+					▲<br>
+					<a href="viewTrendList.hadmin">영업트렌드</a><br>
+					<a href="viewDetailList.hadmin?Condition=sales">매출 및 지불 상세</a>
+				</div>
 		</li>
 		<li class="menu tab t6 contract">
 				<img alt="" src="${ contextPath }/resources/images/iconContract.png"  class="tabimg"><br>
@@ -194,6 +212,14 @@
 				$(this).parent().find(".subnav2").slideUp('fast');
 			})
 		});
+		$(".analys").click(function(){
+			$(this).parents().children().find(".subnav-analys").slideDown('normal').show();
+			$(this).parent().hover(function(){
+				
+			},function(){
+				$(this).parent().find(".subnav-analys").slideUp('fast');
+			})
+		});
 		$(".t1").hover(function(){
 			$(".hover1").show();
 		});
@@ -207,10 +233,6 @@
 			$(".materiel").click(function(){
 				location.href='goMateriel.hadmin';
 			})
-			
-			$(".analys").click(function(){
-				location.href='viewTrendList.hadmin?Condition=sales';
-			});
 		});
 		
 	</script>

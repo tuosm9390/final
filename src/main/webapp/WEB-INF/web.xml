@@ -44,7 +44,7 @@
 		
 	<servlet-mapping>
 		<servlet-name>hotelmain</servlet-name>
-		<url-pattern>*.hmain</url-pattern>
+		<url-pattern>*.main</url-pattern>
 	</servlet-mapping>
 
 

@@ -162,13 +162,13 @@ h4 {
 					<td>정산/역산</td>
 					<td style="width: 400px;">
 						<div class="ui input title">
-							<input class="txt" type="text">
+							<input class="txt" type="text" placeholder="부가세 포함">
 						</div>
 					</td>
 					<td>자동마감시간</td>
 					<td>
 						<div class="ui input title">
-							<input class="txt" type="text">
+							<input class="txt" type="text" placeholder="12:00AM">
 						</div>
 					</td>
 				</tr>
@@ -176,10 +176,10 @@ h4 {
 					<td style="padding-top: 30px; width:200px;">챗봇 연동 여부</td>
 					<td style="padding-top: 32px;" colspan="2">
 						<div class="ui input title">
-							<input type="checkbox"><label>예</label>
+							<input type="radio" name="chatBot"><label>예</label>
 						</div>
 						<div class="ui input title">
-							<input type="checkbox"><label>아니오</label>
+							<input type="radio" name="chatBot"><label>아니오</label>
 						</div>
 					</td>
 					
