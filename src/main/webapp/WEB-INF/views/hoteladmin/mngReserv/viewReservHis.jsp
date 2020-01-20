@@ -8,6 +8,7 @@
 <title>HotelsCompile</title>
 <style>
 .titleSec {
+	margin-top: 10px;
 	display: inline-flex;
 }
 
@@ -53,6 +54,7 @@ hr {
 }
 
 .searchSec {
+	margin-top: 10px;
 	margin-left: 850px;
 } 
 

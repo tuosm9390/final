@@ -8,6 +8,7 @@
 <title>HotelsCompile</title>
 <style>
 .searchSec {
+	margin-top: 10px;
 	float: right;
 	display: inline;
 }
@@ -31,6 +32,7 @@ select {
 }
 
 .floorBtn, #allFloor {
+	margin-top: 10px;
 	height: 50px;
 	width: 50px;
 	border-radius: 100%;
@@ -117,7 +119,7 @@ select {
 	border: 1px solid lightgrey;
 	background-color: white;
 	position: absolute;
-	top: 207px;
+	top: 201px;
 	left: 864px;
 }
 
@@ -127,7 +129,7 @@ select {
 	border: 1px solid lightgrey;
 	background-color: white;
 	position: absolute;
-	top: 207px;
+	top: 201px;
 	left: 1028px;
 }
 

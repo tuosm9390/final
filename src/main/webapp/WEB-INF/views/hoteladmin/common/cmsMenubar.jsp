@@ -53,7 +53,7 @@
 			</div>
 		</li>
 		<li>
-			<div class="cmsdiv">
+			<div class="cmsdiv" onclick="location.href='question.cl'">
 				<img alt="" src="${ contextPath }/resources/images/customerQnA.png" width="30px" height="30px" style="margin-right:10px;">고객문의
 			</div>
 		</li>

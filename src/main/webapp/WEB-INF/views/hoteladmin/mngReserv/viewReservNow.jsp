@@ -8,6 +8,7 @@
 <title>HotelsCompile</title>
 <style>
 .titleSec {
+	margin-top: 10px;
 	display: inline-flex;
 }
 
