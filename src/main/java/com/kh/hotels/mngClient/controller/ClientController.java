@@ -13,8 +13,12 @@ public class ClientController {
 	
 	@GetMapping("viewBlackList.cl")
 	public String goBlackList() {
-		
 		return "blackList";
+	}
+
+	@GetMapping("question.cl")
+	public String goQuestion() {
+		return "viewQuestion";
 	}
 
 }

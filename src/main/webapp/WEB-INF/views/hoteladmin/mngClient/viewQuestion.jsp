@@ -6,10 +6,22 @@
 <meta charset="UTF-8">
 <title>HotelsCompile</title>
 <style>
+.topSec {
+	display: inline-flex;
+}
+
+.topSec select {
+	height: 25px;
+	width: 100px;
+	margin-top: 25px;
+	margin-left: 20px;
+	border: 1px solid lightgrey;
+}
+
 .searchSec {
 	float: right;
 	display: inline;
-	margin-right: 301px;
+	margin-right: 30px;
 }
 
 .searchSec select {
@@ -30,27 +42,7 @@
 	border: 1px solid lightgrey;
 }
 
-.clientList {
-
-	margin-top: 10px;
-	width: 1000px;
-	height: 520px;
-	border: 1px solid darkgray;
-	max-height: 520px;
-	overflow-y: auto;
-}
-
-.clientList th, .clientList td {
-	border: 1px solid darkgray;
-	text-align: center;
-	padding: 5px;
-}
-
-.clientList th {
-	background-color: lightsteelblue;
-}
-
-#openClientMD {
+#openNewMD {
 	margin-top: 10px;
 	width: 100px;
 	margin-left: 20px;
@@ -60,54 +52,94 @@
 	color: white;
 	font-weight: bold;
 } 
+
+.qList {
+	margin-left: 20px;
+	margin-top: 10px;
+	width: 1250px;
+	height: 520px;
+	border: 1px solid darkgray;
+	max-height: 520px;
+	overflow-y: auto;
+}
+
+.qList th, .qList td {
+	border: 1px solid darkgray;
+	text-align: center;
+	padding: 5px;
+}
+
+.qList th {
+	background-color: lightsteelblue;
+}
 </style>
 </head>
-<body style="overflow-y: hidden;">
+<body>
 	<header>
 		<jsp:include page="../common/cmsMenubar.jsp"></jsp:include>
 		<jsp:include page="../common/menubar.jsp"></jsp:include>
-		<jsp:include page="modalInsertClient.jsp"></jsp:include>
 	</header>
 	<section>
-
-		<h1 style="margin-left: 10px; margin-bottom:0px;">고객관리</h1>
+		<div class="topSec">
+			<h1 style="margin-left: 10px; margin-bottom:0px;">고객문의</h1>
+			<select name="filterOption">
+				<option>전체 문의</option>
+				<option>온라인 문의</option>
+				<option>오프라인 문의</option>
+				<option>미답변 문의</option>
+			</select>
+		</div>
 		<hr style="width:100px; margin-right:1195px;"> 
 		
-			<button id="openClientMD">신규</button>
+		<button id="openNewMD">신규</button>
 		<!-- searchSec -->
 		<div class="searchSec">
-			<label style="margin-right: 20px;">총 고객 수 : 300</label>
 			<select name="searchOption">
 				<option selected disabled hidden>검색조건</option>
 				<option value="">고객명</option>
 				<option value="">전화번호</option>
 				<option value="">이메일</option>
+				<option value="">문의제목</option>
+				<option value="">문의유형</option>
+				<option value="">문의내용</option>
 			</select>
 			<input type="text" name="searchContent" class="searchContent">
 			<button id="searchBtn">검색</button>
 		</div>
 		<!-- searchSec end -->
-			
-		<div class="clientList">
+		
+		<div class="qList">
 			<table style="border-collapse: collapse;">
 				<tr>
-					<th width="50px;"><input type="checkbox"></th>
-					<th width="100px;">No</th>
-					<th width="150px;">고객명</th>
-					<th width="150px;">고객번호</th>
-					<th width="200px;">전화번호</th>
-					<th width="350px;">이메일</th>
+					<th width="50px">No</th>
+					<th width="550px">문의제목</th>
+					<th width="100px">문의유형</th>
+					<th width="100px">문의고객명</th>
+					<th width="200px">연락처</th>
+					<th width="150px">문의일자</th>
+					<th width="100px">답상태</th>
 				</tr>
 				<tr>
-					<td><input type="checkbox"></td>
 					<td>1</td>
-					<td>김진호</td>
-					<td>20124567</td>
+					<td>강아지 동반 질문있어요!</td>
+					<td>객실</td>
+					<td>전세환</td>
 					<td>010-0000-0000</td>
-					<td>programmer7771@gmail.com</td>
-				</tr> 
+					<td>2020-01-20</td>
+					<td>미답변</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>고양이 동반 질문있어요!</td>
+					<td>객실</td>
+					<td>송기준</td>
+					<td>abc@de.fg</td>
+					<td>2020-01-18</td>
+					<td>답변</td>
+				</tr>
 			</table>
 		</div>
+			
 	</section>
 	<script>
 		$(function(){
