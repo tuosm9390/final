@@ -1,9 +1,11 @@
 package com.kh.hotels.mngMember.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Component;
 
 import com.kh.hotels.mngMember.model.vo.Member;
 
+@Component
 public class MemberDaoImpl implements MemberDao {
 
 	@Override

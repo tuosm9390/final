@@ -5,6 +5,10 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="${ contextPath }/resources/css/datepicker.min.css" rel="stylesheet" type="text/css">
+<script src="${ contextPath }/resources/js/datepicker.min.js"></script>
+<!-- Korean language -->
+<script src="${ contextPath }/resources/js/datepicker.kr.js"></script>
 <meta charset="UTF-8">
 <title>HotelsCompile</title>
 <style type="text/css">
@@ -132,15 +136,15 @@
 				<label>예약관리</label><br>
 				<div class="subnav">
 					▲<br>
-					<a>예약내역</a><br>
-					<a>예약현황</a>
+					<a href="viewNow.re">예약현황</a><br>
+					<a href="viewHis.re">예약내역</a>
 				</div>
 		</li>
 		<li class="menu tab t3 materiel">
 				<img alt="" src="${ contextPath }/resources/images/iconWMS.png"  class="tabimg"><br>
 				<label>재고관리</label>
 		</li>
-		<li class="menu tab t4">
+		<li class="menu tab t4" onclick="location.href='viewList.cl'">
 				<img alt="" src="${ contextPath }/resources/images/iconCS.png"  class="tabimg"><br>
 				<label>고객관리</label>
 		</li>
@@ -154,7 +158,7 @@
 				<div class="subnav2">
 					▲<br>
 					<a href="documentApproval.ap">결재함</a><br>
-					<a>참여결재함</a>
+					<a href="joinDocumentApproval.ap">참여결재함</a>
 				</div>
 		</li>
 		<li class="menu tab t7">
