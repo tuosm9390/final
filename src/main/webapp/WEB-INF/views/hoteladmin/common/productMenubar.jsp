@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 <style>
 	.productMenubarArea{
+		position:fixed;
 		width:250px;
 		height:800px;
 		float:left;

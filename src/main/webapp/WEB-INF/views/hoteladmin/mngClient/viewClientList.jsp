@@ -31,7 +31,6 @@
 }
 
 .clientList {
-	margin-left: 280px;
 	margin-top: 10px;
 	width: 1000px;
 	height: 520px;
@@ -64,12 +63,12 @@
 </head>
 <body style="overflow-y: hidden;">
 	<header>
-		<jsp:include page="../common/menubar.jsp"></jsp:include>
 		<jsp:include page="../common/cmsMenubar.jsp"></jsp:include>
+		<jsp:include page="../common/menubar.jsp"></jsp:include>
 		<jsp:include page="modalInsertClient.jsp"></jsp:include>
 	</header>
 	<section>
-		<h1 style="margin-left: 280px;">고객관리</h1>
+		<h1>고객관리</h1>
 		
 			<button id="openClientMD">신규</button>
 		<!-- searchSec -->

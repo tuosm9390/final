@@ -14,6 +14,7 @@
 	<button onclick="location.href='${ contextPath }/WEB-INF/views/hotelSetting/hotelInfoSetting.jsp'">설정으로</button>
 
 	<jsp:forward page="WEB-INF/views/hoteladmin/main/login.jsp"/>
+	<%-- <jsp:forward page="WEB-INF/views/hoteladmin/mngSettings/abtHotel/userInsert.jsp"/> --%>
 
 </body>
 </html>

@@ -18,4 +18,6 @@ public interface MemberDao {
 
 	int insertStaff(SqlSessionTemplate sqlSession, Member m);
 
+	int updateMemberPwd(SqlSessionTemplate sqlSession, Member m);
+
 }
