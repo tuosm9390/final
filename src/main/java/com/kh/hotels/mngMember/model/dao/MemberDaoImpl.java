@@ -1,9 +1,11 @@
 package com.kh.hotels.mngMember.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Component;
 
 import com.kh.hotels.mngMember.model.vo.Member;
 
+@Component
 public class MemberDaoImpl implements MemberDao {
 
 	@Override
@@ -16,6 +18,30 @@ public class MemberDaoImpl implements MemberDao {
 	public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
 
 		return sqlSession.selectOne("Member.selectMember", m);
+	}
+
+	@Override
+	public int selectMemberId(SqlSessionTemplate sqlSession, String userId) {
+
+		return sqlSession.selectOne("Member.selectMemberId", userId);
+	}
+
+	@Override
+	public int insertMember(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.insert("Member.insertMember", m);
+	}
+
+	@Override
+	public int selectMno(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.selectOne("Member.selectMno", m);
+	}
+
+	@Override
+	public int insertStaff(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.insert("Member.insertStaff", m);
 	}
 
 }
