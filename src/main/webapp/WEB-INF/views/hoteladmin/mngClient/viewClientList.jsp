@@ -53,7 +53,7 @@
 #openClientMD {
 	margin-top: 10px;
 	width: 100px;
-	margin-left: 30px;
+	margin-left: 280px;
 	border: 1px solid royalblue;
 	border-radius: 5px;
 	background-color: royalblue;
@@ -110,11 +110,11 @@
 	<script>
 		$(function(){
 			$("#openClientMD").click(function(){
-				$(".modalplus").fadeIn();
+				$(".modal").fadeIn();
 			});
 			
 			$("td").parent().click(function(){
-				$(".modalplus").fadeIn();
+				$(".modal").fadeIn();
 			});
 		});
 	</script>

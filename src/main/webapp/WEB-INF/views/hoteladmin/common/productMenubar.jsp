@@ -41,6 +41,9 @@
 		background:#C7C0C0;
 		cursor:pointer;
 	}
+	section{
+		padding-left:280px;
+	}
 </style>
 </head>
 <body>

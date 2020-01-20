@@ -47,6 +47,9 @@
 	.hotel li{
 		padding-left:30px;
 	}
+	section{
+		padding-left:280px;
+	}
 </style>
 <body>
 <div class="settingMenubarArea">

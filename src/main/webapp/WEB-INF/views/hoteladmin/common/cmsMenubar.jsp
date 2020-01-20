@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 <style>
 	.cmsMenubarArea{
+		position:fixed;
+		padding-top:100px;
 		width:250px;
 		height:800px;
 		float:left;
@@ -30,6 +32,9 @@
 		background:#C7C0C0;
 		cursor:pointer;
 	}
+	section{
+		padding-left:280px;
+	}
 	
 </style>
 </head>
@@ -43,7 +48,8 @@
 		</li>
 		<li>
 			<div class="cmsdiv">
-				<img alt="" src="${ contextPath }/resources/images/blackRist.png" width="30px" height="30px" style="margin-right:10px;">블랙리스트
+				<img alt="" src="${ contextPath }/resources/images/blackRist.png" width="30px" height="30px" style="margin-right:10px;">
+				<a href="viewBlackList.cl">블랙리스트</a>
 			</div>
 		</li>
 		<li>

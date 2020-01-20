@@ -10,5 +10,11 @@ public class ClientController {
 	public String goClientList() {
 		return "viewClientList";
 	}
+	
+	@GetMapping("viewBlackList.cl")
+	public String goBlackList() {
+		
+		return "blackList";
+	}
 
 }
