@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 <title>Insert title here</title>
 </head>
 <style>
@@ -15,6 +15,8 @@
 	border-right-width: 1px;
 	border-right-style: solid;
 	border-right-color: lightgray;
+	position: fixed;
+	padding-top: 100px;
 }
 
 .analysMenubar {
@@ -110,8 +112,7 @@
 		});
 		
 		$(".analys-item").click(function(){
-			var Condition = $(this).attr('id');
-			location.href='viewTrendList.hadmin?Condition=' + Condition;
+			location.href='viewDetailList.hadmin';
 		});
 	</script>
 </body>

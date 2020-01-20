@@ -7,175 +7,332 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.site-outer{
-	width: 82%;
-	float: right;
-	margin-right: 1%;
-}
-
-.searchArea{
-	background: #F3F3F3;
+.top-menu{
+	display: inline-flex;
+	position: fixed;
 	width: 100%;
-	height: 50px;
+	background: white;
 }
-
-.list-table{
+.tap-menu{
+	margin-left: 10px;
+	display: inline-flex;
+}
+.tap-menu div{
+	background: black;
+	margin-top: 10px;
+	width: 100px;
 	text-align: center;
-	border-collapse: collapse;
+	border-radius: 10px;
+	border: 3px solid black;
+	cursor: pointer;
+	color: white;
+	font-size: 18px;
+	margin-left: 10px;
 }
 
-.list-table td, th{
-	padding: 10px;
-}
-.list-table tr{
-	height: 30px;
+.tap-menu div:hover{
+	background: white;
+	color: black;
 }
 
-.list-table th{
-	background: #F3F3F3;
+.left{
+	width: 50%;
+	border-right: 1px solid lightgray;
+	padding: 20px;
+}
+.right{
+	width: 50%;
+	padding: 20px;
 }
 
-.list-table tr td:nth-child(3){
-	text-align: left;
+.monthly{
+	padding: 20px;
+	width: 100%;
 }
 
-.list-table tr td:nth-child(6){
-	text-align: right;
+.filterArea{
+	float: right;
 }
 
-.list-table td:not(:last-child), .list-table th:not(:last-child){
-	border-right: 1px solid #D9D9D9;
+.chartArea{
+	margin-top: 10px;
+	width: 100%;
+	height: 300px;
+	border: 1px solid black;
 }
 
-.list-table tr:last-child{
-	background: #DBDBDB;
+.priceArea{
+	border: 1px solid black;
+	border-radius: 6px;
+	width: 30%;
+	display: inline-block;
+}
+.priceOuterArea{
+	margin-top: 10px;
+}
+
+.bottom-menu{
+	display: flex;
+	padding-top: 50px;
 }
 </style>
 </head>
 <body>
 	<header>
 		<jsp:include page="../common/menubar.jsp"/>
-		<jsp:include page="../common/analysMenubar.jsp"/>
 	</header>
 	<section>
-		<div class="site-outer">
-			<div class="excelArea" align="right">
-				<button>엑셀</button>
+		<div class="top-menu">
+			<label style="margin-top: 5px; font-weight: bold; font-size: 24px; text-decoration: underline;">영업 트렌드</label>
+			<div class="tap-menu">
+				<div id="total" class="tap-item ${ Condition eq 'total' ? 'active' : '' }">전체</div>
+				<div id="daily" class="tap-item ${ Condition eq 'daily' ? 'active' : '' }">일별</div>
+				<div id="monthly" class="tap-item ${ Condition eq 'monthly' ? 'active' : '' }">월별</div>
 			</div>
-			<br>
-			<!-- 매출 상세 -->
-			<c:if test="${ Condition eq 'sales' }">
-			<!-- 검색 영역 -->
-			<div class="searchArea" align="right">
-				<select class="searchCondition">
-					<option value="sales">매출일자</option>
-					<option value="checkIn">입실일자</option>
-					<option value="checkOut">퇴실일자</option>
-				</select>
-				
-				<input type="text" id="datepicker"> - 
-				<input type="text" id="datepicker2">
-			</div>
-			<!-- 검색 영역 끝 -->
-			<br>
-			<!-- 테이블 영역 -->
-			<table class="list-table" style="width: 100%;">
-				<tr>
-					<th>객실번호</th>
-					<th>예약번호</th>
-					<th>고객명</th>
-					<th>입실일자</th>
-					<th>퇴실일자</th>
-					<th>매출 금액</th>
-					<th>매출 일자</th>
-					<th>비고</th>
-				</tr>
-				<c:forEach var="i" begin="1" end="10" step="1">
-				<tr>
-					<td>0701</td>
-					<td>20200118</td>
-					<td>남윤진</td>
-					<td>2020-01-19</td>
-					<td>2020-01-12</td>
-					<td><input type="text" class="price" value="300,000" readonly></td>
-					<td>2020-01-10</td>
-					<td></td>
-				</tr>
-				</c:forEach>
-				<tr>
-					<td>합계</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><input type="text" class="summary" readonly></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-			<!-- 테이블 영역 끝 -->
-			</c:if>
-			<!-- 지불 상세 -->
-			<c:if test="${ Condition eq 'spend' }">
-			<!-- 검색 영역 -->
-			<div class="searchArea" align="right">
-				<label>지불 일시</label>
-				<input type="text" id="datepicker"> - 
-				<input type="text" id="datepicker2">
-			</div>
-			<!-- 검색 영역 끝 -->
-			<br>
-			<!-- 테이블 영역 -->
-			<table class="list-table" style="width: 100%;">
-				<tr>
-					<th>분류</th>
-					<th>소분류</th>
-					<th>거래담당자</th>
-					<th>지불수단</th>
-					<th>지불일시</th>
-					<th>지불 금액</th>
-					<th>담당직원</th>
-					<th>비고</th>
-				</tr>
-				<c:forEach var="i" begin="1" end="10" step="1">
-				<tr>
-					<td>고객</td>
-					<td>환불</td>
-					<td>남윤진</td>
-					<td>계좌이체</td>
-					<td>2020-01-09</td>
-					<td><input type="text" class="price" value="300,000" readonly></td>
-					<td>송기준</td>
-					<td>예약번호 : 2001806</td>
-				</tr>
-				</c:forEach>
-				<tr>
-					<td>합계</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><input type="text" class="summary" readonly></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-			<!-- 테이블 영역 끝 -->
-			</c:if>
 		</div>
+		<div class="bottom-menu">
+			<!-- 전체 / 일별 -->
+			<!-- 좌측 영역 -->
+			<div id="total" class="left">
+				<a name="daily"></a>
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 매출</label>
+				
+				<!-- 검색 영역 -->
+				<div class="filterArea">
+					<label>기준 : 원</label>
+					<input type="text" id="datepicker">
+					<button><</button>
+					<button>></button>
+				</div>
+				<!-- 검색 영역 끝 -->
+				<!-- 차트 영역 -->
+				<div class="chartArea">
+					
+				</div>
+				<!-- 차트 영역 끝 -->
+				<!-- 금액 영역 -->
+				<div class="priceOuterArea" align="center">
+					<c:set var="room" value="객실"/>	
+					<c:set var="rent" value="대실"/>
+					<c:set var="total" value="총 지불액"></c:set>
+					<c:set var="roomprice" value="800000"></c:set>
+					<c:set var="rentprice" value="200000"></c:set>
+					<c:set var="totalprice" value="${ roomprice + rentprice }"></c:set>
+					<div class="priceArea">
+						<div style="float: left;">
+							<label>${ room }</label>
+						</div>
+						<div style="float: right;">
+							<label>${ roomprice }</label>
+						</div>
+						<br><br>
+						<div style="float: left;">
+							<label>${ rent }</label>
+						</div>
+						<div style="float: right;">
+							<label>${ rentprice }</label>
+						</div>
+						<br><br><br><br>
+						<div style="float: left;">
+							<label style="font-weight: bold;">${ total }</label>
+						</div>
+						<div style="float: right;">
+							<label style="font-weight: bold;">${ totalprice }</label>
+						</div>
+					</div>
+				</div>
+				<!-- 금액 영역 끝 -->
+				<br><br>
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 지불 (고객)</label>
+				<!-- 검색 영역 -->
+				<div class="filterArea">
+					<label>기준 : 원</label>
+					<input type="text" id="datepicker2">
+					<button><</button>
+					<button>></button>
+				</div>
+				<!-- 검색 영역 끝 -->
+				<!-- 차트 영역 -->
+				<div class="chartArea">
+					
+				</div>
+				<!-- 차트 영역 끝 -->
+				<!-- 금액 영역 -->
+				<div class="priceOuterArea" align="center">
+					<div class="priceArea">
+						<div style="float: left;">
+							<label><c:out value="신용카드"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="69,083,116"></c:out></label>
+						</div>
+						<br>
+						<div style="float: left;">
+							<label><c:out value="현금"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="1,100,000"></c:out></label>
+						</div>
+						<br>
+						<div style="float: left;">
+							<label><c:out value="계좌이체"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="1,100,000"></c:out></label>
+						</div>
+						<br>
+						<div style="float: left;">
+							<label><c:out value="후불"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="101,100,000"></c:out></label>
+						</div>
+						<br>
+						<div style="float: left;">
+							<label><c:out value="환불"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="0"></c:out></label>
+						</div>
+						<br><br>
+						<div style="float: left;">
+							<label style="font-weight: bold;"><c:out value="총 지불액"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label style="font-weight: bold;"><c:out value="172,383,116"></c:out></label>
+						</div>
+					</div>
+				</div>
+				<!-- 금액 영역 끝 -->
+			</div>
+			<!-- 좌측 영역 끝 -->
+			<!-- 우측 영역 -->
+			<div class="right">
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 객실 현황</label>
+				
+				<!-- 검색 영역 -->
+				<div class="filterArea">
+					<label>기준 : 원</label>
+					<input type="text" id="datepicker3">
+					<button><</button>
+					<button>></button>
+				</div>
+				<!-- 검색 영역 끝 -->
+				<!-- 차트 영역 -->
+				<div class="chartArea">
+					
+				</div>
+				<!-- 차트 영역 끝 -->
+				<!-- 금액 영역 -->
+				<div style="height: 149px; margin-top: 10px;"></div>
+				<!-- 금액 영역 끝 -->
+				<br><br>
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 지불 (재고)</label>
+				
+				<!-- 검색 영역 -->
+				<div class="filterArea">
+					<label>기준 : 원</label>
+					<input type="text" id="datepicker4">
+					<button><</button>
+					<button>></button>
+				</div>
+				<!-- 검색 영역 끝 -->
+				<!-- 차트 영역 -->
+				<div class="chartArea">
+					
+				</div>
+				<!-- 차트 영역 끝 -->
+				<!-- 금액 영역 -->
+				<div class="priceOuterArea" align="center">
+					<div class="priceArea">
+						<div style="float: left;">
+							<label><c:out value="신용카드"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="69,083,116"></c:out></label>
+						</div>
+						<br>
+						<div style="float: left;">
+							<label><c:out value="현금"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="1,100,000"></c:out></label>
+						</div>
+						<br>
+						<div style="float: left;">
+							<label><c:out value="계좌이체"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="1,100,000"></c:out></label>
+						</div>
+						<br>
+						<div style="float: left;">
+							<label><c:out value="후불"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label><c:out value="101,100,000"></c:out></label>
+						</div>
+						<br><br><br>
+						<div style="float: left;">
+							<label style="font-weight: bold;"><c:out value="환불"></c:out></label>
+						</div>
+						<div style="float: right;">
+							<label style="font-weight: bold;"><c:out value="0"></c:out></label>
+						</div>
+					</div>
+				</div>
+				<!-- 금액 영역 끝 -->
+			</div>
+			<!-- 우측 영역 끝 -->
+		</div>
+			<!-- 월별 영역 -->
+			<div id="monthly" class="monthly">
+			<a name="monthly"></a>
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 월 별 객실 타입 별 매출</label>
+				<!-- 검색 영역 -->
+				<div class="filterArea">
+					<label>기준 : 원</label>
+					<input type="text" id="datepicker5">
+					<button><</button>
+					<button>></button>
+				</div>
+				<!-- 검색 영역 끝 -->
+				<div class="chartArea">
+					
+				</div>
+				<!-- 차트 영역 끝 -->
+			</div>
+			<!-- 월별 영역 끝 -->
 	</section>
 	<footer>
 	</footer>
+	
 	<script>
+		$(".tap-item").click(function(){
+			var Condition = $(this).attr('id');
+			$(this).addClass('active');
+// 			location.href='viewTrendList.hadmin';
+		});
+		
+// 		$("#total").click(function(){
+// 			$(".movetotal").click();
+// 		});
+		
+// 		$("#daily").click(function(){
+// 			$(".movedaily").click();
+// 		});
+// 		$("#monthly").click(function(){
+// 			$(".movemonthly").click();
+// 		});
+		
+		$("#datepicker").datepicker();
+		$("#datepicker2").datepicker();
+		$("#datepicker3").datepicker();
+		$("#datepicker4").datepicker();
+		$("#datepicker5").datepicker();
+		
 		$(function(){
-			var price = $(".price");
-			var sum = 0;
-			for(var i = 0; i < price.length; i++) {
-				sum += price.val();
-			};
-			
-			$(".summary").val(sum);
-			console.log(sum);
+			$(".active").css({"background":"white", "color":"black"});
 		});
 	</script>
 </body>
