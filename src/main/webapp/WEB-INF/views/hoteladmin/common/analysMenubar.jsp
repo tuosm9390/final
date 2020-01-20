@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
 </head>
 <style>
@@ -112,7 +112,8 @@
 		});
 		
 		$(".analys-item").click(function(){
-			location.href='viewDetailList.hadmin';
+			var Condition = $(this).attr('id');
+			location.href='viewDetailList.hadmin?Condition=' + Condition;
 		});
 	</script>
 </body>

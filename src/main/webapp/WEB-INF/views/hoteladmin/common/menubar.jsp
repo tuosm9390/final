@@ -127,6 +127,18 @@
 		position: relative;
 	}
 	.subnav-analys{
+		height:65px;
+		background:lightgray;
+		list-style: none;
+		text-align: center;
+		display:none;
+		position: absolute;
+		top: 100%;
+		left:0%;
+		color:black;
+		font-weight:bold;
+		padding:0;
+		opacity: 1;
 		width: 130px;
 	}
 	section{
@@ -164,7 +176,7 @@
 		<li class="menu tab t5 analys">
 				<img alt="" src="${ contextPath }/resources/images/iconFinance.png"  class="tabimg"><br>
 				<label>판매분석</label>
-				<div class="subnav subnav-analys">
+				<div class="subnav-analys">
 					▲<br>
 					<a href="viewTrendList.hadmin">영업트렌드</a><br>
 					<a href="viewDetailList.hadmin?Condition=sales">매출 및 지불 상세</a>
