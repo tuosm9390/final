@@ -45,7 +45,6 @@
 <body>
 	<header>
 	</header>
-	<section>
 		<div class="imgDiv">
 		<img src="${contextPath }/resources/images/tap1.PNG" width="60px"> 
 		</div>
@@ -62,6 +61,5 @@
 			  
 		</div><!-- end -->
 		<div class="btnx"><button>수정</button>&nbsp;<button>다시작성</button></div> 
-	</section>
 </body>
 </html>

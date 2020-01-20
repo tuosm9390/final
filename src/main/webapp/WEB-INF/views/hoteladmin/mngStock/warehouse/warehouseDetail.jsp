@@ -67,7 +67,6 @@
 <body>
 	<header>
 	</header>
-	<section>
 		
 		<div class="divhr"></div>
 		<div class="bodyDiv">
@@ -99,6 +98,5 @@
 	
 		<div class="divhr"></div>
 		<div class="btn"><button>저장</button>&nbsp;<button>다시작성</button>&nbsp;<button>사용중단/재사용</button></div> 
-	</section>
 </body>
 </html>

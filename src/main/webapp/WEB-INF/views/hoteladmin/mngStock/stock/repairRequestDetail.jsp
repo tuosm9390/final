@@ -69,7 +69,6 @@
 	<header>
 	
 	</header>
-	<section>
 	<div class="hrhr"></div>
 	
 	
@@ -143,7 +142,6 @@
 		<div class="btn"><button>확인</button></div>
 		
 		
-	</section>
 	<footer>
 	</footer>
 	

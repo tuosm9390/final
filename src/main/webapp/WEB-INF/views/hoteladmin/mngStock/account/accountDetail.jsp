@@ -53,7 +53,6 @@
 <body>
 	<header>
 	</header>
-	<section>
 	<div id="topDivv">
 		<div>
 			<input type="text" class="topbar">
@@ -88,7 +87,6 @@
 		</table>
 	</div><!-- end -->
 	<div class="btnss"><button>신규</button>&nbsp;<button>닫기</button></div> 
-	</section>
 	<footer>
 	
 	</footer>

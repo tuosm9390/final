@@ -7,7 +7,7 @@
 <title>MODAL</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
-.modal {
+.modalState {
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -18,22 +18,22 @@
 	z-index: 2;
 }
 
-.modal_content {
+.modal_contentState {
 	position: absolute;
 	left: 50%;
 	top: 45%;
 	transform: translate(-50%, -50%);
-	width: 800px;
-	height:500px;
-	max-height: 500px;
+	width: 1200px;
+	height:630px;
+	max-height: 630px;
 	border: 20px solid white;
 	background-color: white;
 	overflow-y: auto;
 }
 
-.modal_content_real {
-	width:780px;
-	height:450px;
+.modal_content_realState {
+	width:130%;
+	height:100%;
 	/* border:1px solid black; */
 	margin:0 auto;
 	overflow:auto;
@@ -54,12 +54,12 @@ cursor: pointer;
 </style>
 </head>
 <body>
-	<div class="modal">
-		<div class="modal_content">
+	<div class="modalState">
+		<div class="modal_contentState">
 			<h1 style="margin:0 auto;">물품상세</h1>
 			<a class="btn_close">×</a>
 			
-			<div class="modal_content_real">
+			<div class="modal_content_realState">
 				<jsp:include page="../stock/purchaseHisStatement.jsp"/>
 			</div>
 		</div>
@@ -68,7 +68,7 @@ cursor: pointer;
 	<script>
 		$(document).ready(function() {
 			$(".btn_close").click(function() {
-				$(".modal").fadeOut();
+				$(".modalState").fadeOut();
 			});
 		});
 	</script>

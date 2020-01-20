@@ -15,9 +15,7 @@
 	width: 1000px;
 	border-collapse: collapse;
 	}
-	#sbody{
-	margin-left: 17%;
-	}
+	
 	#filter{
 	margin-top:13px;
 	width: 50px;
@@ -62,6 +60,7 @@
 	<jsp:include page="../../common/menubar.jsp"/>
 	<jsp:include page="../../common/productMenubar.jsp"/>
 	 <jsp:include page="../modal/mPurchaseHisDetail.jsp"/> 
+	 <jsp:include page="../modal/mPurchaseHisStatement.jsp"/> 
 	</header>
 	<section id="sbody">
 
@@ -125,6 +124,10 @@
 			$(".modal").fadeIn();
 			console.log(bid);
 		});
+	});
+	
+	$("#mState").click(function(){
+		$(".modalState").fadeIn();
 	});
 	</script>
 </body>

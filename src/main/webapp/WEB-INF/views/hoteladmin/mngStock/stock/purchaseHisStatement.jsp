@@ -10,10 +10,6 @@
 	table{
 	border-collapse: collapse;
 	} 
-	div {
-        width: 50%; 
-        height: 200px;
-    }
     div.left {
         width: 35%;
         float: left;
@@ -31,7 +27,7 @@
     }
     .top-bot{
     	width:70%;
-    	height:270px;
+    	height:230px;
     }
     #ttable{
     height: 90px;
@@ -40,6 +36,7 @@
     }
     .sametb{
     display: inline-block;
+    margin-top: 20px;
     }
     #btable{
     margin-top: 
@@ -62,7 +59,6 @@
 <body> 
 	<header>
 	</header>
-	<section>
 	<div class="left" align="center">
 		<div id="leftDiv"><h1><u>구 매 전 표</u></h1></div>
 	</div>
@@ -136,7 +132,6 @@
 		</tr>
 	</table>
 		<div class="btns"><button>인쇄</button>&nbsp;<button>닫기</button></div>
-	</section>
 	<footer>
 	</footer>
 </body>

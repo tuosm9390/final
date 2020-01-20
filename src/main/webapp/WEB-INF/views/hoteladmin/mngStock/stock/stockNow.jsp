@@ -9,8 +9,7 @@
 <title>Insert title here</title>
 <style> 
 	 .top-div{
-	width: 70.8%;
-	margin-left: 17%; 
+	width:86.3%;
 	height: 100px; 
 	margin-top: -50px;
 	}
@@ -20,6 +19,7 @@
 	margin-top: -50px;
 	display: inline-block; 
 	width: 100px;
+	
 
 	}
 
@@ -37,7 +37,6 @@
 	height: 560px;
 	border-collapse: collapse;
 	border: 1px solid black;
-	margin-left: 17%;
 	}
 	td,th{
 		border: 1px solid lightgray;
@@ -50,11 +49,9 @@
 	#hrDiv{
 	border-bottom: 1px solid black;
 	width: 1000px;
-	margin-left: 17%;
 	margin-top: 20px;
 	}
 	.btns{
-	margin-left: 17%;
 	margin-top: 10px;
 
 	}
@@ -66,11 +63,8 @@
 	border-radius: 10px 10px 0px 0px;
 	border-bottom: none;
 	font-weight: bold;
+	margin-top: 20px;
 
-	}
-	#tclass{
-	margin-left: 20px;
-	
 	}
 	#rclass{
 	background-color: lightgray; 
