@@ -6,11 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- <link rel="stylesheet" href="Nwagon.css" type="text/css"> -->
+<!-- <script src="Nwagon.js"></script> -->
 <style>
 .top-menu{
 	display: inline-flex;
 	position: fixed;
-	width: 100%;
+	z-index: auto;
 	background: white;
 }
 .tap-menu{
@@ -54,25 +56,23 @@
 }
 
 .chartArea{
-	margin-top: 10px;
-	width: 100%;
+	text-align: center;
 	height: 300px;
-	border: 1px solid black;
 }
-
 .priceArea{
 	border: 1px solid black;
 	border-radius: 6px;
 	width: 30%;
 	display: inline-block;
 }
-.priceOuterArea{
-	margin-top: 10px;
-}
 
 .bottom-menu{
 	display: flex;
 	padding-top: 50px;
+}
+
+.Nwagon_column{
+	width: 100%;
 }
 </style>
 </head>
@@ -105,7 +105,7 @@
 				</div>
 				<!-- 검색 영역 끝 -->
 				<!-- 차트 영역 -->
-				<div class="chartArea">
+				<div id="chartArea" class="chartArea">
 					
 				</div>
 				<!-- 차트 영역 끝 -->
@@ -152,7 +152,7 @@
 				</div>
 				<!-- 검색 영역 끝 -->
 				<!-- 차트 영역 -->
-				<div class="chartArea">
+				<div id="chartArea2" class="chartArea">
 					
 				</div>
 				<!-- 차트 영역 끝 -->
@@ -218,12 +218,12 @@
 				</div>
 				<!-- 검색 영역 끝 -->
 				<!-- 차트 영역 -->
-				<div class="chartArea">
+				<div id="chartArea3" class="chartArea">
 					
 				</div>
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
-				<div style="height: 149px; margin-top: 10px;"></div>
+				<div style="height: 150px;"></div>
 				<!-- 금액 영역 끝 -->
 				<br><br>
 				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 지불 (재고)</label>
@@ -237,7 +237,7 @@
 				</div>
 				<!-- 검색 영역 끝 -->
 				<!-- 차트 영역 -->
-				<div class="chartArea">
+				<div id="chartArea4" class="chartArea">
 					
 				</div>
 				<!-- 차트 영역 끝 -->
@@ -245,28 +245,28 @@
 				<div class="priceOuterArea" align="center">
 					<div class="priceArea">
 						<div style="float: left;">
-							<label><c:out value="신용카드"></c:out></label>
+							<label><c:out value="수리"></c:out></label>
 						</div>
 						<div style="float: right;">
 							<label><c:out value="69,083,116"></c:out></label>
 						</div>
 						<br>
 						<div style="float: left;">
-							<label><c:out value="현금"></c:out></label>
+							<label><c:out value="비품구입"></c:out></label>
 						</div>
 						<div style="float: right;">
 							<label><c:out value="1,100,000"></c:out></label>
 						</div>
 						<br>
 						<div style="float: left;">
-							<label><c:out value="계좌이체"></c:out></label>
+							<label><c:out value="소모품구입"></c:out></label>
 						</div>
 						<div style="float: right;">
 							<label><c:out value="1,100,000"></c:out></label>
 						</div>
 						<br>
 						<div style="float: left;">
-							<label><c:out value="후불"></c:out></label>
+							<label><c:out value="기타"></c:out></label>
 						</div>
 						<div style="float: right;">
 							<label><c:out value="101,100,000"></c:out></label>
@@ -296,7 +296,7 @@
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
-				<div class="chartArea">
+				<div id="chartArea5" align="center" class="chartArea">
 					
 				</div>
 				<!-- 차트 영역 끝 -->
@@ -330,6 +330,85 @@
 		$("#datepicker4").datepicker();
 		$("#datepicker5").datepicker();
 		
+		var chart1 = {
+			'legend': {
+				names: ['객실','대실'],
+			},
+			'dataset': {
+				title: 'Playing time per day',
+				values: [${ roomprice }, ${ rentprice }],
+				colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
+			},
+			'chartDiv': 'chartArea',
+			'chartType': 'column',
+			'chartSize': { width: 600, height: 300 },
+			'maxValue': 800000,
+			'increment': 100000
+		};
+		Nwagon.chart(chart1);
+				
+		var chart2 = {
+				'dataset':{
+					title: 'Web accessibility status',
+					values:[69083116, 1100000, 1100000, 101100000],
+					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+					fields: ['신용카드', '현금', '계좌이체', '후불', '환불'],
+				},
+				'donut_width' : 50,
+				'core_circle_radius':70,
+				'chartDiv': 'chartArea2',
+				'chartType': 'donut',
+				'chartSize': {width:700, height:400}
+			};
+			Nwagon.chart(chart2);
+			
+		var chart3 = {
+				'dataset':{
+					title: 'Web accessibility status',
+					values:[25, 3],
+					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+					fields: ['대실', '투숙'],
+				},
+				'donut_width' : 50,
+				'core_circle_radius':70,
+				'chartDiv': 'chartArea3',
+				'chartType': 'donut',
+				'chartSize': {width:700, height:400}
+			};
+			Nwagon.chart(chart3);
+		
+		var chart4 = {
+				'dataset':{
+					title: 'Web accessibility status',
+					values:[69083116, 1100000, 1100000, 101100000],
+					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+					fields: ['수리', '비품구입', '소모품구입', '기타'],
+				},
+				'donut_width' : 50,
+				'core_circle_radius':70,
+				'chartDiv': 'chartArea4',
+				'chartType': 'donut',
+				'chartSize': {width:700, height:400}
+			};
+			Nwagon.chart(chart4);
+		
+		var chart5 = {
+				'legend': {
+					names: ['스위트더블', '스위트 패밀리', '디럭스 트윈', '디럭스 더블', '스탠다드'],
+				},
+				'dataset': {
+					title: 'Playing time per day',
+					values: [1840000, 0, 200000, 240000, 80000],
+					colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
+				},
+				'chartDiv': 'chartArea5',
+				'chartType': 'column',
+				'chartSize': { width: 1200, height: 300 },
+				'maxValue': 2000000,
+				'increment': 200000
+			};
+			Nwagon.chart(chart5);
+			
 		$(function(){
 			$(".active").css({"background":"white", "color":"black"});
 		});

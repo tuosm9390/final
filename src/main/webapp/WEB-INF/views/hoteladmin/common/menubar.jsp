@@ -5,6 +5,8 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="${ contextPath }/resources/css/Nwagon.css" type="text/css">
+<script src="${ contextPath }/resources/js/Nwagon.js"></script>
 <!-- 데이트피커 -->
 <link href="${ contextPath }/resources/css/datepicker.min.css" rel="stylesheet" type="text/css">
 <script src="${ contextPath }/resources/js/datepicker.min.js"></script>
@@ -34,7 +36,7 @@
 		width:200px;
 		height:50px;
 		padding-bottom:18px;
-		padding-left:5px;
+/* 		padding-left:5px; */
 	}
 	.tabimg{
 		margin-top:10px;

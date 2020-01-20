@@ -104,7 +104,7 @@ cursor: pointer;
 				</div>
 			</div>
 			<div class="modal-btn" align="right">
-				<button>취소</button>
+				<button onclick="cancel();">취소</button>
 				<button onclick="goReservationResult();">확인</button>
 			</div>
 		</div>
@@ -116,6 +116,10 @@ cursor: pointer;
 				$(".modal").fadeOut();
 			});
 		});
+		
+		function cancel(){
+			$(".modal").fadeOut();
+		};
 		
 		function goReservationResult(){
 			location.href='ReservationCheck.hmain';

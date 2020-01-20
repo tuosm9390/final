@@ -76,7 +76,7 @@ cursor: pointer;
 				</div>
 			</div>
 			<div class="modal-btn" align="right">
-				<button>취소</button>
+				<button onclick="cancel()">취소</button>
 				<button onclick="goQnADetail();">확인</button>
 			</div>
 		</div>
@@ -88,6 +88,10 @@ cursor: pointer;
 				$(".qna-modal").fadeOut();
 			});
 		});
+		
+		function cancel(){
+			$(".qna-modal").fadeOut();
+		};
 		
 		function goQnADetail(){
 			location.href='qnadetail.hmain';

@@ -114,7 +114,7 @@ textarea{
 				</table>
 				<!-- 내용 영역 끝 -->
 				<br>
-				<button style="float: right; width: 80px; margin-left: 20px; margin-right: 95px;" onclick="location.href=''">완료</button>
+				<button style="float: right; width: 80px; margin-left: 20px; margin-right: 95px;" onclick="complete();">완료</button>
 				<button style="float: right; width: 80px;"onclick="location.href='goQnA.hmain'">취소</button>
 			</div>
 			<!-- 오른쪽 내용 영역 끝 -->
@@ -133,6 +133,11 @@ textarea{
 				$(".password").attr("disabled", true);
 			};
 		});
+		
+		function complete(){
+			window.alert("작성이 완료되었습니다.");
+			location.href='goQnA.hmain';
+		};
 	</script>
 </body>
 </html>

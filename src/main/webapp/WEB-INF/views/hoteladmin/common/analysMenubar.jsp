@@ -93,9 +93,6 @@
 	height: auto;
 	background: white;
 }
-section{
-		padding-left:280px;
-	}
 </style>
 <body>
 	<div class="analysMenubarArea">
