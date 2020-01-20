@@ -63,7 +63,6 @@
 <body>
 	<header>
 	</header>
-	<section>
 		
 		<div class="divhr"></div>
 		<div class="bodyDiv">
@@ -74,6 +73,5 @@
 		</div><!-- end -->
 		<div class="divhr"></div>
 		<div class="btnss"><button>등록</button>&nbsp;<button>다시작성</button></div> 
-	</section>
 </body>
 </html>

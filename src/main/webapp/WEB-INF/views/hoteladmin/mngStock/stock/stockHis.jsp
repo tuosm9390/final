@@ -15,9 +15,6 @@
 	width: 1000px;
 	border-collapse: collapse;
 	}
-	#sbody{
-	margin-left: 17%;
-	}
 	#filter{
 	margin-top:13px;
 	width: 50px;

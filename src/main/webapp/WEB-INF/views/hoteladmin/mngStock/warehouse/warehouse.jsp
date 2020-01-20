@@ -10,7 +10,6 @@
 <style> 
 	 .top-div{
 	width: 63.7%;
-	margin-left: 17%; 
 	height: 100px; 
 	margin-top: -50px;
 	}
@@ -39,7 +38,6 @@
 	height: 460px;
 	border-collapse: collapse;
 	border: 1px solid black;
-	margin-left: 17%;
 	margin-top: -22px;
 	}
 	td,th{
@@ -53,11 +51,9 @@
 	#hrDiv{
 	border-bottom: 1px solid black;
 	width: 700px;
-	margin-left: 17%;
 	margin-top: 20px;
 	}
 	.btns{
-	margin-left: 17%;
 	margin-top: 10px;
 
 	}

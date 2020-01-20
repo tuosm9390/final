@@ -20,7 +20,7 @@ public class HotelAdminController {
 	@GetMapping("goMateriel.hadmin")
 	public String showMateriel() {
 		
-		return "hoteladmin/stockMng/MaterielMng";
+		return "hoteladmin/mngStock/stock/stockNow";
 		
 	}
 

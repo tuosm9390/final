@@ -64,7 +64,6 @@
 </head>
 <body>
 	
-	<section>
 	<div class="hrodiv"></div>
 		<div class="top-divv">
 		<div id="day" class="same">
@@ -130,10 +129,9 @@
 			</tr>
 		</table>
 		<div class="hrodiv" id="hrodiv2"></div>
-		<div class="btns"><button>전표</button>&nbsp;<button>다시작성</button></div>
+		<div class="btns"><button id="mState">전표</button>&nbsp;<button>다시작성</button></div>
 		
 		
-	</section>
 	<footer>
 	</footer>
 	

@@ -48,7 +48,9 @@
 	#hdivv{
 	margin-bottom: 20px;
 	}
-	
+	section{
+	padding-left: none !important;
+	}
 </style>
 </head>
 <body>
@@ -60,7 +62,6 @@
 		
 	
 	</header>
-	<section>
 	<div class="hrDivv" id="hdivv"></div> 
 		<div>
 			<table id="stockTbb">  
@@ -103,7 +104,6 @@
 	 
 	
 	
-	</section>
 	
 	<script>
 	

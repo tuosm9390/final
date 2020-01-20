@@ -10,17 +10,12 @@
 
  .top-div{
 
-	width: 70.2%; 
-	margin-left: 17%;
+	width: 84.3%; 
 	height: 100px; 
 	}
 	#Table{
 	width: 1100px;
 	border-collapse: collapse;
-	margin-left: 17%;
-	}
-	#sbody{
-	margin-left: 17%;
 	}
 	  
 	 
@@ -38,11 +33,7 @@
 	}
 	.searchCondition{
 	float: right;
-	margin-top: -50px;
 	
-	}
-	.btns{
-	margin-left: 17%;
 	}
 	.selectbar{
 	float:right;
@@ -62,12 +53,13 @@
 	<section>
 		<div class="top-div">
 		<h1>거래처관리</h1>
+		<button class="searchCondition">검색</button>
+		<input type="text" name="serachCondition" class="searchCondition" id="searchId">
 		<select class="selectbar">
 			<option>이체정보</option>
 			<option>사용구분</option>
 		</select>
-		<input type="text" name="serachCondition" class="searchCondition" id="searchId">
-		&nbsp;<button class="searchCondition">검색</button>
+		
 		</div><!-- top div end -->
 		<table id="Table">
 			<tr>
@@ -101,6 +93,7 @@
 	<footer>
 	
 	</footer>
+	
 	<script>
 	$(function(){
 		$("#Table").find("td").mouseenter(function(){
