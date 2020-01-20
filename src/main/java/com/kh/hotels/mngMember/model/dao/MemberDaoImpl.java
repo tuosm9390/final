@@ -44,4 +44,10 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.insert("Member.insertStaff", m);
 	}
 
+	@Override
+	public int updateMemberPwd(SqlSessionTemplate sqlSession, Member m) {
+
+		return sqlSession.update("Member.updateMemberPwd", m);
+	}
+
 }

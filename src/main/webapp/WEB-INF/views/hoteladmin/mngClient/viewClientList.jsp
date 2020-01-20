@@ -31,7 +31,7 @@
 }
 
 .clientList {
-	margin-left: 20px;
+
 	margin-top: 10px;
 	width: 1000px;
 	height: 520px;
@@ -69,6 +69,7 @@
 		<jsp:include page="modalInsertClient.jsp"></jsp:include>
 	</header>
 	<section>
+
 		<h1 style="margin-left: 10px; margin-bottom:0px;">고객관리</h1>
 		<hr style="width:100px; margin-right:1195px;"> 
 		

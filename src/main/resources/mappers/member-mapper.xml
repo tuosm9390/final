@@ -18,7 +18,7 @@
 		<result property="userPwd" column="STF_PWD"/>
 		<result property="authNo" column="AUTH_NO"/>
 		<result property="deptNo" column="DEPT_NO"/>
-		<result property="emailYN" column="EMAIL_STATUS"/>
+		<result property="pwdStatus" column="PWD_STATUS"/>
 	
 	</resultMap>
 
@@ -55,6 +55,12 @@
 		SELECT *
 		FROM MEMBER M 
 		JOIN STAFF S ON(M.MNO = S.MNO)
+	</select>
+	
+	<select id="updateMemberPwd" parameterType="Member">
+		UPDATE STAFF
+		SET STF_PWD = #{userPwd}, PWD_STATUS = 'Y'
+		WHERE MNO = #{mno}
 	</select>
 </mapper>
 

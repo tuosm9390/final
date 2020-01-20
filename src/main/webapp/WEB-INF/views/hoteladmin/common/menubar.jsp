@@ -196,7 +196,7 @@
 				<label>관리</label>
 		</li>
 		<li class="menu userArea">
-			<div class="menu userArea rightArea">로그아웃</div>
+			<div class="menu userArea rightArea" onclick="location.href='logout.me'">로그아웃</div>
 			<div class="menu userArea midArea">
 				<label class="userName">전세환<br>(총지배인)</label>
 			</div>
