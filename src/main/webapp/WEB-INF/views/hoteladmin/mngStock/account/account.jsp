@@ -26,7 +26,12 @@
 	 
 	td,th{
 	text-align: center;
-	border: 1px solid black;
+	border: 1px solid lightgray;
+	text-align: center;
+	}
+	th{
+	background-color: #f7f7f7;
+	color: #005B9E;
 	}
 	tr{
 	border: 1px solid black;
@@ -34,6 +39,7 @@
 	.searchCondition{
 	float: right;
 	margin-top: -50px;
+	
 	}
 	.btns{
 	margin-left: 17%;
@@ -41,23 +47,28 @@
 	.selectbar{
 	float:right;
 	}
+	#searchId{
+		
+	}
 </style>
 </head>
 <body>
+	<header>	
 		<jsp:include page="../../common/menubar.jsp"/>
 		<jsp:include page="../../common/productMenubar.jsp"/>
-	<header>	
+		 <jsp:include page="../modal/mAccountDetail.jsp"/> 
+		 <jsp:include page="../modal/mAccountEnroll.jsp"/> 
+	</header>
+	<section>
 		<div class="top-div">
 		<h1>거래처관리</h1>
 		<select class="selectbar">
 			<option>이체정보</option>
 			<option>사용구분</option>
 		</select>
-		<input type="text" name="serachCondition" class="searchCondition">
+		<input type="text" name="serachCondition" class="searchCondition" id="searchId">
 		&nbsp;<button class="searchCondition">검색</button>
 		</div><!-- top div end -->
-	</header>
-	<section>
 		<table id="Table">
 			<tr>
 				<th>No</th>
@@ -84,11 +95,28 @@
 			</tr>  
 			</c:forEach>
 		</table>
-			<div class="btns"><button>신규</button>&nbsp;<button>사용중단/재사용</button></div>
+			<div class="btns"><button id="new">신규</button>&nbsp;<button>사용중단/재사용</button></div>
 	</section>
 	
 	<footer>
 	
 	</footer>
+	<script>
+	$(function(){
+		$("#Table").find("td").mouseenter(function(){
+			$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
+		}).mouseout(function(){
+			$(this).parent("tr").css({"background":"white"});
+		}).click(function(){
+			var bid = $(this).parent().children("td").eq(1).text();
+			$(".modal").fadeIn();
+			console.log(bid);
+		});
+	});
+	
+	$("#new").click(function(){
+		$(".modalEnroll").fadeIn();
+	})
+	</script>
 </body>
 </html>

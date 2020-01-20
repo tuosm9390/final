@@ -50,14 +50,19 @@
     #resultTable{
     width:70%;
     }
-     th,td {
-    border: 1px solid black;
-    
-    }
+  	td,th{
+		border: 1px solid lightgray;
+		text-align: center;
+	}
+	th{
+	background-color: #f7f7f7;
+	}
 </style>
 </head>
 <body> 
 	<header>
+	</header>
+	<section>
 	<div class="left" align="center">
 		<div id="leftDiv"><h1><u>구 매 전 표</u></h1></div>
 	</div>
@@ -98,8 +103,6 @@
 			</tr>
 		</table>
 	</div>
-	</header>
-	<section>
 	<table id="bodyTable">
 		<tr>
 			<th>일자</th>
