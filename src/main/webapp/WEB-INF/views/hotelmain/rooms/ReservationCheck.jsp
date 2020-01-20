@@ -65,6 +65,7 @@
 <body>
 	<header>
 		<jsp:include page="../common/menubar.jsp" />
+		<jsp:include page="../common/reservationCancelModalForm.jsp"></jsp:include>
 	</header>
 	<section>
 		<div class="site-outer-box">
@@ -167,5 +168,10 @@
 	</section>
 	<footer>
 	</footer>
+	<script>
+		$(".reservation-cancel").click(function() {
+			$(".reservation-check-modal").fadeIn();
+		});
+	</script>
 </body>
 </html>

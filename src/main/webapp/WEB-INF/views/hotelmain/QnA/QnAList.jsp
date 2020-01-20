@@ -73,6 +73,7 @@
 	<c:set var="listCount" value="5"></c:set>
 	<header>
 		<jsp:include page="../common/menubar.jsp" />
+		<jsp:include page="../common/qnaModalForm.jsp"></jsp:include>
 	</header>
 	<section>
 		<!-- 내용 영역 -->
@@ -105,10 +106,11 @@
 				<!-- 문의 리스트 영역 -->
 				<div class="qnalist">
 					<br>
+					<c:set var="status" value="Y"></c:set>
 					<c:forEach var="i" begin="1" end="${ listCount }">
 						<div class="qnalist-item">
 							<label class="title">타이틀</label><br>
-							<input type="hidden" value="" name="">
+							<input type="hidden" id="status" value="${ status }" name="">
 							<label>작성자명</label>
 							<label>날짜</label>
 							<label>분류</label>
@@ -138,7 +140,11 @@
 		}).mouseout(function(){
 			$(this).css({"background":"none"});
 		}).click(function(){
-			location.href='qnadetail.hmain';
+			if($(this).children("#status").val() == "Y"){
+				$(".qna-modal").fadeIn();
+			} else {
+				location.href='qnadetail.hmain';
+			}
 		});
 	</script>
 </body>
