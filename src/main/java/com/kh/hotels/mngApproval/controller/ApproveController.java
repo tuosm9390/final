@@ -12,16 +12,27 @@ public class ApproveController {
 		
 		return "hoteladmin/mngApprove/allApprove";
 	}
+	@RequestMapping("joinDocumentApproval.ap")
+	public String goJoinApproval() {
+		
+		return "hoteladmin/mngApprove/partiApprove";
+	}
+	
+	
+	@RequestMapping("writeApprove.ap")
+	public String gowrite() {
+		return "hoteladmin/mngApprove/writeApprove/writePurchaseApprove";
+	}
 	@RequestMapping("writePurchaseApprove.ap")
 	public String goWrite() {
 		return "hoteladmin/mngApprove/writeApprove/writePurchaseApprove";
 	}
-	@RequestMapping("writeFixApprove")
+	@RequestMapping("writeFixApprove.ap")
 	public String goWriteFixApprove() {
 		
 		return "hoteladmin/mngApprove/writeApprove/writeFixApprove";
 	}
-	@RequestMapping("writeOrderApprove")
+	@RequestMapping("writeOrderApprove.ap")
 	public String goWriteOrderApprove() {
 		
 		return "hoteladmin/mngApprove/writeApprove/writeOrderApprove";

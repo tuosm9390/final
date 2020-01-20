@@ -37,10 +37,31 @@
 	margin-bottom: 200px;
 }
 
-.tbl_wrap .tbl tr:not (:last-child ) {
-	border-bottom: 1px solid #aaa;
-}
+.tbl_wrap
+ 
+.tbl
+ 
+tr
+:not
+ 
+(
+:last-child
+ 
+)
+{
+border-bottom
+:
+ 
+1
+px
+ 
+solid
+ 
+#aaa
+;
 
+
+}
 .tbl_wrap .tbl th {
 	padding: 10px 0;
 	font-color: #5C95BF;
@@ -76,12 +97,15 @@
 
 </head>
 <body>
-	 <jsp:include page="../common/menubar.jsp" />
+	<header>
+		<jsp:include page="../common/menubar.jsp" />
+	</header>
+	<jsp:include page="approveModal/purchaseApproveModal.jsp"/>
 	<c:set var="contextPath"
 		value="${pageContext.servletContext.contextPath }" scope="application" />
 
 	<div class="approval">
-		<h2>결제함</h2>
+		<h2>결재함</h2>
 
 		<div class="category">
 
@@ -97,10 +121,10 @@
 		</div>
 
 
-		
-		
-		
-		
+
+
+
+
 		<hr>
 		<div class="tbl_wrap">
 			<table class="tbl">
@@ -230,15 +254,21 @@
 
 
 	</div>
-	
-	 <script>
-	
-		
-	
-		
-		
-		
-	</script> 
+
+	<script>
+		$(".tbl_tit").mouseenter(function() {
+			$(this).css({
+				"background" : "lightgray",
+				"cursor" : "pointer"
+			})
+		}).mouseout(function() {
+			$(this).css({
+				"background" : "white"
+			})
+		}).click(function() {
+			$(".modal").fadeIn();
+		});
+	</script>
 
 </body>
 </html>

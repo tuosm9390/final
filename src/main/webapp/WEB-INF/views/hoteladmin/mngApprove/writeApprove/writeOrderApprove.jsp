@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -17,10 +17,7 @@
 	height: auto;
 	margin-left: auto;
 	margin-right: auto;
-	layout:fixed;
-}
-
-.empty {
+	layout:fixed;  
 	margin-top: 30px;
 	width: 100%;
 	height: 40px;
@@ -116,6 +113,9 @@ a {
 	border:1px solid lightgray;
 	background:#F7F7F7;
 }
+.ui.compact.selection.dropdown {
+	margin-top:30px !important;
+}
 
 
 
@@ -192,7 +192,7 @@ a {
 						<td rowspan="2" colspan="2"></td>
 					</tr>
 					<tr>
-						<td>기안부서</td>
+						<td>기안자</td>
 						<td>
 							<div class="ui input">
 								<input type="text">
@@ -201,7 +201,7 @@ a {
 
 					</tr>
 					<tr>
-						<td>기안자</td>
+						<td>기안일</td>
 						<td>
 							<div class="ui input">
 								<input type="text">
