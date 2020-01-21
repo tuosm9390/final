@@ -24,6 +24,7 @@
 		margin-left:-8px;
 		margin-top:-8px;
 		position: fixed;
+		z-index: 15;
 	}
 	.menu{
 		display:inline-block;
@@ -97,7 +98,7 @@
 		display:none;
 		position: absolute;
 		top: 100%;
-		left:0%;
+		left:-30%;
 		color:black;
 		font-weight:bold;
 		padding:0;
@@ -112,7 +113,7 @@
 		display:none;
 		position: absolute;
 		top: 100%;
-		left:0%;
+		left:-30%;
 		color:black;
 		font-weight:bold;
 		padding:0;
@@ -136,7 +137,7 @@
 		display:none;
 		position: absolute;
 		top: 100%;
-		left:0%;
+		left:-50%;
 		color:black;
 		font-weight:bold;
 		padding:0;
@@ -212,7 +213,7 @@
 	$(function(){
 		$(".reservation").click(function(){
 			$(this).parents().children().find(".subnav").slideDown('normal').show();
-			$(this).parent().hover(function(){
+			$(this).hover(function(){
 				
 			},function(){
 				$(this).parent().find(".subnav").slideUp('fast');
@@ -220,7 +221,7 @@
 		});
 		$(".contract").click(function(){
 			$(this).parents().children().find(".subnav2").slideDown('normal').show();
-			$(this).parent().hover(function(){
+			$(this).hover(function(){
 				
 			},function(){
 				$(this).parent().find(".subnav2").slideUp('fast');
@@ -228,7 +229,7 @@
 		});
 		$(".analys").click(function(){
 			$(this).parents().children().find(".subnav-analys").slideDown('normal').show();
-			$(this).parent().hover(function(){
+			$(this).hover(function(){
 				
 			},function(){
 				$(this).parent().find(".subnav-analys").slideUp('fast');

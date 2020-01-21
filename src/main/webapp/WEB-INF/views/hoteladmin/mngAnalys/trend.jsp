@@ -6,8 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- <link rel="stylesheet" href="Nwagon.css" type="text/css"> -->
-<!-- <script src="Nwagon.js"></script> -->
 <style>
 .top-menu{
 	display: inline-flex;
@@ -84,16 +82,15 @@
 		<div class="top-menu">
 			<label style="margin-top: 5px; font-weight: bold; font-size: 24px; text-decoration: underline;">영업 트렌드</label>
 			<div class="tap-menu">
-				<div id="total" class="tap-item ${ Condition eq 'total' ? 'active' : '' }">전체</div>
-				<div id="daily" class="tap-item ${ Condition eq 'daily' ? 'active' : '' }">일별</div>
-				<div id="monthly" class="tap-item ${ Condition eq 'monthly' ? 'active' : '' }">월별</div>
+				<div id="total" class="tap-item ${ Condition eq 'total' ? 'active' : '' }" onclick="moveTop();">전체</div>
+				<div id="daily" class="tap-item ${ Condition eq 'daily' ? 'active' : '' }" onclick="fnMove('2');">일별</div>
+				<div id="monthly" class="tap-item ${ Condition eq 'monthly' ? 'active' : '' }" onclick="fnMove('3');">월별</div>
 			</div>
 		</div>
 		<div class="bottom-menu">
 			<!-- 전체 / 일별 -->
 			<!-- 좌측 영역 -->
 			<div id="total" class="left">
-				<a name="daily"></a>
 				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 매출</label>
 				
 				<!-- 검색 영역 -->
@@ -141,7 +138,8 @@
 					</div>
 				</div>
 				<!-- 금액 영역 끝 -->
-				<br><br>
+				<div class="div2"></div>
+				<br><br><br><br><br><br><br><br><br><br>
 				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 지불 (고객)</label>
 				<!-- 검색 영역 -->
 				<div class="filterArea">
@@ -225,7 +223,7 @@
 				<!-- 금액 영역 -->
 				<div style="height: 150px;"></div>
 				<!-- 금액 영역 끝 -->
-				<br><br>
+				<br><br><br><br><br><br><br><br><br><br>
 				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 지불 (재고)</label>
 				
 				<!-- 검색 영역 -->
@@ -284,24 +282,25 @@
 			</div>
 			<!-- 우측 영역 끝 -->
 		</div>
-			<!-- 월별 영역 -->
-			<div id="monthly" class="monthly">
-			<a name="monthly"></a>
-				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 월 별 객실 타입 별 매출</label>
-				<!-- 검색 영역 -->
-				<div class="filterArea">
-					<label>기준 : 원</label>
-					<input type="text" id="datepicker5">
-					<button><</button>
-					<button>></button>
-				</div>
-				<!-- 검색 영역 끝 -->
-				<div id="chartArea5" align="center" class="chartArea">
-					
-				</div>
-				<!-- 차트 영역 끝 -->
+		<!-- 전체/일별 영역 끝 -->
+		<br><br><br><br><br><br><br><br><br><br>
+		<!-- 월별 영역 -->
+		<div id="monthly" class="monthly div3">
+			<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 월 별 객실 타입 별 매출</label>
+			<!-- 검색 영역 -->
+			<div class="filterArea">
+				<label>기준 : 원</label>
+				<input type="text" id="datepicker5">
+				<button><</button>
+				<button>></button>
 			</div>
-			<!-- 월별 영역 끝 -->
+			<!-- 검색 영역 끝 -->
+			<div id="chartArea5" align="center" class="chartArea">
+				
+			</div>
+			<!-- 차트 영역 끝 -->
+		</div>
+		<!-- 월별 영역 끝 -->
 	</section>
 	<footer>
 	</footer>
@@ -310,7 +309,9 @@
 		$(".tap-item").click(function(){
 			var Condition = $(this).attr('id');
 			$(this).addClass('active');
-// 			location.href='viewTrendList.hadmin';
+			$(this).css({"background":"white", "color":"black"});
+			$(this).nextAll().css({"background":"black", "color":"white"});
+			$(this).prevAll().css({"background":"black", "color":"white"});
 		});
 		
 // 		$("#total").click(function(){
@@ -409,9 +410,14 @@
 			};
 			Nwagon.chart(chart5);
 			
-		$(function(){
-			$(".active").css({"background":"white", "color":"black"});
-		});
+		function fnMove(seq){
+	        var offset = $(".div" + seq).offset();
+	        $('html, section').animate({scrollTop : offset.top}, 400);
+	    };
+	    
+	    function moveTop(){
+	    	$('html, body').animate({scrollTop: '0'}, 400);
+	    };
 	</script>
 </body>
 </html>

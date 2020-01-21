@@ -140,8 +140,8 @@
 							<td colspan="4"><li> 숙박일정</li></td>
 							<td colspan="2" rowspan="2">
 								<ul class="reservation-price">
-									<li>총 숙박 일수 : 박</li>
-									<li>객실요금 : 원</li>
+									<li>총 숙박 일수 : ${ CheckIn }박</li>
+									<li>객실요금 : ${ CheckOut }원</li>
 									<li>봉사료 : 원</li>
 									<li>요금 합계 : 원</li>
 								</ul>
@@ -314,11 +314,27 @@
 	<footer></footer>
 	<script>
 		$(function() {
-			var date = new Date();
+			var date = new Date(${CheckIn});
 			$("#checkIn").datepicker({
-				moveToOtherMonthsOnSelect: false,
-			});
-			$("#checkOut").datepicker();
+				onSelect : function(date) {
+					//종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
+					endNum = date;
+					$("#checkOut").datepicker({
+						minDate : new Date(endNum),
+					});
+				}
+			}).data('datepicker');
+			
+			checkOut = $("#checkOut").datepicker({
+				//선택한 날짜를 가져옴
+				onSelect : function(date) {
+					startNum = date;
+					$('#checkIn').datepicker({
+						//시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+						maxDate : new Date(startNum),
+					});
+				}
+			}).data('datepicker');
 		});
 		
 		$(".reservation-cancel").click(function(){

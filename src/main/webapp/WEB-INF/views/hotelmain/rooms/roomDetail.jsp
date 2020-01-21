@@ -299,8 +299,6 @@ input[type=text] {
 	
 	<script>
 		//datepicker
-		
-		
 		$(function() {
 			date = new Date();
 
@@ -308,11 +306,12 @@ input[type=text] {
 				autoClose : true,
 				//선택한 날짜를 가져옴
 				onSelect : function(date) {
-					endNum = date;
+					startNum = date;
 					//종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
 					$("#checkOut").datepicker({
-						minDate : new Date(endNum),
+						minDate : new Date(startNum),
 					});
+					console.log("startNum : " + startNum);
 				}
 			}).data('datepicker');
 
@@ -320,17 +319,19 @@ input[type=text] {
 				autoClose : true,
 				//선택한 날짜를 가져옴
 				onSelect : function(date) {
-					startNum = date;
+					endNum = date;
 					$('#checkIn').datepicker({
 						//시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
-						maxDate : new Date(startNum),
+						maxDate : new Date(endNum),
 					});
+					console.log("endNum : " + endNum);
+					console.log(typeof(endNum));
 				}
 			}).data('datepicker');
 		});
 
 		$("#reservation-btn").click(function() {
-			location.href = "reservation.hmain";
+			location.href = "reservation.hmain?CheckOut=" + endNum + "&CheckIn=" + startNum;
 		});
 	</script>
 </body>
