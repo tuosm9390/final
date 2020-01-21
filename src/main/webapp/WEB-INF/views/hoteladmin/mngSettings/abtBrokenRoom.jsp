@@ -52,45 +52,49 @@
 </style>
 </head>
 <body>
-<jsp:include page="modal/brokenModal.jsp"/>
-<jsp:include page="../common/menubar.jsp"/>
-<div class="mainArea">
+<header>
+	<jsp:include page="modal/brokenModal.jsp"/>
 	<jsp:include page="../common/settingMenubar.jsp"/>
-	<div class="rightAreaRoom">
-		<div class="brokenRoomDate">
-			<h4>고장기간</h4>
-			<table>
-				<tr>
-					<td width="50%"></td>
-					<td><input type="text" id="brokenStart" name="brokenStart"></td>
-				</tr>
-			</table>
-			~
-			<table>
-				<tr>
-					<td width="50%"></td>
-					<td><input type="text" id="brokenEnd" name="brokenEnd"></td>
-				</tr>
-			</table>
-			<div class="brokenBtnGroup">
-				<button class="brokenBtn">조회</button>
-				<button class="brokenBtn" onclick="openBrokenModal();">고장등록</button>
-				<button class="brokenBtn">고장해지</button>
+	<jsp:include page="../common/menubar.jsp"/>
+</header>
+<section>
+	<div class="mainArea">
+		<div class="rightAreaRoom">
+			<div class="brokenRoomDate">
+				<h4>고장기간</h4>
+				<table>
+					<tr>
+						<td width="50%"></td>
+						<td><input type="text" id="brokenStart" name="brokenStart"></td>
+					</tr>
+				</table>
+				~
+				<table>
+					<tr>
+						<td width="50%"></td>
+						<td><input type="text" id="brokenEnd" name="brokenEnd"></td>
+					</tr>
+				</table>
+				<div class="brokenBtnGroup">
+					<button class="brokenBtn">조회</button>
+					<button class="brokenBtn" onclick="openBrokenModal();">고장등록</button>
+					<button class="brokenBtn">고장해지</button>
+				</div>
+			</div>
+			<div class="brokenTableArea">
+				<table border="1" class="brokenRoomTable" style="border-collapse: collapse;">
+					<tr class="thArea">
+						<th width="5%"><input type="checkbox"></th>
+						<th width="20%">객실 번호</th>
+						<th width="20%">시작 일자</th>
+						<th width="20%">종료 일자</th>
+						<th width="35%">고장 사유</th>
+					</tr>
+				</table>
 			</div>
 		</div>
-		<div class="brokenTableArea">
-			<table border="1" class="brokenRoomTable" style="border-collapse: collapse;">
-				<tr class="thArea">
-					<th width="5%"><input type="checkbox"></th>
-					<th width="20%">객실 번호</th>
-					<th width="20%">시작 일자</th>
-					<th width="20%">종료 일자</th>
-					<th width="35%">고장 사유</th>
-				</tr>
-			</table>
-		</div>
 	</div>
-</div>
+</section>
 <script type="text/javascript">
 	//datepicker
 	$(function() {

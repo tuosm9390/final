@@ -8,6 +8,7 @@
 </head>
 <style>
 	.settingMenubarArea{
+		margin-top:100px;
 		position : fixed;
 		width:250px;
 		height:800px;

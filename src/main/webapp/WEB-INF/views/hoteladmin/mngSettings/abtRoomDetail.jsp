@@ -113,51 +113,55 @@
 </style>
 </head>
 <body>
-<jsp:include page="../common/menubar.jsp"/>
-<div class="mainArea">
+<header>
 	<jsp:include page="../common/settingMenubar.jsp"/>
-	<div class="rightAreaRoom">
-		<div class="roomTitleArea">
-			<div class="btnGroup">
-				<button class="roomBtn roomTypeBtn">객실 타입 설정</button>
-				<button class="roomBtn roomDetailBtn">객실 상세 정보</button>
+	<jsp:include page="../common/menubar.jsp"/>
+</header>
+<section>
+	<div class="mainArea">
+		<div class="rightAreaRoom">
+			<div class="roomTitleArea">
+				<div class="btnGroup">
+					<button class="roomBtn roomTypeBtn">객실 타입 설정</button>
+					<button class="roomBtn roomDetailBtn">객실 상세 정보</button>
+				</div>
+				<br>
 			</div>
 			<br>
-		</div>
-		<br>
-		<div class="bGroup">
-			<button class="setbutton addBtn"> + 추가 </button>
-			<button class="setbutton disable">비활성화</button>
-			<button class="setbutton enable">활성화</button>
-		</div>
-		<div class="contentArea3">
-			<div class="inLeftArea">
-				<div align="center">
-					<button class="allShowButton"><h2>전체내역</h2></button>
-					<button class="allShowButton subBtn"><span>디럭스</span><span>0</span></button>
-					<button class="allShowButton subBtn"><span>프리미엄</span><span>0</span></button>
-					<button class="allShowButton subBtn"><span>스위트룸</span><span>0</span></button>
-					<button class="allShowButton subBtn"><span>스파룸</span><span>0</span></button>
-				</div>					
+			<div class="bGroup">
+				<button class="setbutton addBtn"> + 추가 </button>
+				<button class="setbutton disable">비활성화</button>
+				<button class="setbutton enable">활성화</button>
 			</div>
-			<div class="inRightArea">
-				<table border="1" class="roomTable" style="border-collapse: collapse;">
-					<tr class="thArea">
-						<th width="5%"><input type="checkbox"></th>
-						<th width="10%">층</th>
-						<th width="15%">객실 번호</th>
-						<th width="40%">객실 옵션</th>
-						<th width="15%">기준 인원</th>
-						<th width="15%">최대 인원</th>
-					</tr>
-				</table>
+			<div class="contentArea3">
+				<div class="inLeftArea">
+					<div align="center">
+						<button class="allShowButton"><h2>전체내역</h2></button>
+						<button class="allShowButton subBtn"><span>디럭스</span><span>0</span></button>
+						<button class="allShowButton subBtn"><span>프리미엄</span><span>0</span></button>
+						<button class="allShowButton subBtn"><span>스위트룸</span><span>0</span></button>
+						<button class="allShowButton subBtn"><span>스파룸</span><span>0</span></button>
+					</div>					
+				</div>
+				<div class="inRightArea">
+					<table border="1" class="roomTable" style="border-collapse: collapse;">
+						<tr class="thArea">
+							<th width="5%"><input type="checkbox"></th>
+							<th width="10%">층</th>
+							<th width="15%">객실 번호</th>
+							<th width="40%">객실 옵션</th>
+							<th width="15%">기준 인원</th>
+							<th width="15%">최대 인원</th>
+						</tr>
+					</table>
+				</div>
+				<br>
 			</div>
-			<br>
-		</div>
-		<div align="center" style="margin-top:10px;">
-			<button class="saveBtn">저장</button>
+			<div align="center" style="margin-top:10px;">
+				<button class="saveBtn">저장</button>
+			</div>
 		</div>
 	</div>
-</div>
+</section>
 </body>
 </html>
