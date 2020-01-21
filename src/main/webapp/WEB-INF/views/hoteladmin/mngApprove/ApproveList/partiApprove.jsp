@@ -16,6 +16,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
+	margin-top:100px;
 }
 
 .approval .category {
