@@ -17,7 +17,7 @@
 	z-index: 20;
 }
 
-.modal_content {
+.reservation-check-modal_content {
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -28,7 +28,7 @@
 	overflow-y: auto;
 }
 
-.modal_content_real {
+.reservation-check-modal_content_real {
 	width:780px;
 	/* border:1px solid black; */
 	height: 100%;
@@ -65,11 +65,11 @@ cursor: pointer;
 <body>
 	<jsp:include page="reservationCancelModal.jsp"></jsp:include>
 	<div class="reservation-check-modal">
-		<div class="modal_content">
+		<div class="reservation-check-modal_content">
 			<h2 align="center" style="font-weight: bold; text-decoration: underline; text-underline-position: under;">예약 취소</h2>
 			<a class="btn_close">×</a>
 			
-			<div class="modal_content_real" align="center">
+			<div class="reservation-check-modal_content_real" align="center">
 				<div class="top-content">
 					<h2 style="font-weight: bold;">예약을 취소하시겠습니까?</h2>
 					<li style="font-weight: bold;">본인 확인을 위해 예약번호를 입력해주세요<br><br>

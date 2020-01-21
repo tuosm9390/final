@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>MODAL</title>
 <style>
-.modal {
+.reservation-modal {
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -17,7 +17,7 @@
 	z-index: 20;
 }
 
-.modal_content {
+.reservation-modal_content {
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -28,7 +28,7 @@
 	overflow-y: auto;
 }
 
-.modal_content_real {
+.reservation-modal_content_real {
 	width:780px;
 	height: 300px;
 	/* border:1px solid black; */
@@ -58,36 +58,36 @@ cursor: pointer;
 	left: 50%;
 	transform: translate(-50%, -50%)
 }
-.modal-table{
+.reservation-modal-table{
 	width: 100%;
 }
 
-.modal button{
+.reservation-modal button{
 	width: 100px;
 	margin-left: 20px;
 }
 
-.modal-table tr{
+.reservation-modal-table tr{
 	height: 50px;
 	font-weight: bold;
 	font-size: 18px;
 	line-height: 21px;
 }
 
-.modal-table td:nth-child(2){
+.reservation-modal-table td:nth-child(2){
 	text-align: right;
 }
 </style>
 </head>
 <body>
-	<div class="modal">
-		<div class="modal_content">
+	<div class="reservation-modal">
+		<div class="reservation-modal_content">
 			<h1 align="center">예약자 정보 입력</h1>
 			<a class="btn_close">×</a>
 			
-			<div class="modal_content_real" align="center">
+			<div class="reservation-modal_content_real" align="center">
 				<div class="tableArea">
-					<table class="modal-table">
+					<table class="reservation-modal-table">
 						<tr>
 							<td>예약자명</td>
 							<td><input type="text"></td>
@@ -113,12 +113,12 @@ cursor: pointer;
 	<script>
 		$(document).ready(function() {
 			$(".btn_close").click(function() {
-				$(".modal").fadeOut();
+				$(".reservation-modal").fadeOut();
 			});
 		});
 		
 		function cancel(){
-			$(".modal").fadeOut();
+			$(".reservation-modal").fadeOut();
 		};
 		
 		function goReservationResult(){
