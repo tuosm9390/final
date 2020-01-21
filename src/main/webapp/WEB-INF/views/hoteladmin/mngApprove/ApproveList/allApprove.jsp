@@ -16,6 +16,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
+	margin-top:-20px;
 }
 
 .approval .category {
@@ -77,12 +78,13 @@
 </head>
 <body>
 <header>
-	 <jsp:include page="../../common/menubar.jsp" />
-</header>	
-	<c:set var="contextPath"
-		value="${pageContext.servletContext.contextPath }" scope="application" />
+<jsp:include page="../../common/menubar.jsp" />
+	</header>
+	<%-- <c:set var="contextPath"
+		value="${pageContext.servletContext.contextPath }" scope="application" /> --%>
+		<section>
 		<jsp:include page="../approveModal/purchaseApproveModal.jsp"></jsp:include>
-
+	
 	<div class="approval">
 		<h2>결재함</h2>
 
@@ -233,7 +235,7 @@
 
 
 	</div>
-	
+	</section>
 	 <script>
 		
 	 	$(".tbl_tit").mouseenter(function(){

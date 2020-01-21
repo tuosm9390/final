@@ -35,9 +35,7 @@
 .modal_content_real {
 	width: 780px;
 	height: 450px;
-	border: 1px solid black;
 	margin: 0 auto;
-	overflow: auto;
 }
 
 .btn_close {

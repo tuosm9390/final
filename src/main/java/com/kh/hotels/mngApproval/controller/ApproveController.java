@@ -10,12 +10,12 @@ public class ApproveController {
 	@RequestMapping("documentApproval.ap")
 	public String goApproval() {
 		
-		return "hoteladmin/mngApprove/allApprove";
+		return "hoteladmin/mngApprove/ApproveList/allApprove";
 	}
 	@RequestMapping("joinDocumentApproval.ap")
 	public String goJoinApproval() {
 		
-		return "hoteladmin/mngApprove/partiApprove";
+		return "hoteladmin/mngApprove/ApproveList/partiApprove";
 	}
 	
 	
