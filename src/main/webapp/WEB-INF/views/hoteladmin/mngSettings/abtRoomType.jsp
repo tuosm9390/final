@@ -90,38 +90,42 @@
 </style>
 </head>
 <body>
-<jsp:include page="../common/menubar.jsp"/>
-<div class="mainArea">
+<header>
 	<jsp:include page="../common/settingMenubar.jsp"/>
-	<div class="rightAreaRoom">
-		<div class="roomTitleArea">
-			<div class="btnGroup">
-				<button class="roomBtn roomTypeBtn">객실 타입 설정</button>
-				<button class="roomBtn roomDetailBtn">객실 상세 정보</button>
+	<jsp:include page="../common/menubar.jsp"/>
+</header>
+<section>
+	<div class="mainArea">
+		<div class="rightAreaRoom">
+			<div class="roomTitleArea">
+				<div class="btnGroup">
+					<button class="roomBtn roomTypeBtn">객실 타입 설정</button>
+					<button class="roomBtn roomDetailBtn">객실 상세 정보</button>
+				</div>
 			</div>
-		</div>
-		<div class="roomTableArea">
-			<label class="textArea">객실타입은 수정 및 삭제가 불가능 합니다. 비활성화 후 신규로 생성할 수 있습니다.</label>
-			<button class="addRoomType" onclick="addRoomType();">+ 추가</button>
-			<br>
-			<div class="tableAreaRoom">
-				<table border="1" class="roomTable" style="border-collapse: collapse;">
-					<tr class="thArea">
-						<th width="5%"><input type="checkbox"></th>
-						<th width="20%">객실 타입</th>
-						<th width="20%">객실 수</th>
-						<th width="15%">기준 인원</th>
-						<th width="15%">최대 인원</th>
-						<th width="15%">정상가</th>
-					</tr>
-				</table>
-			</div>
-			<div align="center" style="margin-top:10px;">
-				<button class="saveBtn">저장</button>
+			<div class="roomTableArea">
+				<label class="textArea">객실타입은 수정 및 삭제가 불가능 합니다. 비활성화 후 신규로 생성할 수 있습니다.</label>
+				<button class="addRoomType" onclick="addRoomType();">+ 추가</button>
+				<br>
+				<div class="tableAreaRoom">
+					<table border="1" class="roomTable" style="border-collapse: collapse;">
+						<tr class="thArea">
+							<th width="5%"><input type="checkbox"></th>
+							<th width="20%">객실 타입</th>
+							<th width="20%">객실 수</th>
+							<th width="15%">기준 인원</th>
+							<th width="15%">최대 인원</th>
+							<th width="15%">정상가</th>
+						</tr>
+					</table>
+				</div>
+				<div align="center" style="margin-top:10px;">
+					<button class="saveBtn">저장</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
 <script type="text/javascript">
 function addRoomType(){
 	$("tbody:last").append("<tr><td><input type='checkbox'></td><td><input type='text'></td><td></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;'></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;'></td><td><input type='text' style='width:100px;height:30px;'></td></tr>");

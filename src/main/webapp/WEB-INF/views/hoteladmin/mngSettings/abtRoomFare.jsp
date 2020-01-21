@@ -81,89 +81,93 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="../common/menubar.jsp"/>
-<div class="mainArea">
+<header>
 	<jsp:include page="../common/settingMenubar.jsp"/>
-	<div class="rightAreaRoom">
-		<div class="roomTitleArea">
-			<div class="btnGroup">
-				<button class="roomBtn roomFareBtn">객실 요금 설정</button>
+	<jsp:include page="../common/menubar.jsp"/>
+</header>
+<section>
+	<div class="mainArea">
+		<div class="rightAreaRoom">
+			<div class="roomTitleArea">
+				<div class="btnGroup">
+					<button class="roomBtn roomFareBtn">객실 요금 설정</button>
+				</div>
+			</div>
+			
+			<div class="roomTypeSelect">
+				<h4>객실타입</h4>
+				<select>
+					<option value="">==선택==</option>
+					<option value="">디럭스</option>
+					<option value="">프리미엄</option>
+					<option value="">스위트</option>
+				</select>
+			</div>
+			
+			<div class="tableArea">
+				<table class="fareTable" border="1">
+					<tr>
+						<th width="10%">객실타입</th>
+						<th width="10%">구분</th>
+						<th width="10%">타입</th>
+						<th width="10%">월</th>
+						<th width="10%">화</th>
+						<th width="10%">수</th>
+						<th width="10%">목</th>
+						<th width="10%">금</th>
+						<th width="10%">토</th>
+						<th width="10%">일</th>
+					</tr>
+					<tr>
+						<td rowspan="4">디럭스</td>
+						<td rowspan="2">비성수기</td>
+						<td>대실료</td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+					</tr>
+					<tr>
+						<td>숙박료</td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+					</tr>
+					<tr>
+					 	<td rowspan="2">성수기</td>
+					 	<td>대실료</td>
+					 	<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+					 	<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+					 	<td><input type="text" class="money"></td>
+					</tr>
+					<tr>
+					 	<td>숙박료</td>
+						<td><input type="text" class="money"></td>
+					 	<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+				    	<td><input type="text" class="money"></td>
+					 	<td><input type="text" class="money"></td>
+						<td><input type="text" class="money"></td>
+					</tr>
+				</table>
+			</div>
+			<div align="center" style="margin-top:10px;">
+				<button class="saveBtn">저장</button>
 			</div>
 		</div>
-		
-		<div class="roomTypeSelect">
-			<h4>객실타입</h4>
-			<select>
-				<option value="">==선택==</option>
-				<option value="">디럭스</option>
-				<option value="">프리미엄</option>
-				<option value="">스위트</option>
-			</select>
-		</div>
-		
-		<div class="tableArea">
-			<table class="fareTable" border="1">
-				<tr>
-					<th width="10%">객실타입</th>
-					<th width="10%">구분</th>
-					<th width="10%">타입</th>
-					<th width="10%">월</th>
-					<th width="10%">화</th>
-					<th width="10%">수</th>
-					<th width="10%">목</th>
-					<th width="10%">금</th>
-					<th width="10%">토</th>
-					<th width="10%">일</th>
-				</tr>
-				<tr>
-					<td rowspan="4">디럭스</td>
-					<td rowspan="2">비성수기</td>
-					<td>대실료</td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-				</tr>
-				<tr>
-					<td>숙박료</td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-				</tr>
-				<tr>
-				 	<td rowspan="2">성수기</td>
-				 	<td>대실료</td>
-				 	<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-				 	<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-				 	<td><input type="text" class="money"></td>
-				</tr>
-				<tr>
-				 	<td>숙박료</td>
-					<td><input type="text" class="money"></td>
-				 	<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-			    	<td><input type="text" class="money"></td>
-				 	<td><input type="text" class="money"></td>
-					<td><input type="text" class="money"></td>
-				</tr>
-			</table>
-		</div>
-		<div align="center" style="margin-top:10px;">
-			<button class="saveBtn">저장</button>
-		</div>
-	</div>
-</div>	
+	</div>	
+</section>
 </body>
 </html>

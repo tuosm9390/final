@@ -60,35 +60,39 @@
 </style>
 </head>
 <body>
-<jsp:include page="modal/serviceModal.jsp"/>
-<jsp:include page="../common/menubar.jsp"/>
-<div class="mainArea">
+<header>
+	<jsp:include page="modal/serviceModal.jsp"/>
 	<jsp:include page="../common/settingMenubar.jsp"/>
-	<div class="rightAreaRoom">
-		<div class="serviceTitelArea">
-			<h3>서비스 설정</h3>
-		</div>
-		<div class="serviceSearchArea">
-			<h4>서비스명 / 코드</h4>
-			<div class="serviceBtnArea">
-				<input type="text">
-				<button class="serviceBtn">조회</button>
-				<button class="serviceAddBtn" onclick="openServiceModal();">서비스추가</button>
+	<jsp:include page="../common/menubar.jsp"/>
+</header>
+<section>
+	<div class="mainArea">
+		<div class="rightAreaRoom">
+			<div class="serviceTitelArea">
+				<h3>서비스 설정</h3>
+			</div>
+			<div class="serviceSearchArea">
+				<h4>서비스명 / 코드</h4>
+				<div class="serviceBtnArea">
+					<input type="text">
+					<button class="serviceBtn">조회</button>
+					<button class="serviceAddBtn" onclick="openServiceModal();">서비스추가</button>
+				</div>
+			</div>
+			<div class="serviceTableArea">
+				<table class="serviceTable" border="1">
+					<tr>
+						<th width="15%">서비스 코드</th>
+						<th width="30%">서비스 명</th>
+						<th width="20%">매출 구분</th>
+						<th width="25%">금액</th>
+						<th width="10%">사용</th>
+					</tr>
+				</table>
 			</div>
 		</div>
-		<div class="serviceTableArea">
-			<table class="serviceTable" border="1">
-				<tr>
-					<th width="15%">서비스 코드</th>
-					<th width="30%">서비스 명</th>
-					<th width="20%">매출 구분</th>
-					<th width="25%">금액</th>
-					<th width="10%">사용</th>
-				</tr>
-			</table>
-		</div>
 	</div>
-</div>
+</section>
 <script type="text/javascript">
 	function openServiceModal(){
 		
