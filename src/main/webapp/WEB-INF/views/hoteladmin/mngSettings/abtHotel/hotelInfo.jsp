@@ -24,22 +24,22 @@
 }
 
 .tblInfo {
-	border-collapse: separate;
-	border-spacing: 0 10px;
+	margin-left:-100px;
 }
 
 .tblInfo td {
-	width: 120px;
+	padding:10px;
 }
 
 .txt2 {
-	width: 631px;
+	width: 590px;
 	height: 30px;
 }
 
 input[type=text] {
 	border: 1px solid lightgray;
 	border-radius: 3px;
+	height:23px;
 }
 
 h4 {
@@ -48,18 +48,20 @@ h4 {
 
 #plBtn {
 	width: 70px;
-	height: 36px;
+	height: 25px;
 	border: 1px solid #3E9EFB;
 	background: white;
+	color:#3E9EFB;
 }
 
 #submitBtn {
 	border: 1px solid #3498DB;
-	width: 75px;
-	height: 35px;
-	border-radius: 3px;
-	background: #060E33;
+	width: 85px;
+	height: 30px;
+	border-radius: 2px;
+	background: #3498DB;
 	color: white;
+	
 }
 
 header {
@@ -71,6 +73,19 @@ header {
 .hotelInfo {
 	margin-top:10px;
 	margin-left:-100px;
+}
+#plz {
+	width:100px;
+}
+.btn {
+	width:100px;
+	margin-left:760px;
+	margin-top:30px;
+	
+}
+.tblInfo .plz {
+	margin-top:-50px;
+	padding:10px;
 }
 </style>
 
@@ -93,71 +108,95 @@ header {
 				<h4>기본정보</h4>
 				<form action="" method="post">
 					<table class="tblInfo">
+					<colgroup>
+						<col width="10%">
+						<col width="10%">
+						<col width="5%">
+						<col width="20%">
+						
+
+					</colgroup>
+					
 						<tr>
-							<td>호텔명</td>
-							<td style="width: 400px">
+							<td style="text-align:right;">* 호텔명</td>
+							<td >
 								<div class="ui input title">
 									<input class="txt" type="text">
 								</div>
 							</td>
-							<td>대표자</td>
-							<td style="width: 400px">
+							
+							<td style="width:30px;">* 대표자</td>
+							<td >
 								<div class="ui input title">
 									<input class="txt" type="text">
 								</div>
 							</td>
+							
+							
 						</tr>
 						<tr>
-							<td>이메일</td>
-							<td style="width: 400px">
+							<td style="text-align:right;">* 이메일</td>
+							<td >
 								<div class="ui input title">
 									<input class="txt" type="text">
 								</div>
 							</td>
-							<td>전화번호</td>
+							
+							<td>* 전화번호</td>
 							<td>
 								<div class="ui input title">
 									<input class="txt" type="text">
 								</div>
 							</td>
+							
 						</tr>
 						<tr>
-							<td>사업자명</td>
+							<td style="text-align:right;">사업자명</td>
 
-							<td style="width: 400px">
+							<td >
 								<div class="ui input title">
 									<input class="txt" type="text">
 								</div>
 							</td>
+							
 							<td>사업자번호</td>
 							<td>
 								<div class="ui input title">
 									<input class="txt" type="text">
 								</div>
 							</td>
+							
 						</tr>
 						<tr>
-							<td style="padding-top: 20px;">주소</td>
-							<td colspan="3" style="padding-top: 20px;">
+							<td style="text-align:right;">주소</td>
+							<td colspan="3">
 								<div class="ui input title">
 									<input class="txt2" type="text">
 								</div>
 							</td>
 
 						</tr>
+						</table>
+						
+						<h4 >시스템정보</h4>
+						
+						<table class="tblInfo plz">
+						<colgroup>
+						<col width="10%">
+						<col width="10%">
+						<col width="5%">
+						<col width="20%">
+						
+
+					</colgroup>
 						<tr>
-							<td style="padding-top: 20px;">
-								<h4>시스템정보</h4>
-							</td>
-						</tr>
-						<tr>
-							<td style="padding-top: 20px;">입실시간</td>
+							<td style="padding-top: 20px; text-align:right;">* 입실시간</td>
 							<td style="padding-top: 20px;" style="width:400px;">
 								<div class="ui input title">
 									<input class="txt" type="text">
 								</div>
 							</td>
-							<td style="padding-top: 20px;">퇴실시간</td>
+							<td style="padding-top: 20px;">* 퇴실시간</td>
 							<td style="padding-top: 20px;">
 								<div class="ui input title">
 									<input class="txt" type="text">
@@ -165,13 +204,13 @@ header {
 							</td>
 						</tr>
 						<tr>
-							<td>대실시간</td>
-							<td style="width: 400px;">
+							<td style="text-align:right;">* 대실시간</td>
+							<td >
 								<div class="ui input title">
 									<input class="txt" type="text">
 								</div>
 							</td>
-							<td>봉사료</td>
+							<td>* 봉사료</td>
 							<td>
 								<div class="ui input title">
 									<input class="txt" type="text">
@@ -179,13 +218,13 @@ header {
 							</td>
 						</tr>
 						<tr>
-							<td>정산/역산</td>
-							<td style="width: 400px;">
+							<td style="text-align:right;">* 정산/역산</td>
+							<td >
 								<div class="ui input title">
 									<input class="txt" type="text" placeholder="부가세 포함">
 								</div>
 							</td>
-							<td>자동마감시간</td>
+							<td>* 자동마감시간</td>
 							<td>
 								<div class="ui input title">
 									<input class="txt" type="text" placeholder="12:00AM">
@@ -193,8 +232,8 @@ header {
 							</td>
 						</tr>
 						<tr>
-							<td style="padding-top: 30px; width: 200px;">챗봇 연동 여부</td>
-							<td style="padding-top: 32px;" colspan="2">
+							<td style="text-align:right;" id="plz">* 챗봇 여부</td>
+							<td style="colspan='2'">
 								<div class="ui input title">
 									<input type="radio" name="chatBot"><label>예</label>
 								</div>
@@ -206,7 +245,7 @@ header {
 
 						</tr>
 						<tr>
-							<td style="padding-top: 20px;">호텔정책</td>
+							<td style="text-align:right;">* 호텔정책</td>
 							<td colspan="3" style="padding-top: 20px;">
 								<div class="ui input title">
 									<input class="txt2" type="text">
@@ -215,7 +254,7 @@ header {
 
 						</tr>
 						<tr>
-							<td style="padding-top: 20px;">노쇼정책</td>
+							<td style="text-align:right;">* 노쇼정책</td>
 							<td colspan="3" style="padding-top: 20px;">
 								<div class="ui input title">
 									<input class="txt2" type="text">
@@ -224,7 +263,7 @@ header {
 
 						</tr>
 						<tr>
-							<td style="padding-top: 20px;">취소정책</td>
+							<td style="text-align:right;">* 취소정책</td>
 							<td colspan="3" style="padding-top: 20px;">
 								<div class="ui input title">
 									<input class="txt2" type="text">
@@ -237,7 +276,9 @@ header {
 						</tr>
 
 					</table>
+					<div class="btn">
 					<button id="submitBtn">저장</button>
+					</div>
 				</form>
 
 				<!-- second table -->
