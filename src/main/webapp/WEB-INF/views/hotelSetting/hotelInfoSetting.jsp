@@ -101,7 +101,7 @@
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 	<div class="contentArea">
 	<jsp:include page="hotelSettingMenubar.jsp"/>
-	<jsp:forward page="hotelRoomTypeSetting.jsp"/>
+	<%-- <jsp:forward page="hotelRoomTypeSetting.jsp"/> --%>
 		<div class="rightArea">
 			<div class="titleArea">
 				<h2 class="titleAreaSub">호텔 정보 설정</h2>

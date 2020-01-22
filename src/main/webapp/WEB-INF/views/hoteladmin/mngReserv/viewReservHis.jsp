@@ -24,6 +24,7 @@
 	border: 1px solid lightgrey;
 	margin-top: 5px;
 	margin-left: 20px;
+	border-radius: 2px;
 }
 
 hr {
@@ -43,6 +44,7 @@ hr {
 	width: 150px;
 	margin-right: 20px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 #goYesterday, #goToday, #goTommorow {
@@ -50,6 +52,7 @@ hr {
 	border: 1px solid lightgrey;
 	color: dimgray;
 	background-color: white;
+	border-radius: 2px;
 	
 }
 
@@ -62,18 +65,31 @@ hr {
 	height: 25px;
 	width: 80px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 .searchContent {
 	height: 19px;
 	width: 200px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 #searchBtn {
 	height: 25px;
-	width: 60px;
-	border: 1px solid lightgrey;
+	width: 50px;
+	border: 1px solid #3498DB;
+	background-color: #3498DB;
+	color: white;
+	font-weight: bold;
+	border-radius: 2px;
+}
+
+.sticky-header th {
+	position: sticky;
+	top: -1px;
+	left: 0;
+	background-color: #f7f7f7;
 }
 
 .reservList {
@@ -87,7 +103,8 @@ hr {
 }
 
 .reservList th {
-	background-color: lightsteelblue;
+	background-color: #f7f7f7;
+    color: #005B9E;
 }
 
 .reservList th, .reservList td {
@@ -100,9 +117,10 @@ hr {
 	text-align: center;
 }
 
-.reservList td:nth-child(4) {
+.reservList td:nth-child(1) {
 	color: royalblue;
 }
+
 </style>
 </head>
 <body>
@@ -143,7 +161,7 @@ hr {
 		</div>
 		
 		<div class="reservList">
-			<table style="border-collapse: collapse;">
+			<table class="sticky-header" style="border-collapse: collapse;">
 				<tr>
 					<th width="119px">예약번호</th>
 					<th width="140px">객실유형</th>
