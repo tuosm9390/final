@@ -6,9 +6,16 @@
 <meta charset="UTF-8">
 <title>HotelsCompile</title>
 <style type="text/css">
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
 	.contentArea{
 		width:1600px;
 		height:900px;
+	}
+	.menubar{
+		height:950px;
 	}
 	.Area6{
 		font-weight: bold;
@@ -48,13 +55,13 @@
 	.reservation{
 		display: inline-block;
 		text-align: center;
-		width:400px;
-		height:600px;
+		width:300px;
+		height:500px;
 		background:lightgray;
 		border:5px dashed gray;
 	}
 	.reservation h2{
-		margin-top:300px;
+		margin-top:250px;
 	}
 	.reservation:hover{
 		cursor:pointer;
@@ -94,7 +101,7 @@
 		<div class="rightArea"><!-- 오른쪽 영역 -->
 			<div class="titleArea">
 				<div class="title">
-					<h1 class="titleText">양식 설정</h1>
+					<h1 class="titleText">§ 양식 설정</h1>
 				</div>
 				<div class="titleContent">
 					<h6 class="titleContentText">예약 확정서 양식을 설정할 수 있습니다.</h6>
@@ -103,7 +110,7 @@
 			
 			<!-- 위 -->
 			<div class="contentArea2">
-				<h3 style="margin-left:10px; ">문서양식</h3>
+				<h3 style="margin-left:40px; ">문서양식</h3>
 			</div>
 			<div class="contentArea3">
 				<div class="reservation">
@@ -112,7 +119,7 @@
 			</div>
 			<br>
 			<br>
-			<div align="center">
+			<div align="right" style="margin-right:100px;">
 				<button class="backBtn" onclick=""><b>이전</b></button>			
 				<button class="nextBtn" onclick=""><b>다음</b></button>			
 			</div>

@@ -81,6 +81,9 @@
 		width:100px;
 		font-size:30px;
 	}
+	.floorTable td{
+		font-size:20px;
+	}
 	.floorTableArea{
 		text-align:center;
 		width:115px;
@@ -116,7 +119,9 @@
 		border-collapse: collapse;
 	}
 	.floorRoomTable th{
-		background:#E9F3FF;
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
 		height:30px;
 	}
 	.brokenMemo{
@@ -170,14 +175,14 @@
 						<table>
 							<tr>
 								<td width="50%"></td>
-								<td><input type="text" id="brokenStart" name="brokenStart"></td>
+								<td><input type="text" id="modalBrokenStart" name="modalBrokenStart"></td>
 							</tr>
 						</table>
 						~
 						<table>
 							<tr>
 								<td width="50%"></td>
-								<td><input type="text" id="brokenEnd" name="brokenEnd"></td>
+								<td><input type="text" id="modalBrokenEnd" name="modalBrokenEnd"></td>
 							</tr>
 						</table>
 					</div>
@@ -235,6 +240,39 @@
 				$(".modal").fadeOut();
 			});
 		});
-	</script>
+	//datepicker
+		$(function() {
+			date = new Date();
+		
+			checkIn = $("#modalBrokenStart").datepicker({
+				autoClose : true,
+				//선택한 날짜를 가져옴
+				onSelect : function(date) {
+					endNum = date;
+					//종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
+					$("#modalBrokenEnd").datepicker({
+						minDate : new Date(endNum),
+					});
+				}
+			}).data('datepicker');
+		
+			checkOut = $("#modalBrokenEnd").datepicker({
+				autoClose : true,
+				//선택한 날짜를 가져옴
+				onSelect : function(date) {
+					startNum = date;
+					$('#modalBrokenStart').datepicker({
+						//시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+						maxDate : new Date(startNum),
+					});
+				}
+			}).data('datepicker');
+			
+		});
+		
+		function openBrokenModal(){
+			$(".modal").fadeIn();		
+		}
+</script>
 </body>
 </html>

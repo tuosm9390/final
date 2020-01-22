@@ -4,8 +4,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 <style type="text/css">
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	.menubar{
+		height:900px;
+	}
 	.contentArea{
 		width:1600px;
 		height:900px;
@@ -18,12 +25,13 @@
 		width:1300px;
 	}
 	.titleArea{
-		width:1300px;
+ 		width:1260px;
 		height:50px;
 		border-bottom-style:solid;
 		border-bottom-width:1px;
 		border-bottom-color:black;
 		margin-right:0;
+		margin-left:10px;
 	}
 	.title{
 		display:inline-block;
@@ -44,19 +52,22 @@
 	}
 	.tableArea{
 		width:1100px;
-		height:700px;
+		height:500px;
 		border:1px solid black;
 		overflow-x:hidden;
 		overflow-y:scroll;
+		margin-left:40px;
 	}
 	.serviceTable{
 		width:1100px;
 		border-collapse: collapse;
 		text-align:center;
+		border: 1px solid lightgray;
 	}
-	.serviceTable th{
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
+	th{
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
 		height:30px;
 	}
 	.serviceCode{
@@ -95,6 +106,17 @@
 		background:gray;
 		color:black;
 	}
+	.addServiceBtn{
+		width:100px;
+		height:30px;
+		border-radius:5px;
+		border:0;
+		background-color: #3498DB;
+   		color: white;
+   		margin-bottom:10px;
+   		cursor:pointer;
+   		margin-left:40px;
+	}
 </style>
 </head>
 <body>
@@ -103,7 +125,7 @@
 		<div class="rightArea"><!-- 오른쪽 영역 -->
 			<div class="titleArea">
 				<div class="title">
-					<h1 class="titleText">서비스 등록</h1>
+					<h1 class="titleText">§ 서비스 등록</h1>
 				</div>
 				<div class="titleContent">
 					<h6 class="titleContentText">객실에 제공하는 추가 서비스 품목과 요금을 등록하고 관리하세요.</h6>
@@ -112,10 +134,10 @@
 			
 			<!-- 위 -->
 			<div class="contentArea2">
-				<h3 style="margin-left:10px; ">서비스 관리</h3>
+				<h3 style="margin-left:40px; ">서비스 관리</h3>
 			</div>
 			
-			<button onclick="return addService();">+ 서비스추가</button>
+			<button class="addServiceBtn" onclick="return addService();">+ 서비스추가</button>
 			<div class="tableArea">
 				<table class="serviceTable" border="1">
 					<tr>
@@ -170,7 +192,7 @@
 				</table>
 			</div>
 			<br>
-			<div align="center" style="margin-left:-100px;">
+			<div align="right" style="margin-right:160px;"> 
 				<button class="backBtn" onclick=""><b>이전</b></button>			
 				<button class="nextBtn" onclick=""><b>다음</b></button>			
 			</div>

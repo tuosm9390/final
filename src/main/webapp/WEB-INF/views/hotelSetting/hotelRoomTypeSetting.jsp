@@ -6,19 +6,27 @@
 <meta charset="UTF-8">
 <title>HotelsCompile</title>
 <style type="text/css">
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
 	.contentArea{
 		width:1600px;
-		height:900px;
+		height:800px;
+	}
+	.menubar{
+		height:800px;
 	}
 	.Area2{
 		font-weight: bold;
 	}
 	.rightArea{
 		float:right;
-		width:1300px;
+		width:1290px;
+		margin-left:10px;
 	}
 	.titleArea{
-		width:1300px;
+		width:1230px;
 		height:50px;
 		border-bottom-style:solid;
 		border-bottom-width:1px;
@@ -51,7 +59,7 @@
 	}
 	.tableArea{
 		width:1200px;
-		height:600px;
+		height:450px;
 		text-align:center;
 		border:1px solid black;
 		overflow-y: scroll;
@@ -62,13 +70,16 @@
 	}
 	.contentArea2{
 		width:1200px;
+		margin-left:30px;
 	}
 	th{
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
+		background-color: #f7f7f7;
+		color: #005B9E;
 	}
 	tr{
 		height:40px;
+		border: 1px solid lightgray;
+		text-align: center;
 	}
 	input{
 		border:none;
@@ -103,7 +114,9 @@
 		width:100px;
 		height:30px;
 		border-radius:5px;
-		background:#DDEBFF;
+		border:0;
+		background-color: #3498DB;
+   		color: white;
 	}
 </style>
 </head>
@@ -113,7 +126,7 @@
 		<div class="rightArea"><!-- 오른쪽 영역 -->
 			<div class="titleArea">
 				<div class="title">
-					<h1 class="titleText">객실 타입 설정</h1>
+					<h1 class="titleText">§ 객실 타입 설정</h1>
 				</div>
 				<div class="titleContent">
 					<h6 class="titleContentText">전체 객실의 타입을 설정해주세요.</h6>
@@ -147,7 +160,7 @@
 					</table>
 				</div>
 				<br>
-			<div align="center">
+			<div align="right">
 				<button class="backBtn" onclick=""><b>이전</b></button>			
 				<button class="nextBtn" onclick=""><b>다음</b></button>			
 			</div>

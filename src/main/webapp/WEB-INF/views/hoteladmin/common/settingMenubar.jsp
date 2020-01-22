@@ -61,10 +61,10 @@
 		<br>
 		<br>
 			<ul class="settingMenubar subNavv room">
-				<li><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">객실타입</li>
-				<li><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">객실요금</li>
-				<li><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">고장객실관리</li>
-				<li><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">서비스</li>
+				<li onclick="location.href='goRoomType.st'"><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">객실타입</li>
+				<li onclick="location.href='goRoomFare.st'"><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">객실요금</li>
+				<li onclick="location.href='goBrokenRoom.st'"><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">고장객실관리</li>
+				<li onclick="location.href='goServiceSetting.st'"><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">서비스</li>
 			</ul>
 		</li>
 		<li>

@@ -12,6 +12,7 @@
 		float:right;
 	}
 	.serviceSearchArea{
+		margin-top:30px;
 		width:1280px;
 		height:40px;
 		background:#E9F3FF;
@@ -42,7 +43,7 @@
 	.serviceTableArea{
 		margin-top:30px;
 		width:1280px;
-		height:600px;
+		height:400px;
 		overflow-x:hidden;
 		overflow-y:scroll;
 		border:1px solid lightgray;
@@ -53,9 +54,27 @@
 		border-collapse: collapse;
 	}
 	.serviceTable th{
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
 		height:30px;
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
+	}
+	.serviceTitelArea{
+		width:1215px;  
+		padding-bottom:30px;
+		border-bottom-color: lightgray;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+	}
+	.serviceTitle{
+		margin-top:20px; 
+		border:0;
+		width:180px;
+		height:40px;
+		font-weight: bold;
+		box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
+		background:#3498DB;
+		color:white;
 	}
 </style>
 </head>
@@ -69,7 +88,9 @@
 	<div class="mainArea">
 		<div class="rightAreaRoom">
 			<div class="serviceTitelArea">
-				<h3>서비스 설정</h3>
+				<div class="btnGroup">
+					<button class="serviceTitle">서비스 설정</button>
+				</div>
 			</div>
 			<div class="serviceSearchArea">
 				<h4>서비스명 / 코드</h4>

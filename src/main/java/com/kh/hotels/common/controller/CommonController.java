@@ -3,6 +3,7 @@ package com.kh.hotels.common.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kh.hotels.common.model.service.CommonService;
 
@@ -28,6 +29,12 @@ public class CommonController {
 	public String goHotelMainPage() {
 		
 		return "hotelmain/main/main";
+	}
+	
+	@RequestMapping("goSettingMain.main")
+	public String goSettingMain() {
+		
+		return "hotelSetting/hotelInfoSetting";
 	}
 	
 }

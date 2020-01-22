@@ -8,7 +8,7 @@
 <style type="text/css">
 	.rightAreaRoom{
 		width:1300px;
-		height:900px;
+		height:600px;
 		float:right;
 	}
 	.brokenRoomDate{
@@ -34,7 +34,7 @@
 	}
 	.brokenTableArea{
 		width:1215px;
-		height:600px;
+		height:400px;
 		border:1px solid lightgray;
 		margin-top:30px;
 		overflow-x:hidden;
@@ -45,9 +45,32 @@
 		border-color:lightgray;
 	}
 	.brokenRoomTable th{
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
 		height:30px;
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
+	}
+	.roomBtn{
+		margin-top:20px; 
+		border:0;
+		width:180px;
+		height:40px;
+		font-weight: bold;
+		box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
+	}
+	.roomBtn:hover{
+		cursor:pointer;
+	}
+	.brokenRoomBtn{
+		background:#3498DB;
+		color:white;
+	}
+	.brokenRoomTitleArea{
+		width:1215px;  
+		padding-bottom:30px;
+		border-bottom-color: lightgray;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
 	}
 </style>
 </head>
@@ -60,6 +83,11 @@
 <section>
 	<div class="mainArea">
 		<div class="rightAreaRoom">
+			<div class="brokenRoomTitleArea">
+				<div class="btnGroup">
+					<button class="roomBtn brokenRoomBtn">고장 객실 관리</button>
+				</div>
+			</div>
 			<div class="brokenRoomDate">
 				<h4>고장기간</h4>
 				<table>

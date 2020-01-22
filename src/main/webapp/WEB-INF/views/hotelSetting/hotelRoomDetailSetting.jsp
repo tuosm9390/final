@@ -4,9 +4,15 @@
 <html>
 <head>
 <style type="text/css">
+	body{
+		overflow-x:hidden;
+	}
 	.contentArea{
 		width:1600px;
 		height:900px;
+	}
+	.menubar{
+		height:950px;
 	}
 	.Area3{
 		font-weight: bold;
@@ -48,14 +54,17 @@
 		/* float:right; */
 	}
 	.tableBtn{
+		cursor:pointer;
 		width:100px;
 		height:30px;
 		border-radius:5px;
-		background:#DDEBFF;
+		border:0;
+		background-color: #3498DB;
+   		color: white;
 	}
 	.inLeftArea{
 		width:250px;
-		height:600px;
+		height:450px;
 		border:1px solid black;
 		margin-right:10px;
 		overflow-y: scroll;
@@ -64,15 +73,24 @@
 	}
 	.inRightArea{
 		width:850px;
-		height:600px;
+		height:450px;
 		border:1px solid black;
 		overflow-y: scroll;
 		overflow-x: hidden;
 	}
 	.contentArea3{
 		width:1200px;
-		height:600px;
+		height:450px;
 		display: inline-flex;
+		margin-left:30px;
+	}
+	.contentArea2{
+		margin-left:30px;
+	}
+	.btnGroupArea{
+		float:right;
+		margin-right:160px;	
+		margin-bottom:20px;
 	}
 	.allShowButton{
 		border:0;
@@ -100,13 +118,6 @@
 	}
 	.roomTable input{
 		border:none;
-	}
-	th{
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
-	}
-	tr{
-		height:40px;
 	}
 	.btnGroup{
 		margin-top:30px;
@@ -138,6 +149,16 @@
 		background:gray;
 		color:black;
 	}
+	th{
+		background-color: #f7f7f7;
+		color: #005B9E;
+	}
+	tr{
+		height:40px;
+		border: 1px solid lightgray;
+		text-align: center;
+		height:40px;
+	}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -148,7 +169,7 @@
 		<div class="rightArea"><!-- 오른쪽 영역 -->
 			<div class="titleArea">
 				<div class="title">
-					<h1 class="titleText">객실 상세 정보</h1>
+					<h1 class="titleText">§ 객실 상세 정보</h1>
 				</div>
 				<div class="titleContent">
 					<h6 class="titleContentText">객실 타입 별 객실의 상세 정보를 입력하세요.</h6>
@@ -174,10 +195,10 @@
 				<div class="inLeftArea">
 					<div align="center">
 						<button class="allShowButton"><h2>전체내역</h2></button>
-						<button class="allShowButton subBtn"><span>디럭스</span><span>0</span></button>
-						<button class="allShowButton subBtn"><span>프리미엄</span><span>0</span></button>
-						<button class="allShowButton subBtn"><span>스위트룸</span><span>0</span></button>
-						<button class="allShowButton subBtn"><span>스파룸</span><span>0</span></button>
+						<button class="allShowButton subBtn"><span>디럭스</span><span>( 0 )</span></button>
+						<button class="allShowButton subBtn"><span>프리미엄</span><span>( 0 )</span></button>
+						<button class="allShowButton subBtn"><span>스위트룸</span><span>( 0 )</span></button>
+						<button class="allShowButton subBtn"><span>스파룸</span><span>( 0 )</span></button>
 					</div>					
 				</div>
 				<div class="inRightArea">
@@ -194,7 +215,7 @@
 				</div>
 			</div>
 			<br>
-			<div class="btnGroup" align="center">
+			<div class="btnGroup" align="right" style="margin-right:150px;">
 				<button class="backBtn" onclick=""><b>이전</b></button>			
 				<button class="nextBtn" onclick=""><b>다음</b></button>			
 			</div>

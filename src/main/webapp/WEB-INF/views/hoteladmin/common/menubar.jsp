@@ -24,7 +24,6 @@
 		margin-left:-8px;
 		margin-top:-8px;
 		position: fixed;
-		z-index: 15;
 	}
 	.menu{
 		display:inline-block;
@@ -91,8 +90,10 @@
 	}
 	.subnav{
 		width:100px;
-		height:65px;
-		background:lightgray;
+		height:100px;
+		background-image:url('resources/images/menuSub.png');
+		background-repeat:no-repeat;
+		background-size:100px;
 		list-style: none;
 		text-align: center;
 		display:none;
@@ -103,11 +104,15 @@
 		font-weight:bold;
 		padding:0;
 		opacity: 1;
+		padding-top:18px;
 	}
 	.subnav2{
+		padding-top:18px;
 		width:100px;
-		height:65px;
-		background:lightgray;
+		height:100px;
+		background-image:url('resources/images/menuSub.png');
+		background-repeat:no-repeat;
+		background-size:100px;
 		list-style: none;
 		text-align: center;
 		display:none;
@@ -116,7 +121,6 @@
 		left:-30%;
 		color:black;
 		font-weight:bold;
-		padding:0;
 		opacity: 1;
 	}
 	.reservation{
@@ -130,19 +134,21 @@
 		position: relative;
 	}
 	.subnav-analys{
-		height:65px;
-		background:lightgray;
+		width: 150px;
+		height:100px;
+		background-image:url('resources/images/menuSub.png');
+		background-repeat:no-repeat;
+		background-size:150px;
 		list-style: none;
 		text-align: center;
 		display:none;
 		position: absolute;
 		top: 100%;
-		left:-50%;
+		left:-30%;
 		color:black;
 		font-weight:bold;
-		padding:0;
+		padding-top:18px;
 		opacity: 1;
-		width: 130px;
 	}
 	section{
 		padding-top: 92px;
@@ -163,7 +169,7 @@
 				<img alt="" src="${ contextPath }/resources/images/iconReservation.png"  class="tabimg"><br>
 				<label>예약관리</label><br>
 				<div class="subnav">
-					▲<br>
+					<!-- ▲<br> -->
 					<a href="viewNow.re">예약현황</a><br>
 					<a href="viewHis.re">예약내역</a>
 				</div>
@@ -180,7 +186,6 @@
 				<img alt="" src="${ contextPath }/resources/images/iconFinance.png"  class="tabimg"><br>
 				<label>판매분석</label>
 				<div class="subnav-analys">
-					▲<br>
 					<a href="viewTrendList.hadmin">영업트렌드</a><br>
 					<a href="viewDetailList.hadmin?Condition=sales">매출 및 지불 상세</a>
 				</div>
@@ -189,12 +194,11 @@
 				<img alt="" src="${ contextPath }/resources/images/iconContract.png"  class="tabimg"><br>
 				<label>전자결재</label>
 				<div class="subnav2">
-					▲<br>
 					<a href="documentApproval.ap">결재함</a><br>
 					<a href="joinDocumentApproval.ap">참여결재함</a>
 				</div>
 		</li>
-		<li class="menu tab t7">
+		<li class="menu tab t7" onclick="location.href='goSetting.st'">
 				<img alt="" src="${ contextPath }/resources/images/iconSettings.png"  class="tabimg"><br>
 				<label>관리</label>
 		</li>

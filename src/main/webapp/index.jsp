@@ -11,10 +11,17 @@
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 	<button onclick="location.href='goMain.hmain'">호텔 메인으로</button>	
 	<button onclick="location.href='goMain.hadmin'">호텔 관리자로</button>
-	<button onclick="location.href='${ contextPath }/WEB-INF/views/hotelSetting/hotelInfoSetting.jsp'">설정으로</button>
-
+	<button onclick="location.href='goSettingMain.main'">설정으로</button>
+	
 	<%-- <jsp:forward page="WEB-INF/views/hoteladmin/main/login.jsp"/> --%>
-	<%-- <jsp:forward page="WEB-INF/views/hoteladmin/mngSettings/abtHotel/userInsert.jsp"/> --%>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelInfoSetting.jsp"/> --%>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelRoomTypeSetting.jsp"/> --%>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelRoomDetailSetting.jsp"/> --%>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelRoomFareSetting.jsp"/> --%>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelAddService.jsp"/> --%>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelFormSetting.jsp"/> --%>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelSettingSummary.jsp"/> --%>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelAddImages.jsp"/> --%>
 
 </body>
 </html>

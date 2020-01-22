@@ -4,8 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 <style type="text/css">
+	.menubar{
+		height:930px; 
+	}
 	.contentArea{
 		width:1600px;
 		height:900px;
@@ -25,13 +28,20 @@
 		border-bottom-color:black;
 		margin-right:0;
 	}
+	input{
+		border-radius:5px 5px 5px 5px;
+		border:1px solid lightgray;
+		width:200px;
+		height:25px;
+	}
 	.title{
 		display:inline-block;
 		text-align: center;
 		height:30px;
 		margin-left:10px;
 	}
-	.titleContent{
+	
+	.titleContent{ 
 		display:inline-block;
 		text-align: center;
 		height:30px;
@@ -49,7 +59,7 @@
 		padding-right:100px;
 	}
 	.hotelInfoArea{
-		margin-left:100px;
+		margin-left:130px;
 		font-weight: bold;
 	}
 	.hotelInfoArea table tr{
@@ -64,9 +74,11 @@
 		width:1115px;
 		height:300px;
 		margin-top:20px;
+		margin-left:40px;
 		overflow-x:hidden;
 		overflow-y:scroll;
 		border:1px solid darkgray;
+		/* margin-left:110px; */
 	}
 	.roomFareTable{
 		width:1100px;
@@ -74,9 +86,11 @@
 		border:1px solid darkgray;
 		border-collapse: collapse;
 	}
-	.roomFareTable th{
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
+	th{
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
+		height:30px;
 	}
 	.roomFareTable input{
 		width:60px;
@@ -87,6 +101,7 @@
 		width:1115px;
 		border:1px solid darkgray;
 		text-align:center;
+		/* margin-left:70px; */
 	}
 	.nextBtn{
 		width:180px;
@@ -115,7 +130,10 @@
 		color:black;
 	}
 	.btnGroup{
-		margin-left:-100px;
+		margin-right:150px;
+	}
+	.serviceInfoArea{
+		margin-left:40px;
 	}
 </style>
 </head>
@@ -125,7 +143,7 @@
 		<div class="rightArea"><!-- 오른쪽 영역 -->
 			<div class="titleArea">
 				<div class="title">
-					<h1 class="titleText">설정 요약</h1>
+					<h1 class="titleText">§ 설정 요약</h1>
 				</div>
 				<div class="titleContent">
 					<h6 class="titleContentText">호텔스 컴파일로 설정한 내용입니다.</h6>
@@ -134,7 +152,7 @@
 			
 			<!-- 위 -->
 			<div class="contentArea2">
-				<h3 style="margin-left:10px;">호텔 정보</h3>
+				<h3 style="margin-left:40px;">호텔 정보</h3>
 			</div>
 			<div class="hotelInfoArea">
 				<table>
@@ -196,6 +214,8 @@
 					</tr>
 				</table>
 			</div>
+			<br>
+			<h3 style="margin-left:40px;">객실정보</h3>
 			<div class="roomFareArea">
 				<table class="roomFareTable" border="1">
 					<tr>
@@ -342,7 +362,7 @@
 				</table>
 			</div>
 			<br>
-			<h3 style="margin-left:10px;">서비스 정보</h3>
+			<h3 style="margin-left:40px;">서비스 정보</h3>
 			<div class="serviceInfoArea">
 				<table class="serviceTable" border="1">
 					<tr>
@@ -383,7 +403,7 @@
 			</div>
 			<br>
 			<br>
-			<div align="center" class="btnGroup">
+			<div align="right" class="btnGroup">
 				<button class="backBtn" onclick=""><b>이전</b></button>			
 				<button class="nextBtn" onclick=""><b>다음</b></button>			
 			</div>

@@ -9,6 +9,9 @@
 		width:1600px;
 		height:900px;
 	}
+	.menubar{
+		height:1000px;
+	}
 	.Area8{
 		font-weight: bold;
 	}
@@ -80,8 +83,12 @@
 		margin-top:10px;
 		display: flex;
 	}
+	.imageBtn{
+		width:75px; 
+	}
 </style>
-<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>HotelsCompile</title>
 </head>
 <body>
 	<div class="contentArea">
@@ -100,16 +107,21 @@
 					<div class="roomTitleArea">
 						<h3>디럭스</h3>
 					</div>
-					<button class="addBtn">+ 추가</button>
+					<button class="addBtn" onclick="addImages();">+ 추가</button>
 				</div>
 				<div class="roomMainPhotoArea">
 					<h3>대표이미지</h3>
-					<input type="file">
+					<input type="file" class="imageBtn">
 				</div>
 			</div>
-			
-			
 		</div>
 	</div>
+	<script type="text/javascript">
+		function addImages(){
+			
+			$(".roomMainPhotoArea:last").after("<div class='roomMainPhotoArea'> <h3>객실이미지</h3> <input type='file' class='imageBtn'>");
+			
+		}
+	</script>
 </body>
 </html>
