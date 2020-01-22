@@ -8,17 +8,26 @@
 <title>Insert title here</title>
 <style>
 .site-outer{
-	width: 82%;
-	float: right;
-	margin-right: 1%;
+	width: 90%;
+	margin-left: 5%;
 }
 
 .searchArea{
 	background: #F3F3F3;
 	width: 100%;
-	height: 50px;
 }
 
+.spend{
+	margin-left: 10px;
+}
+
+.price{
+	text-align: right;
+}
+
+.date{
+	text-align: center;
+}
 .list-table{
 	text-align: center;
 	border-collapse: collapse;
@@ -50,19 +59,78 @@
 .list-table tr:last-child{
 	background: #DBDBDB;
 }
+
+.analysMenubar div {
+	display: inline-block;
+	width: 80px;
+	height: 31px;
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	background-color: white;
+	color: black;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.analysMenubar>div:hover{
+	background: #3498DB;
+	color: white;
+	cursor: pointer;
+}
+
+.analys-item{
+	line-height: 30px;
+}
+
+#hrDiv{
+	border-bottom: 1px solid lightgray;
+	width: 100%;
+}
+
+.excel-btn{
+	background: white;
+    color: green !important;
+    width: 68px;
+    height: 25px;
+    border-radius: 2px;
+    line-height: 30px;
+}
+
+.excel-btn:hover{
+	background: green !important;
+	color: white !important;
+}
+
+input[type=text], select{
+	width: 100px;
+	border: 1px solid lightgray;
+	padding: 0;
+	border-radius: 3px;
+	height:23px;
+}
 </style>
 </head>
 <body>
 	<header>
-		<jsp:include page="../common/analysMenubar.jsp"/>
+<%-- 		<jsp:include page="../common/analysMenubar.jsp"/> --%>
 		<jsp:include page="../common/menubar.jsp"/>
 	</header>
 	<section>
 		<c:set var="price" value="300000"></c:set>
 		<c:set var="sum" value="0"></c:set>
 		<div class="site-outer">
-			<div class="excelArea" align="right">
-				<button>엑셀</button>
+			<div class="analysMenubarArea">
+				<div class="analysMenubar">
+					<div id="sales"
+						class="analys-item sales ${ Condition eq 'sales' ? '_active' : '' }">매출
+						상세</div>
+					<div id="spend"
+						class="analys-item spend ${ Condition eq 'spend' ? '_active' : '' }">지불
+						상세</div>
+					<div class="excel-btn" style="float: right;">엑셀</div>
+					<input id="excel" type="file" style="display: none;">
+				</div>
+				<div id="hrDiv" style="background-color: lightgray; color: lightgray"></div>
 			</div>
 			<br>
 			<!-- 매출 상세 -->
@@ -75,8 +143,8 @@
 					<option value="checkOut">퇴실일자</option>
 				</select>
 				
-				<input type="text" id="datepicker"> - 
-				<input type="text" id="datepicker2">
+				<input type="text" class="date" id="datepicker" readonly> - 
+				<input type="text" class="date" id="datepicker2" readonly>
 			</div>
 			<!-- 검색 영역 끝 -->
 			<br>
@@ -99,7 +167,7 @@
 					<td>남윤진</td>
 					<td>2020-01-19</td>
 					<td>2020-01-12</td>
-					<td><input type="text" class="price" value="${ price }" readonly></td>
+					<td>${ price }</td>
 					<td>2020-01-10</td>
 					<td></td>
 				</tr>
@@ -111,8 +179,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><input type="text" class="summary" 
-						value="${ sum }" readonly></td>
+					<td>${ sum }</td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -124,8 +191,8 @@
 			<!-- 검색 영역 -->
 			<div class="searchArea" align="right">
 				<label>지불 일시</label>
-				<input type="text" id="datepicker"> - 
-				<input type="text" id="datepicker2">
+				<input type="text" class="date" id="datepicker" readonly> - 
+				<input type="text" class="date" id="datepicker2" readonly>
 			</div>
 			<!-- 검색 영역 끝 -->
 			<br>
@@ -148,7 +215,7 @@
 					<td>남윤진</td>
 					<td>계좌이체</td>	
 					<td>2020-01-09</td>
-					<td><input type="text" class="price" value="${ price }" readonly></td>
+					<td>${ price }</td>
 					<td>송기준</td>
 					<td>예약번호 : 2001806</td>
 				</tr>
@@ -160,8 +227,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><input type="text" class="summary"
-					value="${ sum }" readonly></td>
+					<td>${ sum }</td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -173,10 +239,25 @@
 	<footer>
 	</footer>
 	<script>
-		$("#datepicker").datepicker();
-		$("#datepicker2").datepicker();
+		$("#datepicker").datepicker({
+			autoClose : true,
+		});
+		$("#datepicker2").datepicker({
+			autoClose : true,
+		});
 		
+		$(function(){
+			$("._active").css({"background":"#3498DB", "color":"white"});
+		});
 		
+		$(".analys-item").click(function(){
+			var Condition = $(this).attr('id');
+			location.href='viewDetailList.hadmin?Condition=' + Condition;
+		});
+		
+		$(".excel-btn").click(function(){
+			$("#excel").click();
+		});
 	</script>
 </body>
 </html>

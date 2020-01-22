@@ -87,20 +87,22 @@ cursor: pointer;
 			
 			<div class="reservation-modal_content_real" align="center">
 				<div class="tableArea">
-					<table class="reservation-modal-table">
-						<tr>
-							<td>예약자명</td>
-							<td><input type="text"></td>
-						</tr>
-						<tr>
-							<td>전화번호</td>
-							<td><input type="text"></td>
-						</tr>
-						<tr>
-							<td>예약번호</td>
-							<td><input type="text"></td>
-						</tr>
-					</table>
+					<form>
+						<table class="reservation-modal-table">
+							<tr>
+								<td>예약자명</td>
+								<td><input type="text" id="name" name="name"></td>
+							</tr>
+							<tr>
+								<td>전화번호</td>
+								<td><input type="text"></td>
+							</tr>
+							<tr>
+								<td>예약번호</td>
+								<td><input type="text"></td>
+							</tr>
+						</table>
+					</form>
 				</div>
 			</div>
 			<div class="modal-btn" align="right">
@@ -122,6 +124,7 @@ cursor: pointer;
 		};
 		
 		function goReservationResult(){
+			if($(""))
 			location.href='ReservationCheck.hmain';
 		};
 	</script>

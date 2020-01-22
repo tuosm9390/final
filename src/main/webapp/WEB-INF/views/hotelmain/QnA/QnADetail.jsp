@@ -101,7 +101,7 @@ textarea{
 				</table>
 				<!-- 답변 영역 끝 -->
 				<br>
-				<button style="float: right; width: 80px; margin-right: 2%;" onclick="location.href='goQnA.hmain'">뒤로</button>
+				<button style="float: right; width: 100px; margin-right: 2%;" onclick="location.href='goQnA.hmain'">뒤로</button>
 			</div>
 			<!-- 오른쪽 내용 영역 끝 -->
 		</div>

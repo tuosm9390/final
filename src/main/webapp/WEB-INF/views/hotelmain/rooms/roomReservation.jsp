@@ -27,18 +27,15 @@
 
 /* 홀수번째 이미지 */
 .reservation-img-item:nth-child(even) {
-	/* 	margin-right: 2%; */
 	
 }
 /* 짝수번째 이미지 */
 .reservation-img-item:nth-child(odd) {
 	margin-left: 0;
-	/* 	margin-right: 2%; */
 }
 
 .reservation-text {
 	position: absolute;
-/* 	border-left: 1px solid black; */
 	left: 40%;
 	padding: 10px;
 	padding-left: 15px;
@@ -49,13 +46,10 @@
 	height: 40px;
 }
 
-.reservation-table tr td:first-child, .reservation-table tr td:nth-child(2){
-	width: 140px;
-}
-
 .reservation-table td{
 	font-weight: bold;
 	font-size: 18px;
+/* 	border: 1px solid black; */
 }
 
 .reservation-price{
@@ -155,30 +149,33 @@
 				<p
 					style="font-style: normal; font-weight: bold; font-size: 32px; line-height: 42px; text-decoration-line: underline;">예약</p>
 				<br>
+				<fieldset style="border-left:none; border-right:none; border-bottom:none; border-top-color:black;
+						width: 80%; background: none;">
+					<legend><h4>숙박 일정</h4></legend>
+				</fieldset>
 				<form action="" method="" id="reservationInfo">
-					<table class="reservation-table" width="80%">
+					<table class="reservation-table" width="90%">
 						<tr>
-							<td colspan="4" style="width: 50%;"><li> 숙박일정</li></td>
-							<td colspan="3" rowspan="2" style="width: 30%;">
+							<td colspan="4" style="width: 70%; padding-right: 210px; padding-left: 23px;">
+								<div class="schedule">
+									<div class="name">체크인</div>
+									<div class="value">${ CheckIn }</div>
+									<br>
+									<div class="name">체크아웃</div>
+									<div class="value">${ CheckOut }</div>
+								</div>
+							</td>
+							<td colspan="2" rowspan="2" style="width: 40%;">
 								<ul class="reservation-price">
 									<li><div class="name">객실요금</div><div class="value">원</div></li>
 									<li><div class="name">봉사료</div><div class="value">원</div></li>
 									<li><div class="name">요금 합계</div><div class="value">원</div></li>
 								</ul>
 							</td>
-							<td style="width: 10%;"></td>
 						</tr>
 						<tr>
-							<td colspan="4" style="padding-left: 25px; padding-right: 200px;">
-								<div class="schedule">
-									<div class="name">체크인</div><div class="value">${ CheckIn }</div><br>
-									<div class="name">체크아웃</div><div class="value">${ CheckOut }</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td style="width: 120px;"><li>체크인 시간</li></td>
-							<td style="padding-left: 30px;">
+							<td style="width: 250px;"><li>체크인 시간</li></td>
+							<td style="padding-left: 30px; width: 80px;">
 								<select class="checkIn-time">
 									<option>12:00</option>
 								</select>
@@ -188,22 +185,24 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2"><li>예약자 정보 입력</li></td>
-							<td colspan="6">
+							<td colspan="2"></td>
+							<td colspan="4">
 							<p style="font-size: 12px;">
 							선택하신 체크인 시간 2시간 이후까지 호텔에 방문하지 않을 경우 예약취소처리 되며
 							금액은 환불되지 않습니다. 변동사항은 호텔측으로 연락주시기 바랍니다.</p>
 							</td>
-							<td></td>
+						</tr>
+						<tr>
+							<td colspan="8"><li>예약자 정보 입력</li></td>
 						</tr>
 						<tr>
 							<td><li>투숙 인원</li></td>
-							<td>성인 <input type="text" class="person" readonly></td>
-							<td>소인 <input type="text" class="person" readonly></td>
+							<td colspan="5">성인 <input type="text" class="person" readonly>
+							소인 <input type="text" class="person" readonly></td>
 						</tr>
 						<tr>
 							<td><li>예약자명</li></td>
-							<td colspan="4"><input type="text" id="name" name="name"></td>
+							<td colspan="5"><input type="text" id="name" name="name"></td>
 						</tr>
 						<tr>
 							<td>
@@ -237,7 +236,7 @@
 									<li><label>침대유형</label></li>
 								</ul>
 							</td>
-							<td colspan="3" rowspan="2" style="line-height: 30px;">
+							<td colspan="2" rowspan="2" style="line-height: 30px; width: 50%;">
 								<ul class="option-radio">
 									<li>
 										<label id="non-smoke-y"><input type="radio" name="non-smoke" checked>Y</label>&emsp;
