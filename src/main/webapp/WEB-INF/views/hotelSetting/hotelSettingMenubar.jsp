@@ -10,7 +10,6 @@
 <style type="text/css">
 	.menubar{
 		width:300px;
-		height:1000px;
 		background:#060E33;
 		margin-top:-18px;
 		margin-left:-8px;

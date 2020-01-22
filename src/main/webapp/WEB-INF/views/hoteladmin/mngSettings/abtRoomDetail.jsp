@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 <style type="text/css">
 	.rightAreaRoom{
 		width:1300px;
-		height:900px;
+		height:600px;
 		float:right;
 	}
 	.roomBtn{
@@ -23,15 +23,16 @@
 		cursor:pointer;
 	}
 	.roomTypeBtn{
-		background:#3498DB;
-		color:white;
-	}
-	.roomDetailBtn{
 		background:white;
 		color:#3498DB;
 	}
+	.roomDetailBtn{
+		background:#3498DB;
+		color:white;
+	}
 	.roomTitleArea{
-		padding-bottom:20px;
+		width:1265px; 
+		padding-bottom:10px;
 		border-bottom-color: lightgray;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
@@ -41,7 +42,7 @@
 	}
 	.inLeftArea{
 		width:250px;
-		height:600px;
+		height:400px;
 		border:1px solid black;
 		margin-right:10px;
 		overflow-y: scroll;
@@ -49,16 +50,16 @@
 		background:#FFFAFA
 	}
 	.inRightArea{
-		width:850px;
-		height:600px;
+		width:1000px; 
+		height:400px;
 		border:1px solid black;
 		overflow-y: scroll;
 		overflow-x: hidden;
 	}
 	.contentArea3{
 		margin-top:10px;
-		width:1200px;
-		height:600px;
+		width:1300px;
+		height:400px;
 		display: inline-flex;
 	}
 	.subBtn{
@@ -76,24 +77,22 @@
 		cursor:pointer;
 	}
 	.roomTable{
-		width:850px;
+		width:985px;
 		text-align:center;
 	}
 	.roomTable th{
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
-	}
-	.roomTable tr{
-		height:40px;
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
+		height:30px;
 	}
 	.saveBtn{
-		width:180px;
-		height:50px;
-		font-size: 25px;
-		background:#060E33;
-		border-radius:5px;
+		width:100px;
+		height:30px;
+ 		border-radius:5px;
 		border:0;
-		color:#EAC064;
+		background:#3498DB;
+		color:white;
 	}
 	.saveBtn:hover{
 		cursor:pointer;
@@ -102,13 +101,17 @@
 	}
 	.bGroup{
 		float:right;
-		margin-right:190px;
+		margin-right:35px;
+	 
 	}
 	.setbutton{
 		border:0;
 		width:100px;
+		height:30px;
+		border-radius:5px;
 		cursor:pointer;
-		background:#DDEBFF;
+		background:#3498DB;
+		color:white;
 	}
 </style>
 </head>
@@ -122,8 +125,8 @@
 		<div class="rightAreaRoom">
 			<div class="roomTitleArea">
 				<div class="btnGroup">
-					<button class="roomBtn roomTypeBtn">객실 타입 설정</button>
-					<button class="roomBtn roomDetailBtn">객실 상세 정보</button>
+					<button class="roomBtn roomTypeBtn" onclick="location.href='goRoomType.st'">객실 타입 설정</button>
+					<button class="roomBtn roomDetailBtn" onclick="location.href='goRoomDetail.st'">객실 상세 정보</button>
 				</div>
 				<br>
 			</div>
@@ -137,10 +140,10 @@
 				<div class="inLeftArea">
 					<div align="center">
 						<button class="allShowButton"><h2>전체내역</h2></button>
-						<button class="allShowButton subBtn"><span>디럭스</span><span>0</span></button>
-						<button class="allShowButton subBtn"><span>프리미엄</span><span>0</span></button>
-						<button class="allShowButton subBtn"><span>스위트룸</span><span>0</span></button>
-						<button class="allShowButton subBtn"><span>스파룸</span><span>0</span></button>
+						<button class="allShowButton subBtn"><span>디럭스 </span><span> ( 0 )</span></button>
+						<button class="allShowButton subBtn"><span>프리미엄 </span><span> ( 0 )</span></button>
+						<button class="allShowButton subBtn"><span>스위트룸 </span><span> ( 0 )</span></button>
+						<button class="allShowButton subBtn"><span>스파룸 </span><span> ( 0 )</span></button>
 					</div>					
 				</div>
 				<div class="inRightArea">
@@ -157,7 +160,7 @@
 				</div>
 				<br>
 			</div>
-			<div align="center" style="margin-top:10px;">
+			<div align="right" style="margin-top:10px; margin-right:35px;">
 				<button class="saveBtn">저장</button>
 			</div>
 		</div>

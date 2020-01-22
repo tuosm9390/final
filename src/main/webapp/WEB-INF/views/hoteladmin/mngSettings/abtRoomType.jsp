@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HotelsComplie</title>
 <style type="text/css">
 	.rightAreaRoom{
 		width:1300px;
-		height:900px;
+		height:600px;
 		float:right;
 	}
 	.roomBtn{
@@ -31,56 +31,62 @@
 		color:#3498DB;
 	}
 	.roomTitleArea{
-		padding-bottom:20px;
+		width:1270px;
+		padding-bottom:30px;
 		border-bottom-color: lightgray;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
 	}
 	.roomTableArea{
 		margin-top:30px;
+		margin-right:30px;
 	}
 	.textArea{
 		float:left;
 	}
 	.addRoomType{
 		float:right;
-		border:0;
-		width:100px;
 		cursor:pointer;
-		background:#DDEBFF;
+		width:100px;
+		height:30px;
+		border-radius:5px;
+		border:0;
+		background-color: #3498DB;
+   		color: white;
 	}
 	.addRoomType:hover{
 		background:#AAEBFF;
 	}
 	.roomTable{
-		width:1300px;
+		width:1270px;
 		hegith:400px;
 		text-align: center;
+		border:1px solid lightgray;
 	}
 	.roomTable th{
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
 		height:30px;
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
 	}
 	.roomTable input{
 		border:0;
 	}
 	.tableAreaRoom{
 		margin-top:30px;
-		width:1300px;
+		width:1270px;
 		height:400px;
 		border:1px solid black;
 		overflow-y:scroll;
 		overflow-x:hidden;
 	}
 	.saveBtn{
-		width:180px;
-		height:50px;
-		font-size: 25px;
-		background:#060E33;
+		width:100px;
+		height:30px;
 		border-radius:5px;
 		border:0;
-		color:#EAC064;
+		background:#3498DB;
+		color:white;
 	}
 	.saveBtn:hover{
 		cursor:pointer;
@@ -99,8 +105,8 @@
 		<div class="rightAreaRoom">
 			<div class="roomTitleArea">
 				<div class="btnGroup">
-					<button class="roomBtn roomTypeBtn">객실 타입 설정</button>
-					<button class="roomBtn roomDetailBtn">객실 상세 정보</button>
+					<button class="roomBtn roomTypeBtn" onclick="location.href='goRoomType.st'">객실 타입 설정</button>
+					<button class="roomBtn roomDetailBtn" onclick="location.href='goRoomDetail.st'">객실 상세 정보</button>
 				</div>
 			</div>
 			<div class="roomTableArea">
@@ -119,7 +125,7 @@
 						</tr>
 					</table>
 				</div>
-				<div align="center" style="margin-top:10px;">
+				<div align="right" style="margin-top:10px;">
 					<button class="saveBtn">저장</button>
 				</div>
 			</div>

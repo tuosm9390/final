@@ -10,36 +10,50 @@
 	.Area1{
 		font-weight: bold;
 	}
+	.menubar{
+		height:1250px;
+	}
 	.contentArea{
 		width:1600px;
 		height:900px;
 	}
 	.titleArea{
-		width:1300px;
+		width:1250px;
 		height:50px;
 		border-bottom-width: 1px;
-		border-bottom-color: black;
+		border-bottom-color: darkgray;
 		border-bottom-style: solid;
 		margin-top:-18px;
 	}
 	
 	.rightArea{
 		float:right;
-		width:1300px;
+		width:1290px;
 		height:900px;
+		margin-left:10px;
 	}
-	.inputBox{
+	input{
 		border-radius:5px 5px 5px 5px;
+		border:1px solid lightgray;
 		width:200px;
-		height:20px;
+		height:25px;
+	}
+	select{
+		border-radius:5px 5px 5px 5px;
+		border:1px solid lightgray;
+		width:200px;
+		height:30px;
 	}
 	.basicInfoArea{
 		width:1300px;
 		height: auto;
-		margin-left:40px;
+		margin-left:70px;
+	}
+	.basicInfoArea table tr td:nth-child(2){
+		padding-right:160px;
 	}
 	.basicInfoArea tr td{
-		padding-right:108px;
+		padding-right:58px;
 		padding-bottom:10px;
 	}
 	.basicInfoArea label{
@@ -48,7 +62,7 @@
 	.systemInfoArea{
 		width:1300px;
 		height: auto;
-		margin-left:40px;
+		margin-left:70px;
 	}
 	.systemInfoArea tr td{
 		padding-right:90px;
@@ -57,18 +71,13 @@
 	.systemInfoArea label{
 		font-weight: bold;
 	}
-	.secondBox{
+/* 	.secondBox{
 		padding-left:51px;
-	} 
-	.vatSelect{
-		width:205px;
-		height:20px;
-	}
+	}  */
+
 	.hotelNotice{
-		width:733px;
-	}
-	.checkInTime{
-		height:20px;
+		width:840px;
+	
 	}
 	.nextBtn{
 		width:180px;
@@ -83,17 +92,23 @@
 		background:gray;
 		color:black;
 	}
-	.checkInTime{
-		width:180px;
-		height:30px;
+
+	.basicInfoArea{
 	}
-	.checkOutTime{
-		width:180px;
-		height:30px;
+	body{
+		overflow-x:hidden;
 	}
-	.rentedRoom{
-		width:180px;
-		height:30px;
+	.offSeason table{
+		width:890px;
+	}
+	.offSeason td:nth-child(1), .offSeason td:nth-child(3){
+		padding-right:0;
+	}
+	.peakSeason table{
+		width:890px;
+	}
+	.peakSeason td:nth-child(1), .peakSeason td:nth-child(3){
+		padding-right:0;
 	}
 </style>
 </head>
@@ -101,13 +116,15 @@
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 	<div class="contentArea">
 	<jsp:include page="hotelSettingMenubar.jsp"/>
+
 	<%-- <jsp:forward page="hotelRoomTypeSetting.jsp"/> --%>
+
 		<div class="rightArea">
 			<div class="titleArea">
-				<h2 class="titleAreaSub">호텔 정보 설정</h2>
+				<h1 class="titleAreaSub">§ 호텔 정보 설정</h1>
 			</div>
 			<div>
-				<h3>기본 정보</h3>
+				<h3 style="margin-left:30px; color:#060E33;">기본 정보</h3>
 			</div>
 			<form action="">
 			<div class="basicInfoArea"><!-- 기본정보 영역 -->
@@ -165,7 +182,7 @@
 				</table>
 			</div><!-- 기본정보 영역 끝 -->
 			<div>
-				<h3>시스템 정보</h3>
+				<h3 style="margin-left:30px; color:#060E33;">시스템 정보</h3>
 			</div>
 			<div class="systemInfoArea"><!-- systemInfoArea -->
 				<table>
@@ -247,7 +264,7 @@
 						</td>
 						<td colspan="3">
 							체크인 예정시간 
-							<select class="checkInTime">
+							<select class="checkInTime" style="width:100px;">
 								<option value="">== 시간 ==</option>
 								<option value="1">1시간</option>
 								<option value="2">2시간</option>
@@ -270,25 +287,27 @@
 					<tr>
 						<td></td>
 						<td colspan="3">
-							<div>
-								<span><b>주중</b></span>
-								<span>2 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>2 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
-								<span>1 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>1 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
-								<span>당일</span>
-								<span style="margin-right:200px;margin-left:15px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>당일</span>
-								<span><input type="text" style="margin-left:15px;"></span>
+							<div class="offSeason">
+								<table>
+									<tr>
+										<td><b>주중</b> 2 일전</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 2 일전</td>
+										<td><input type="text"></td>
+									</tr>
+									<tr>
+										<td><b>주중</b> 1 일전</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 1 일전</td>
+										<td><input type="text"></td>
+									</tr>
+									<tr>
+										<td><b>주중</b> 당일</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 당일</td>
+										<td><input type="text"></td>
+									</tr>
+								</table>
 							</div>
 						</td>
 					</tr>
@@ -302,7 +321,57 @@
 					<tr>
 						<td></td>
 						<td colspan="3">
-							<div>
+							<div class="peakSeason">
+								<table>
+									<tr>
+										<td><b>주중</b> 10 일전</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 10 일전</td>
+										<td><input type="text"></td>
+									</tr>
+									<tr>
+										<td><b>주중</b> 7 일전</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 7 일전</td>
+										<td><input type="text"></td>
+									</tr>
+									<tr>
+										<td><b>주중</b> 5 일전</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 5 일전</td>
+										<td><input type="text"></td>
+									</tr>
+									<tr>
+										<td><b>주중</b> 3 일전</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 3 일전</td>
+										<td><input type="text"></td>
+									</tr>
+									<tr>
+										<td><b>주중</b> 1 일전</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 1 일전</td>
+										<td><input type="text"></td>
+									</tr>
+									<tr>
+										<td><b>주중</b> 당일</td>
+										<td><input type="text"></td>
+										<td><b>주말</b> 당일</td>
+										<td><input type="text"></td>
+									</tr>
+								</table>
+<!-- 								<span><b>주중</b></span>
+								<span>10 일전</span>
+								<span style="margin-right:200px;"><input type="text"></span>
+								<span><b>주말</b></span>
+								<span>10 일전</span>
+								<span><input type="text"></span><br>
+								<span><b>주중</b></span>
+								<span>7 일전</span>
+								<span style="margin-right:200px;"><input type="text"></span>
+								<span><b>주말</b></span>
+								<span>7 일전</span>
+								<span><input type="text"></span><br>
 								<span><b>주중</b></span>
 								<span>5 일전</span>
 								<span style="margin-right:200px;"><input type="text"></span>
@@ -310,22 +379,10 @@
 								<span>5 일전</span>
 								<span><input type="text"></span><br>
 								<span><b>주중</b></span>
-								<span>4 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>4 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
 								<span>3 일전</span>
 								<span style="margin-right:200px;"><input type="text"></span>
 								<span><b>주말</b></span>
 								<span>3 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
-								<span>2 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>2 일전</span>
 								<span><input type="text"></span><br>
 								<span><b>주중</b></span>
 								<span>1 일전</span>
@@ -338,7 +395,7 @@
 								<span style="margin-right:200px;margin-left:15px;"><input type="text"></span>
 								<span><b>주말</b></span>
 								<span>당일</span>
-								<span><input type="text" style="margin-left:15px;"></span>
+								<span><input type="text" style="margin-left:15px;"></span> -->
 							</div>
 						</td>
 					</tr>
@@ -350,8 +407,8 @@
 					</tr>
 				</table>
 			</div><!-- 시스템 정보 영역 끝 -->
-			<hr width="1020px" style="float: left;"><br>
-				<div align="center">
+			<hr width="1250px" style="float: left;"><br>
+				<div align="right" style="margin-right:40px;margin-bottom:20px;">
 					<button class="nextBtn" onclick="location.href='goHotelRoomTypePage.set'"><b>다음</b></button>			
 				</div>
 			</form>

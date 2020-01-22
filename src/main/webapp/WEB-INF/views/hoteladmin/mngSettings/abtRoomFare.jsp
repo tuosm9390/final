@@ -7,8 +7,15 @@
 <style type="text/css">
 	.rightAreaRoom{
 		width:1300px;
-		height:900px;
+		height:600px;
 		float:right;
+	}
+	.roomTitleArea{
+		width:1265px; 
+		padding-bottom:30px;
+		border-bottom-color: lightgray;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
 	}
 	.roomBtn{
 		margin-top:20px; 
@@ -26,7 +33,7 @@
 		color:white;
 	}
 	.roomTypeSelect{
-		width:1200px;
+		width:1250px;
 		display: flex;
 		margin-top:30px;
 		background:#E9F3FF;
@@ -42,20 +49,22 @@
 	}
 	.tableArea{
 		margin-top:30px;
-		width:1215px;
-		height:500px;
+		width:1265px;
+		height:400px;
 		border:1px solid black;
 		overflow-x:hidden;
 		overflow-y:scroll; 
 	}
 	.fareTable{
-		width:1200px;
+		width:1250px;
 		text-align:center;
 		border-collapse: collapse;
+		border:1px solid lightgray;
 	}
 	th{
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
 		height:30px;
 	}
 	.money{
@@ -67,10 +76,10 @@
 		width:180px;
 		height:50px;
 		font-size: 25px;
-		background:#060E33;
 		border-radius:5px;
 		border:0;
-		color:#EAC064;
+		background:#3498DB;
+		color:white;
 	}
 	.saveBtn:hover{
 		cursor:pointer;
@@ -163,7 +172,7 @@
 					</tr>
 				</table>
 			</div>
-			<div align="center" style="margin-top:10px;">
+			<div align="right" style="margin-top:10px; margin-right:30px;">
 				<button class="saveBtn">저장</button>
 			</div>
 		</div>

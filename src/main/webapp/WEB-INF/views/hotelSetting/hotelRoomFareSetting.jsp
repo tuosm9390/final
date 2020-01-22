@@ -5,8 +5,15 @@
 <head>
 <meta charset="UTF-8">
 <style type="text/css">
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
 	.contentArea{
 		width:1600px;
+		height:900px;
+	}
+	.menubar{
 		height:900px;
 	}
 	.Area4{
@@ -14,7 +21,8 @@
 	}
 	.rightArea{
 		float:right;
-		width:1300px;
+		width:1290px;
+		margin-left:10px;
 	}
 	.titleArea{
 		width:1300px;
@@ -47,15 +55,18 @@
 		border:1px solid black;
 		overflow-x:hidden;
 		overflow-y:scroll; 
+		margin-left:30px;
 	}
 	.fareTable{
 		width:1200px;
 		text-align:center;
 		border-collapse: collapse;
+		border: 1px solid lightgray;
 	}
 	th{
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
+		background-color: #f7f7f7;
+		color: #005B9E;
+		border: 1px solid lightgray;
 		height:30px;
 	}
 	.money{
@@ -98,7 +109,7 @@
 		<div class="rightArea"><!-- 오른쪽 영역 -->
 			<div class="titleArea">
 				<div class="title">
-					<h1 class="titleText">객실 요금 설정</h1>
+					<h1 class="titleText">§ 객실 요금 설정</h1>
 				</div>
 				<div class="titleContent">
 					<h6 class="titleContentText">객실별 기본 요금을 설정해주세요.</h6>
@@ -107,7 +118,7 @@
 			
 			<!-- 위 -->
 			<div class="contentArea2">
-				<h3 style="margin-left:10px; ">기본 요금 설정</h3>
+				<h3 style="margin-left:40px; ">기본 요금 설정</h3>
 			</div>
 			
 			<div class="tableArea">
@@ -169,8 +180,8 @@
 					 </tr>
 				</table>
 			</div>
-			<br>
-			<div align="center">
+			<br> 
+			<div align="right" style="margin-right:60px;">
 				<button class="backBtn" onclick=""><b>이전</b></button>			
 				<button class="nextBtn" onclick=""><b>다음</b></button>			
 			</div>

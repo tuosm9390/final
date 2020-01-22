@@ -70,12 +70,17 @@
 }
 
 .qList th {
-	background-color: lightsteelblue;
+	background-color: #f7f7f7;
+	color: #005B9E;
+	border: 1px solid lightgray;
+	height:30px;
 }
 </style>
 </head>
 <body>
 	<header>
+		<jsp:include page="viewQuestionNewModal.jsp"></jsp:include>
+		<jsp:include page="viewQuestionNewModal2.jsp"></jsp:include>
 		<jsp:include page="../common/cmsMenubar.jsp"></jsp:include>
 		<jsp:include page="../common/menubar.jsp"></jsp:include>
 	</header>
@@ -143,12 +148,12 @@
 	</section>
 	<script>
 		$(function(){
-			$("#openClientMD").click(function(){
-				$(".modalplus").fadeIn();
+			$("#openNewMD").click(function(){
+				$(".queNewModal").fadeIn();
 			});
 			
 			$("td").parent().click(function(){
-				$(".modalplus").fadeIn();
+				$(".queModal").fadeIn();
 			});
 		});
 	</script>
