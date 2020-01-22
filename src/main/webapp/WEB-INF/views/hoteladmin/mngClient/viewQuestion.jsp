@@ -19,9 +19,10 @@
 }
 
 .searchSec {
+	margin-top: 10px;
 	float: right;
 	display: inline;
-	margin-right: 30px;
+	margin-right: 38px;
 }
 
 .searchSec select {
@@ -39,22 +40,22 @@
 #searchBtn {
 	height: 25px;
 	width: 60px;
-	border: 1px solid lightgrey;
+	border: 1px solid #3498DB;
 }
 
 #openNewMD {
 	margin-top: 10px;
 	width: 100px;
-	margin-left: 20px;
-	border: 1px solid royalblue;
+	margin-left: 10px;
+	border: 1px solid #3498DB;
 	border-radius: 5px;
-	background-color: royalblue;
+	background-color: #3498DB;
 	color: white;
 	font-weight: bold;
 } 
 
 .qList {
-	margin-left: 20px;
+	margin-left: 10px;
 	margin-top: 10px;
 	width: 1250px;
 	height: 520px;
