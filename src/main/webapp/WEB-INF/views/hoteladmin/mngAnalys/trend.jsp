@@ -9,9 +9,8 @@
 <style>
 .top-menu{
 	position: fixed;
-	z-index: auto;
 	background: white;
-	width: 1560px;
+	width: 28%;
 }
 .topSec{
 	display: inline-flex;
@@ -60,7 +59,7 @@
 
 .filterArea{
 	float: right;
-	margin-right: 100px;
+	margin-right: 70px;
 }
 
 .chartArea{
@@ -78,7 +77,7 @@
 
 .bottom-menu{
 	display: flex;
-	padding-top: 100px;
+	padding-top: 80px;
 }
 
 .Nwagon_column{
@@ -87,6 +86,10 @@
 
 input[type=text] {
 	width: 100px;
+}
+.priceInfo{
+	margin-bottom: 5px;
+	width: 440px;
 }
 </style>
 </head>
@@ -115,7 +118,6 @@ input[type=text] {
 				
 				<!-- 검색 영역 -->
 				<div class="filterArea">
-					<label>기준 : 원</label>
 					<button><</button>
 					<input type="text" id="datepicker">
 					<button>></button>
@@ -134,6 +136,7 @@ input[type=text] {
 					<c:set var="roomprice" value="800000"></c:set>
 					<c:set var="rentprice" value="200000"></c:set>
 					<c:set var="totalprice" value="${ roomprice + rentprice }"></c:set>
+					<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
 						<div style="float: left;">
 							<label>${ room }</label>
@@ -163,7 +166,6 @@ input[type=text] {
 				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 일별 지불 (고객)</label>
 				<!-- 검색 영역 -->
 				<div class="filterArea">
-					<label>기준 : 원</label>
 					<button><</button>
 					<input type="text" id="datepicker2">
 					<button>></button>
@@ -176,6 +178,7 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
+				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
 						<div style="float: left;">
 							<label><c:out value="신용카드"></c:out></label>
@@ -229,7 +232,6 @@ input[type=text] {
 				
 				<!-- 검색 영역 -->
 				<div class="filterArea">
-					<label>기준 : 원</label>
 					<button><</button>
 					<input type="text" id="datepicker3">
 					<button>></button>
@@ -248,6 +250,7 @@ input[type=text] {
 					<c:set var="roomprice" value="800000"></c:set>
 					<c:set var="rentprice" value="200000"></c:set>
 					<c:set var="totalprice" value="${ roomprice + rentprice }"></c:set>
+				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
 						<div style="float: left;">
 							<label>${ room }</label>
@@ -277,7 +280,6 @@ input[type=text] {
 				
 				<!-- 검색 영역 -->
 				<div class="filterArea">
-					<label>기준 : 원</label>
 					<button><</button>
 					<input type="text" id="datepicker4">
 					<button>></button>
@@ -290,6 +292,7 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
+				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
 						<div style="float: left;">
 							<label><c:out value="수리"></c:out></label>
@@ -337,15 +340,14 @@ input[type=text] {
 		<div id="monthly" class="monthly div3">
 			<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6; margin-left:20px;">| 월 별 객실 타입 별 매출</label>
 			<!-- 검색 영역 -->
-			<div class="filterArea">
-				<label>기준 : 원</label>
+			<div class="filterArea" style="margin-right: 180px;">
 				<button><</button>
 				<input type="text" id="datepicker5">
 				<button>></button>
-			</div>
+			</div><br><br>
+			<div class="priceInfo" align="right" style="width: 1385px;"><label>기준 : 원</label></div>
 			<!-- 검색 영역 끝 -->
 			<div id="chartArea5" align="center" class="chartArea">
-				
 			</div>
 			<!-- 차트 영역 끝 -->
 		</div>

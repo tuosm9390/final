@@ -1,7 +1,5 @@
 package com.kh.hotels;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.format.annotation.DateTimeFormat;

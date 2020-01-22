@@ -135,7 +135,7 @@
 	}
 	.subnav-analys{
 		width: 150px;
-		height:100px;
+		height:50px;
 		background-image:url('resources/images/menuSub.png');
 		background-repeat:no-repeat;
 		background-size:150px;
@@ -144,7 +144,7 @@
 		display:none;
 		position: absolute;
 		top: 100%;
-		left:-30%;
+		left:-65%;
 		color:black;
 		font-weight:bold;
 		padding-top:18px;

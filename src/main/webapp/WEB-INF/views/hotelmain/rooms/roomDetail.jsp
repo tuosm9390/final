@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 <style>
 /* 좌우 방향 버튼 */
 .carousel-control {
@@ -70,6 +73,7 @@
 
 input[type=text], select {
 	border: none !important;
+	text-align: center;
 }
 
 input[type=text] {
@@ -120,6 +124,31 @@ input[type=text] {
 .detail-img-item:nth-child(odd){
 	margin-left: 0;
 	margin-right: 2%;
+}
+
+.wrapper {
+	position: relative;
+}
+
+.ion-calendar {
+	position: absolute;
+	right: 5px;
+	top: 1px;
+}
+
+/* input */
+
+#checkIn, #checkOut {
+	text-align: center;
+	cursor: pointer;
+}
+
+#checkIn:hover, #checkOut:hover {
+	background-color: #eaf7ff;
+}
+
+#checkIn:focus, #checkOut:focus {
+	outline: none;
 }
 </style>
 </head>
@@ -184,7 +213,12 @@ input[type=text] {
 					<table>
 						<tr>
 							<td width="50%">체크인</td>
-							<td><input type="text" id="checkIn" name="checkIn"></td>
+							<td>
+								<div class="wrapper">
+									<input type="text" id="checkIn" placeholder="날짜 선택"
+										readonly /><i class="ion-calendar"></i>
+								</div>
+							</td>
 						</tr>
 					</table>
 				</div>
@@ -192,7 +226,12 @@ input[type=text] {
 					<table>
 						<tr>
 							<td width="50%">체크아웃</td>
-							<td><input type="text" id="checkOut" name="checkOut"></td>
+							<td>
+								<div class="wrapper">
+									<input type="text" id="checkOut" placeholder="날짜 선택"
+										readonly /><i class="ion-calendar"></i>
+								</div>
+							</td>
 						</tr>
 					</table>
 					
@@ -230,7 +269,7 @@ input[type=text] {
 			</div>
 		</div>
 		<!-- 중앙 예약메뉴 끝 -->
-		
+
 		<!-- 하단 세부 내용 -->
 		<div class="roomDetailIntroduce" >
 			<!-- 좌측 이미지 -->
@@ -310,7 +349,7 @@ input[type=text] {
 		});
 
 		$("#reservation-btn").click(function() {
-			location.href = "reservation.hmain?CheckOut=" + endNum + "&CheckIn=" + startNum;
+			location.href = "reservation.hmain?CheckIn=" + startNum + "&CheckOut=" + endNum;
 		});
 	</script>
 </body>
