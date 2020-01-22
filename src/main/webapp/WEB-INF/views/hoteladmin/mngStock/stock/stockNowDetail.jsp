@@ -12,7 +12,7 @@
 	width: 63.7%;
 
 	height: 70px; 
-
+/* 	margin-left: 20px; */
 	}
 
 
@@ -25,10 +25,12 @@
 	}
 	
 	#stockTbb{
-	width: 1000px;
-	height: 300px;
+	width: 100%;
 	border-collapse: collapse;
-	border: 1px solid black;
+
+	}
+	td{
+	height: 30px;
 	}
 	
 	.hrDivv{
@@ -38,7 +40,10 @@
 	}
 	.btnss{
 	margin-top: 10px;
-
+	margin-right: 59px;
+	float: right;
+	
+	
 	}
 	#zonee{
 	border-bottom: 1px solid black;
@@ -46,10 +51,30 @@
 	width: 128px;  
 	}
 	#hdivv{
-	margin-bottom: 20px;
+/* 	margin-bottom: 20px; */
+	margin-left: 20px;
 	}
 	section{
 	padding-left: none !important;
+	}
+	
+	#marginDiv{
+	margin-left: 55px;
+	overflow-y: auto;
+	max-height: 400px;
+	margin-top: 21px;
+	width: 1000px;
+	height: 400px;
+	border: 1px solid lightgray;
+	} 
+	#detail-modify-btn{
+	color:white;
+	background : royalblue;
+	border: 1px solid royalblue;
+	width: 68px;
+	height: 25px;
+	font-weight: bold;
+	border-radius: 2px;
 	}
 </style>
 </head>
@@ -62,14 +87,13 @@
 		
 	
 	</header>
-	<div class="hrDivv" id="hdivv"></div> 
-		<div>
+		<div id="marginDiv">
 			<table id="stockTbb">  
 				<tr>  
 					<th><input type="checkbox"></th>
 					<th style="color: #005B9E">대분류</th>
 					<th style="color: #005B9E">중분류</th>
-					<th style="color: #005B9E">소부륜</th>
+					<th style="color: #005B9E; width: 200px;">소분류</th>
 					<th style="color: #005B9E">제품번호</th>
 					<th style="color: #005B9E">공급가액</th>
 					<th style="color: #005B9E">부가세</th>
@@ -79,7 +103,7 @@
 					<th style="color: #005B9E">창고명</th>
 					<th style="color: #005B9E">위치</th>
 				</tr>
-				<c:forEach var="i" begin="1" end="6">
+				<c:forEach var="i" begin="1" end="19">
 					<tr>
 						<td><input type="checkbox"></td>
 						<td style="color: #005B9E"><c:out value="전자제품"/></td>
@@ -97,9 +121,10 @@
 					</tr>
 				</c:forEach>
 			</table>
-		<div class="hrDivv"></div>
 		</div>
-			<div class="btnss"><button>수정</button>&nbsp;<button>닫기</button></div> 
+			<div class="btnss">
+			<button id="detail-modify-btn">수정</button>&nbsp;
+			</div> 
 	
 	 
 	

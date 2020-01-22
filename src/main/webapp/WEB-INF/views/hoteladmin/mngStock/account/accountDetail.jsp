@@ -8,28 +8,30 @@
 <title>Insert title here</title>
 <style>
 	#TopTable{
-		width: 1000px;
-		height: 400px;
+		width: 100%;
 		border-collapse: collapse;
 	} 
-	th{
+	#TopTable th{
 		background-color: #f7f7f7;
 		color: #005B9E;
 		height: 40px;
 	}
-	td,th{
+	#TopTable td,#TopTable th{
 		border: 1px solid lightgray;
 		text-align: center;
+		height: 31px;
 	
 	}
 	
 	#mainDiv{
-		height: 600px;
-		border: 1px solid black;
+		height: 400px;
 		width: 1000px;
+		overflow-y:auto; 
+		border: 1px solid lightgray;
 	}
 	.btnss{
-	margin-top: 5px;
+	margin-top: 8px;
+	margin-left: 89%;
 	}
 	.topbar{
 	display: inline-block;
@@ -48,15 +50,29 @@
 	margin-right: 5px;
 	height:21px; 
 	}
+	#acDiv{
+	margin-left: 40px;
+	margin-top: 24px;
+	}
+	#newac{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
+	width: 60px;
+	}
 </style>
 </head>
 <body>
 	<header>
 	</header>
+	<div id="acDiv">
 	<div id="topDivv">
 		<div>
 			<input type="text" class="topbar">
 		</div>
+		
 		<div>
 			<select class="topbar" id="tb">
 				<option>ff</option>	
@@ -65,9 +81,8 @@
 		</div>
 	  
 	</div>
-	<div id="hr"></div>
 	<div id="mainDiv" style="overflow: auto;">
-		<table border="1px solid black;" id="TopTable">
+		<table id="TopTable">
 			<tr>
 				<th>은행코드</th>
 				<th>은행명</th>
@@ -75,18 +90,19 @@
 				<th>예금주명</th>
 				<th>비고</th>
 			</tr>
-			<c:forEach var="i" begin="1" end="10">
+			<c:forEach var="i" begin="1" end="1">
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>f</td>
+					<td>f</td>
+					<td>f</td>
+					<td>f</td>
+					<td>f</td>
 				</tr>
 			</c:forEach>
 		</table>
 	</div><!-- end -->
-	<div class="btnss"><button>신규</button>&nbsp;<button>닫기</button></div> 
+	<div class="btnss"><button id="newac">신규</button></div> 
+	</div>
 	<footer>
 	
 	</footer>

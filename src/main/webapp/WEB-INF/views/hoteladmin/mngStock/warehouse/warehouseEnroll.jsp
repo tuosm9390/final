@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	.bodyDiv{
-	margin-top:10px; 
-	width: 760px;
-	height: 220px;
-	background-color: #f7f7f7;
-	margin-bottom: 10px;
+	.bodyDivx{
+	margin-top: 20px;
+    width: 760px;
+    height: 182px;
+    margin-bottom: 10px;
+    margin-left: 20px;
 	} 
 	.same{
 	display: inline-block;
@@ -39,7 +39,9 @@
 	}
 	.btnss{
 	margin-top: 10px;
-	border-radius: 3px; 
+    border-radius: 3px;
+    float: right;
+    margin-right: 46px;
 	}
 	.imgDiv{
 	font-size: 20px;
@@ -57,21 +59,41 @@
 	background-color: #f7f7f7;
 	color: #005B9E;
 	}
+	#enrDiv{
+	margin-left: 5px;
+	margin-top: 10px;
+	}
+	#enrollBtn{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	width: 68px;
+	height: 25px;
+	font-weight: bold;
+	border-radius: 2px;
+	}
+	#resetBtn{
+	color: gray;
+	background: white;
+	border: 1px solid gray;
+	}
 	 
 </style>
 </head>
 <body>
 	<header>
 	</header>
-		
-		<div class="divhr"></div>
-		<div class="bodyDiv">
+		<div id="enrDiv">
+		<div class="bodyDivx">
 		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:600px"  id="sam"></div>  </div>
 		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 		<div>	<div class="same" id="ssam">구분</div>  <div class="same"><input type="radio">창고 &nbsp;&nbsp;<input type="radio">기타 </div>  </div>
 		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 		</div><!-- end -->
-		<div class="divhr"></div>
-		<div class="btnss"><button>등록</button>&nbsp;<button>다시작성</button></div> 
+		<div class="btnss">
+		<button id="resetBtn">다시작성</button>&nbsp;
+		<button id="enrollBtn">등록</button>
+		</div> 
+		</div>
 </body>
 </html>

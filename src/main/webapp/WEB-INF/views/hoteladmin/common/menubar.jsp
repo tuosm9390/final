@@ -24,7 +24,6 @@
 		margin-left:-8px;
 		margin-top:-8px;
 		position: fixed;
-		z-index: 15;
 	}
 	.menu{
 		display:inline-block;
