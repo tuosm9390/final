@@ -104,16 +104,18 @@
    </div><br><br>
       <div class="category">
 
-         <button class="category btl total">전체</button>
-         <button class="category btl">기안중</button>
-         <button class="category btl">진행중</button>
-         <button class="category btl">반려</button>
-         <button class="category btl">승인</button>
-      </div>
-      <div class="writeDocu">
-         <button class="write" onclick="location.href='writeAllApprove.ap'">기안서
-            작성</button>
-      </div>
+
+			<button class="category btl total">전체</button>
+			<button class="category btl">기안중</button>
+			<button class="category btl">진행중</button>
+			<button class="category btl">반려</button>
+			<button class="category btl">승인</button>
+		</div>
+		<div class="writeDocu">
+			<button class="write" onclick="location.href='writeAllApprove.ap'">기안서
+				작성</button>
+		</div>
+
 
 
       

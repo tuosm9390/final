@@ -9,30 +9,29 @@
 .userInfo {
 	width: 1200px;
 	height: auto;
-	margin-left: auto;
-	margin-top: auto;
+	margin-left: 0px;
+	margin-top: -20px;
 }
 
 .addSearch {
 	width: 1100px;
 	height: 40px;
-	background: #060E33;
-	display: inline-block;
+	color:black;
+	    margin-top: 10px;
 }
 
 .searchArea {
-	line-height: 5px;
-	margin-left: 20px;
+	margin-left: -5px;
 	padding: 7px;
-}
-
-.searchArea a {
-	color: white;
+	color:black;
+	position:relative;
+	top:10px;
 }
 
 #searchTxt {
 	border-radius: 2px;
-	border: 1px solid white;
+	border: 1px solid lightgray;
+	height:25px;
 }
 
 .searchArea2 {
@@ -49,48 +48,62 @@
 
 #addUserBtn {
 	width: 100px;
-	height: 27px;
+	height: 30px;
 	float: right;
-	border: 1px solid white;
+	border: 1px solid #3498DB;
 	border-radius: 2px;
-	background: white;
+	background: #3498DB;
+	color:white;
+}
+.tbl_wrap {
+	margin-top:20px;
+}
+.tbl_wrap .tbl {
+	
+	 border-collapse: collapse;
+	 width:1095px;
+	 text-align: center;
+	 height:120px;
 }
 
-.tblArea {
-	width: 1100px;
-	height: auto;
-	margin-top: 20px;
+.tbl_wrap .tbl tr:not (:last-child ) {
+	border-bottom: 1px solid #aaa;
 }
 
-.contentTbl {
-	width: 1100px;
+
+
+.tbl_wrap .tbl td, th {
 	border: 1px solid lightgray;
-	text-align: center;
+      text-align: center;
+}
+.tbl_wrap .tbl th{
+   background-color: #f7f7f7;
+   color: #005B9E;
+   }
+
+.tbl_wrap .tbl .squ_tbl {
+	padding: 4px 8px;
+	background-color: #ddd;
+	font-size: 13px;
 }
 
-.contentTbl td {
-	border: 1px solid lightgray;
-	border-top: 0px;
+#searchBtn {
+	border-radius:2px;
+	background:#3498DB;
+	color:white;
+	width:60px;
+	height:30px;
+	border:1px solid #3498DB;
 }
 
-.contentTbl td:last-child {
-	border-right: 0px;
+.titArea {
+margin-top:-60px;
+	border-bottom:1px solid lightgray;
+	width:1095px;
+	height:40px;
 }
-
-.contentTbl td:first-child {
-	border-left: 0px;
-}
-
-tr:last-child {
-	border-bottom: 10px solid lightgray;
-}
-
-.contentTbl td:nth-child(7) {
-	border-right: 0;
-}
-
-.contentTbl td {
-	border-right: 0px;
+select {
+	height:28px;
 }
 </style>
 </head>
@@ -98,27 +111,36 @@ tr:last-child {
 	<header>
 		<jsp:include page="../../common/menubar.jsp" />
 		<jsp:include page="../../common/settingMenubar.jsp" />
-	</header>
 		<jsp:include page="settingsModal/userInsertModal.jsp"/>
+	</header>
+		
 	
 	<!-- content start -->
+	<section>
 	<div class="userInfo">
+	<div class="titArea">
 		<h2>사용자 등록</h2>
-
+	</div>
 		<!-- search Area -->
 		<div class="addSearch">
 			<div class="searchArea">
-				<a>사용자명 / ID</a>&nbsp; <input id="searchTxt" type="text" name="">
-				&nbsp; <input type="checkbox" id="chkbox"> <a>미사용 포함</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			
+				<select>
+					<option selected disabled hidden>검색조건</option>
+					<option>사용자명</option>
+					<option>ID</option>
+				</select>
+				
+				<input id="searchTxt" type="text" name="">
+				<button id="searchBtn">검색</button>
 
-				<button id="subBtn">조회</button>
 				<button onclick="insertUser();" id="addUserBtn">+ 사용자 추가</button>
 
 			</div>
 		</div>
 		<!-- searchArea end -->
-		<div class="tblArea">
-			<table class="contentTbl">
+		<div class="tbl_wrap">
+			<table class="tbl">
 				<colgroup>
 					<col width="10%">
 					<col width="10%">
@@ -169,19 +191,25 @@ tr:last-child {
 		</div>
 
 	</div>
+	</section>
 	<!-- content end -->
 	
 	<script>
-	$("#tbl_tit").mouseenter(function(){
- 		$(this).css({"background":"lightgray", "cursor":"pointer"})
- 	}).mouseout(function(){
- 		$(this).css({"background":"white"})
- 	}).click(function(){
- 		
- 	});
+	$(function(){
+		$("#tbl_tit").mouseenter(function(){
+	 		$(this).css({"background":"lightgray", "cursor":"pointer"})
+	 	}).mouseout(function(){
+	 		$(this).css({"background":"white"})
+	 	}).click(function(){
+	 		
+	 	});
+		
+		
+	})
 	function insertUser() {
-		$(".modal").fadeIn();
-	}
+			$(".modal").fadeIn();
+		}
+	
 	</script>
 
 

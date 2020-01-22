@@ -12,12 +12,5 @@
 	<button onclick="location.href='goMain.hmain'">호텔 메인으로</button>	
 	<button onclick="location.href='goMain.hadmin'">호텔 관리자로</button>
 	<button onclick="location.href='goSettingMain.main'">설정으로</button>
-	
-	<%-- <jsp:forward page="WEB-INF/views/hoteladmin/main/login.jsp"/> --%>
-
-	<%-- <jsp:forward page="WEB-INF/views/hoteladmin/mngSettings/abtHotel/userInsert.jsp"/> --%>
-	<jsp:forward page="WEB-INF/views/hotelSetting/hotelInfoSetting.jsp"/>
-
-
 </body>
 </html>

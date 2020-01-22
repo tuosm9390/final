@@ -67,7 +67,7 @@
 	}
 	.brokenRoomTitleArea{
 		width:1215px;  
-		padding-bottom:30px;
+		padding-bottom:10px;
 		border-bottom-color: lightgray;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
@@ -84,9 +84,7 @@
 	<div class="mainArea">
 		<div class="rightAreaRoom">
 			<div class="brokenRoomTitleArea">
-				<div class="btnGroup">
-					<button class="roomBtn brokenRoomBtn">고장 객실 관리</button>
-				</div>
+				<h2>고장 객실 관리</h2>
 			</div>
 			<div class="brokenRoomDate">
 				<h4>고장기간</h4>
@@ -104,9 +102,9 @@
 					</tr>
 				</table>
 				<div class="brokenBtnGroup">
-					<button class="brokenBtn">조회</button>
-					<button class="brokenBtn" onclick="openBrokenModal();">고장등록</button>
-					<button class="brokenBtn">고장해지</button>
+					<button class="brokenBtn">검색</button>
+					<button class="brokenBtn" onclick="openBrokenModal();" style="margin-left:550px;">고장등록</button>
+					<button class="brokenBtn" style="background:darkgray;">고장해지</button>
 				</div>
 			</div>
 			<div class="brokenTableArea">

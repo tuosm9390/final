@@ -14,8 +14,8 @@
 	.roomBtn{
 		margin-top:20px; 
 		border:0;
-		width:180px;
-		height:40px;
+		width:130px;
+		height:30px;
 		font-weight: bold;
 		box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
 	}
@@ -32,7 +32,7 @@
 	}
 	.roomTitleArea{
 		width:1265px; 
-		padding-bottom:10px;
+		padding-bottom:20px;
 		border-bottom-color: lightgray;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
@@ -102,7 +102,6 @@
 	.bGroup{
 		float:right;
 		margin-right:35px;
-	 
 	}
 	.setbutton{
 		border:0;
@@ -112,6 +111,18 @@
 		cursor:pointer;
 		background:#3498DB;
 		color:white;
+	}
+	.disable{
+		border:1px solid gray;	
+		background:white;
+		color:gray;
+		width:80px;	
+	}
+	.enable{
+		background:#3498DB;
+		color:white;
+		border:1px solid #3498DB;	
+		width:80px;	
 	}
 </style>
 </head>
@@ -128,11 +139,10 @@
 					<button class="roomBtn roomTypeBtn" onclick="location.href='goRoomType.st'">객실 타입 설정</button>
 					<button class="roomBtn roomDetailBtn" onclick="location.href='goRoomDetail.st'">객실 상세 정보</button>
 				</div>
-				<br>
 			</div>
-			<br>
+			<h2>객실 상세 정보</h2>
+			<button class="setbutton addBtn"> + 추가 </button>
 			<div class="bGroup">
-				<button class="setbutton addBtn"> + 추가 </button>
 				<button class="setbutton disable">비활성화</button>
 				<button class="setbutton enable">활성화</button>
 			</div>

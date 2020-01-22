@@ -54,7 +54,7 @@
 		padding-left:15px;
 		width:785px;
 		height:40px;
-		background:#060E33;
+		background:royalblue;
 		color:white;
 	}
 	.addServiceArea{
@@ -81,7 +81,10 @@
 	.saveServiceBtn{
 		width:100px;
 		height:30px;
+		background:#3498DB;
+		color:white;
 		border:0;
+		cursor:pointer;
 	}
 </style>
 </head>
@@ -89,7 +92,7 @@
 	<div class="modal">
 		<div class="modal_content">
 			<div class="titleArea">
-				<h3 style="margin:0 auto;">서비스 추가</h3>
+				<h2 style="margin:0 auto;">서비스 추가</h2>
 				<a class="btn_close">×</a>
 			</div>
 			<div class="modal_content_real">

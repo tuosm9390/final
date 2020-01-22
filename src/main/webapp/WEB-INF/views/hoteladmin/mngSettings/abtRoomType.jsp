@@ -14,8 +14,8 @@
 	.roomBtn{
 		margin-top:20px; 
 		border:0;
-		width:180px;
-		height:40px;
+		width:130px;
+		height:30px;
 		font-weight: bold;
 		box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
 	}
@@ -32,7 +32,7 @@
 	}
 	.roomTitleArea{
 		width:1270px;
-		padding-bottom:30px;
+		padding-bottom:20px;
 		border-bottom-color: lightgray;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
@@ -59,7 +59,7 @@
 	}
 	.roomTable{
 		width:1270px;
-		hegith:400px;
+		hegith:380px;
 		text-align: center;
 		border:1px solid lightgray;
 	}
@@ -75,7 +75,7 @@
 	.tableAreaRoom{
 		margin-top:30px;
 		width:1270px;
-		height:400px;
+		height:380px;
 		border:1px solid black;
 		overflow-y:scroll;
 		overflow-x:hidden;
@@ -109,6 +109,7 @@
 					<button class="roomBtn roomDetailBtn" onclick="location.href='goRoomDetail.st'">객실 상세 정보</button>
 				</div>
 			</div>
+			<h2>객실 타입 설정</h2>
 			<div class="roomTableArea">
 				<label class="textArea">객실타입은 수정 및 삭제가 불가능 합니다. 비활성화 후 신규로 생성할 수 있습니다.</label>
 				<button class="addRoomType" onclick="addRoomType();">+ 추가</button>
