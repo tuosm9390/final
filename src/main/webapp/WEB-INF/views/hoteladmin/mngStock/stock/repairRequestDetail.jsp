@@ -8,7 +8,6 @@
 <title>구매상세</title>
 <style> 
 	.top-divv{
-		background-color: #f7f7f7;
 		width:735px; 
 		margin-bottom: 20px;
 	}
@@ -63,16 +62,25 @@
 	#request{
 	margin-left: 220px;
 	}
+	#wrapp{
+	margin-left: 50px;
+	
+	margin-top: 10px;
+	}
+	#TableDiv{
+	overflow-y: auto;
+	max-height: 300px;
+	width: 1200px;
+	}
 </style>
 </head>
 <body>
 	<header>
 	
 	</header>
-	<div class="hrhr"></div>
 	
 	
-	
+	<div id="wrapp">
 	    <div class="top-divv">
 		<div id="day" class="samee">
 			일자
@@ -94,7 +102,7 @@
 			</div>
 		</div><!-- top-div end -->
 		
-		
+		<div id="TableDiv">
 		<table id="Table" border="1px solid black;">
 			<tr>
 				<th><input type="checkbox"></th>
@@ -110,7 +118,7 @@
 				
 			</tr>
 			<!-- 실사용은 list size -->
-			<c:forEach var="i" begin="1" end="10">
+			<c:forEach var="i" begin="1" end="15">
 			<tr>
 				<td><input type="checkbox"></td>
 				<td>${i }</td>
@@ -138,10 +146,9 @@
 				<td><c:out value=""/></td>
 			</tr>
 		</table>
-		<div class="hrhr"></div>
-		<div class="btn"><button>확인</button></div>
 		
-		
+	</div>
+	</div>
 	<footer>
 	</footer>
 	

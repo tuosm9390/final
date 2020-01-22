@@ -8,32 +8,31 @@
 <title>Insert title here</title>
 <style>
 	 .top-div{
-	width: 76.8%;
+	width: 78%;
 	height: 100px; 
+
 	} 
 	#Table{
-	width: 1000px;
+	width:100%;
 	border-collapse: collapse;
 	}
 	
 	#filter{
-	margin-top:13px;
-	width: 50px;
-	height: 30px;
+	position: relative;
+    bottom: 28px;
 	}
 	
 	#Table td, #Table th{
-	height: 40px;
 	border: 1px solid lightgray;
 		text-align: center;
+		height: 33.1px;  
 	}
 	#Table th{
 	background-color: #f7f7f7;
 	color: #005B9E;
 	}
 	.searchCondition{
-	float: right;
-	margin-top: -50px;
+	margin-top: 32px;
 	}
 	.term{
 	float:right;
@@ -43,14 +42,51 @@
 	}
 	#titlemsg{
 		width: 220px;
-		height: 50px;
+		height: 36px;
 		margin-top: 40px;
 	}
 	#filterDiv{
 	margin-top: -20px;
 	}
-	#filter{
-	margin-top: 35px; 
+	#searchBtn{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
+	}
+	#purSearch{
+	border: 1px solid #919191;
+	}
+	#excel{
+	background : white;
+	color:green;
+	border: 1px solid green;
+	width: 68px;
+	height: 25px;
+	font-weight: bold;
+	border-radius: 2px;
+	}
+	#print{
+	color:#3498DB;
+	background : white;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
+	}
+	.btns{
+	margin-top: 5px;
+	margin-left: 67.9%;
+	}
+	#purDivv{
+	height: 395.7px;
+	border: 1px solid lightgray;
+	width: 1000px;
+	margin-top: 2px;
+	}
+	#line{
+		width: 145px;
+		border-bottom: 1px solid black;
 	}
 </style>
 </head>
@@ -66,18 +102,24 @@
 
 		<div class="top-div">
 		<div id="titlemsg"><h1>구매내역조회</h1></div>
-		<input type="text" name="serachCondition" class="searchCondition">
-		<button class="searchCondition">Search</button>
-		<div id="filterDiv">
-		<p class="term">기간&nbsp;&nbsp;<input type="text" class="term" id="termId"><input type="text" class="term"></p>
-		</div><!-- filterDiv -->
+		<div id=line></div>
+		<div id="searchZone" style="width: 1000px;"> 
+		<div>
+			<select class="searchCondition"  id="purSearch" style="margin-left:70% ; height: 26px;">
+				<option value="default">기본옵션</option>
+			</select>
+		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;">
+		<button class="searchCondition" id="searchBtn">Search</button>
 		<select style="width:80px;height:27px;" id="filter">
 			<option value="money">금액</option>
  	 		<option value="check">수령</option>
 		</select> 
+		</div>
+		
+		</div>
 		</div><!-- top div end -->
 		
-	
+	<div id="purDivv">
 	<table id="Table">
 		<tr>
 			<th>No</th>
@@ -103,11 +145,12 @@
 		<td><c:out value="발주"/></td>
 		<td><c:out value="상태"/></td>
 		<td><c:out value="ㅁㅁ"/></td>
-		</tr>
+		</tr> 
 		</c:forEach>
 	
 	</table>
-	<div class="btns"><button>Excel</button>&nbsp;<button>인쇄</button></div>
+	</div><!-- purDivv end -->
+	<div class="btns"><button id="excel">Excel</button>&nbsp;<button id="print">인쇄</button></div>
 
 	</section>
 	

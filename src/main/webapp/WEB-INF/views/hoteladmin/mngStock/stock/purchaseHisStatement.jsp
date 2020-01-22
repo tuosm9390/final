@@ -41,9 +41,7 @@
     #btable{
     margin-top: 
     }
-    #bodyTable{
-    width:70%;
-    }
+  
     #resultTable{
     width:70%;
     }
@@ -54,11 +52,33 @@
 	th{
 	background-color: #f7f7f7;
 	}
+	#stateWrap{
+	margin-left: 60px;
+	
+	}
+	#bodyTableDiv{
+	border: 1px solid lightgray;
+	width: 1048px;
+	overflow-y:auto; 
+	height: 300px;
+	}
+	#printBtn{
+	margin-left: 65.5%;
+    margin-top: 5px;
+    color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	width: 68px;
+	height: 25px;
+	font-weight: bold;
+	border-radius: 2px;
+	}
 </style>
 </head>
 <body> 
 	<header>
 	</header>
+<div id="stateWrap">
 	<div class="left" align="center">
 		<div id="leftDiv"><h1><u>구 매 전 표</u></h1></div>
 	</div>
@@ -99,7 +119,8 @@
 			</tr>
 		</table>
 	</div>
-	<table id="bodyTable">
+	<div id="bodyTableDiv">
+	<table id="bodyTable" style="width: 100%;max-height: 300px;">
 		<tr>
 			<th>일자</th>
 			<th>품목명[규격명]</th>
@@ -108,7 +129,7 @@
 			<th>공급가액</th>
 			<th>부가세</th>
 		</tr>
-			<c:forEach var="i" begin="1" end="10">
+			<c:forEach var="i" begin="1" end="19">
 		<tr>
 			<td><c:out value="02/03"></c:out></td>
 			<td><c:out value="건축용석재"></c:out></td>
@@ -119,7 +140,7 @@
 		</tr>
 			</c:forEach>
 	</table>
-	<table id="resultTable">
+	<table id="resultTable" style="width: 1031.4px;">
 		<tr>
 			<td><b>수량</b></td>
 			<td><b><c:out value="20"/></b></td>
@@ -131,7 +152,9 @@
 			<td><b><c:out value="합계값"/></b></td>
 		</tr>
 	</table>
-		<div class="btns"><button>인쇄</button>&nbsp;<button>닫기</button></div>
+	</div> <!-- bodyTableDiv end -->
+		<div class="btns"><button id="printBtn">인쇄</button></div>
+</div><!-- stateWrap End -->
 	<footer>
 	</footer>
 </body>

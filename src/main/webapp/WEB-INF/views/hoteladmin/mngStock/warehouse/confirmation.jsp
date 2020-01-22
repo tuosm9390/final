@@ -14,7 +14,6 @@
 	width: 800px;
 	height: 520px;
 	border-radius: 5px;
-	margin-left: 30%;
 	border: 1px solid black;
 	margin-top: 30px;
 	}
@@ -80,7 +79,6 @@
 	margin-bottom: 10px;
 	}
 	#myTab{
-	margin-left: 17%;
 	line-height: 30px;
 	}
 	#mailSet:hover{
