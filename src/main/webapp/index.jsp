@@ -16,7 +16,7 @@
 	<%-- <jsp:forward page="WEB-INF/views/hoteladmin/main/login.jsp"/> --%>
 
 	<%-- <jsp:forward page="WEB-INF/views/hoteladmin/mngSettings/abtHotel/userInsert.jsp"/> --%>
-	<jsp:forward page="WEB-INF/views/hotelSetting/hotelInfoSetting.jsp"/>
+	<%-- <jsp:forward page="WEB-INF/views/hotelSetting/hotelInfoSetting.jsp"/> --%>
 
 
 </body>

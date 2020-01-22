@@ -70,7 +70,7 @@ cursor: pointer;
    background-color: royalblue;
 }
 
-.titleBarplus h1 {
+.titleBarplus h2 {
    margin-top: 0;
    margin-bottom: 0;
    margin-left: 10px;
@@ -81,7 +81,7 @@ cursor: pointer;
 	<div class="modalEnroll">
 		<div class="modal_content">
 			<div class="titleBarplus">
-            <h1>창고등록</h1>
+            <h2>창고등록</h2>
             <a class="btn_close_plus">×</a>
          </div>
 			

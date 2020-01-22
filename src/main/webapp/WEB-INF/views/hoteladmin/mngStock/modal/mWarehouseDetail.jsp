@@ -24,8 +24,8 @@
 	top: 45%;
 	transform: translate(-50%, -50%);
 	width: 800px;
-	height:550px;
-	max-height: 550px;
+	height:500px;
+	max-height: 500px;
 	background-color: white;
 	overflow-y: hidden;
 }
@@ -71,7 +71,7 @@ cursor: pointer;
    background-color: royalblue;
 }
 
-.titleBarplus h1 {
+.titleBarplus h2 {
    margin-top: 0;
    margin-bottom: 0;
    margin-left: 10px;
@@ -82,7 +82,7 @@ cursor: pointer;
 	<div class="modalDetail">
 		<div class="modal_contentDetail">
 			<div class="titleBarplus">
-            <h1>창고상세</h1>
+            <h2>창고상세</h2>
             <a class="btn_close_plus">×</a>
          </div>
 			

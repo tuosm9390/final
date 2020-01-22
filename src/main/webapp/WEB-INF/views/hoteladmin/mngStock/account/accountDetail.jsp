@@ -54,7 +54,7 @@
 	margin-left: 40px;
 	margin-top: 24px;
 	}
-	#newac{
+	#newac,#topBtn{
 	color:white;
 	background : #3498DB;
 	border: 1px solid #3498DB;
@@ -69,14 +69,16 @@
 	</header>
 	<div id="acDiv">
 	<div id="topDivv">
+		<button class="topbar" style="margin-left: 3px;width: 56px; " id="topBtn">검색</button>
 		<div>
-			<input type="text" class="topbar">
+			<input type="text" class="topbar" style="border: 1px solid gray; height: 20px;">
 		</div>
 		
 		<div>
-			<select class="topbar" id="tb">
-				<option>ff</option>	
-				<option>ff</option>
+			<select class="topbar" id="tb" style="height: 25px;">
+				<option value="default" hidden="hidden">검색조건</option>
+				<option value="name">예금주명</option>
+				<option value="num">계좌번호</option>
 			</select>
 		</div>
 	  
@@ -90,7 +92,7 @@
 				<th>예금주명</th>
 				<th>비고</th>
 			</tr>
-			<c:forEach var="i" begin="1" end="1">
+			<c:forEach var="i" begin="1" end="15">
 				<tr>
 					<td>f</td>
 					<td>f</td>

@@ -40,7 +40,7 @@
 	#titlemsg{
 		width: 220px;
 		height: 36px;
-		margin-top: 40px;
+		  margin-top: 17px;
 	}
 	#filterDiv{
 	margin-top: -20px;
@@ -65,15 +65,17 @@
 	border-radius: 2px;
 	}
 	#print{
-	color:#3498DB;
-	background : white;
+	color:white;
+	background : #3498DB;
 	border: 1px solid #3498DB;
 	box-sizing: border-box;
 	height: 25px;
+	font-weight: bold;
+	width: 60px;
 	}
 	.btns{
 	margin-top: 5px;
-	margin-left: 43.1%;
+	margin-left: 41.6%;
 	}
 	#purDivv{
 	height: 397.3px;
@@ -107,11 +109,11 @@
 			<option value="money">금액</option>
  	 		<option value="check">수령</option>
 		</select> 
-			<select class="searchCondition"  id="purSearch" style="margin-left:21.6% ; height: 26px;">
-				<option value="default">기본옵션</option>
+			<select class="searchCondition"  id="purSearch" style="margin-left:21.8% ; height: 26px;">
+				<option value="default">검색조건</option>
 			</select>
-		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;">
-		<button class="searchCondition" id="searchBtn">Search</button>
+		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;border: 1px solid gray;">
+		<button class="searchCondition" id="searchBtn" style="width: 56px;">검색</button>
 		</div>
 		
 		</div>

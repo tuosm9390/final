@@ -36,6 +36,8 @@
 	}
 	input[type=text]{
 	border-radius: 3px;
+	border: 1px solid gray;
+	height: 20px;
 	}
 	.btnss{
 	margin-top: 10px;
@@ -76,7 +78,10 @@
 	color: gray;
 	background: white;
 	border: 1px solid gray;
+	font-weight: bold;
+	height: 25px;
 	}
+	
 	 
 </style>
 </head>
