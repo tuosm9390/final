@@ -42,14 +42,13 @@
 <div class="cmsMenubarArea" align="left">
 	<ul class="cmsMenubar">
 		<li>
-			<div class="cmsdiv">
+			<div class="cmsdiv" onclick="location.href='viewList.cl'">
 				<img alt="" src="${ contextPath }/resources/images/customer.png" width="30px" height="30px" style="margin-right:10px;">고객관리
 			</div>
 		</li>
 		<li>
-			<div class="cmsdiv">
-				<img alt="" src="${ contextPath }/resources/images/blackRist.png" width="30px" height="30px" style="margin-right:10px;">
-				<a href="viewBlackList.cl">블랙리스트</a>
+			<div class="cmsdiv" onclick="location.href='viewBlackList.cl'">
+				<img alt="" src="${ contextPath }/resources/images/blackRist.png" width="30px" height="30px" style="margin-right:10px;">블랙리스트
 			</div>
 		</li>
 		<li>

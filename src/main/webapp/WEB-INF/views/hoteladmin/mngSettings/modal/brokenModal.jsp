@@ -51,9 +51,9 @@
 	.modalTitle{
 		padding-top:5px;
 		padding-left:5px;
-		width:1200px;
+		width:1195px;
 		height:40px;
-		background:#060E33;
+		background:royalblue;
 		color:white;
 	}
 	.modalContentTitle{

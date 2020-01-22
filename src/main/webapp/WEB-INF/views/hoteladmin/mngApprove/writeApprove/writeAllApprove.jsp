@@ -9,7 +9,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <style>
-.writeApprove {
+/* .writeApprove {
 	width: 1200px;
 	height: 900px;
 	margin-left: auto;
@@ -40,7 +40,23 @@
 	margin-top:50px;
 	border-style:dashed;
 }
-
+ */
+ .mainArea {
+    width: 900px;
+    border: 1px sold black;
+    border: 1px solid black;
+    height: 500px;
+    margin-left:auto;
+    margin-right:auto;
+ 	
+ 	
+ }
+ .div {
+ 	display:inline-block;
+ 	height:500px;
+ 	width:290px;
+ 	border: 1px solid red;
+ }
 
 </style>
 
@@ -53,10 +69,16 @@
 <body>
 	<header>
 		<jsp:include page="../../common/menubar.jsp" />
+		<jsp:include page="../approveModal/purchaseApproveModal.jsp"></jsp:include>
 	</header>
 	<section>
-	<jsp:include page="../approveModal/purchaseApproveModal.jsp"></jsp:include>
-		<div class="writeApprove">
+	<div class="mainArea">
+		<div class="div">	</div>
+		<div class="div"></div>
+		<div class="div"></div>
+	</div>
+	
+		<%-- <div class="writeApprove">
 			<div>
 				<label>문서 유형을 선택해주세요.</label> <br>
 				 <select id="writeCategory">
@@ -71,7 +93,7 @@
 			</div>
 			
 			
-			<div class="formsArea">
+			 <div class="formsArea">
 			
 				<div id="formFix" style="display: none;">
 					<jsp:include page="writerFixApprove.jsp" />
@@ -84,10 +106,10 @@
 				</div>
 
 
-			</div>
+			</div> 
 
 
-		</div>
+		</div> --%>
 	</section>
 	<script>
 		$(function() {

@@ -81,8 +81,8 @@
 		<br>
 		<br>
 			<ul class="settingMenubar subNavv hotel">
-				<li><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">호텔정보</li>
-				<li><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">사용자등록</li>
+				<li onclick="location.href='hotelInfo.st'"><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">호텔정보</li>
+				<li onclick="location.href='hotelUserInsert.st'"><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">사용자등록</li>
 			</ul>
 		</li>
 	</ul>

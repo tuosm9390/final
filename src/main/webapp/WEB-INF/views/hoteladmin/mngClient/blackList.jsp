@@ -7,37 +7,90 @@
 <title>Insert title here</title>
 <style type="text/css">
 	.blackListArea{
-		width:1200px;
-		height:500px;
-		border:1px solid lightgray;
+		width: 1000px;
+		height: 461px;
+		border: 1px solid darkgray;
+		margin-left: 10px;
 	}
 	.blackListArea table{
-		width:1200px;
+		width: 1000px;
 		text-align:center;
 		border:1px solid lightgray;
 	}
 	.blackListArea th{
-		height:30px;
-		background-color:rgba(85, 115, 255, 0.24);
-		color:black;
+		background-color: #f7f7f7;
+    	color: #005B9E;
 	}
-	.blackListArea tr{
-		height:30px;
+	
+	.blackListArea th, .blackListArea td {
+		border: 1px solid darkgray;
+		text-align: center;
+		padding: 10px;
 	}
-	.searchSec{
-		display: flex;
-		margin-bottom: 10px;
+	.searchSec {
+		float: right;
+		display: inline;
+		margin-top: 10px;
+		margin-right: 300px;
+	}  
+	
+	.searchSec select {
+		height: 25px;
+		width: 80px;
+		border: 1px solid lightgrey;
+		border-radius: 2px;
 	}
-	.btnGroup{
-		margin-left:705px; 
+	
+	.searchContent {
+		height: 19px;
+		width: 200px;
+		border: 1px solid lightgrey;
+		border-radius: 2px;
+	}
+	
+	#searchBtn {
+		height: 25px;
+		width: 50px;
+		border: 1px solid #3498DB;
+		background-color: #3498DB;
+		color: white;
+		font-weight: bold;
+		border-radius: 2px;
 	}
 	.newBlackList, .deleteBlackList{
 		width:100px;
-		height:30px;
-		border:0;
+		height:25px;
+		border-radius:2px;
 		background:#E9F3FF;
 		cursor:pointer;
+		font-weight: bold;
 	}
+	
+	.newBlackList {
+		border:1px solid #3498DB;
+		background-color: #3498DB;
+		color: white;
+	}
+	
+	.deleteBlackList {
+		border:1px solid lightgrey;
+		background-color: lightgrey;
+	}
+	
+	.btnGroup {
+		margin-top: 20px;
+		margin-bottom: 10px;
+		margin-left: 10px;
+	}
+	
+	.pagingSec {
+	text-align: center;
+	width: 400px;
+	height: 30px;
+	border: 1px solid black;
+	margin-left: 350px;
+	margin-top: 20px;
+}
 	
 </style>
 </head>
@@ -46,9 +99,11 @@
 		<jsp:include page="../common/cmsMenubar.jsp"></jsp:include>
 		<jsp:include page="../common/menubar.jsp"></jsp:include>
 		<jsp:include page="blackListAddModal.jsp"></jsp:include>
+		<jsp:include page="modalBlackListDetail.jsp"></jsp:include>
 	</header>
 	<section>
-		<h1>블랙리스트</h1>
+		<h1 style="margin-left:10px; margin-bottom:0px;">블랙리스트</h1>
+		<hr style="width:125px; margin-right:1170px;"> 
 		
 		<!-- searchSec -->
 		<div class="searchSec">
@@ -60,12 +115,12 @@
 			</select>
 			<input type="text" name="searchContent" class="searchContent">
 			<button id="searchBtn">검색</button>
-			<div class="btnGroup">
+		</div>
+		<!-- searchSec end -->
+		<div class="btnGroup">
 				<button class="newBlackList" onclick="openBlackListModal();">등록</button>
 				<button class="deleteBlackList">삭제</button>
 			</div>
-		</div>
-		<!-- searchSec end -->
 			
 		<div class="blackListArea">
 			<table style="border-collapse: collapse;">
@@ -87,13 +142,27 @@
 				</tr> 
 			</table>
 		</div>
+		<div class="pagingSec">
+			<label>페이징 영역</label>		
+		</div>
 	</section>
 	<script>
-	function openBlackListModal(){
-			
-		$(".modalBlackListAdd").fadeIn();
+	$(function(){
 		
+		$("td").parent().click(function(){
+			$(".blackListDetailModal").fadeIn();
+		});
+		
+	});
+	function openBlackListModal(){
+		$(".modalBlackListAdd").fadeIn();
 	}
+	
+	$(function(){
+		$("td").parent().click(function(){
+			$(".modalplus").fadeIn();
+		});
+	})
 	</script>
 </body>
 </html>

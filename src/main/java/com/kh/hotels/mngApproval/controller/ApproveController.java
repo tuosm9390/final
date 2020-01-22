@@ -42,4 +42,10 @@ public class ApproveController {
 		
 		return "hoteladmin/mngApprove/allApproveDetail";
 	}
+	@RequestMapping("writeAllApprove.ap")
+	public String showWriteAll() {
+		
+		return "hoteladmin/mngApprove/writeApprove/writeAllApprove";
+	}
+	
 }
