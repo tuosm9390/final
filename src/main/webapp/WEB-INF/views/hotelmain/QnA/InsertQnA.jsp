@@ -12,7 +12,7 @@
 }
 
 .left-section {
-	padding: 10px;
+	padding: 1px;
 	position: fixed;
 	width: 38%;
 	border-right: 1px solid black;
@@ -73,17 +73,6 @@ textarea{
 				<!-- 내용 영역 -->
 				<table class="qnaDetail-table">
 					<tr>
-						<td><li>제목</li></td>
-						<td><input type="text" name="title"></td>
-						<td><label style="font-size: 16px;">비밀글 <input
-								type="checkbox" id="passwordCheck" name="passwordCheck"
-								style="width: 19px; height: 19px; vertical-align: top; margin-top: 0px;"></label></td>
-					</tr>
-					<tr>
-						<td><li>작성자명</li></td>
-						<td><input type="text" name="author"></td>
-					</tr>
-					<tr>
 						<td><li>문의유형</li></td>
 						<td>
 							<select name="qnaCondition" class="qnaCondition">
@@ -95,12 +84,25 @@ textarea{
 						</td>
 					</tr>
 					<tr>
+						<td><li>작성자명</li></td>
+						<td><input type="text" name="author"></td>
+					</tr>
+					<tr>
+						<td><li>제목</li></td>
+						<td><input type="text" name="title"></td>
+						<td><label style="font-size: 16px;"><input
+								type="checkbox" id="passwordCheck" name="passwordCheck"
+								style="width: 19px; height: 19px; vertical-align: top; margin-top: 0px;">
+								비밀글 </label></td>
+					</tr>
+					<tr>
 						<td><li>이메일</li></td>
 						<td colspan="3"><input type="text" id="email" name="email"> @ <select
 							id="email2" name="email2">
 								<option selected>naver.com</option>
 								<option>kakao.co.kr</option>
 								<option>daum.com</option>
+								<option>gmail.com</option>
 						</select></td>
 					</tr>
 					<tr>
@@ -108,14 +110,14 @@ textarea{
 						<td><input type="text" name="password" class="password" disabled></td>
 					</tr>
 					<tr>
-						<td style="vertical-align: top;"><li>문의 내용</li></td>
-						<td colspan="10"><textarea rows="7" cols="70" readonly></textarea>
+						<td style="vertical-align: top; padding-top: 5px;"><li>문의 내용</li></td>
+						<td colspan="10" style="padding-top: 5px;"><textarea rows="7" cols="70" readonly></textarea>
 					</tr>
 				</table>
 				<!-- 내용 영역 끝 -->
 				<br>
-				<button style="float: right; width: 80px; margin-left: 20px; margin-right: 95px;" onclick="complete();">완료</button>
-				<button style="float: right; width: 80px;"onclick="location.href='goQnA.hmain'">취소</button>
+				<button style="float: right; width: 100px; margin-left: 20px; margin-right: 95px;" onclick="complete();">완료</button>
+				<button style="float: right; width: 100px;"onclick="location.href='goQnA.hmain'">취소</button>
 			</div>
 			<!-- 오른쪽 내용 영역 끝 -->
 		</div>

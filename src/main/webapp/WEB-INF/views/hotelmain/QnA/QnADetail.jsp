@@ -13,7 +13,7 @@
 }
 
 .left-section {
-	padding: 10px;
+	padding: 1px;
 	position: fixed;
 	width: 38%;
 	border-right: 1px solid black;
@@ -70,20 +70,22 @@ textarea{
 				<!-- 내용 영역 -->
 				<table class="qnaDetail-table">
 					<tr>
-						<td><li>제목</li></td>
-						<td><c:out value="글 제목"></c:out></td>
-						<td><li>작성자명</li></td>
-						<td><c:out value="작성자명"></c:out></td>
-					</tr>
-					<tr>
 						<td><li>문의유형</li></td>
 						<td><c:out value="분류"></c:out></td>
+					</tr>
+					<tr>
+						<td><li>제목</li></td>
+						<td><c:out value="글 제목"></c:out></td>
+					</tr>
+					<tr>
+						<td><li>작성자명</li></td>
+						<td><c:out value="작성자명"></c:out></td>
 						<td><li>문의날짜</li></td>
 						<td><c:out value="날짜"></c:out></td>
 					</tr>
 					<tr>
-						<td style="vertical-align: top;"><li>문의 내용</li></td>
-						<td colspan="4"><textarea rows="6" cols="70" readonly></textarea>
+						<td style="vertical-align: top; padding-top: 5px;"><li>문의 내용</li></td>
+						<td style="padding-top: 5px;" colspan="4"><textarea rows="6" cols="70" readonly></textarea>
 					</tr>
 				</table>
 				<!-- 내용 영역 끝 -->
@@ -93,8 +95,8 @@ textarea{
 				<!-- 답변 영역 -->
 				<table class="answer-table">
 					<tr>
-						<td style="vertical-align: top;"><li>답변 내용</li></td>
-						<td><textarea rows="5" cols="70" readonly></textarea>
+						<td style="vertical-align: top; padding-top: 5px;"><li>답변 내용</li></td>
+						<td style="padding-top: 5px;"><textarea rows="5" cols="70" readonly></textarea>
 					</tr>
 				</table>
 				<!-- 답변 영역 끝 -->

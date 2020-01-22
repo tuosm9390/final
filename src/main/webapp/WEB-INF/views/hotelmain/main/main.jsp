@@ -34,23 +34,23 @@
 		    <!-- Wrapper for slides -->
 		    <div class="carousel-inner" role="listbox">
 		      <div class="item active">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 797px;">
+		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
 		      </div>
 		
 		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 797px;">
+		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
 		      </div>
 		    
 		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 797px;">
+		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
 		      </div>
 		      
 		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 797px;">
+		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
 		      </div>
 		      
 		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 797px;">
+		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
 		      </div>
 		    </div>
 		

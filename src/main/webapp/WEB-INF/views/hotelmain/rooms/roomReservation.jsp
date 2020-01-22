@@ -49,6 +49,10 @@
 	height: 40px;
 }
 
+.reservation-table tr td:first-child, .reservation-table tr td:nth-child(2){
+	width: 140px;
+}
+
 .reservation-table td{
 	font-weight: bold;
 	font-size: 18px;
@@ -57,7 +61,16 @@
 .reservation-price{
 	font-weight: bold;
 	font-size: 18px;
-	line-height: 50px;
+	line-height: 30px;
+	padding: 0;
+	margin-bottom: 0;
+}
+.name{
+	float: left;
+}
+
+.value{
+	float: right;
 }
 
 .reservation-table .person{
@@ -83,26 +96,34 @@
 .option, .option-radio{
 	padding-left: 0;
 	list-style: none;
+	font-size: 16px;
 }
 .option-radio{
 	padding-left: 5px;
 }
 
-.refund-box{
-	display: inline-flex;
-}
-
-.refund{
-	margin-left: 60px;
-	font-size: 14px;
-}
-
 .reservation-btn{
-	margin-right: 20px;
+	margin-left: 20px;
+	width: 100px;
 }
 
 .option label{
 	font-weight: normal !important;
+}
+
+.refund-table{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.refund-table tr:not(:last-child) td{
+	border: 1px solid black;
+	text-align: center;
+	padding: 5px 0;
+}
+
+.refund-table tr:last-child td{
+	border: none;
 }
 </style>
 </head>
@@ -135,32 +156,29 @@
 					style="font-style: normal; font-weight: bold; font-size: 32px; line-height: 42px; text-decoration-line: underline;">예약</p>
 				<br>
 				<form action="" method="" id="reservationInfo">
-					<table class="reservation-table">
+					<table class="reservation-table" width="80%">
 						<tr>
-							<td colspan="4"><li> 숙박일정</li></td>
-							<td colspan="2" rowspan="2">
+							<td colspan="4" style="width: 50%;"><li> 숙박일정</li></td>
+							<td colspan="3" rowspan="2" style="width: 30%;">
 								<ul class="reservation-price">
-									<li>총 숙박 일수 : ${ CheckIn }박</li>
-									<li>객실요금 : ${ CheckOut }원</li>
-									<li>봉사료 : 원</li>
-									<li>요금 합계 : 원</li>
+									<li><div class="name">객실요금</div><div class="value">원</div></li>
+									<li><div class="name">봉사료</div><div class="value">원</div></li>
+									<li><div class="name">요금 합계</div><div class="value">원</div></li>
 								</ul>
 							</td>
+							<td style="width: 10%;"></td>
 						</tr>
 						<tr>
-							<td colspan="4">
-								<div class="schedule" style="display: inline-flex;">
-									<div id="checkIn"></div>&nbsp;&nbsp;
-									<div id="checkOut"></div>
+							<td colspan="4" style="padding-left: 25px; padding-right: 200px;">
+								<div class="schedule">
+									<div class="name">체크인</div><div class="value">${ CheckIn }</div><br>
+									<div class="name">체크아웃</div><div class="value">${ CheckOut }</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<td><li>객실 인원</li></td>
-							<td>성인 <input type="text" class="person" readonly></td>
-							<td>어린이 <input type="text" class="person" readonly></td>
-							<td><li>체크인 시간</li></td>
-							<td>
+							<td style="width: 120px;"><li>체크인 시간</li></td>
+							<td style="padding-left: 30px;">
 								<select class="checkIn-time">
 									<option>12:00</option>
 								</select>
@@ -170,17 +188,18 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="5"><li>예약자 정보 입력</li></td>
-							<td rowspan="2">
+							<td colspan="2"><li>예약자 정보 입력</li></td>
+							<td colspan="6">
 							<p style="font-size: 12px;">
-							선택하신 체크인 시간<br>
-							2시간 이후까지 호텔에<br>
-							방문하지 않을 경우<br>
-							예약취소처리 되며<br>
-							금액은 환불되지 않습니다.<br>
-							변동사항은 호텔측으로<br>
-							연락주시기 바랍니다.</p>
+							선택하신 체크인 시간 2시간 이후까지 호텔에 방문하지 않을 경우 예약취소처리 되며
+							금액은 환불되지 않습니다. 변동사항은 호텔측으로 연락주시기 바랍니다.</p>
 							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><li>투숙 인원</li></td>
+							<td>성인 <input type="text" class="person" readonly></td>
+							<td>소인 <input type="text" class="person" readonly></td>
 						</tr>
 						<tr>
 							<td><li>예약자명</li></td>
@@ -198,7 +217,7 @@
 								<input type="text" id="phone2" class="phone" name="phone2"> - 
 								<input type="text" id="phone3" class="phone" name="phone3">
 							</td>
-							<td colspan="2"><li>옵션 선택사항</li></td>
+							<td colspan="3"><li>옵션 선택사항</li></td>
 						</tr>
 						<tr>
 							<td><li>이메일</li></td>
@@ -210,7 +229,7 @@
 									<option>daum.com</option>
 								</select>
 							</td>
-							<td rowspan="2">
+							<td rowspan="2" style="line-height: 30px;">
 								<ul class="option">
 									<li><label>금연객실</label></li>
 									<li><label>반려동물 동반</label></li>
@@ -218,7 +237,7 @@
 									<li><label>침대유형</label></li>
 								</ul>
 							</td>
-							<td rowspan="2">
+							<td colspan="3" rowspan="2" style="line-height: 30px;">
 								<ul class="option-radio">
 									<li>
 										<label id="non-smoke-y"><input type="radio" name="non-smoke" checked>Y</label>&emsp;
@@ -257,53 +276,81 @@
 				<div class="refund-box">
 					<!-- 성수기 -->
 					<div class="refund peak-refund">
-						<h4 style="font-weight: bold;">[ 성수기 주중 / 성수기 주말 ]</h4>
-	<p style="font-weight: bold;">- 소비자 책임</p>
-	10일전 or 계약 당일 : 계약금 환급 / 동일<br>
-	7일전 : 10% 공제 / 20% 공제<br>
-	5일전 : 30% 공제 / 40% 공제<br>
-	3일전 : 50% 공제 / 60% 공제<br>
-	1일전 또는 당일 : 80% 공제 / 90% 공제<br>
-	<br>
-	<p style="font-weight: bold;">- 사업자 책임</p>
-	10일전 : 계약금 / 동일<br>
-	7일전 : 계약금+10%배상 / 계약금+20%배상<br>
-	5일전 : 계약금+30%배상 / 계약금+40%배상<br>
-	3일전 : 계약금+50%배상 / 계약금+60%배상<br>
-	1일전 또는 당일 : 손해배상 / 동일<br>
-					</div>
-					
-					<!-- 비성수기 -->
-					<div class="refund nonpeak-refund">
-						<h4 style="font-weight: bold;">[ 비수기 주중 / 비수기 주말 ]</h4>
-	<p style="font-weight: bold;">- 소비자 책임</p>
-	2일전 : 계약금 / 동일<br>
-	1일전 : 10%공제 / 20%공제<br>
-	당일 또는 노쇼 : 20%공제 / 30%공제<br>
-	<br>
-	<p style="font-weight: bold;">- 사업자 책임</p>
-	2일전 : 계약금 / 동일<br>
-	1일전 : 계약금+10%배상 / 계약금+20%배상<br>
-	당일 : 계약금+20%배상 / 계약금+30%배상<br>
-	
-						<!-- 기후변화 -->
-						<div class="refund accident-refund" style="margin: 0;" align="center">
-							<br>
-							<h4 style="font-weight: bold;">[ 기후변화 또는 천재지변, 거짓 과장 광고]</h4>
-							계약금 환급
-						</div>
-						<br>
-						<label style="font-weight: 200; font-size: 16px; line-height: 21px; color: rgba(145, 133, 133, 0.71); float: right;">
-							<input type="checkbox" id="agreement" name="agreement"
-							style="width: 19px; height: 19px; vertical-align: middle; margin-top: 0px;">위 규정을 확인하였습니다.
-						</label>
+					<h5>※ 공제 또는 배상 비율(소비자 책임)</h5>
+					<table class="refund-table">
+						<tr>
+							<td style="width: 15%;" rowspan="2"></td>
+							<td style="width: 35%;" colspan="2"><h4 style="font-weight: bold;">[ 성수기 ]</h4></td>
+							<td style="width: 15%;" rowspan="2"></td>
+							<td style="width: 35%;" colspan="2"><h4 style="font-weight: bold;">[ 비수기 ]</h4></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;">주중</td>
+							<td style="font-weight: bold;">주말</td>
+							<td style="font-weight: bold;">주중</td>
+							<td style="font-weight: bold;">주말</td>
+						</tr>
+						<tr>
+							<td>10일전</td>
+							<td>전액 환불</td>
+							<td>전액 환불</td>
+							<td rowspan="2">2일전</td>
+							<td rowspan="2">전액 환불</td>
+							<td rowspan="2">전액 환불</td>
+						</tr>
+						<tr>
+							<td>7일전</td>
+							<td>10%</td>
+							<td>20%</td>
+						</tr>
+						<tr>
+							<td>5일전</td>
+							<td>30%</td>
+							<td>40%</td>
+							<td rowspan="2">1일전</td>
+							<td rowspan="2">10%</td>
+							<td rowspan="2">20%</td>
+						</tr>
+						<tr>
+							<td>3일전</td>
+							<td>50%</td>
+							<td>60%</td>
+						</tr>
+						<tr>
+							<td>1일전</td>
+							<td>80%</td>
+							<td>90%</td>
+							<td rowspan="2">노쇼</td>
+							<td rowspan="2">20%</td>
+							<td rowspan="2">30%</td>
+						</tr>
+						<tr>
+							<td>노쇼</td>
+							<td>100%</td>
+							<td>100%</td>
+						</tr>
+						<tr>
+							<td colspan="6"><h4 style="font-weight: bold;">[ 기후변화 또는 천재지변, 거짓 과장 광고]</h4></td>
+						</tr>
+						<tr>
+							<td colspan="6">전액 환불</td>
+						</tr>
+						<tr>
+							<td colspan="6" style="color: gray; text-align: right;">※ 사업자 책임일 경우 계약금 + 배상 비율만큼 배상</td>
+						</tr>
+					</table>
+					<br>
+					<label style="font-weight: 200; font-size: 16px; line-height: 21px; color: rgba(145, 133, 133, 0.71); float: right;">
+						<input type="checkbox" id="agreement" name="agreement"
+						style="width: 19px; height: 19px; vertical-align: middle; margin-top: 0px;">위 규정을 확인하였습니다.
+					</label>
 					</div>
 				</div>
 				<!-- 규정 안내 끝 -->
-				
+				<br><br>
 				<div class="reservation-page_btn" align="right">
-					<button class="reservation-btn reservation-cancel">뒤로가기</button>
-					<button class="reservation-btn reservation-submit">예약하기</button>
+					<button class="reservation-btn reservation-cancel">취소</button>
+					<button class="reservation-btn reservation-submit">예약</button>
 					<br><br><br>
 				</div>
 			</div>
@@ -313,36 +360,16 @@
 	</section>
 	<footer></footer>
 	<script>
-		$(function() {
-			var date = new Date(${CheckIn});
-			$("#checkIn").datepicker({
-				onSelect : function(date) {
-					//종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
-					endNum = date;
-					$("#checkOut").datepicker({
-						minDate : new Date(endNum),
-					});
-				}
-			}).data('datepicker');
-			
-			checkOut = $("#checkOut").datepicker({
-				//선택한 날짜를 가져옴
-				onSelect : function(date) {
-					startNum = date;
-					$('#checkIn').datepicker({
-						//시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
-						maxDate : new Date(startNum),
-					});
-				}
-			}).data('datepicker');
-		});
-		
 		$(".reservation-cancel").click(function(){
 			location.href='goRooms.hmain';
 		});
 		
 		$(".reservation-submit").click(function(){
-			location.href='reservationResult.hmain';
+			if($("#agreement").prop("checked") == true){
+				location.href='reservationResult.hmain';
+			} else {
+				alert("환불 규정을 확인해주세요.");
+			}
 		});
 	</script>
 </body>
