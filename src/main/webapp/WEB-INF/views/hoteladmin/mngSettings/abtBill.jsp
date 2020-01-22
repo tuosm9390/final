@@ -112,8 +112,8 @@
 <body>
 	<header>
 		<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
-		<jsp:include page="../../common/menubar.jsp"/>
-		<jsp:include page="../../common/productMenubar.jsp"/>
+		<jsp:include page="../common/settingMenubar.jsp"/>
+	<jsp:include page="../common/menubar.jsp"/>
 	</header>
 	<section>
 	<h1>영수증</h1>

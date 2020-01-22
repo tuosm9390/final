@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <style>
 	 .top-div{
-	width: 78%;
+	width: 79%;
 	height: 100px; 
 	} 
 	#Table{
@@ -42,7 +42,7 @@
 	#titlemsg{
 		width: 220px;
 		height: 36px;
-		margin-top: 40px;
+	  margin-top: 17px;
 	}
 	#filterDiv{
 	margin-top: -20px;
@@ -67,20 +67,23 @@
 	border-radius: 2px;
 	}
 	#print{
-	color:#3498DB;
-	background : white;
+	color:white;
+	background : #3498DB;
 	border: 1px solid #3498DB;
 	box-sizing: border-box;
 	height: 25px;
+	font-weight: bold;
+	width: 60px;
+	
 	}
 	.btns{
 	margin-top: 5px;
-	margin-left: 63.7%;
+	margin-left: 69.8%;
 	}
 	#purDivv{
 	height: 403.7px;
 	border: 1px solid lightgray;
-	width: 1000px;
+	width: 1100px;
 	margin-top: 2px;
 	}
 	#line{
@@ -103,12 +106,14 @@
 		<div id="titlemsg"><h1>거래처관리</h1></div>
 		<div id=line></div>
 		<div id="searchZone" style="width: 1000px;"> 
-		<div>
-			<select class="searchCondition"  id="purSearch" style="margin-left:70% ; height: 26px;">
-				<option value="default">기본옵션</option>
+		<div style="width: 1146px;">
+			<select class="searchCondition"  id="purSearch" style="margin-left:70.2% ; height: 26px;">
+				<option value="default" hidden="hidden">검색조건</option>
+				<option value="acName">거래처명</option>
+				<option value="acStock">거래항목</option>
 			</select>
-		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;">
-		<button class="searchCondition" id="searchBtn">Search</button>
+		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px; border: 1px solid gray">
+		<button class="searchCondition" id="searchBtn" style="width: 56px;">검색</button>
 		</div>
 		
 		</div>
@@ -143,7 +148,7 @@
 		</table>
 
 	</div><!-- purDivv end -->
-	<div class="btns"><button id="excel" style="width: 125px;">사용중단/재사용</button>&nbsp;<button id="print">신규</button></div>
+	<div class="btns"><button id="excel" style="width: 125px;font-weight: bold;">사용중단/재사용</button>&nbsp;<button id="print">신규</button></div>
 
 	</section>
 	

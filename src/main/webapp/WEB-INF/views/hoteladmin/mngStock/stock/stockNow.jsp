@@ -147,7 +147,7 @@ background : white;
 	border-radius: 2px;
 }
 #mainMsg{
-	font-size: 30px;
+	font-size: 25px;
 	font-weight: bold;
 }
 </style>
@@ -192,7 +192,7 @@ background : white;
  	 			<option value="check">수령</option>
 			</select>
 			<input type="text" name="serachCondition" class="searchCondition" style="height: 20px;width: 150px;"> 
-			<button class="searchCondition" style="width: 50px; height: 25px" id="sbtn">검색</button>
+			<button class="searchCondition" style="width: 50px; height: 25px; width: 56px;" id="sbtn" >검색</button>
 		</div>
 	</div><!-- top div end -->
 		<div id="stockTb">

@@ -42,7 +42,7 @@
 	#titlemsg{
 		width: 220px;
 		height: 36px;
-		margin-top: 40px;
+	  margin-top: 17px;
 	}
 	#filterDiv{
 	margin-top: -20px;
@@ -72,6 +72,7 @@
 	border: 1px solid #3498DB;
 	box-sizing: border-box;
 	height: 25px;
+	font-weight: bold;
 	}
 	.btns{
 	margin-top: 5px;
@@ -98,15 +99,15 @@
 	<section id="sbody">
 
 		<div class="top-div">
-		<div id="titlemsg"><h1>구매변동이력</h1></div>
+		<div id="titlemsg"><h1>재고변동이력</h1></div>
 		<div id=line></div>
 		<div id="searchZone" style="width: 1000px;"> 
 		<div>
 			<select class="searchCondition"  id="purSearch" style="margin-left:70% ; height: 26px;">
-				<option value="default">기본옵션</option>
+				<option value="default">검색조건</option>
 			</select>
 		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;">
-		<button class="searchCondition" id="searchBtn">Search</button>
+		<button class="searchCondition" id="searchBtn" style="width: 56px;">검색</button>
 		<select style="width:80px;height:27px;" id="filter">
 			<option value="money">금액</option>
  	 		<option value="check">수령</option>

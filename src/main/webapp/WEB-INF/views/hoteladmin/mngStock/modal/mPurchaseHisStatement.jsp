@@ -68,7 +68,7 @@ cursor: pointer;
    background-color: royalblue;
 }
 
-.titleBarplus h1 {
+.titleBarplus h2 {
    margin-top: 0;
    margin-bottom: 0;
    margin-left: 10px;
@@ -79,7 +79,7 @@ cursor: pointer;
 	<div class="modalState">
 		<div class="modal_contentState">
 			<div class="titleBarplus">
-            <h1>물품상세</h1>
+            <h2>물품상세</h2>
             <a class="btn_close_plus">×</a>
          </div>
 			

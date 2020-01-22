@@ -41,6 +41,18 @@ public class SettingController {
 		
 		return "hoteladmin/mngSettings/abtServiceSetting";
 	}
+
+	
+	@RequestMapping("goReserv.st")
+	public String goReserv() {
+		
+		return "hoteladmin/mngSettings/abtReserv";
+	}
+	@RequestMapping("goBill.st")
+	public String goBill() {
+		
+		return "hoteladmin/mngSettings/abtBill";
+
 	@RequestMapping("hotelInfo.st")
 	public String goHotelInfo() {
 		return "hoteladmin/mngSettings/abtHotel/hotelInfo";
@@ -48,6 +60,7 @@ public class SettingController {
 	@RequestMapping("hotelUserInsert.st")
 	public String goHotelUserInfo() {
 		return "hoteladmin/mngSettings/abtHotel/userInsert";
+
 	}
 		
 	

@@ -72,8 +72,8 @@
 		<br>
 		<br>
 			<ul class="settingMenubar subNavv setting">
-				<li><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">예약확인서</li>
-				<li><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">영수증</li>	
+				<li onclick="location.href='goReserv.st'"><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">예약확인서</li>
+				<li onclick="location.href='goBill.st'"><img alt="" src="${ contextPath }/resources/images/settingsub.png" width="30px" height="30px" style="margin-right:10px;">영수증</li>	
 			</ul>
 		</li>
 		<li>

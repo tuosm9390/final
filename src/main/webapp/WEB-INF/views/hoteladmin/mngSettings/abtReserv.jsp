@@ -4,9 +4,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
-<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
@@ -63,7 +60,6 @@
 	} 
 	
 	.btnsss{
-	margin-left: 30%;
 	margin-top: 5px;
 	}
 	#wrapdivv{
@@ -98,7 +94,6 @@
 	width: 800px;
 	height: 680px;
 	border-radius: 5px;
-	margin-left: 30%;
 	border: 1px solid black;
 	margin-top: 50px; 
 	}
@@ -170,7 +165,6 @@
 	display: inline-table;
 	}
 	.btnss{
-	margin-left: 30%;
 	margin-top: 5px;
 	}
 	#wrapdiv{
@@ -184,8 +178,8 @@
 </head>
 <body>
 	<header>
-		<jsp:include page="../../common/menubar.jsp"/>
-		<jsp:include page="../../common/productMenubar.jsp"/>
+		<jsp:include page="../common/settingMenubar.jsp"/>
+	<jsp:include page="../common/menubar.jsp"/>
 	</header>
 	<section>
 	
@@ -200,14 +194,7 @@
 	
 	<div class="wrapp">
 	<div id="wrapdivv">
-		<div id="imgDivv" class="samee"><img src="${contextPath }/resources/images/NoImg.png" width="150px"></div>
-		<div class="samee" style="position: relative; bottom: 67px;">
 		
-		
-		<div><button class="ui primary basic button" id="addBtn">추가</button>
-			<input type="file" style="display: none;" id="addBtn2">
-		</div>
-		<div><button id="rightBtnn" class="ui primary basic button">삭제</button></div></div>
 	</div>
 	
 		<div align="center" style="height: 50px; margin-top: 10px; font-weight: bold"><label style="color: blue;font-size: 20px; margin-top: 10px;"><u>예약취소 확인서</u></label></div>
@@ -233,7 +220,6 @@
 		
 		<div class="bodyEqq">예약금<label style="margin-left: 92px;">2018-03-12</label></div> 
 		<div class="bodyEqq" id="rightEq">요금합계<label style="margin-left: 86px;">2018-03-12</label></div>
-		<div style="margin-left: 10px; font-weight: bold;margin-top: 10px;">호텔에서 지불해야할 금액은 <label>1,000,000</label>원 입니다.</div>
 		
 		
 		
@@ -243,19 +229,12 @@
 	<div class="btnsss">
 		<button>저장</button><button>미리보기</button>
 	</div>
-		<div class="hrDivv" style="width: 1200px; margin-left: 17%; margin-top: 100px;"></div>
+		<div class="hrDivv" style="width: 1200px; margin-top: 100px;"></div>
 	<!-- ------------
 	 -->
 	 <div class="wrap">
 	<div id="wrapdiv">
-		<div id="imgDiv" class="same"><img src="${contextPath }/resources/images/NoImg.png" width="150px"></div>
-		<div class="same" style="position: relative; bottom: 67px;">
-	
 		
-		<div><button class="ui primary basic button" id="addBtn3">추가</button>
-			<input type="file" style="display: none;" id="addBtn4">
-		</div>
-		<div><button id="rightBtn" class="ui primary basic button">삭제</button></div></div>
 	</div>
 	
 		<div align="center" style="height: 50px; margin-top: 10px; font-weight: bold"><label style="color: blue;font-size: 20px; margin-top: 10px;"><u>예약확인서</u></label></div>

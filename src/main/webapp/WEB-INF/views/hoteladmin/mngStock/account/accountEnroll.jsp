@@ -35,6 +35,7 @@
 	}
 	input[type=text]{
 	border-radius: 2px;
+	border: 1px solid gray;
 	}
 	.btnx{
     margin-top: 0px;
@@ -57,15 +58,18 @@
 	border: 1px solid gray;
 	color: 1px solid gray;
 	}
+	#addressDiv{
+	    position: relative;
+    bottom: 80px;
+	}
+	
 </style>
 </head>
 <body>
 	<header>
 	</header>
 	<div id="enrollDiv">
-		<div class="imgDiv">
-		<img src="${contextPath }/resources/images/tap1.PNG" width="60px"> 
-		</div>
+	
 		<div class="bodyDiv">
 		<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px" disabled="disabled" id="sam">&nbsp;<button>fn</button></div>  </div>
 		<div>	<div class="same" id="ssam">상호(이름)</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
@@ -73,7 +77,7 @@
 		<div>	<div class="same" id="ssam">종목</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 		<div>	<div class="same" id="ssam">전화</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 		<div>	<div class="same" id="search">우편번호검색</div>  <div class="same"><input type="text" class="space" style="width:497px" id="sam"></div>  </div>
-		<div>	<div class="same" id="address" >주소</div>  <div class="same"><textarea style="width: 600px; height: 50px; resize: none" id="textArea"></textarea></div>  </div>
+		<div>	<div class="same" id="address"><label id="addressDiv">주소</label></div>  <div class="same"><textarea style="width: 600px; height: 50px; resize: none" id="textArea"></textarea></div>  </div>
 		<div>	<div class="same" id="ssam">담당자</div>  <div class="same"><button>검색</button>&nbsp;<input type="text" class="space" style="width:551px" id="sam"></div>  </div>
 		 <div>	<div class="same" id="ssam">Email</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 			  
