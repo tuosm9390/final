@@ -160,6 +160,7 @@ section{
 
 body{
 	margin: 0;
+	background: rgba(211, 211, 211, .2);
 }
 
 input[type=text], select, button, textarea{

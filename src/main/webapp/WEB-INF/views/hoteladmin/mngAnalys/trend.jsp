@@ -51,6 +51,7 @@
 
 .filterArea{
 	float: right;
+	margin-right: 100px;
 }
 
 .chartArea{
@@ -96,8 +97,8 @@
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<label>기준 : 원</label>
-					<input type="text" id="datepicker">
 					<button><</button>
+					<input type="text" id="datepicker">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -144,8 +145,8 @@
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<label>기준 : 원</label>
-					<input type="text" id="datepicker2">
 					<button><</button>
+					<input type="text" id="datepicker2">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -210,8 +211,8 @@
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<label>기준 : 원</label>
-					<input type="text" id="datepicker3">
 					<button><</button>
+					<input type="text" id="datepicker3">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -229,8 +230,8 @@
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<label>기준 : 원</label>
-					<input type="text" id="datepicker4">
 					<button><</button>
+					<input type="text" id="datepicker4">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -290,8 +291,8 @@
 			<!-- 검색 영역 -->
 			<div class="filterArea">
 				<label>기준 : 원</label>
-				<input type="text" id="datepicker5">
 				<button><</button>
+				<input type="text" id="datepicker5">
 				<button>></button>
 			</div>
 			<!-- 검색 영역 끝 -->
