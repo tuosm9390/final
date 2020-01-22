@@ -89,31 +89,11 @@
 .clientHisPlus {
 	width: 700px;
 	margin-left: 20px;
-	height: 240px;
-	max-height: 250px;
+	height: 275px;
+	max-height: 275px;
 	overflow-y: auto;
 	border-top: 1px solid darkgray;
 	border-bottom: 1px solid darkgray;
-}
-
-.stayHisSec th {
-	background-color: #f7f7f7;
-  	color: #005B9E;
-}
-
-.stayHisSec th, .stayHisSec td {
-	text-align: center;
-	border: 1px solid lightgrey;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.stayHisSec th:nth-child(1), .stayHisSec td:nth-child(1) {
-	border-left: none;
-}
-
-.stayHisSec th:last-child, .stayHisSec td:last-child {
-	border-right: none;
 }
 
 .changecontent {
@@ -136,30 +116,16 @@
 	margin-left: 20px;
 }
 
-.btnSecPlus {
-	width: 740px;
-	height: 46px;
-	display: inline-flex;
-}
-
-#stayHisPlus, #changeHisPlus {
-	width: 246px;
-	height: 46px;
-	margin-right: 1px;
+#deleteCBtn {
+	width: 20px;
+	height: 20px;
+	border: 2px solid darkgray;
+	border-radius: 5px;
+	background-color: white;
+	color: darkgray;
 	font-size: 15px;
-	background-color: lightgrey;
 	font-weight: bold;
-	border: none;
-}
-
-#saveBtnPlus {
-	border: none;
-	width: 246px;
-	height: 46px;
-	font-size: 15px;
-	background-color: black;
-	color: white;
-	font-weight: bold;
+	padding: 0;
 }
 </style>
 </head>
@@ -167,7 +133,7 @@
 	<div class="modalplus">
 		<div class="modal_content">
 			<div class="titleBarplus">
-				<h2>고객정보</h2>
+				<h2>블랙리스트 상세</h2>
 				<a class="btn_close_plus">×</a>
 			</div>
 			
@@ -190,50 +156,20 @@
 				</div>
 				
 				<div class="clientHisPlus">
-					<div class="stayHisSec">
-						<table align="center" style="border-collapse: collapse; margin:0; width:700px;">
-							<tr>
-								<th width="6%">번호</th>
-								<th width="14%">입실일자</th>
-								<th width="14%">퇴실일자</th>
-								<th width="6%">박수</th>
-								<th width="11%">객실번호</th>
-								<th width="24%">비용 (객실요금)</th>
-								<th width="14%">예약일자</th>
-								<th width="12%">상태</th>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>2020-01-01</td>
-								<td>2020-01-02</td>
-								<td>1</td>
-								<td>209</td>
-								<td>1,000,000 (1,000,000)</td>
-								<td>2019-12-13</td>
-								<td>체크아웃</td>
-							</tr>
-						</table>
-					</div>
-					
 					<div class="changeHisSec">
 						<div class="changecontent">
 							<table>
-								<tr><td colspan="2" style="font-weight: bold">2020-01-01 01:23:32</td></tr>
 								<tr>
-									<td style="font-weight: bold">문의제목</td>
-									<td>다음 날 조식신청 가능할까요?</td>
+									<td colspan="2" style="font-weight: bold">2020-01-01 01:23:32
+									<button id="deleteCBtn">×</button></td>
 								</tr>
 								<tr>
-									<td style="font-weight: bold">문의유형</td>
-									<td>서비스</td>
+									<td style="font-weight: bold">등록사유</td>
+									<td>왜 조식에 나오는 우유가 두유가 아니냐고 물었음</td>
 								</tr>
 								<tr>
-									<td style="font-weight: bold">문의내용</td>
-									<td>다음 날 조식 신청하고 싶습니다. 가능할까요?</td>
-								</tr>
-								<tr>
-									<td style="font-weight: bold">대응내용</td>
-									<td>조식 신청 가능하십니다 고객님 ^^ 유선 문의 부탁드립니다~</td>
+									<td style="font-weight: bold">직원대응</td>
+									<td>두유 사다 줬음 넌 다신 오지 마라 이 녀석아,,,</td>
 								</tr>
 							</table>
 						</div>
@@ -256,33 +192,15 @@
 						</tr>
 					</table>
 				</div>
-			
-				<div class="btnSecPlus">
-					<button id="stayHisPlus">투숙이력</button>
-					<button id="changeHisPlus">문의이력</button>
-					<button id="saveBtnPlus">저장</button>
-				</div>
 			</div>
 		</div>
 	</div>
 
 	<script>
 		$(document).ready(function() {
-			$(".stayHisSec").hide();
-			$(".changeHisSec").hide();
-			
 			$(".btn_close_plus").click(function() {
 				$(".modalplus").fadeOut();
 			});
-		});
-		
-		$("#stayHisPlus").click(function(){
-			$(".stayHisSec").show();
-			$(".changeHisSec").hide();
-		});
-		$("#changeHisPlus").click(function(){
-			$(".stayHisSec").hide();
-			$(".changeHisSec").show();
 		});
 	</script>
 </body>
