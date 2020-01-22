@@ -82,7 +82,7 @@
 }
 
 .modalplus input[readonly] {
-	background-color: lightgrey;
+	background-color: #E4E2E2;
 	border: 1px solid darkgray;
 }
 
@@ -97,7 +97,8 @@
 }
 
 .stayHisSec th {
-	background-color: darkgray;
+	background-color: #f7f7f7;
+  	color: #005B9E;
 }
 
 .stayHisSec th, .stayHisSec td {
@@ -190,7 +191,7 @@
 				
 				<div class="clientHisPlus">
 					<div class="stayHisSec">
-						<table align="center" style="border-collapse: collapse;">
+						<table align="center" style="border-collapse: collapse; margin:0; width:700px;">
 							<tr>
 								<th width="6%">번호</th>
 								<th width="14%">입실일자</th>

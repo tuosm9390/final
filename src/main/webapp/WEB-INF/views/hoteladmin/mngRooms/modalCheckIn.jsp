@@ -331,7 +331,7 @@ input[name=svcFee], input[name=svcTot] {
 .totalDetailSec tr:not(:last-child )>td:nth-child(1) {
 	width: 200px;
 	text-align: center;
-	background-color: lightgrey;
+	background-color: #E4E2E2;
 	border-radius: 5px;
 }
 

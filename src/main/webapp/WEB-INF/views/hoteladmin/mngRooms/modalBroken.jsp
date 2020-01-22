@@ -75,7 +75,7 @@
 	font-size: 15px;
 	font-weight: bold;
 	float: right;
-	margin-top: 30px;
+	margin-top: 10px;
 }
 </style>
 </head>
@@ -90,8 +90,8 @@
 			<div class="modal_content_real_broken">
 				<table>
 					<tr>
-						<td>고장기간</td>
-						<td>01-07(화) ~ 02-12(수)</td>
+						<td width="25%">고장기간</td>
+						<td width="75%">01-07(화) ~ 02-12(수)</td>
 					</tr>
 					<tr>
 						<td>고장사유</td>
@@ -99,7 +99,11 @@
 					</tr>
 					<tr>
 						<td></td>
-						<td>고장이 나 버렸음</td>
+						<td>
+							<div style="max-height: 300px; overflow-y: auto;">
+								고장이 나 버렸음
+							</div>				
+						</td>
 					</tr>
 				</table>
 				<button id="endBroken">고장해지</button>
