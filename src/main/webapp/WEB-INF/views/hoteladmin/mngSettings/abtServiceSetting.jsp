@@ -8,12 +8,12 @@
 <style type="text/css">
 	.rightAreaRoom{
 		width:1300px;
-		height:900px;
+		height:600px;
 		float:right;
 	}
 	.serviceSearchArea{
 		margin-top:30px;
-		width:1280px;
+		width:1200px;
 		height:40px;
 		background:#E9F3FF;
 		display: flex;
@@ -42,14 +42,14 @@
 	}
 	.serviceTableArea{
 		margin-top:30px;
-		width:1280px;
+		width:1215px;
 		height:400px;
 		overflow-x:hidden;
 		overflow-y:scroll;
 		border:1px solid lightgray;
 	}
 	.serviceTable{
-		width:1265px;
+		width:1200px;
 		text-align:center;
 		border-collapse: collapse;
 	}
@@ -59,9 +59,10 @@
 		border: 1px solid lightgray;
 		height:30px;
 	}
-	.serviceTitelArea{
+	.serviceTitleArea{
+		padding-top:10px;
 		width:1215px;  
-		padding-bottom:30px;
+		padding-bottom:10px;
 		border-bottom-color: lightgray;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
@@ -87,17 +88,19 @@
 <section>
 	<div class="mainArea">
 		<div class="rightAreaRoom">
-			<div class="serviceTitelArea">
-				<div class="btnGroup">
-					<button class="serviceTitle">서비스 설정</button>
-				</div>
+			<div class="serviceTitleArea">
+				<h2>서비스 설정</h2>
 			</div>
 			<div class="serviceSearchArea">
-				<h4>서비스명 / 코드</h4>
-				<div class="serviceBtnArea">
+				<select style="height:25px;">
+					<option>검색조건</option>
+					<option>서비스명</option>
+					<option>서비스코드</option>
+				</select>
+				<div class="serviceBtnArea" style="margin-left:5px;">
 					<input type="text">
-					<button class="serviceBtn">조회</button>
-					<button class="serviceAddBtn" onclick="openServiceModal();">서비스추가</button>
+					<button class="serviceBtn">검색</button>
+					<button class="serviceAddBtn" onclick="openServiceModal();" style="margin-left:780px;">서비스추가</button>
 				</div>
 			</div>
 			<div class="serviceTableArea">
