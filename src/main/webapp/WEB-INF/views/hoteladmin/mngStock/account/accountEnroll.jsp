@@ -10,8 +10,8 @@
 	.bodyDiv{
 	margin-top:-3px;
 	width: 760px;
-	height: 470px;
-	background-color: #f0f0f0;
+	height: 444px;
+	
 	} 
 	.same{
 	display: inline-block;
@@ -25,41 +25,62 @@
 	width:100px;
 	}
 	#search{
-	width:100px;
-	margin-left: 110px;
-	color: blue;
+	width: 100px;
+    margin-left: 103px;
+    color: blue;
 	}
 	#textArea{
 	margin-left: 65px; 
 	border-radius: 5px;
 	}
 	input[type=text]{
-	border-radius: 5px;
+	border-radius: 2px;
 	}
 	.btnx{
-	margin-top: 10px;
-	border-radius: 5px; 
+    margin-top: 0px;
+    border-radius: 5px;
+    margin-left: 76.4%;
+	}
+	#enrollDiv{
+	margin-left: 10px;
+	margin-top: 5px;
+	}
+	#enrollBtn{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
+	}
+	#reBtn{
+	background: white;
+	border: 1px solid gray;
+	color: 1px solid gray;
 	}
 </style>
 </head>
 <body>
 	<header>
 	</header>
+	<div id="enrollDiv">
 		<div class="imgDiv">
 		<img src="${contextPath }/resources/images/tap1.PNG" width="60px"> 
 		</div>
 		<div class="bodyDiv">
-		<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px" disabled="disabled" id="sam"><button>fn</button></div>  </div>
+		<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px" disabled="disabled" id="sam">&nbsp;<button>fn</button></div>  </div>
 		<div>	<div class="same" id="ssam">상호(이름)</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 		<div>	<div class="same" id="ssam">대표자명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 		<div>	<div class="same" id="ssam">종목</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 		<div>	<div class="same" id="ssam">전화</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-		<div>	<div class="same" id="search">우편번호검색</div>  <div class="same"><input type="text" class="space" style="width:490px" id="sam"></div>  </div>
+		<div>	<div class="same" id="search">우편번호검색</div>  <div class="same"><input type="text" class="space" style="width:497px" id="sam"></div>  </div>
 		<div>	<div class="same" id="address" >주소</div>  <div class="same"><textarea style="width: 600px; height: 50px; resize: none" id="textArea"></textarea></div>  </div>
-		<div>	<div class="same" id="ssam">담당자</div>  <div class="same"><button>검색</button><input type="text" class="space" style="width:557px" id="sam"></div>  </div>
+		<div>	<div class="same" id="ssam">담당자</div>  <div class="same"><button>검색</button>&nbsp;<input type="text" class="space" style="width:551px" id="sam"></div>  </div>
 		 <div>	<div class="same" id="ssam">Email</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
 			  
 		</div><!-- end -->
-		<div class="btnx"><button>수정</button>&nbsp;<button>다시작성</button></div> 
+		<div class="btnx">
+		<button id="reBtn">다시작성</button>&nbsp;
+		<button id="enrollBtn">등록</button></div>
+		</div>
 </body>
 </html>

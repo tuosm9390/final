@@ -26,9 +26,8 @@
 	width: 800px;
 	height:540px;
 	max-height: 540px;
-	border: 20px solid white;
 	background-color: white;
-	overflow-y: auto;
+	overflow-y: hidden;
 }
 
 .modal_content_reals {
@@ -36,7 +35,7 @@
 	height:100%;
 	/* border:1px solid black; */
 	margin:0 auto;
-	overflow:auto;
+	overflow:hidden;
 } 
 
 .btn_close {
@@ -51,13 +50,43 @@ color:darkgray;
 .btn_close:hover {
 cursor: pointer;
 }
+
+<!-- -->
+
+.btn_close_plus {
+   position: absolute;
+   top: -1%;
+   left: 95.5%;
+   font-size: 40px;
+   float: right;
+   color: white;
+}
+
+.btn_close_plus:hover {
+   cursor: pointer;
+}
+
+.titleBarplus {
+   padding-top: 10px;
+   padding-bottom: 10px;
+   color: white;
+   background-color: royalblue;
+}
+
+.titleBarplus h1 {
+   margin-top: 0;
+   margin-bottom: 0;
+   margin-left: 10px;
+}
 </style>
 </head>
 <body>
 	<div class="modalEnroll">
 		<div class="modal_contents">
-			<h1 style="margin:0 auto;">물품등록</h1>
-			<a class="btn_close">×</a>
+			<div class="titleBarplus">
+            <h1>물품등록</h1>
+            <a class="btn_close_plus">×</a>
+         </div>
 			
 			<div class="modal_content_reals">
 				<jsp:include page="../stock/stockNowEnroll.jsp"/>

@@ -68,7 +68,6 @@
 	<header>
 	</header>
 		
-		<div class="divhr"></div>
 		<div class="bodyDiv">
 		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:600px"  id="sam"></div>  </div>
 		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
@@ -96,7 +95,6 @@
 			</table>
 		</div>
 	
-		<div class="divhr"></div>
 		<div class="btn"><button>저장</button>&nbsp;<button>다시작성</button>&nbsp;<button>사용중단/재사용</button></div> 
 </body>
 </html>

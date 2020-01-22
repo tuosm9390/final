@@ -8,31 +8,40 @@
 <title>Insert title here</title>
 <style>
 .top-menu{
-	display: inline-flex;
 	position: fixed;
 	z-index: auto;
 	background: white;
+	width: 1560px;
+}
+.topSec{
+	display: inline-flex;
+}
+.top-menu hr {
+	width: 130px;
+	margin-right: 1410px;
+	margin-bottom: 10px;
 }
 .tap-menu{
 	margin-left: 10px;
 	display: inline-flex;
 }
 .tap-menu div{
-	background: black;
+	background-color: white;
+    color: #3498DB;
 	margin-top: 10px;
-	width: 100px;
+	width: 80px;
+	height: 25px;
 	text-align: center;
-	border-radius: 10px;
-	border: 3px solid black;
+	border: 1px solid #3498DB;
+	border-radius: 2px;
 	cursor: pointer;
-	color: white;
-	font-size: 18px;
 	margin-left: 10px;
+	padding-top: 2px;
 }
 
 .tap-menu div:hover{
-	background: white;
-	color: black;
+	background: #3498DB;
+	color: white;
 }
 
 .left{
@@ -51,6 +60,7 @@
 
 .filterArea{
 	float: right;
+	margin-right: 100px;
 }
 
 .chartArea{
@@ -58,19 +68,25 @@
 	height: 300px;
 }
 .priceArea{
-	border: 1px solid black;
-	border-radius: 6px;
-	width: 30%;
+	border: 2px solid darkgray;
+	border-radius: 20px;
+	width: 400px;
+	height: 150px;
+	padding: 20px;
 	display: inline-block;
 }
 
 .bottom-menu{
 	display: flex;
-	padding-top: 50px;
+	padding-top: 100px;
 }
 
 .Nwagon_column{
 	width: 100%;
+}
+
+input[type=text] {
+	width: 100px;
 }
 </style>
 </head>
@@ -80,24 +96,28 @@
 	</header>
 	<section>
 		<div class="top-menu">
-			<label style="margin-top: 5px; font-weight: bold; font-size: 24px; text-decoration: underline;">영업 트렌드</label>
-			<div class="tap-menu">
-				<div id="total" class="tap-item ${ Condition eq 'total' ? 'active' : '' }" onclick="moveTop();">전체</div>
-				<div id="daily" class="tap-item ${ Condition eq 'daily' ? 'active' : '' }" onclick="fnMove('2');">일별</div>
-				<div id="monthly" class="tap-item ${ Condition eq 'monthly' ? 'active' : '' }" onclick="fnMove('3');">월별</div>
+			<div class="topSec">
+				<h1 style="margin-bottom: 0px; margin-top: 10px; margin-left: 20px;">영업 트렌드</h1>
+				<div class="tap-menu">
+					<div id="total" class="tap-item ${ Condition eq 'total' ? 'active' : '' }" onclick="moveTop();">전체</div>
+					<div id="daily" class="tap-item ${ Condition eq 'daily' ? 'active' : '' }" onclick="moveTop();">일별</div>
+					<div id="monthly" class="tap-item ${ Condition eq 'monthly' ? 'active' : '' }" onclick="fnMove('3');">월별</div>
+				</div>
 			</div>
+			<hr>
 		</div>
-		<div class="bottom-menu">
+		
+		<div class="bottom-menu" >
 			<!-- 전체 / 일별 -->
 			<!-- 좌측 영역 -->
 			<div id="total" class="left">
-				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 매출</label>
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 일별 매출</label>
 				
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<label>기준 : 원</label>
-					<input type="text" id="datepicker">
 					<button><</button>
+					<input type="text" id="datepicker">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -139,13 +159,13 @@
 				</div>
 				<!-- 금액 영역 끝 -->
 				<div class="div2"></div>
-				<br><br><br><br><br><br><br><br><br><br>
-				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 지불 (고객)</label>
+				<br><br><br><br>
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 일별 지불 (고객)</label>
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<label>기준 : 원</label>
-					<input type="text" id="datepicker2">
 					<button><</button>
+					<input type="text" id="datepicker2">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -205,13 +225,13 @@
 			<!-- 좌측 영역 끝 -->
 			<!-- 우측 영역 -->
 			<div class="right">
-				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 객실 현황</label>
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 일별 객실 현황</label>
 				
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<label>기준 : 원</label>
-					<input type="text" id="datepicker3">
 					<button><</button>
+					<input type="text" id="datepicker3">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -221,16 +241,45 @@
 				</div>
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
-				<div style="height: 150px;"></div>
+				<div class="priceOuterArea" align="center">
+					<c:set var="room" value="객실"/>	
+					<c:set var="rent" value="대실"/>
+					<c:set var="total" value="총 지불액"></c:set>
+					<c:set var="roomprice" value="800000"></c:set>
+					<c:set var="rentprice" value="200000"></c:set>
+					<c:set var="totalprice" value="${ roomprice + rentprice }"></c:set>
+					<div class="priceArea">
+						<div style="float: left;">
+							<label>${ room }</label>
+						</div>
+						<div style="float: right;">
+							<label>${ roomprice }</label>
+						</div>
+						<br><br>
+						<div style="float: left;">
+							<label>${ rent }</label>
+						</div>
+						<div style="float: right;">
+							<label>${ rentprice }</label>
+						</div>
+						<br><br><br><br>
+						<div style="float: left;">
+							<label style="font-weight: bold;">${ total }</label>
+						</div>
+						<div style="float: right;">
+							<label style="font-weight: bold;">${ totalprice }</label>
+						</div>
+					</div>
+				</div>
 				<!-- 금액 영역 끝 -->
-				<br><br><br><br><br><br><br><br><br><br>
-				<label style="font-weight: bold; font-size: 20px; line-height: 17px;">일별 지불 (재고)</label>
+				<br><br><br><br>
+				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 일별 지불 (재고)</label>
 				
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<label>기준 : 원</label>
-					<input type="text" id="datepicker4">
 					<button><</button>
+					<input type="text" id="datepicker4">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -283,15 +332,15 @@
 			<!-- 우측 영역 끝 -->
 		</div>
 		<!-- 전체/일별 영역 끝 -->
-		<br><br><br><br><br><br><br><br><br><br>
+		<br><br><br><br><br><br>
 		<!-- 월별 영역 -->
 		<div id="monthly" class="monthly div3">
-			<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 월 별 객실 타입 별 매출</label>
+			<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6; margin-left:20px;">| 월 별 객실 타입 별 매출</label>
 			<!-- 검색 영역 -->
 			<div class="filterArea">
 				<label>기준 : 원</label>
-				<input type="text" id="datepicker5">
 				<button><</button>
+				<input type="text" id="datepicker5">
 				<button>></button>
 			</div>
 			<!-- 검색 영역 끝 -->
@@ -309,9 +358,9 @@
 		$(".tap-item").click(function(){
 			var Condition = $(this).attr('id');
 			$(this).addClass('active');
-			$(this).css({"background":"white", "color":"black"});
-			$(this).nextAll().css({"background":"black", "color":"white"});
-			$(this).prevAll().css({"background":"black", "color":"white"});
+			$(this).css({"background":"#3498DB", "color":"white"});
+			$(this).nextAll().css({"background":"white", "color":"#3498DB"});
+			$(this).prevAll().css({"background":"white", "color":"#3498DB"});
 		});
 		
 // 		$("#total").click(function(){

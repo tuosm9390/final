@@ -26,18 +26,24 @@
 	height: 25px;
 	width: 80px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 .searchContent {
 	height: 19px;
 	width: 200px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 #searchBtn {
 	height: 25px;
-	width: 60px;
-	border: 1px solid lightgrey;
+	width: 50px;
+	border: 1px solid #3498DB;
+	background-color: #3498DB;
+	color: white;
+	font-weight: bold;
+	border-radius: 2px;
 }
 
 hr {
@@ -57,6 +63,7 @@ hr {
 	width: 150px;
 	margin-right: 20px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 #goYesterday, #goToday, #goTommorow {
@@ -64,7 +71,7 @@ hr {
 	border: 1px solid lightgrey;
 	color: dimgray;
 	background-color: white;
-	
+	border-radius: 2px;
 }
 
 .statusSec>div {
@@ -124,11 +131,9 @@ hr {
 	border: 1px solid lightgrey;
 }
 
-.stInfo:nth-child(1)>div:nth-child(2),
-.stInfo:nth-child(3)>div:nth-child(2),
-.stInfo:nth-child(4)>div:nth-child(2),
-.stInfo:nth-child(6)>div:nth-child(2),
-.stInfo:nth-child(8)>div:nth-child(2) {
+.stInfo:nth-child(1)>div:nth-child(2), .stInfo:nth-child(3)>div:nth-child(2),
+	.stInfo:nth-child(4)>div:nth-child(2), .stInfo:nth-child(6)>div:nth-child(2),
+	.stInfo:nth-child(8)>div:nth-child(2) {
 	width: 50px;
 	height: 26px;
 	padding-top: 4px;
@@ -137,9 +142,8 @@ hr {
 	border-right: none;
 }
 
-.stInfo:nth-child(2)>div:nth-child(2), 
-.stInfo:nth-child(5)>div:nth-child(2),
-.stInfo:nth-child(7)>div:nth-child(2) {
+.stInfo:nth-child(2)>div:nth-child(2), .stInfo:nth-child(5)>div:nth-child(2),
+	.stInfo:nth-child(7)>div:nth-child(2) {
 	width: 70px;
 	height: 26px;
 	padding-top: 4px;
@@ -166,8 +170,15 @@ hr {
 	overflow-y: auto;
 }
 
+.sticky-header th {
+	position: sticky;
+	top: -1px;
+	left: 0;
+	background-color: #f7f7f7;
+}
+
 .reservTable th {
-	background-color: lightsteelblue;
+	background-color: #f7f7f7;
 }
 
 .reservTable th, .reservTable td {
@@ -185,6 +196,13 @@ hr {
 	border-left: none;
 }
 
+.reservTable td:nth-child(1) {
+	background-color: #f7f7f7;
+}
+
+.reservTable .roomType {
+	
+}
 </style>
 </head>
 <body>
@@ -233,7 +251,7 @@ hr {
 		</div>
 		
 		<div class="reservTable">
-			<table style="border-collapse: collapse;">
+			<table class="table sticky-header" style="border-collapse: collapse;">
 				<tr>
 					<th width="100px;">번호</th>
 					<th width="330px;">침대</th>
@@ -253,7 +271,7 @@ hr {
 					<th width="80px;" style="color: blue;">01/25<br>토</th>
 				</tr>
 				<tr>
-					<td style="border-right: 1px solid white;"></td>
+					<td style="border-right: 1px solid white; background-color:white;"></td>
 					<td colspan="15" class="roomType">스위트</td>
 				</tr>
 				<c:forEach var="i" begin="1" end="10">
@@ -277,7 +295,7 @@ hr {
 					</tr>
 				</c:forEach>
 				<tr>
-					<td style="border-right: 1px solid white;"></td>
+					<td style="border-right: 1px solid white; background-color:white;"></td>
 					<td colspan="15" class="roomType">디럭스</td>
 				</tr>
 				<c:forEach var="i" begin="1" end="10">
@@ -301,7 +319,7 @@ hr {
 					</tr>
 				</c:forEach>
 				<tr>
-					<td style="border-right: 1px solid white;"></td>
+					<td style="border-right: 1px solid white; background-color:white;"></td>
 					<td colspan="15" class="roomType">스탠다드</td>
 				</tr>
 				<c:forEach var="i" begin="1" end="10">
@@ -337,6 +355,7 @@ hr {
 					endNum = date;
 				}
 			}).data('datepicker');
+			
 		});
 		
 		$("tr").children(".emptyroom").click(function(){

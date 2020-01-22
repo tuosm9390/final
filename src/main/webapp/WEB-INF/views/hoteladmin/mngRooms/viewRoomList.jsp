@@ -17,18 +17,24 @@ select {
 	height: 25px;
 	width: 80px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 .searchContent {
 	height: 19px;
 	width: 200px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 #searchBtn {
 	height: 25px;
-	width: 60px;
-	border: 1px solid lightgrey;
+	width: 50px;
+	border: 1px solid #3498DB;
+	background-color: #3498DB;
+	color: white;
+	font-weight: bold;
+	border-radius: 2px;
 }
 
 .floorBtn, #allFloor {

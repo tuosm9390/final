@@ -26,34 +26,38 @@
 		width: 220px;
 		height: 50px;
 		margin-top: 60px;
-	
+	}
+	#mainMsg{
+	font-size: 30px;
+	font-weight: bold;
 	}
 	#searchZone{
 	float: right;
 	}
 	#stockTb{
 	width: 700px;
-	height: 460px;
+	height: 375px;
 	border-collapse: collapse;
-	border: 1px solid black;
+	border: 1px solid lightgray;
 	margin-top: -22px;
 	}
 	td,th{
 		border: 1px solid lightgray;
 		align-content: center;
 		text-align: center;
+		height: 30px;
 	}
 	th{
 	background-color: #f7f7f7;
+	height: 30px;
 	}
 	#hrDiv{
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid lightgray;
 	width: 700px;
-	margin-top: 20px;
 	}
 	.btns{
-	margin-top: 10px;
-
+	 margin-top: 10px;
+    margin-left: 42.4%
 	}
 	.tabClass{
 	display: inline-block;
@@ -69,7 +73,52 @@
 		margin-top: 20px; 
 	}
 
+<!-- -->
+.tabb{
+	display: inline-block;
+	
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	width: 80px;
+	height: 31px;
+	
+	}
+	#myTab{
+	line-height: 30px;
+	}
+	#mailSet:hover{
+	cursor: pointer;
+	color: white;
+	background-color: #3498DB;
+	} 
+	#mailText{
+	background-color: #3498DB;
+	color:white;
+	}
+	#mailText:hover{
+	cursor: pointer;
+	}
+	#excel{
+background : white;
+	color:green;
+	border: 1px solid green;
+	width: 68px;
+	height: 25px;
+	font-weight: bold;
+	border-radius: 2px;
+}
 
+#delete{
+	background : white;
+	color:red;
+	border: 1px solid red;
+	font-weight: bold;
+	width: 68px;
+	height: 25px;
+	border-radius: 2px;
+	margin-left: 5px;
+}
 	
 	
 </style>
@@ -85,20 +134,30 @@
 	</header>
 	<section>
 		
-		<div class="tabClass" id="tclass" align="center">물품현황
+		<!-- <div class="tabClass" id="tclass" align="center">물품현황
 		</div>
 		<div class="tabClass" id="rclass" align="center">수리현황
+		</div> -->
+		<div>
+		<div id="myTab">
+			<div class="tabb" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);" id="mailSet">물품현황</div>
+			<div class="tabb" style="margin-left: 10px;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);" id="mailText">수리현황</div>
+			<div id="hrDiv"></div>
 		</div>
+	</div>
 		<div id="hidden">
 		</div>
 	<div class="top-div">
-			<div id="titlemsg"><h1>수리현황</h1></div>
-			<select style="width: 80px; height: 25px;">
+			<div id="titlemsg"><label id="mainMsg">수리현황</label></div>
+			<select style="width: 80px; height: 25px; float: right;
+  	  margin-right: 131px;">
+				<option value="default" hidden="hidden">필터</option>
+				<option>상태</option>
 				<option>상태</option>
 			</select>
 	</div><!-- top div end -->
-		<div>
-			<table id="stockTb">  
+		<div id="stockTb">
+			<table style="border-collapse: collapse; width: 100%">  
 				<tr>  
 					<th><input type="checkbox"></th>
 					<th style="color: #005B9E">수리번호</th>
@@ -118,7 +177,10 @@
 			</table>
 		<div id="hrDiv"></div>
 		</div>
-			<div class="btns"><button>Excel</button><button>선택삭제</button></div> 
+			<div class="btns">
+			<button id="delete">선택삭제</button>
+			<button id="excel">Excel</button>
+			</div> 
 	
 	
 	
@@ -141,14 +203,8 @@
 		});
 		
 		//물품현황탭
-		$(function(){
-			$("#tclass").mouseenter(function(){
-				$(this).css({"background":"lightgray","cursor":"pointer"});
-			}).mouseout(function(){
-				$(this).css({"background":"white"});
-			}).click(function(){
-				location.href='goStockNow.st';
-			});
+		$("#mailSet").click(function(){
+			location.href='goStockNow.st';
 		});
 		
 		

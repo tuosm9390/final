@@ -7,61 +7,115 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-
- .top-div{
-
-	width: 84.3%; 
+	 .top-div{
+	width: 78%;
 	height: 100px; 
-	}
+	} 
 	#Table{
-	width: 1100px;
+	width:100%;
 	border-collapse: collapse;
 	}
-	  
-	 
-	td,th{
-	text-align: center;
-	border: 1px solid lightgray;
-	text-align: center;
+	
+	#filter{
+	position: relative;
+    bottom: 28px;
 	}
-	th{
+	
+	#Table td, #Table th{
+	border: 1px solid lightgray;
+		text-align: center;
+		height: 33.1px;  
+	}
+	#Table th{
 	background-color: #f7f7f7;
 	color: #005B9E;
 	}
-	tr{
-	border: 1px solid black;
-	}
 	.searchCondition{
-	float: right;
-	
+	margin-top: 32px;
 	}
-	.selectbar{
+	.term{
 	float:right;
 	}
-	#searchId{
-		
+	#termId{
+	margin-left: 10px;
+	}
+	#titlemsg{
+		width: 220px;
+		height: 36px;
+		margin-top: 40px;
+	}
+	#filterDiv{
+	margin-top: -20px;
+	}
+	#searchBtn{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
+	}
+	#purSearch{
+	border: 1px solid #919191;
+	}
+	#excel{
+	background : white;
+	color:gray;
+	border: 1px solid gray;
+	width: 68px;
+	height: 25px;
+	font-weight: bold;
+	border-radius: 2px;
+	}
+	#print{
+	color:#3498DB;
+	background : white;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
+	}
+	.btns{
+	margin-top: 5px;
+	margin-left: 63.7%;
+	}
+	#purDivv{
+	height: 403.7px;
+	border: 1px solid lightgray;
+	width: 1000px;
+	margin-top: 2px;
+	}
+	#line{
+		width: 120px;
+		border-bottom: 1px solid black;
 	}
 </style>
 </head>
 <body>
-	<header>	
-		<jsp:include page="../../common/menubar.jsp"/>
-		<jsp:include page="../../common/productMenubar.jsp"/>
-		 <jsp:include page="../modal/mAccountDetail.jsp"/> 
-		 <jsp:include page="../modal/mAccountEnroll.jsp"/> 
-	</header>
-	<section>
+	
+<header>	
+	<jsp:include page="../../common/menubar.jsp"/>
+	<jsp:include page="../../common/productMenubar.jsp"/>
+	 <jsp:include page="../modal/mAccountDetail.jsp"/> 
+	 <jsp:include page="../modal/mAccountEnroll.jsp"/> 
+</header>
+	<section id="sbody">
+
 		<div class="top-div">
-		<h1>거래처관리</h1>
-		<button class="searchCondition">검색</button>
-		<input type="text" name="serachCondition" class="searchCondition" id="searchId">
-		<select class="selectbar">
-			<option>이체정보</option>
-			<option>사용구분</option>
-		</select>
+		<div id="titlemsg"><h1>거래처관리</h1></div>
+		<div id=line></div>
+		<div id="searchZone" style="width: 1000px;"> 
+		<div>
+			<select class="searchCondition"  id="purSearch" style="margin-left:70% ; height: 26px;">
+				<option value="default">기본옵션</option>
+			</select>
+		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;">
+		<button class="searchCondition" id="searchBtn">Search</button>
+		</div>
 		
+		</div>
 		</div><!-- top div end -->
-		<table id="Table">
+		
+	<div id="purDivv">
+	<table id="Table">
 			<tr>
 				<th>No</th>
 				<th>거래처코드</th>
@@ -83,18 +137,19 @@
 				<td><c:out value="전자제품(tv)asdasdasd" /></td>
 				<td><c:out value="YES" /></td>
 				<td><c:out value="확인" /></td>
-				<td><c:out value="경기도 의정부시 민락동 어디이이이인가 19123.123" /></td>
+				<td><c:out value="경기도 의정부시 민락동 어디이이이인" /></td>
 			</tr>  
 			</c:forEach>
 		</table>
-			<div class="btns"><button id="new">신규</button>&nbsp;<button>사용중단/재사용</button></div>
+
+	</div><!-- purDivv end -->
+	<div class="btns"><button id="excel" style="width: 125px;">사용중단/재사용</button>&nbsp;<button id="print">신규</button></div>
+
 	</section>
 	
-	<footer>
-	
-	</footer>
 	
 	<script>
+	//테이블
 	$(function(){
 		$("#Table").find("td").mouseenter(function(){
 			$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
@@ -107,9 +162,13 @@
 		});
 	});
 	
-	$("#new").click(function(){
+	$("#mState").click(function(){
+		$(".modalState").fadeIn();
+	});
+	
+	$("#print").click(function(){
 		$(".modalEnroll").fadeIn();
-	})
+	});
 	</script>
 </body>
 </html>

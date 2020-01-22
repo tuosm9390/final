@@ -13,7 +13,7 @@
 }
 
 .left-section {
-	padding: 10px;
+	padding: 1px;
 	position: fixed;
 	width: 38%;
 	border-right: 1px solid black;
@@ -37,6 +37,10 @@
 
 .insert-btn {
 	float: right;
+	width: 100px;
+}
+
+.search-btn{
 	width: 60px;
 }
 

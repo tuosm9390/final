@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,57 +10,70 @@
 .searchSec {
 	float: right;
 	display: inline;
-	margin-right: 301px;
+	margin-right: 293px;
 }
 
 .searchSec select {
 	height: 25px;
 	width: 80px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 .searchContent {
 	height: 19px;
 	width: 200px;
 	border: 1px solid lightgrey;
+	border-radius: 2px;
 }
 
 #searchBtn {
 	height: 25px;
-	width: 60px;
-	border: 1px solid lightgrey;
+	width: 50px;
+	border: 1px solid #3498DB;
+	background-color: #3498DB;
+	color: white;
+	font-weight: bold;
+	border-radius: 2px;
 }
 
 .clientList {
-
 	margin-top: 10px;
 	width: 1000px;
-	height: 520px;
+	height: 461px;
 	border: 1px solid darkgray;
-	max-height: 520px;
-	overflow-y: auto;
 }
 
 .clientList th, .clientList td {
 	border: 1px solid darkgray;
 	text-align: center;
-	padding: 5px;
+	padding: 10px;
 }
 
 .clientList th {
-	background-color: lightsteelblue;
+	background-color: #f7f7f7;
+    color: #005B9E;
 }
 
 #openClientMD {
 	margin-top: 10px;
 	width: 100px;
-	margin-left: 20px;
-	border: 1px solid royalblue;
+	margin-left: 0px;
+	border: 1px solid #3498DB;
 	border-radius: 5px;
-	background-color: royalblue;
+	background-color: #3498DB;
 	color: white;
 	font-weight: bold;
 } 
+
+.pagingSec {
+	text-align: center;
+	width: 400px;
+	height: 30px;
+	border: 1px solid black;
+	margin-left: 300px;
+	margin-top: 20px;
+}
 </style>
 </head>
 <body style="overflow-y: hidden;">
@@ -73,7 +87,8 @@
 		<h1 style="margin-left: 10px; margin-bottom:0px;">고객관리</h1>
 		<hr style="width:100px; margin-right:1195px;"> 
 		
-			<button id="openClientMD">신규</button>
+		<div style="margin-left:10px">
+		<button id="openClientMD">신규</button>
 		<!-- searchSec -->
 		<div class="searchSec">
 			<label style="margin-right: 20px;">총 고객 수 : 300</label>
@@ -98,15 +113,21 @@
 					<th width="200px;">전화번호</th>
 					<th width="350px;">이메일</th>
 				</tr>
+				<c:forEach var="i" begin="1" end="10">
 				<tr>
 					<td><input type="checkbox"></td>
-					<td>1</td>
+					<td>${ i }</td>
 					<td>김진호</td>
 					<td>20124567</td>
 					<td>010-0000-0000</td>
 					<td>programmer7771@gmail.com</td>
 				</tr> 
+				</c:forEach>
 			</table>
+		</div>
+		<div class="pagingSec">
+			<label>페이징 영역</label>		
+		</div>
 		</div>
 	</section>
 	<script>

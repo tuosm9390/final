@@ -11,12 +11,18 @@
 <title>HotelsCompile</title>
 <style>
 .approval {
-	width: 1000px;
+	width: 1200px;
 	height: auto;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
-	margin-top:100px;
+	margin-top:50px;
+}
+.title {
+	margin-top:20px;
+	width:130px;
+	height:35px;
+	border-bottom:1px solid lightgray;
 }
 
 .approval .category {
@@ -26,35 +32,40 @@
 	margin: 1px;
 }
 
-.approval .category button {
-	border: 2px solid #F7F7F7;
+.approval .category .btl {
+	border: 1px solid white;
+	background:white;
+	color:#3498DB;
+	width:70px;
+	
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+.tbl_wrap {
+	margin-top:20px;
+}
 .tbl_wrap .tbl {
-	width: 100%;
-	border-top: 1px solid #171f57;
-	border-bottom: 1px solid #555;
-	text-align: center;
-	margin-bottom: 200px;
+	
+	 border-collapse: collapse;
+	 width:100%;
+	 text-align: center;
+	 height:400px;
 }
 
 .tbl_wrap .tbl tr:not (:last-child ) {
 	border-bottom: 1px solid #aaa;
 }
 
-.tbl_wrap .tbl th {
-	padding: 10px 0;
-	font-color: #5C95BF;
-	background-color: #E5E5E5;
-}
 
-.tbl_wrap .tbl tr td {
-	padding: 10px 0;
-	height: 5px;
-	font-size: 16px;
-	text-align: center;
-	border-bottom: 1px solid #D4D4D4;
+
+.tbl_wrap .tbl td, th {
+	border: 1px solid lightgray;
+      text-align: center;
 }
+.tbl_wrap .tbl th{
+   background-color: #f7f7f7;
+   color: #005B9E;
+   }
 
 .tbl_wrap .tbl .squ_tbl {
 	padding: 4px 8px;
@@ -70,9 +81,13 @@
 
 .write {
 	height: 30px;
-	border: 2px solid #F7F7F7;
-	border-radius: 5px;
+	border: 2px solid royalblue;
+	background:royalblue;
+	color:white;
+	font-weight:bold;
 }
+
+
 </style>
 
 
@@ -87,30 +102,26 @@
 		value="${pageContext.servletContext.contextPath }" scope="application" />
 
 	<div class="approval">
+	<div class="title">
 		<h2>참여 결재함</h2>
-
+	</div><br>
 		<div class="category">
 
-			<button class="category btl">전체</button>
+			<button class="category btl total">전체</button>
 			<button class="category btl">기안중</button>
 			<button class="category btl">진행중</button>
 			<button class="category btl">반려</button>
 			<button class="category btl">승인</button>
 		</div>
 
-
 		
-		
-		
-		
-		<hr>
 		<div class="tbl_wrap">
 			<table class="tbl">
 				<colgroup>
-					<col width="3%">
+					<col width="10%">
 					<col width="10%">
 					<col width="27%">
-					<col width="20%">
+					<col width="13%">
 					<col width="10%">
 					<col width="10%">
 					<col width="10%">
@@ -118,7 +129,7 @@
 				</colgroup>
 
 				<tr>
-					<th></th>
+					<th>No</th>
 					<th>기안일자</th>
 					<th>제목</th>
 					<th>구분</th>
@@ -235,6 +246,10 @@
 	
 
 	 <script>
+	 $(document).ready(function(){
+		 console.log("??");
+		 $(".category.btl.total").css({"background-color":"#3498DB", "box-shadow":"0px 0px 0px", "color":"white"});
+	 })
 	$(function(){
 		
 		
@@ -245,6 +260,16 @@
 	 	}).click(function(){
 	 		$(".modal").fadeIn();
 	 	});
+		$(".category.btl").click(function(){
+	 		$except = $(this);
+	 		console.log("??");
+	 		 $(this).css({"box-shadow":"0px 0px 0px", "border":"1px solid lightgray", "background":"#3498DB", "color":"white"});
+	 		 $(".category.btl").not($except).css({"color":"#3498DB", "background":"white","border":"1px solid white", "box-shadow":"0px 4px 4px rgba(0, 0, 0, 0.25)"});
+	 		 
+	 		 
+	 		
+	 		
+	 	})
 		
 	});
 	</script> 

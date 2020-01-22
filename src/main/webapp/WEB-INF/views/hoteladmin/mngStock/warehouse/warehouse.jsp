@@ -4,100 +4,122 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style> 
+<style>
 	 .top-div{
-	width: 63.7%;
+	width: 78%;
 	height: 100px; 
-	margin-top: -50px;
+	} 
+	#Table{
+	width:100%;
+	border-collapse: collapse;
 	}
-
-	.searchCondition{
-
-	margin-top: -50px;
-	display: inline-block; 
-	width: 100px;
 	
+	#filter{
 	}
-
+	
+	#Table td, #Table th{
+	border: 1px solid lightgray;
+		text-align: center;
+		height: 33.1px; 
+	}
+	#Table th{
+	background-color: #f7f7f7;
+	color: #005B9E;
+	}
+	.searchCondition{
+	margin-top: 32px;
+	}
+	.term{
+	float:right;
+	}
+	#termId{
+	margin-left: 10px;
+	}
 	#titlemsg{
 		width: 220px;
-		height: 50px;
-		margin-top: 60px;
-		font-size: 30px;
-		font-weight: bold;
-	
+		height: 36px;
+		margin-top: 40px;
 	}
-	#searchZone{
-	float: right;
+	#filterDiv{
+	margin-top: -20px;
 	}
-	#stockTb{
-	width: 700px;
-	height: 460px;
-	border-collapse: collapse;
-	border: 1px solid black;
-	margin-top: -22px;
+	#searchBtn{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
 	}
-	td,th{
-		border: 1px solid lightgray;
-		align-content: center;
-		text-align: center;
+	#purSearch{
+	border: 1px solid #919191;
 	}
-	th{
-	background-color: #f7f7f7;
+	#excel{
+	background : white;
+	color:green;
+	border: 1px solid green;
+	width: 68px;
+	height: 25px;
+	font-weight: bold;
+	border-radius: 2px;
 	}
-	#hrDiv{
-	border-bottom: 1px solid black;
-	width: 700px;
-	margin-top: 20px;
+	#print{
+	color:#3498DB;
+	background : white;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
 	}
 	.btns{
-	margin-top: 10px;
-
+	margin-top: 5px;
+	margin-left: 43.1%;
 	}
-	.tabClass{
-	display: inline-block;
-	width: 120px;
-	height: 30px;
-	border: 1px solid gray;
-	border-radius: 10px 10px 0px 0px;
-	border-bottom: none;
-	font-weight: bold;
-
+	#purDivv{
+	height: 397.3px;
+	border: 1px solid lightgray;
+	width: 600px;
+	margin-top: 2px;
+	overflow-y:auto; 
 	}
-	#tclass{
-	margin-left: 20px;
+	#line{
+		width: 96px;
+		border-bottom: 1px solid black;
 	}
-		#hrDiv2{
-	border-bottom: 1px solid black;
-	width: 700px;
-	
-
-	}
-
-	
-	
 </style>
 </head>
 <body>
 	
-	
-
-	<header>	
+<header>	
 		<jsp:include page="../../common/menubar.jsp"/>
 		<jsp:include page="../../common/productMenubar.jsp"/>
 		 <jsp:include page="../modal/mWarehouseDetail.jsp"/> 
 		  <jsp:include page="../modal/mWarehouseEnroll.jsp"/> 
-	</header>
-	<section>
-	<div class="top-div">
-			<div id="titlemsg">창고관리</div>
-		<div id="hrDiv2"></div> 
-	</div><!-- top div end -->
+</header>
+	<section id="sbody">
+
+		<div class="top-div">
+		<div id="titlemsg"><h1>창고조회</h1></div>
+		<div id=line></div>
+		<div id="searchZone" style="width: 1000px;"> 
 		<div>
-			<table id="stockTb">  
+		<select style="width:80px;height:27px;" id="filter">
+			<option value="money">금액</option>
+ 	 		<option value="check">수령</option>
+		</select> 
+			<select class="searchCondition"  id="purSearch" style="margin-left:21.6% ; height: 26px;">
+				<option value="default">기본옵션</option>
+			</select>
+		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;">
+		<button class="searchCondition" id="searchBtn">Search</button>
+		</div>
+		
+		</div>
+		</div><!-- top div end -->
+		
+	<div id="purDivv">
+	
+	<table id="Table" style="">  
 				<tr>  
 					<th><input type="checkbox"></th>
 					<th style="color: #005B9E">창고코드</th>
@@ -105,7 +127,7 @@
 					<th style="color: #005B9E">사용</th>
 				
 				</tr>
-				<c:forEach var="i" begin="1" end="10">
+				<c:forEach var="i" begin="1" end="15">
 					<tr>
 						<td><input type="checkbox"></td>
 						<td style="color: #005B9E"><c:out value="20191231"/></td>
@@ -115,56 +137,29 @@
 					</tr>
 				</c:forEach>
 			</table>
-		<div id="hrDiv"></div>
-		</div>
-			<div class="btns"><button id="new">신규</button>&nbsp;<button>사용중단/재사용</button></div> 
-	
-	
-	
-	
+	</div><!-- purDivv end -->
+	<div class="btns"><button id="print">신규</button></div>
+
 	</section>
 	
+	
 	<script>
+	//테이블
+	$(function(){
+		$("#Table").find("td").mouseenter(function(){
+			$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
+		}).mouseout(function(){
+			$(this).parent("tr").css({"background":"white"});
+		}).click(function(){
+			var bid = $(this).parent().children("td").eq(1).text();
+			$(".modalDetail").fadeIn();
+			console.log(bid);
+		});
+	});
 	
-		//테이블
-		$(function(){
-			$("#stockTb").find("td").mouseenter(function(){
-				$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
-			}).mouseout(function(){
-				$(this).parent("tr").css({"background":"white"});
-			}).click(function(){
-				var bid = $(this).parent().children("td").eq(1).text();
-				$(".modal").fadeIn();
-				console.log(bid);
-			});
-		});
-		//수리현황탭
-		$(function(){
-			$("#tclass").mouseenter(function(){
-				$(this).css({"background":"lightgray","cursor":"pointer"});
-			}).mouseout(function(){
-				$(this).css({"background":"white"});
-			}).click(function(){
-			
-			});
-		});
-		
-		//수리현황탭
-		$(function(){
-			$("#rclass").mouseenter(function(){
-				$(this).css({"background":"lightgray","cursor":"pointer"});
-			}).mouseout(function(){
-				$(this).css({"background":"white"});
-			}).click(function(){
-			
-			});
-		});
-		
-		$("#new").click(function(){
-			$(".modalEnroll").fadeIn();
-		});
-		
+	$("#print").click(function(){
+		$(".modalEnroll").fadeIn();
+	});
 	</script>
-	
 </body>
 </html>

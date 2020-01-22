@@ -39,7 +39,11 @@
 }
 
 .reservation-checkIn, .reservation-checkOut {
-	width: 250px;
+	width: 230px;
+}
+
+.reservation-adultselect, .reservation-childrenselect{
+	width: 110px;
 }
 
 .reservation-text {
@@ -80,7 +84,6 @@ input[type=text] {
 	display: inline-flex;
 	margin-top: 30px;
 	width: 100%;
-	height: 600px;
 }
 
 .detail-text {
@@ -101,8 +104,6 @@ input[type=text] {
 .detail-img {
 	border-right: 1px solid black;
 	width: 45%;
-	height: 100%;
-	padding: 5px;
 }
 
 .detail-img-item {
@@ -199,10 +200,13 @@ input[type=text] {
 				<div class="reservation-inner reservation-adultselect">
 					<table>
 						<tr>
-							<td>성인</td>
+							<td width="70%">성인</td>
 							<td>
 								<select id="adult">
 									<option selected>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
 								</select>
 							</td>
 						</tr>
@@ -211,7 +215,7 @@ input[type=text] {
 				<div class="reservation-inner reservation-childrenselect">
 					<table>
 						<tr>
-							<td>어린이</td>
+							<td width="70%">소인</td>
 							<td>
 								<select id="children">
 									<option selected></option>
@@ -231,9 +235,6 @@ input[type=text] {
 		<div class="roomDetailIntroduce" >
 			<!-- 좌측 이미지 -->
 			<div class="detail-img">
-				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
 				<div class="detail-img-item">
 					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
 				</div>
@@ -270,25 +271,6 @@ input[type=text] {
 					<li>친환경 고급 인테리어</li>
 					<li>정원 테라스</li>
 				</ul>
-				
-				<br>
-				<div style="border: 1px solid black; width: 100%; height: 0;"></div>
-				<br>
-				<p style="font-style: normal; font-weight: bold; font-size: 16px; line-height: 19px;">
-				LUXURIOUS 6-METER TALL DOUBLE-FLOOR ROOM WITH THE STATE OF THE ART SPA EQUIPMENT</p>
-
-				<ul class="room-item">
-					<li>Large Jacuzzi</li>
-					<li>Basic cooking gear</li>
-					<li>Mirror TV</li>
-					<li>Air purification system</li>
-					<li>Only One Collection furniture</li>
-					<li>Organic cosmetics (Developed by Hotel April using oil from France)</li>
-					<li>BGM System</li>
-					<li>Hotel April’s unique scent diffuser</li>
-					<li>Attractive interior layout and design</li>
-					<li>Terrace</li>
-				</ul>
 			</div>
 			<!-- 우측 내용 끝 -->
 		</div>
@@ -306,12 +288,11 @@ input[type=text] {
 				autoClose : true,
 				//선택한 날짜를 가져옴
 				onSelect : function(date) {
-					startNum = date;
 					//종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
+					startNum = date;
 					$("#checkOut").datepicker({
 						minDate : new Date(startNum),
 					});
-					console.log("startNum : " + startNum);
 				}
 			}).data('datepicker');
 
@@ -324,8 +305,6 @@ input[type=text] {
 						//시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
 						maxDate : new Date(endNum),
 					});
-					console.log("endNum : " + endNum);
-					console.log(typeof(endNum));
 				}
 			}).data('datepicker');
 		});

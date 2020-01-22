@@ -24,18 +24,19 @@
 	left: 50%;
 	top: 45%;
 	transform: translate(-50%, -50%);
-	width: 800px;
-	height: auto;
-	max-height: 500px;
-	border: 20px solid white;
+	width: 1000px;
+	height: 705px;
 	background-color: white;
-	overflow-y: auto;
+	margin-top:50px;
 }
 
 .modal_content_real {
-	width: 780px;
-	height: 450px;
+	width: 870px;
+	height: 100%;
 	margin: 0 auto;
+	margin-top:20px;
+	overflow-y:scroll;
+	max-height:550px;
 }
 
 .btn_close {
@@ -52,7 +53,9 @@
 }
 
 .modalTbl {
-	
+	height: 600px;
+	max-height: 500px;
+	height:100%;
 }
 
 #tbl_modal {
@@ -61,6 +64,7 @@
 	border-collapse: collapse;
 	text-align: center;
 	width: 100%;
+	height:auto;
 }
 
 #tbl_modal td {
@@ -87,8 +91,11 @@
 
 .approveBtn {
 	
-	float: right;
+	margin-left:720px;
 	margin-bottom: 20px;
+	margin-top:20px;
+	position:relative;
+	bottom:-5px;
 }
 .approveBtn button {
 	height:30px;
@@ -97,6 +104,39 @@
 	background:#E5E5E5;
 	border:0px;
 }
+.btn_close_plus {
+   position: absolute;
+   top: -1%;
+   left: 95.5%;
+   font-size: 40px;
+   float: right;
+   color: white;
+}
+
+.btn_close_plus:hover {
+   cursor: pointer;
+}
+
+.titleBarplus {
+   padding-top: 10px;
+   padding-bottom: 10px;
+   color: white;
+   background-color: royalblue;
+}
+
+.titleBarplus h1 {
+   margin-top: 0;
+   margin-bottom: 0;
+   margin-left: 10px;
+}
+#reject {
+	background:tomato;
+	color:white;
+}
+#confirm {
+	background:forestgreen;
+	color:white;
+}
 
 
 </style>
@@ -104,15 +144,18 @@
 <body>
 	<div class="modal">
 		<div class="modal_content">
-			<a class="btn_close">×</a>
+			<div class="titleBarplus">
+				<h1 style="text-align: left;">구매 요청서</h1>
+			</div>
+			<a class="btn_close_plus">×</a>
 
-			<h2 style="text-align: center;">구매 요청서</h2>
+			
 			
 			
 			<!-- 결재 승인/반려 버튼 -->
 			<div class="approveBtn">
-				<button onclick="submit();">결재승인</button>
-				<button onclick="reject();">결재반려</button>
+				<button onclick="reject();" id="reject">반려</button>
+				<button onclick="submit();" id="confirm">승인</button>
 			</div>
 			<!-- 결재 버튼 end -->
 			
@@ -214,9 +257,11 @@
 
 	<script>
 		$(document).ready(function() {
-			$(".btn_close").click(function() {
-				$(".modal").fadeOut();
-			});
+				$(".btn_close_plus").click(function(){
+					
+					$(".modal").fadeOut();
+				})
+			
 			
 		});
 		function submit() {
