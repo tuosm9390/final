@@ -89,10 +89,17 @@
 		</div>
 	</section>
 	<script>
+	$(function(){
+		
+		$("td").parent().click(function(){
+			$(".blackListDetailModal").fadeIn();
+		});
+		
+	});
 	function openBlackListModal(){
 			
 		$(".modalBlackListAdd").fadeIn();
-		
+
 	}
 	</script>
 </body>

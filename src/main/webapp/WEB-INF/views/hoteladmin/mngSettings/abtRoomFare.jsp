@@ -12,18 +12,13 @@
 	}
 	.roomTitleArea{
 		width:1265px; 
-		padding-bottom:30px;
+		padding-bottom:10px;
 		border-bottom-color: lightgray;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
 	}
-	.roomBtn{
-		margin-top:20px; 
-		border:0;
-		width:180px;
-		height:40px;
-		font-weight: bold;
-		box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
+	.roomTitleArea h2{
+		margin-bottom:0;
 	}
 	.roomBtn:hover{
 		cursor:pointer;
@@ -50,7 +45,7 @@
 	.tableArea{
 		margin-top:30px;
 		width:1265px;
-		height:400px;
+		height:480px;
 		border:1px solid black;
 		overflow-x:hidden;
 		overflow-y:scroll; 
@@ -73,9 +68,8 @@
 		border:0;
 	}
 	.saveBtn{
-		width:180px;
-		height:50px;
-		font-size: 25px;
+		width:100px;
+		height:30px;
 		border-radius:5px;
 		border:0;
 		background:#3498DB;
@@ -98,21 +92,8 @@
 	<div class="mainArea">
 		<div class="rightAreaRoom">
 			<div class="roomTitleArea">
-				<div class="btnGroup">
-					<button class="roomBtn roomFareBtn">객실 요금 설정</button>
-				</div>
+				<h2>객실 요금 설정</h2>
 			</div>
-			
-			<div class="roomTypeSelect">
-				<h4>객실타입</h4>
-				<select>
-					<option value="">==선택==</option>
-					<option value="">디럭스</option>
-					<option value="">프리미엄</option>
-					<option value="">스위트</option>
-				</select>
-			</div>
-			
 			<div class="tableArea">
 				<table class="fareTable" border="1">
 					<tr>
