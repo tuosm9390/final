@@ -63,6 +63,9 @@ h4 {
 	color: white;
 	
 }
+h2 {
+	margin-top:-15px;
+}
 
 header {
 	position: fixed;

@@ -111,7 +111,7 @@
 			<button class="category btl">승인</button>
 		</div>
 		<div class="writeDocu">
-			<button class="write" onclick="location.href='writePurchaseApprove.ap'">기안서
+			<button class="write" onclick="location.href='writeAllApprove.ap'">기안서
 				작성</button>
 		</div>
 
