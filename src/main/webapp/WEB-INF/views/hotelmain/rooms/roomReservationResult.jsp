@@ -108,7 +108,7 @@
 						</tr>
 						<tr>
 							<td><li>예약자명</li></td>
-							<td><label>이름</label></td>
+							<td><label>${ reservName }</label></td>
 						</tr>
 						<tr>
 							<td><li>전화번호</li></td>
@@ -124,11 +124,11 @@
 						</tr>
 						<tr>
 							<td><li>체크인일자</li></td>
-							<td><label>날짜 (체크인 시간)</label></td>
+							<td><label>${ CheckIn } (${ checkIntime })</label></td>
 						</tr>
 						<tr>
 							<td><li>체크아웃일자</li></td>
-							<td><label>날짜</label></td>
+							<td><label>${ CheckOut }</label></td>
 						</tr>
 					</table>
 				<br>
@@ -144,9 +144,9 @@
 					<tr>
 						<td><li>객실 인원</li></td>
 						<td><label>성인</label></td>
-						<td><label>인원</label></td>
+						<td><label>${ adult }명</label></td>
 						<td><label>소인</label></td>
-						<td><label>인원</label></td>
+						<td><label>${ children }명</label></td>
 					</tr>
 					<tr>
 						<td><li>옵션</li></td>

@@ -149,22 +149,10 @@
 				<p
 					style="font-style: normal; font-weight: bold; font-size: 32px; line-height: 42px; text-decoration-line: underline;">예약</p>
 				<br>
-				<fieldset style="border-left:none; border-right:none; border-bottom:none; border-top-color:black;
-						width: 80%; background: none;">
-					<legend><h4>숙박 일정</h4></legend>
-				</fieldset>
-				<form action="" method="" id="reservationInfo">
+				<form action="reservationResult.hmain" method="post" id="reservationInfo">
 					<table class="reservation-table" width="90%">
 						<tr>
-							<td colspan="4" style="width: 70%; padding-right: 210px; padding-left: 23px;">
-								<div class="schedule">
-									<div class="name">체크인</div>
-									<div class="value">${ CheckIn }</div>
-									<br>
-									<div class="name">체크아웃</div>
-									<div class="value">${ CheckOut }</div>
-								</div>
-							</td>
+							<td colspan="4"><li>숙박 일정</li></td>
 							<td colspan="2" rowspan="2" style="width: 40%;">
 								<ul class="reservation-price">
 									<li><div class="name">객실요금</div><div class="value">원</div></li>
@@ -174,10 +162,27 @@
 							</td>
 						</tr>
 						<tr>
+							<td colspan="4" style="width: 70%; padding-right: 210px; padding-left: 23px;">
+								<div class="schedule">
+									<div class="name">체크인</div>
+									<div class="value">
+										<input type="hidden" name="CheckIn" value="${ CheckIn }">${ CheckIn }
+									</div>
+									<br>
+									<div class="name">체크아웃</div>
+									<div class="value">
+										<input type="hidden" name="CheckOut" value="${ CheckOut }">${ CheckOut }
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
 							<td style="width: 250px;"><li>체크인 시간</li></td>
 							<td style="padding-left: 30px; width: 80px;">
-								<select class="checkIn-time">
+								<select class="checkIn-time" name="checkIntime">
 									<option>12:00</option>
+									<option>13:00</option>
+									<option>14:00</option>
 								</select>
 							</td>
 							<td>
@@ -197,12 +202,12 @@
 						</tr>
 						<tr>
 							<td><li>투숙 인원</li></td>
-							<td colspan="5">성인 <input type="text" class="person" readonly>
-							소인 <input type="text" class="person" readonly></td>
+							<td colspan="5">성인 <input type="hidden" name="adult" value="${ adult }">${ adult }명 &emsp;
+							소인 <input type="hidden" name="children" value="${ children }">${ children }명</td>
 						</tr>
 						<tr>
 							<td><li>예약자명</li></td>
-							<td colspan="5"><input type="text" id="name" name="name"></td>
+							<td colspan="5"><input type="text" id="reservName" name="reservName"></td>
 						</tr>
 						<tr>
 							<td>
@@ -365,7 +370,8 @@
 		
 		$(".reservation-submit").click(function(){
 			if($("#agreement").prop("checked") == true){
-				location.href='reservationResult.hmain';
+// 				location.href='reservationResult.hmain';
+				$("#reservationInfo").submit();
 			} else {
 				alert("환불 규정을 확인해주세요.");
 			}
