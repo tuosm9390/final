@@ -52,6 +52,7 @@ public class SettingController {
 	public String goBill() {
 		
 		return "hoteladmin/mngSettings/abtBill";
+	}
 
 	@RequestMapping("hotelInfo.st")
 	public String goHotelInfo() {

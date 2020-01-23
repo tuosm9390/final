@@ -114,11 +114,9 @@
 </head>
 <body>
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
+	<form action="" method="post">
 	<div class="contentArea">
 	<jsp:include page="hotelSettingMenubar.jsp"/>
-
-	<%-- <jsp:forward page="hotelRoomTypeSetting.jsp"/> --%>
-
 		<div class="rightArea">
 			<div class="titleArea">
 				<h1 class="titleAreaSub">§ 호텔 정보 설정</h1>
@@ -126,7 +124,6 @@
 			<div>
 				<h3 style="margin-left:30px; color:#060E33;">기본 정보</h3>
 			</div>
-			<form action="">
 			<div class="basicInfoArea"><!-- 기본정보 영역 -->
 				<table>
 					<tr>
@@ -360,42 +357,6 @@
 										<td><input type="text"></td>
 									</tr>
 								</table>
-<!-- 								<span><b>주중</b></span>
-								<span>10 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>10 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
-								<span>7 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>7 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
-								<span>5 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>5 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
-								<span>3 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>3 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
-								<span>1 일전</span>
-								<span style="margin-right:200px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>1 일전</span>
-								<span><input type="text"></span><br>
-								<span><b>주중</b></span>
-								<span>당일</span>
-								<span style="margin-right:200px;margin-left:15px;"><input type="text"></span>
-								<span><b>주말</b></span>
-								<span>당일</span>
-								<span><input type="text" style="margin-left:15px;"></span> -->
 							</div>
 						</td>
 					</tr>
@@ -409,10 +370,10 @@
 			</div><!-- 시스템 정보 영역 끝 -->
 			<hr width="1250px" style="float: left;"><br>
 				<div align="right" style="margin-right:40px;margin-bottom:20px;">
-					<button class="nextBtn" onclick="location.href='goHotelRoomTypePage.set'"><b>다음</b></button>			
+					<button type="submit" class="nextBtn"><b>다음</b></button>			
 				</div>
-			</form>
 		</div>
 	</div>
+	</form>
 </body>
 </html>
