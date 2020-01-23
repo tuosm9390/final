@@ -32,18 +32,35 @@ public class HotelMainContoller {
 
 	@RequestMapping("reservation.hmain")
 	public String showHotelRoomReservation(HttpServletRequest request,
-			@RequestParam("CheckIn") @DateTimeFormat(iso = ISO.DATE) String CheckIn,
-			@RequestParam("CheckOut") @DateTimeFormat(pattern="yyyy-MM-dd") String CheckOut) {
+			@DateTimeFormat(iso = ISO.DATE) String CheckIn,
+			@DateTimeFormat(pattern="yyyy-MM-dd") String CheckOut,
+			String adult, String children) {
 
 		request.setAttribute("CheckIn", CheckIn);
 		request.setAttribute("CheckOut", CheckOut);
+		request.setAttribute("adult", adult);
+		request.setAttribute("children", children);
 
 		return "hotelmain/rooms/roomReservation";
 	}
 
 	@RequestMapping("reservationResult.hmain")
-	public String showHotelRoomReservationResult() {
+	public String showHotelRoomReservationResult(HttpServletRequest request,
+			@DateTimeFormat(iso = ISO.DATE) String CheckIn,
+			@DateTimeFormat(pattern="yyyy-MM-dd") String CheckOut,
+			String adult, String children, String checkIntime, String reservName) {
 
+		request.setAttribute("CheckIn", CheckIn);
+		request.setAttribute("CheckOut", CheckOut);
+		request.setAttribute("adult", adult);
+		request.setAttribute("children", children);
+		request.setAttribute("checkIntime", checkIntime);
+		request.setAttribute("reservName", reservName);
+		
+		System.out.println("CheckIn : " + CheckIn);
+		System.out.println("adult : " + adult);
+		System.out.println("checkIntime : " + checkIntime);
+		
 		return "hotelmain/rooms/roomReservationResult";
 	}
 

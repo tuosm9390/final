@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 <style>
 /* 좌우 방향 버튼 */
 .carousel-control {
@@ -204,6 +202,7 @@ input[type=text] {
 		
 		<!-- 중앙 예약메뉴 -->
 		<div id="reservationMenu" class="reservation">
+			<form id="reservationForm" action="reservation.hmain" method="post">
 			<div class="reservation-box">
 				<div class="reservation-text">
 					ROOM <br>
@@ -215,7 +214,7 @@ input[type=text] {
 							<td width="50%">체크인</td>
 							<td>
 								<div class="wrapper">
-									<input type="text" id="checkIn" placeholder="날짜 선택"
+									<input type="text" id="checkIn" placeholder="날짜 선택" name="CheckIn"
 										readonly /><i class="ion-calendar"></i>
 								</div>
 							</td>
@@ -228,7 +227,7 @@ input[type=text] {
 							<td width="50%">체크아웃</td>
 							<td>
 								<div class="wrapper">
-									<input type="text" id="checkOut" placeholder="날짜 선택"
+									<input type="text" id="checkOut" placeholder="날짜 선택" name="CheckOut"
 										readonly /><i class="ion-calendar"></i>
 								</div>
 							</td>
@@ -237,15 +236,16 @@ input[type=text] {
 					
 				</div>
 				<div class="reservation-inner reservation-adultselect">
+					
 					<table>
 						<tr>
 							<td width="70%">성인</td>
 							<td>
-								<select id="adult">
+								<select id="adult" name="adult">
 									<option selected>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>4</option>
+									<c:forEach var="i" begin="2" end="4">
+									<option>${ i }</option>
+									</c:forEach>
 								</select>
 							</td>
 						</tr>
@@ -256,8 +256,11 @@ input[type=text] {
 						<tr>
 							<td width="70%">소인</td>
 							<td>
-								<select id="children">
-									<option selected></option>
+								<select id="children" name="children">
+									<option selected>1</option>
+									<c:forEach var="i" begin="2" end="3">
+									<option>${ i }</option>
+									</c:forEach>
 								</select>
 							</td>
 						</tr>
@@ -267,6 +270,7 @@ input[type=text] {
 					<h4 align="center" style="margin: 0 0;">예약하기</h4>
 				</div>
 			</div>
+			</form>
 		</div>
 		<!-- 중앙 예약메뉴 끝 -->
 
@@ -349,7 +353,8 @@ input[type=text] {
 		});
 
 		$("#reservation-btn").click(function() {
-			location.href = "reservation.hmain?CheckIn=" + startNum + "&CheckOut=" + endNum;
+// 			location.href = "reservation.hmain?CheckIn=" + startNum + "&CheckOut=" + endNum;
+			$("#reservationForm").submit();
 		});
 	</script>
 </body>
