@@ -93,7 +93,7 @@ cursor: pointer;
 
 	<script>
 		$(document).ready(function() {
-			$(".btn_close").click(function() {
+			$(".btn_close_plus").click(function() {
 				$(".modal").fadeOut();
 			});
 		});

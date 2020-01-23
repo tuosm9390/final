@@ -37,12 +37,12 @@
 }
 
 .btn_close {
-position: absolute;
-top:-4%;
-left:96.5%;
-font-size:40px;
-float: right;
-color:darkgray;
+  position: absolute;
+   top: -1%;
+   left: 95.5%;
+   font-size: 40px;
+   float: right;
+    color: white; 
 }
 
 .btn_close:hover {
@@ -81,7 +81,7 @@ cursor: pointer;
 		<div class="modal_content">
 			<div class="titleBarplus">
             <h2>구매상세</h2>
-            <a class="btn_close_plus">×</a>
+            <a class="btn_close">×</a>
          </div>
 			
 			<div class="modal_content_real">
