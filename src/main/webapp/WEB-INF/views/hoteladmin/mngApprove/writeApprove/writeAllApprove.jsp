@@ -9,7 +9,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <style>
-/* .writeApprove {
+/*  .writeApprove {
 	width: 1200px;
 	height: 900px;
 	margin-left: auto;
@@ -39,25 +39,46 @@
 	margin-left:133px;
 	margin-top:50px;
 	border-style:dashed;
+}  */
+.mainArea {
+	width: 1200px;
+	border: 1px sold black;
+	border: 1px solid black;
+	height: 500px;
+	margin-left: auto;
+	margin-right: auto;
 }
- */
- .mainArea {
-    width: 900px;
-    border: 1px sold black;
-    border: 1px solid black;
-    height: 500px;
-    margin-left:auto;
-    margin-right:auto;
- 	
- 	
- }
- .div {
- 	display:inline-block;
- 	height:500px;
- 	width:290px;
- 	border: 1px solid red;
- }
 
+.div {
+	display: inline-block;
+	height: 500px;
+	width: 400px;
+	border-right: 1px solid black;
+}
+
+.div:last-child {
+	border-right: 0px;
+}
+
+.docuTitle {
+	text-align: center;
+}
+
+#img1 {
+	width: 400px;
+	height: 500px;
+}
+#docuTblArea {
+	border-collapse:collapse;
+	border:1px solid lightgray;
+	width:1200px;
+	height:500px;
+	margin-left:auto;
+	margin-right:auto;
+}
+#docuTblArea th, td {
+	border-right:1px solid lightgray;
+}
 </style>
 
 <script
@@ -72,12 +93,38 @@
 		<jsp:include page="../approveModal/purchaseApproveModal.jsp"></jsp:include>
 	</header>
 	<section>
-	<div class="mainArea">
-		<div class="div">	</div>
-		<div class="div"></div>
-		<div class="div"></div>
+		<!-- <div class="docuTitle">
+		<h2>문서 작성하기</h2>
 	</div>
-	
+	 <div class="mainArea">
+		<div class="div">	
+			
+		</div>
+		<div class="div"></div>
+		<div class="div"></div>
+	</div>   -->
+
+		<div class="docuTitle">
+		<h2>기안서 작성</h2>
+			<table id="docuTblArea">
+				<colgroup>
+					<col width="33%">
+					<col width="33%">
+					<col width="33%">
+				</colgroup>
+				<tr style="border-bottom:1px solid lightgray; height:70px;">
+					<th>구매 요청서</th>
+					<th>발주 요청서</th>
+					<th>수리 요청서</th>
+				</tr>
+				<tr id="docuTit">
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+
 		<%-- <div class="writeApprove">
 			<div>
 				<label>문서 유형을 선택해주세요.</label> <br>
@@ -109,11 +156,11 @@
 			</div> 
 
 
-		</div> --%>
+		</div>   --%>
 	</section>
 	<script>
 		$(function() {
-			$("#writeCategory").change(function() {
+			/* $("#writeCategory").change(function() {
 				var va = $(this).val();
 				if (va == 'purchase') {
 					console.log("??");
@@ -133,7 +180,19 @@
 					$("#formOrder").hide();
 					$(".emptyArea").hide();
 				}
-			})
+			}) */
+				
+					$("#docuTit").children().eq(0).click(function(){
+						location.href="writePurchaseApprove.ap"
+					});
+					$("#docuTit").children().eq(1).click(function(){
+						location.href="writeOrderApprove.ap"
+					});
+					$("#docuTit").children().eq(2).click(function(){
+						location.href="writeFixApprove.ap"
+					});
+				
+				
 
 		})
 	</script>

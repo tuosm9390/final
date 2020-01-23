@@ -25,17 +25,17 @@ public class ApproveController {
 	}
 	@RequestMapping("writePurchaseApprove.ap")
 	public String goWrite() {
-		return "hoteladmin/mngApprove/writeApprove/writePurchaseApprove";
+		return "hoteladmin/mngApprove/writeApprove/writerPurchaseApprove";
 	}
 	@RequestMapping("writeFixApprove.ap")
 	public String goWriteFixApprove() {
 		
-		return "hoteladmin/mngApprove/writeApprove/writeFixApprove";
+		return "hoteladmin/mngApprove/writeApprove/writerFixApprove";
 	}
 	@RequestMapping("writeOrderApprove.ap")
 	public String goWriteOrderApprove() {
 		
-		return "hoteladmin/mngApprove/writeApprove/writeOrderApprove";
+		return "hoteladmin/mngApprove/writeApprove/writerOrderApprove";
 	}
 	@RequestMapping("allApproveDetail.ap")
 	public String showApproveDetail() {

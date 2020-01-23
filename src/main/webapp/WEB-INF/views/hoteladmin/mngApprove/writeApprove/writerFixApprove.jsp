@@ -16,17 +16,20 @@
 	
 .tbl_wrap {
 	margin-top:20px;
-	width:1000px;
+	width:1100px;
 	max-width:1000px;
 	margin-left:auto;
 	margin-right:auto;
 }
 .tbl_wrap .tbl {
 	
-	 border-collapse: collapse;
-	 width:100%;
+	border-collapse: collapse;
+	 width:1100px;
 	 text-align: center;
 	 height:250px;
+	 margin-top:10px;
+	 margin-left:auto;
+	margin-right:auto;
 }
 
 
@@ -66,17 +69,19 @@ textarea {
 
 .tbl3_wrap {
 	margin-top:-0px;
-	width:1000px;
+	width:1100px;
 	margin-left:auto;
 	margin-right:auto;
 }
 .tbl3_wrap .payTbl {
 	
-	 border-collapse: collapse;
-	 width:100%;
+	  border-collapse: collapse;
+	 width:1100px;
 	 text-align: center;
 	 height:40px;
 	 margin-top:14px;
+	 margin-left:auto;
+	 margin-right:auto;
 }
 
 
@@ -113,18 +118,47 @@ textarea {
 	margin-top:-px;
 }
 .resultBtnFix {
-	margin-top:-10px;
-	margin-left:851px;
+	float:right;
 	
 }
-
+#pre {
+	border:1px solid lightgray;
+	background:lightgray;
+	color:white;
+	height:35px;
+	width:70px;
+	border-radius:2px;
+}
+ #submit {
+	border:1px solid #3498DB;
+	background:#3498DB;
+	color:white;
+	height:35px;
+	width:70px;
+	border-radius:2px;
+}
+.inArea {
+	width:1200px;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:45px;
+}
+.resultBtnPur {
+	float:right;
+	
+}
 
 
 </style>
 </head>
 <body>
-
+<header>
+			<jsp:include page="../../common/menubar.jsp" />
+	
+</header>
 	<section>
+	<div class="inArea">
 	<div class="resultBtnFix">
 				<button id="pre" onclick="preWatch();">미리보기</button>
 				<button id="submit">기안하기</button>
@@ -230,6 +264,7 @@ textarea {
 				</tr>
 			</table>
 			</div>
+</div>
 </div>
 <div style="height:200px;">
 	
