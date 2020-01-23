@@ -13,24 +13,15 @@
 <style>
 
 
-.tbl_wrap .purchase{
-	margin-top:20px;
-	width:1000px;
-	max-width:1000px;
-	margin-left:auto;
-	margin-right:auto;
-}
 .tbl_wrap .tbl {
 	
 	 border-collapse: collapse;
-	 width:100%;
+	 width:1100px;
 	 text-align: center;
 	 height:250px;
 	 margin-top:10px;
-}
-
-.tbl_wrap .tbl tr:not (:last-child ) {
-	border-bottom: 1px solid #aaa;
+	 margin-left:auto;
+	margin-right:auto;
 }
 
 
@@ -70,17 +61,19 @@ textarea {
 
 .tbl2_wrap {
 	margin-top:-0px;
-	width:1000px;
+	width:1100px;
 	margin-left:auto;
 	margin-right:auto;
 }
 .tbl2_wrap .payTbl {
 	
 	 border-collapse: collapse;
-	 width:100%;
+	 width:1100px;
 	 text-align: center;
 	 height:40px;
 	 margin-top:14px;
+	 margin-left:auto;
+	 margin-right:auto;
 }
 
 
@@ -97,12 +90,13 @@ textarea {
 	padding:10px;
 }
 #noTxt {
-	width:70px;
+	width:50px;
 }
 #anoTxt {
 	border-radius:3px;
 	height:17px;
 	border:1px solid lightgray;
+	width:150px;
 }
 #plusBtn2 {
 	width:80px;
@@ -114,7 +108,9 @@ textarea {
 	float:right;
 }
 .tbl2_wrap .payTbl .Area {
-	margin-top:-px;
+	width:1100px;
+	margin-left:auto;
+	margin-right:auto;
 }
  #submit {
 	border:1px solid #3498DB;
@@ -133,9 +129,15 @@ textarea {
 	border-radius:2px;
 }
 .resultBtnPur {
-	margin-top:-10px;
-	margin-left:851px;
+	float:right;
 	
+}
+.inArea {
+	width:1100px;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:45px;
 }
 
 
@@ -143,14 +145,19 @@ textarea {
 </style>
 </head>
 <body>
+<header>
+			<jsp:include page="../../common/menubar.jsp" />
+	
+</header>
 
 	<section>
+	
+	<div class="tbl_wrap purchase">
+		<div class="inArea">
 	<div class="resultBtnPur">
 				<button id="pre" onclick="preWatch();">미리보기</button>
 				<button id="submit">기안하기</button>
 			</div>
-	<div class="tbl_wrap purchase">
-	
 	
 	<table class="tbl">
 				<colgroup>
@@ -251,6 +258,7 @@ textarea {
 					<td colspan="4"><input type="text" id="txtLong"></td>
 				</tr>
 			</table>
+			</div>
 			</div>
 </div>
 <div style="height:200px;">

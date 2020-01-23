@@ -10,23 +10,18 @@
 <meta charset="UTF-8">
 <title>HotelsCompile</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 <style>
 
 
-.tbl_wrap .order{
-	margin-top:20px;
-	width:1000px;
-	max-width:1000px;
-	margin-left:auto;
-	margin-right:auto;
-}
 .tbl_wrap .tbl {
 	
 	 border-collapse: collapse;
-	 width:100%;
+	 width:1100px;
 	 text-align: center;
 	 height:250px;
+	 margin-top:10px;
+	 margin-left:auto;
+	margin-right:auto;
 }
 
 
@@ -66,17 +61,19 @@ textarea {
 
 .tbl2_wrap {
 	margin-top:-0px;
-	width:1000px;
+	width:1100px;
 	margin-left:auto;
 	margin-right:auto;
 }
 .tbl2_wrap .payTbl {
 	
 	 border-collapse: collapse;
-	 width:100%;
+	 width:1100px;
 	 text-align: center;
 	 height:40px;
 	 margin-top:14px;
+	 margin-left:auto;
+	 margin-right:auto;
 }
 
 
@@ -93,14 +90,15 @@ textarea {
 	padding:10px;
 }
 #noTxt {
-	width:70px;
+	width:50px;
 }
 #anoTxt {
 	border-radius:3px;
 	height:17px;
 	border:1px solid lightgray;
+	width:150px;
 }
-#plusBtn3 {
+#plusBtn2 {
 	width:80px;
 	height:30px;
 	border-radius:2px;
@@ -110,12 +108,36 @@ textarea {
 	float:right;
 }
 .tbl2_wrap .payTbl .Area {
-	margin-top:-px;
+	width:1100px;
+	margin-left:auto;
+	margin-right:auto;
 }
-.resultBtnOrder {
-	margin-top:-10px;
-	margin-left:851px;
+ #submit {
+	border:1px solid #3498DB;
+	background:#3498DB;
+	color:white;
+	height:35px;
+	width:70px;
+	border-radius:2px;
+}
+#pre {
+	border:1px solid lightgray;
+	background:lightgray;
+	color:white;
+	height:35px;
+	width:70px;
+	border-radius:2px;
+}
+.resultBtnPur {
+	float:right;
 	
+}
+.inArea {
+	width:1100px;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:45px;
 }
 
 
@@ -123,15 +145,21 @@ textarea {
 </style>
 </head>
 <body>
+<header>
+			<jsp:include page="../../common/menubar.jsp" />
+	
+</header>
 
 	<section>
-	<div class="resultBtnOrder">
+	
+	<div class="tbl_wrap purchase">
+		<div class="inArea">
+	<div class="resultBtnPur">
 				<button id="pre" onclick="preWatch();">미리보기</button>
 				<button id="submit">기안하기</button>
 			</div>
-	<div class="tbl_wrap order">
-	<form>
-	<table class="tbl" action="">
+	
+	<table class="tbl">
 				<colgroup>
 					<col width="20%">
 					<col width="30%">
@@ -147,24 +175,24 @@ textarea {
 				</tr>
 				<tr class="tbl_tit">
 					<td>문서번호</td>
-					<td colspan="3"><input type="text" id="txt" placeholder="2020-01" style="text-align:center;" name="docuNum"></td>
+					<td colspan="3"><input type="text" id="txt" placeholder="2020-01" style="text-align:center;"></td>
 					
 					
 				</tr>
 				<tr class="tbl_tit">
 					<td>기안부서</td>
-					<td><input type="text" id="txt" placeholder="구매팀" name="dept"></td>
+					<td><input type="text" id="txt" placeholder="구매팀"></td>
 					<td>기안자</td>
-					<td><input type="text" id="txt" placeholder="이름을 입력하세요" name="staffName"></td>
+					<td><input type="text" id="txt" placeholder="이름을 입력하세요"></td>
 					
 				</tr>
 				
 				<tr class="tbl_tit">
 					<td>기안일</td>
-					<td><input type="text" id="txt" placeholder="SYSDATE" name="approveDate"></td>
+					<td><input type="text" id="txt" placeholder="SYSDATE"></td>
 					<td >수신자</td>
 					<td colspan="">
-						<select id="receiver" name="receiver">
+						<select id="receiver">
 							<option selected disabled hidden>수신자를 선택하세요</option>
 							<option>부서명(부서장)</option>
 							<option>부서명(부서장)</option>
@@ -174,20 +202,20 @@ textarea {
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3"><input type="text" id="txtLong" name="title"></td>
+					<td colspan="3"><input type="text" id="txtLong"></td>
 				</tr>
 				<tr>
 					<td>내용</td>
 					<td colspan="3">
-						<textarea style="resize:none;" name="content"></textarea>
+						<textarea style="resize:none;"></textarea>
 					</td>
 				</tr>
 				
 			</table><br><br>
 			
 			<div class="tbl2_wrap">
-				<button id="plusBtn3">+ 추가</button><br>
-			<table class="payTbl order">
+				<button id="plusBtn2">+ 추가</button><br>
+			<table class="payTbl purchase">
 				<colgroup>
 					<col width="10%">
 					<col width="15%">
@@ -206,7 +234,7 @@ textarea {
 					<th>금액</th>
 				</tr>
 				<tr >
-					<td><input type="text" id="noTxt" placeholder="구매팀"></td>
+					<td><input type="text" id="noTxt" placeholder="No"></td>
 					<td><input type="text" id="anoTxt" placeholder="항목"></td>
 					<td><input type="text" id="anoTxt" placeholder="품목명"></td>
 					<td><input type="text" id="anoTxt" placeholder="수량"></td>
@@ -231,9 +259,7 @@ textarea {
 				</tr>
 			</table>
 			</div>
-			</form>
-			
-			
+			</div>
 </div>
 <div style="height:200px;">
 	
@@ -241,21 +267,28 @@ textarea {
 </section>
 <script>
 	$(function(){
-		$("#plusBtn3").click(function() {
+		console.log("purchase")
+		$("#plusBtn2").click(function() {
+			console.log("1");
 
 					var plusTable = "<tr>";
-					plusTable += "<td> <input type='text' id='noTxt' placeholder='구매팀'></td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </div> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </td>"
+					plusTable += "<td> <input type='text' id='noTxt' placeholder='No'></td>"
+					plusTable += "<td> <input type='text' id='anoTxt' placeholder='항목'> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt' placeholder='품목명'> </div> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt' placeholder='수량'> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt' placeholder='공급가액'> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt' placeholder='금액'> </td>"
 					plusTable += "</tr>"
-					var n = $(".payTbl.order").eq(0);
-
+					var n = $(".payTbl.purchase").eq(0);
+					
+					console.log("2");
 					n.append(plusTable);
 
 				})
+				
+		function preWatch() {
+			
+		}		
 	});
 </script>
 
