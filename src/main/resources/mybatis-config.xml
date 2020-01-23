@@ -6,7 +6,7 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.kh.hotels.mngMember.model.vo.Member" alias="Member"/>
-		<typeAlias type="com.kh.hotels.common.model.vo.HotelInfo" alias="HotelInfo"/>
+		<typeAlias type="com.kh.hotels.common.model.vo.Info" alias="Info"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>

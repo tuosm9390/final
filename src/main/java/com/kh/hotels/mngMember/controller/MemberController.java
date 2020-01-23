@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.kh.hotels.common.model.vo.Info;
 import com.kh.hotels.mngMember.model.exception.LoginException;
 import com.kh.hotels.mngMember.model.service.MemberService;
 import com.kh.hotels.mngMember.model.vo.Member;
