@@ -97,7 +97,7 @@
 		
 		$(function(){
 			$(".warehouse").click(function(){
-				location.href='goWarehouse.st';
+				location.href='select.war';
 			});
 		});
 </script>
