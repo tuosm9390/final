@@ -12,6 +12,7 @@
 		</param-value>
 	</context-param>
 	
+	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -32,6 +33,7 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping> -->
+	
 	<servlet>
 		<servlet-name>hotelmain</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -93,8 +95,17 @@
 		<url-pattern>*.hadmin</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>mngApprove</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/mngApprove-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 	<servlet-mapping>
-		<servlet-name>hoteladmin</servlet-name>
+		<servlet-name>mngApprove</servlet-name>
 		<url-pattern>*.ap</url-pattern>
 	</servlet-mapping>
 	
@@ -173,6 +184,7 @@
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
 		</init-param>
+	
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
