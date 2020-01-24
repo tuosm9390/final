@@ -65,7 +65,7 @@
 	margin-left: 5px;
 	margin-top: 10px;
 	}
-	#enrollBtn{
+	#enrollBtnn{
 	color:white;
 	background : #3498DB;
 	border: 1px solid #3498DB;
@@ -90,15 +90,26 @@
 	</header>
 		<div id="enrDiv">
 		<div class="bodyDivx">
-		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:600px"  id="sam"></div>  </div>
-		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-		<div>	<div class="same" id="ssam">구분</div>  <div class="same"><input type="radio">창고 &nbsp;&nbsp;<input type="radio">기타 </div>  </div>
-		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
+		<form action="insert.war" method="post" id="insertwar">
+		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:600px"  id="sam" name="strgNo"></div>  </div>
+		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="strgName"></div>  </div>
+		<div>	<div class="same" id="ssam">구분</div>  <div class="same"><input type="radio" name="strgStatus" value="strg">창고 &nbsp;&nbsp;<input type="radio" name="strgStatus" value="etc">기타 </div>  </div>
+		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="strgSite"></div>  </div>
+		</form>
 		</div><!-- end -->
 		<div class="btnss">
+		
 		<button id="resetBtn">다시작성</button>&nbsp;
-		<button id="enrollBtn">등록</button>
+		<button id="enrollBtnn">등록</button>
 		</div> 
 		</div>
 </body>
+<script>
+	$(function(){
+		$("#enrollBtnn").click(function(){
+			console.log("쥐인장");
+			$("#insertwar").submit();
+		});
+	});
+</script>
 </html>
