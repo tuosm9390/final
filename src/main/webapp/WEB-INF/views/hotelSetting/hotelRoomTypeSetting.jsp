@@ -117,6 +117,7 @@
 		border:0;
 		background-color: #3498DB;
    		color: white;
+   		cursor:pointer;
 	}
 </style>
 </head>
@@ -148,10 +149,11 @@
 				<!-- 위끝 -->
 				<br>
 				<br>
+				<form action="goRoomDetailPage.set" method="post">
 				<div class="tableArea">
 					<table border="1" class="roomTable" style="border-collapse: collapse;">
 						<tr class="thArea">
-							<th width="5%"><input type="checkbox"></th>
+							<th width="5%"><input type="checkbox" class="roomAllCheck"></th>
 							<th width="40%">객실 타입</th>
 							<th width="15%">최소 인원</th>
 							<th width="15%">최대 인원</th>
@@ -160,20 +162,85 @@
 					</table>
 				</div>
 				<br>
-			<div align="right">
-				<button class="backBtn" onclick=""><b>이전</b></button>			
-				<button class="nextBtn" onclick=""><b>다음</b></button>			
-			</div>
+				<div align="right">
+					<button type="button" class="backBtn" onclick="location.href='backHotelInfoSettingPage.set'"><b>이전</b></button>			
+					<button type="submit" class="nextBtn" onclick="return goRoomDetail();"><b>다음</b></button>			
+				</div>
+				</form>
 			</div>
 		</div><!-- 오른쪽영역 끝 -->
 	</div>
 	<script type="text/javascript">
 		function addRoomType(){
-			$("tbody:last").append("<tr><td><input type='checkbox'></td><td><input type='text' style='width:400px;height:30px;'></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;'></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;'></td><td><input type='text' style='width:100px;height:30px;'></td></tr>");
+			$("tbody:last").append("<tr><td><input type='checkbox' name='roomTypeCheck'></td><td><input type='text' style='width:400px;height:30px;' name='rtName'></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;' name='minPer'></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;' name='maxPer'></td><td><input type='text' style='width:100px;height:30px;' name='limitprc'></td></tr>");
 		};
-		function deleteRoomType(){
+		$(function(){
+		
+			$(".roomAllCheck").click(function(){
+				if($(".roomAllCheck").is(":checked")){
+					$("input[name='roomTypeCheck']").prop('checked',true);
+				}else{
+					$("input[name='roomTypeCheck']").prop('checked',false);
+				}
+			});		
+				
 			
-		};
+		});
+		function deleteRoomType(){
+			  var checkRow = "";
+			  $("input[name='roomTypeCheck']:checked").each (function (){
+			   	checkRow = checkRow + $(this).val()+"," ;
+			  });
+				checkRow = checkRow.substring(0,checkRow.lastIndexOf( ","));
+			 
+			  if(checkRow == ''){
+			    alert("삭제할 대상을 선택하세요.");
+			    return false;
+			  }
+			 
+			  if(confirm("정보를 삭제 하시겠습니까?")){
+			  	
+				  $("input[name='roomTypeCheck']:checked").parent().parent().remove();  
+				  
+			  }
+		}
+		function goRoomDetail(){
+			
+			if($("input[name='rtName']").val() == ""){
+				alert("객실 타입을 입력해주세요.");
+				return false;
+			}
+			if($("input[name='minPer']").val() == ""){
+				alert("최소 인원을 입력해주세요.");
+				return false;
+			}
+			if($("input[name='maxPer']").val() == ""){
+				alert("최대 인원을 입력해주세요.");
+				return false;
+			}
+			if($("input[name='limitprc']").val() == ""){
+				alert("객실 가격을 입력해주세요.");
+				return false;
+			}
+			if($("input[name='maxPer']").val() < $("input[name='minPer']").val()){
+				alert("최대인원은 최소인원을 넘을수 없습니다.");
+				return false;
+			}
+			if($("input[name='rtName']").length == 0){
+				alert("객실 타입을 추가해주세요.");
+				return false;
+			}
+			if($("input[name='rtName']").length >= 2){
+				for(var i = 0; i <= $("input[name='rtName']").length ; i++){
+					if($("input[name='rtName']")[i].value == $("input[name='rtName']")[i+1].value){
+						alert("객실 타입은 중복될 수 없습니다.");
+						return false;
+					}
+				}
+				return false;
+			}
+			return true;
+		}
 	</script>
 </body>
 </html>
