@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -189,7 +190,6 @@ input[type=checkbox] {
 	border: 5px solid white;
 	width: 140px;
 	height: 90px;
-	background-color: pink;
 }
 
 .stDetail {
@@ -221,6 +221,7 @@ input[type=checkbox] {
 	width: 140px;
 	height: 20px;
 	margin-left: 5px;
+	display: none;
 }
 
 .detailBox {
@@ -235,8 +236,9 @@ input[type=checkbox] {
 	text-align: center;
 }
 
-.fullRoom {
+.fullRoom, .reservRoom {
 	font-size: 12px;
+	display: none;
 }
 
 .roomFee {
@@ -246,6 +248,7 @@ input[type=checkbox] {
 .rentRoom {
 	text-align: center;
 	font-size: 12px;
+	display: none;
 }
 
 #enterBtn {
@@ -334,50 +337,45 @@ input[type=checkbox] {
 		
 		<!-- roomSec -->
 		<div class="roomSec lightgrey">
-			<c:forEach var="r" begin="1" end="20">
+			<c:forEach var="r" items="${ roomList }">
 				<div id="roomBox${ r }" class="roomBox">
-					<div class="statusBox">
+					<input type="hidden" value="${ r.rmNo }">
+					<div class="statusBox lightgrey">
 						<div class="stClean"></div>
 						<div class="stDetail">
-							<p class="roomNo">201</p>
-							<p class="roomType">디럭스</p>
+							<p class="roomNo">${ r.rmNum }</p>
+							<p class="roomType">${ r.rtName }</p>
 						</div>
-						<p class="reservName">김 * 호</p>
+						<p class="reservName"></p>
 					</div>
 					<!-- 재실 detail -->
 					<div class="detailBox fullRoom">
-						01-17~01-18 (1박)
+						<fmt:parseDate var="startDate_D" value="${ r.scheckout }" pattern="yyyy-MM-dd"/>
+			            <fmt:parseDate var="endDate_D" value="${ r.scheckin }" pattern="yyyy-MM-dd"/>
+			            <fmt:parseNumber var="startDate_N" value="${ startDate_D.time/(1000*60*60*24) }" integerOnly="true"/>
+			            <fmt:parseNumber var="endDate_N" value="${ endDate_D.time/(1000*60*60*24) }" integerOnly="true"/>
+						<c:out value="${ r.scheckin }"/> ~ <c:out value="${ r.scheckout }"/> (<c:out value="${ endDate_N - startDate_N }"/>박)
 						<hr>
-						<div class="roomFee">90,000</div>
+						<div class="roomFee"><c:out value="${ r.stayPrice }"/></div>
 					</div>
-				</div>
-				<div id="roomBox${ r + 30 }" class="roomBox">
-					<div class="statusBox">
-						<div class="stClean"></div>
-						<div class="stDetail">
-							<p class="roomNo">201</p>
-							<p class="roomType">디럭스</p>
-						</div>
-						<p class="reservName">김 * 호</p>
+					<!-- 예약 detail -->
+					<div class="detailBox reservRoom">
+						<fmt:parseDate var="startDateD" value="${ r.scheckout }" pattern="yyyy-MM-dd"/>
+			            <fmt:parseDate var="endDateD" value="${ r.scheckin }" pattern="yyyy-MM-dd"/>
+			            <fmt:parseNumber var="startDateN" value="${ startDateD.time/(1000*60*60*24) }" integerOnly="true"/>
+			            <fmt:parseNumber var="endDateN" value="${ endDateD.time/(1000*60*60*24) }" integerOnly="true"/>
+						<c:out value="${ r.rcheckin }"/> ~ <c:out value="${ r.rcheckout }"/> (<c:out value="${ endDateN - startDateN }"/>박)
+						<hr>
+						<div class="roomFee"><c:out value="${ r.rsvPrice }"/></div>
 					</div>
 					<!-- 공실 detail -->
 					<div class="detailBox emptyRoom">
 						<button id="enterBtn">재실</button>
 					</div>
-				</div>
-				<div id="roomBox${ r + 60 }" class="roomBox">
-					<div class="statusBox">
-						<div class="stClean"></div>
-						<div class="stDetail">
-							<p class="roomNo">201</p>
-							<p class="roomType">디럭스</p>
-						</div>
-						<p class="reservName">김 * 호</p>
-					</div>
 					<!-- 대실 detail -->
 					<div class="detailBox rentRoom">
 						<button id="timeBtn">05:58</button><br>
-						<div class="roomFee">90,000</div>
+						<div class="roomFee"><div class="roomFee"><c:out value="${ r.stayPrice }"/></div></div>
 					</div>
 				</div>
 			</c:forEach>
@@ -390,6 +388,14 @@ input[type=checkbox] {
 				$("#allFloor").css({"background-color":"#EAC064", "color":"white"});
 				$(".selectClean").hide();
 				$(".selectUnclean").hide();
+				
+				for(var r = 0; r < "${ roomList }".size(); r++) {
+					if("${ roomList.get(r).getStayNo() }" == 0 && "${ roomList.get(r).getRsvNo() }".equals(null)) {
+						
+					} else {
+						console.log("${ roomList.get(r).getRmNo() }");
+					}
+				}
 			});
 			
 			//[ 정비 ] 상태 버튼

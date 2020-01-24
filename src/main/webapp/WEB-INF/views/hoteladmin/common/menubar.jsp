@@ -10,12 +10,17 @@
 <!-- 데이트피커 -->
 <link href="${ contextPath }/resources/css/datepicker.min.css" rel="stylesheet" type="text/css">
 <script src="${ contextPath }/resources/js/datepicker.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
 <!-- Korean language -->
 <script src="${ contextPath }/resources/js/datepicker.kr.js"></script>
 <meta charset="UTF-8">
 <title>HotelsCompile</title>
 <style type="text/css">
+	body {
+	   font-family: 'Noto Sans KR', sans-serif;
+	}
+	
 	.menubar{
 		/* width:100%; */
 		width:98.5%;

@@ -11,5 +11,6 @@
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/common-mapper.xml"/>
+		<mapper resource="mappers/mngRooms-mapper.xml" />
 	</mappers>
 </configuration>
