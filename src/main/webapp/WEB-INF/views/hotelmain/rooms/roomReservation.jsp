@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,16 +72,16 @@
 	width: 50px;
 }
 
-#name{
+#userName{
 	width: 100px;
 }
 
 .phone{
-	width: 50px;
+	width: 130px;
 }
 
 #email{
-	width: 120px;
+	width: 150px;
 }
 
 .datepicker{
@@ -149,15 +150,25 @@
 				<p
 					style="font-style: normal; font-weight: bold; font-size: 32px; line-height: 42px; text-decoration-line: underline;">예약</p>
 				<br>
+				<!-- 숙박 일 수 계산 -->
+				<fmt:parseDate var="startDate_D" value="${sessionScope.rsv.checkIn}" pattern="yyyy-MM-dd"/>
+				<fmt:parseDate var="endDate_D" value="${sessionScope.rsv.checkOut}" pattern="yyyy-MM-dd"/>
+				<fmt:parseNumber var="startDate_N" value="${startDate_D.time/(1000*60*60*24)}" integerOnly="true"/>
+				<fmt:parseNumber var="endDate_N" value="${endDate_D.time/(1000*60*60*24)}" integerOnly="true"/>
+				
 				<form action="reservationResult.hmain" method="post" id="reservationInfo">
 					<table class="reservation-table" width="90%">
 						<tr>
 							<td colspan="4"><li>숙박 일정</li></td>
 							<td colspan="2" rowspan="2" style="width: 40%;">
 								<ul class="reservation-price">
-									<li><div class="name">객실요금</div><div class="value">원</div></li>
-									<li><div class="name">봉사료</div><div class="value">원</div></li>
-									<li><div class="name">요금 합계</div><div class="value">원</div></li>
+									<li><div class="name">객실요금</div><div class="value">
+									<fmt:parseNumber var="price" value="${ sessionScope.roomInfo.limitPrc * (endDate_N - startDate_N) }" integerOnly="true"/>${ price }원</div></li>
+									<li><div class="name">봉사료</div><div class="value">
+									<fmt:parseNumber var="vt" value="${ price / 10 }" integerOnly="true"/>${ vt }원</div></li>
+									<li><div class="name">요금 합계</div><div class="value">
+									<fmt:parseNumber var="total" value="${ price * 1.1 }" integerOnly="true"/>${ total }원</div>
+									<input type="hidden" name="stayPrice" value="${ total }"></li>
 								</ul>
 							</td>
 						</tr>
@@ -166,12 +177,12 @@
 								<div class="schedule">
 									<div class="name">체크인</div>
 									<div class="value">
-										<input type="hidden" name="CheckIn" value="${ CheckIn }">${ CheckIn }
+										<input type="hidden" name="checkIn" value="${ sessionScope.rsv.checkIn }">${ sessionScope.rsv.checkIn }
 									</div>
 									<br>
 									<div class="name">체크아웃</div>
 									<div class="value">
-										<input type="hidden" name="CheckOut" value="${ CheckOut }">${ CheckOut }
+										<input type="hidden" name="checkOut" value="${ sessionScope.rsv.checkOut }">${ sessionScope.rsv.checkOut }
 									</div>
 								</div>
 							</td>
@@ -179,10 +190,10 @@
 						<tr>
 							<td style="width: 250px;"><li>체크인 시간</li></td>
 							<td style="padding-left: 30px; width: 80px;">
-								<select class="checkIn-time" name="checkIntime">
-									<option>12:00</option>
-									<option>13:00</option>
-									<option>14:00</option>
+								<select class="checkIn-time" name="checkInTime">
+									<option value="12:00">12:00</option>
+									<option value="13:00">13:00</option>
+									<option value="14:00">14:00</option>
 								</select>
 							</td>
 							<td>
@@ -202,36 +213,29 @@
 						</tr>
 						<tr>
 							<td><li>투숙 인원</li></td>
-							<td colspan="5">성인 <input type="hidden" name="adult" value="${ adult }">${ adult }명 &emsp;
-							소인 <input type="hidden" name="children" value="${ children }">${ children }명</td>
+							<td colspan="5">성인 <input type="hidden" id="adult" name="adult" value="${ sessionScope.rsv.adult }">${ sessionScope.rsv.adult }명 &emsp;
+							소인 <input type="hidden" id="child" name="child" value="${ sessionScope.rsv.child }">${ sessionScope.rsv.child }명</td>
 						</tr>
 						<tr>
 							<td><li>예약자명</li></td>
-							<td colspan="5"><input type="text" id="reservName" name="reservName"></td>
+							<td colspan="5"><input type="text" id="userName" name="userName">&emsp;
+							<label style="font-weight: normal; font-size: x-small;">※두 글자 이상의 한글을 입력해주세요.</label></td>
 						</tr>
 						<tr>
 							<td>
 								<li>전화번호</li>
 							</td>
 							<td colspan="3">
-								<select id="phone" name="phone">
-									<option selected>010</option>
-									<option>011</option>
-								</select> - 
-								<input type="text" id="phone2" class="phone" name="phone2"> - 
-								<input type="text" id="phone3" class="phone" name="phone3">
+								<input type="text" id="phone" class="phone" name="phone" maxlength="11"
+								onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">&emsp;
+								<label style="font-weight: normal; font-size: x-small;">※숫자만 입력해주세요.</label>
 							</td>
 							<td colspan="3"><li>옵션 선택사항</li></td>
 						</tr>
 						<tr>
 							<td><li>이메일</li></td>
 							<td colspan="3">
-								<input type="text" id="email" name="email"> @ 
-								<select id="email2" name="email2">
-									<option selected>naver.com</option>
-									<option>kakao.co.kr</option>
-									<option>daum.com</option>
-								</select>
+								<input type="email" id="email" name="email">
 							</td>
 							<td rowspan="2" style="line-height: 30px;">
 								<ul class="option">
@@ -244,20 +248,20 @@
 							<td colspan="2" rowspan="2" style="line-height: 30px; width: 50%;">
 								<ul class="option-radio">
 									<li>
-										<label id="non-smoke-y"><input type="radio" name="non-smoke" checked>Y</label>&emsp;
-										<label id="non-smoke-n"><input type="radio" name="non-smoke">N</label>
+										<label id="non-smoke-y"><input type="radio" name="non-smoke" value="Y" checked>Y</label>&emsp;
+										<label id="non-smoke-n"><input type="radio" name="non-smoke" value="N">N</label>
 									</li>
 									<li>
-										<label id="animal-y"><input type="radio" name="animal">Y</label>&emsp;
-										<label id="animal-n"><input type="radio" name="animal" checked>N</label>
+										<label id="animal-y"><input type="radio" name="animal" value="Y">Y</label>&emsp;
+										<label id="animal-n"><input type="radio" name="animal" value="N"checked>N</label>
 									</li>
 									<li>
-										<label id="breakfast-y"><input type="radio" name="breakfast" checked>Y</label>&emsp;
-										<label id="breakfast-n"><input type="radio" name="breakfast">N</label>
+										<label id="breakfast-y"><input type="radio" name="breakfast" value="Y" checked>Y</label>&emsp;
+										<label id="breakfast-n"><input type="radio" name="breakfast" value="N">N</label>
 									</li>
 									<li>
-										<label id="bed-twin"><input type="radio" name="bed" checked>트윈</label>
-										<label id="bed-double"><input type="radio" name="bed">더블</label>
+										<label id="bed-twin"><input type="radio" name="bed" value="" checked>트윈</label>
+										<label id="bed-double"><input type="radio" name="bed" value="">더블</label>
 									</li>
 								</ul>
 							</td>
@@ -364,17 +368,30 @@
 	</section>
 	<footer></footer>
 	<script>
-		$(".reservation-cancel").click(function(){
-			location.href='goRooms.hmain';
-		});
-		
-		$(".reservation-submit").click(function(){
-			if($("#agreement").prop("checked") == true){
-// 				location.href='reservationResult.hmain';
-				$("#reservationInfo").submit();
-			} else {
-				alert("환불 규정을 확인해주세요.");
-			}
+		$(function(){
+			$(".reservation-cancel").click(function(){
+				location.href='goRooms.hmain';
+			});
+			
+			$(".reservation-submit").click(function(){
+				var emailRule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+				var nameRule = /^[가-힣]/;
+				
+				if(!emailRule.test($("#email").val())) {
+					return false;
+				} else {
+					if(!nameRule.test($("#userName").val())){
+						return false;
+					} else {
+						if($("#agreement").prop("checked") == true){
+// 							location.href='reservationResult.hmain';
+							$("#reservationInfo").submit();
+						} else {
+							alert("환불 규정을 확인해주세요.");
+						};
+					};
+				};
+			});
 		});
 	</script>
 </body>

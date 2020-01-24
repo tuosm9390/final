@@ -169,7 +169,7 @@ input[type=text] {
 		    <!-- Wrapper for slides -->
 		    <div class="carousel-inner" role="listbox">
 		      <div class="item active">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 480px;">
+		        <img src="${ contextPath }/resources/images/room${ roomInfo.rt_No }.png" style="width: 100%; height: 480px;">
 		      </div>
 		
 		      <div class="item">
@@ -214,7 +214,7 @@ input[type=text] {
 							<td width="50%">체크인</td>
 							<td>
 								<div class="wrapper">
-									<input type="text" id="checkIn" placeholder="날짜 선택" name="CheckIn"
+									<input type="text" id="checkIn" placeholder="날짜 선택" name="checkIn"
 										readonly /><i class="ion-calendar"></i>
 								</div>
 							</td>
@@ -227,7 +227,7 @@ input[type=text] {
 							<td width="50%">체크아웃</td>
 							<td>
 								<div class="wrapper">
-									<input type="text" id="checkOut" placeholder="날짜 선택" name="CheckOut"
+									<input type="text" id="checkOut" placeholder="날짜 선택" name="checkOut"
 										readonly /><i class="ion-calendar"></i>
 								</div>
 							</td>
@@ -242,9 +242,9 @@ input[type=text] {
 							<td width="70%">성인</td>
 							<td>
 								<select id="adult" name="adult">
-									<option selected>1</option>
-									<c:forEach var="i" begin="2" end="4">
-									<option>${ i }</option>
+									<option value="0" selected>0</option>
+									<c:forEach var="i" begin="1" end="4">
+									<option value="${ i }">${ i }</option>
 									</c:forEach>
 								</select>
 							</td>
@@ -256,10 +256,10 @@ input[type=text] {
 						<tr>
 							<td width="70%">소인</td>
 							<td>
-								<select id="children" name="children">
-									<option selected>1</option>
-									<c:forEach var="i" begin="2" end="3">
-									<option>${ i }</option>
+								<select id="child" name="child">
+									<option value="0" selected>0</option>
+									<c:forEach var="i" begin="1" end="4">
+									<option value="${ i }">${ i }</option>
 									</c:forEach>
 								</select>
 							</td>
@@ -279,16 +279,16 @@ input[type=text] {
 			<!-- 좌측 이미지 -->
 			<div class="detail-img">
 				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
+					<img src="${ contextPath }/resources/images/room${roomInfo.rt_No}.png" style="width: 100%; height: 200px;">
 				</div>
 				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
+					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 200px;">
 				</div>
 				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
+					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 200px;">
 				</div>
 				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
+					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 200px;">
 				</div>
 			</div>
 			<!-- 좌측 이미지 끝 -->
@@ -296,7 +296,7 @@ input[type=text] {
 			<!-- 우측 내용 -->
 			<div class="detail-text">
 				<p
-					style="font-style: normal; font-weight: bold; font-size: 36px; line-height: 42px; text-decoration-line: underline;">ROOM</p>
+					style="font-style: normal; font-weight: bold; font-size: 36px; line-height: 42px; text-decoration-line: underline;">${roomInfo.rt_Name}</p>
 				<div style="border: 1px solid black; width: 100%; height: 0;"></div>
 				
 				<br>
@@ -304,15 +304,9 @@ input[type=text] {
 					모던 스타일 객실과 별도의 작은 정원 테라스</p>
 
 				<ul class="room-item">
-					<li>세계 최고 품질의 매트리스</li>
-					<li>공기 정화 시스템</li>
-					<li>Only One Collection 가구</li>
-					<li>Jacuzzi 욕조</li>
-					<li>Organic 화장품 (사월 호텔 자체 개발 – 프랑스산 천연 오일 사용)</li>
-					<li>Hotel BGM System</li>
-					<li>4월 호텔의 향을 이용한 디퓨져</li>
-					<li>친환경 고급 인테리어</li>
-					<li>정원 테라스</li>
+				<c:forTokens items="${ roomInfo.rm_Option }" var="option" delims=",">
+					<li>${ option }</li>
+				</c:forTokens>
 				</ul>
 			</div>
 			<!-- 우측 내용 끝 -->
@@ -353,8 +347,15 @@ input[type=text] {
 		});
 
 		$("#reservation-btn").click(function() {
-// 			location.href = "reservation.hmain?CheckIn=" + startNum + "&CheckOut=" + endNum;
-			$("#reservationForm").submit();
+			if($("#checkIn").val() != "" && $("#checkOut").val() != ""){
+				if(Number($("#adult").val()) >= 1 && (Number($("#adult").val()) + Number($("#child").val())) <= Number('${roomInfo.maxPer}')){
+					$("#reservationForm").submit();
+				} else {
+					alert("인원은 성인 최소 1명이상, 최대 ${roomInfo.maxPer}명 입니다.");
+				};
+			} else {
+				alert("체크인 체크아웃날짜를 선택해주세요");
+			};
 		});
 	</script>
 </body>

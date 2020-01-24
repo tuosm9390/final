@@ -104,31 +104,31 @@
 					<table class="reservation-table">
 						<tr>
 							<td><li>예약번호</li></td>
-							<td><label>2020202020</label></td>
+							<td><label>${ rsvNo }</label></td>
 						</tr>
 						<tr>
 							<td><li>예약자명</li></td>
-							<td><label>${ reservName }</label></td>
+							<td><label>${ Member.userName }</label></td>
 						</tr>
 						<tr>
 							<td><li>전화번호</li></td>
-							<td><label>번호</label></td>
+							<td><label>${ Member.phone }</label></td>
 						</tr>
 						<tr>
 							<td><li>이메일</li></td>
-							<td><label>이메일</label></td>
+							<td><label>${ Member.email }</label></td>
 						</tr>
 						<tr>
 							<td><li>결제금액</li></td>
-							<td><label>금액</label></td>
+							<td><label>${ Reservation.stayPrice }</label></td>
 						</tr>
 						<tr>
 							<td><li>체크인일자</li></td>
-							<td><label>${ CheckIn } (${ checkIntime })</label></td>
+							<td><label>${ Reservation.checkIn } (${ Reservation.checkInTime })</label></td>
 						</tr>
 						<tr>
 							<td><li>체크아웃일자</li></td>
-							<td><label>${ CheckOut }</label></td>
+							<td><label>${ Reservation.checkOut }</label></td>
 						</tr>
 					</table>
 				<br>
@@ -144,9 +144,9 @@
 					<tr>
 						<td><li>객실 인원</li></td>
 						<td><label>성인</label></td>
-						<td><label>${ adult }명</label></td>
+						<td><label>${ Reservation.adult }명</label></td>
 						<td><label>소인</label></td>
-						<td><label>${ children }명</label></td>
+						<td><label>${ Reservation.child }명</label></td>
 					</tr>
 					<tr>
 						<td><li>옵션</li></td>

@@ -9,19 +9,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Reservation {
-
+public class ReservationCheck {
 	private String rsvNo; // 예약번호
-	private int rmNo; // 방번호
-	private int mno; // 사용자번호
+	private String userName; // 예약자명
+	private String phone; // 전화번호
+	private String email; // 이메일
+	private int stayPrice; // 숙박요금
 	private Date checkIn; // 체크인날짜
 	private Date checkOut; // 체크아웃날짜
-	private int stayPrice; // 숙박요금
-	private String rsvDate; // 예약날짜
-	private String rsvStatus; // 예약상태
-	private String rsvWay; // 예약방법
+	private String checkInTime; // 체크인시간
+	private String rtName; // 객실명
 	private int adult; // 대인인원
 	private int child; // 소인인원
-	private String checkInTime; // 체크인시간
-
 }

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hotel">
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.RoomInfo" id="RoomInfoResultSet">
+		<id property="rt_No" column="RT_NO" />
+		<result property="std_Per" column="STD_PER" />
+		<result property="rm_Option" column="RM_OPTION" />
+		<result property="rm_Status" column="RM_STATUS" />
+		<result property="rt_Name" column="RT_NAME" />
+		<result property="minPer" column="MINPER" />
+		<result property="maxPer" column="MAXPER" />
+		<result property="limitPrc" column="LIMITPRC" />
+	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" id="ReservationCheck">
+		<id property="rsvNo" column="RSV_NO" />
+		<result property="userName" column="NAME" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+		<result property="stayPrice" column="stay_Price" />
+		<result property="checkIn" column="checkIn" />
+		<result property="checkOut" column="checkOut" />
+		<result property="checkInTime" column="ci_time" />
+		<result property="rtName" column="rt_Name" />
+		<result property="adult" column="adult" />
+		<result property="child" column="child" />
+	</resultMap>
+
+	<select id="selectRoomList" resultMap="RoomInfoResultSet" resultType="Map">
+		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER, LIMITPRC
+		FROM ROOM R
+		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
+	</select>
+
+	<select id="selectRoom" resultMap="RoomInfoResultSet" resultType="RoomInfo">
+		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS,
+		RT_NAME, MINPER, MAXPER, LIMITPRC
+		FROM ROOM R
+		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
+		WHERE R.RT_NO = #{roomType}
+		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS, RT_NAME,
+		MINPER, MAXPER, LIMITPRC
+	</select>
+	
+	<select id="reservationCheck" resultMap="ReservationCheck" resultType="ReservationCheck" parameterType="ReservationCheck">
+		SELECT RSV_NO, M.NAME, M.PHONE, M.EMAIL, RS.STAY_PRICE, RS.CHECKIN,
+		RS.CHECKOUT, RS.CI_TIME, RT_NAME, RS.ADULT, RS.CHILD
+		FROM ROOM R
+		JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
+		JOIN RSV RS ON (R.RM_NO = RS.RM_NO)
+		JOIN MEMBER M ON (RS.MNO = M.MNO)
+		WHERE RS.RSV_STATUS = 'OK'
+		AND RSV_NO = #{rsvNo}
+		AND M.NAME = #{userName}
+		AND M.PHONE = #{phone}
+		GROUP BY RT_NAME, RSV_NO, RS.MNO, M.NAME, RS.STAY_PRICE,
+		M.PHONE, M.EMAIL, RS.CHECKIN, RS.CHECKOUT, RS.CI_TIME,
+		RS.ADULT, RS.CHILD
+	</select>
+	
+	<insert id="insertReservation">
+		
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
