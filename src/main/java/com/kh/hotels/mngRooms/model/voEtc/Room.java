@@ -1,4 +1,4 @@
-package com.kh.hotels.mngRooms.model.vo;
+package com.kh.hotels.mngRooms.model.voEtc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

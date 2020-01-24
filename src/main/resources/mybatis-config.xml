@@ -15,6 +15,7 @@
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/common-mapper.xml"/>
+		<mapper resource="mappers/mngRooms-mapper.xml" />
 		<mapper resource="mappers/strg-mapper.xml"/>
 		<mapper resource="mappers/report-mapper.xml"/>
         <mapper resource="mappers/hotel-mapper.xml"/>
