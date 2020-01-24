@@ -7,9 +7,12 @@
 	<typeAliases>
 		<typeAlias type="com.kh.hotels.mngMember.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Info" alias="Info"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomInfo" alias="RoomInfo"/>
+		<typeAlias type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" alias="ReservationCheck"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/common-mapper.xml"/>
+		<mapper resource="mappers/hotel-mapper.xml"/>
 	</mappers>
 </configuration>

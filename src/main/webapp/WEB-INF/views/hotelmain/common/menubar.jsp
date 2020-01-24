@@ -163,7 +163,7 @@ body{
 	background: rgba(211, 211, 211, .2);
 }
 
-input[type=text], select, button, textarea{
+input[type=text], input[type=email], select, button, textarea{
 	border: 1px solid #919191;
 	border-radius: 4px;
 	height: 24px;
