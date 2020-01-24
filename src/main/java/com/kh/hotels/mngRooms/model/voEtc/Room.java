@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 public class Room {
 	
 	private int rmNo;
+	private String rmNum;
+	private int stdPer;
+	private String rmOption;
+	private int floor;
 	private int rtNo;
-	private String termType;
-	private String dayType;
-	private String stayType;
-	private int price;
 	private String regDate;
 	private String rmStatus;
 

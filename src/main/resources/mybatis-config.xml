@@ -6,11 +6,20 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.kh.hotels.mngMember.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.Strg" alias="Strg"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Info" alias="Info"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomInfo" alias="RoomInfo"/>
+		<typeAlias type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" alias="ReservationCheck"/>
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.Report" alias="Report"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/common-mapper.xml"/>
 		<mapper resource="mappers/mngRooms-mapper.xml" />
+		<mapper resource="mappers/strg-mapper.xml"/>
+		<mapper resource="mappers/report-mapper.xml"/>
+        <mapper resource="mappers/hotel-mapper.xml"/>
 	</mappers>
+		
+	
 </configuration>

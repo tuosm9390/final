@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,6 +160,63 @@
 		text-align: center;
 		height:40px;
 	}
+	ul.tabs {
+	    margin: 0;
+	    padding: 0;
+	    float: left;
+	    list-style: none;
+	    height: 32px;
+	    border-bottom: 1px solid #eee;
+	    border-left: 1px solid #eee;
+	    width: 100%;
+	    font-family:"dotum";
+	    font-size:12px;
+	}
+	ul.tabs li {
+	    float: left;
+	    text-align:center;
+	    cursor: pointer;
+	    width:82px;
+	    height: 31px;
+	    line-height: 31px;
+	    border: 1px solid #eee;
+	    border-left: none;
+	    font-weight: bold;
+	    background: #fafafa;
+	    overflow: hidden;
+	    position: relative;
+	}
+	ul.tabs li.active {
+	    background: #FFFFFF;
+	    border-bottom: 1px solid #FFFFFF;
+	}
+	.tab_container {
+	    border: 1px solid #eee;
+	    border-top: none;
+	    clear: both;
+	    float: left;
+	    width: 248px;
+	    background: #FFFFFF;
+	}
+	.tab_content {
+	    padding: 5px;
+	    font-size: 12px;
+	    display: none;
+	}
+	.tab_container .tab_content ul {
+	    width:100%;
+	    margin:0px;
+	    padding:0px;
+	}
+	.tab_container .tab_content ul li {
+	    padding:5px;
+	    list-style:none
+	}
+	;
+	 #container {
+	    width: 249px;
+	    margin: 0 auto;
+	}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -186,46 +244,157 @@
 			</div>
 				<!-- 위끝 -->
 			<div class="btnGroupArea">
-				<button class="tableBtn" onclick="addRoom();">+ 추가</button>
-				<button class="tableBtn" onclick="deleteRoom();">- 삭제</button>
+				<button class="tableBtn" id="addRoomBtn">+ 추가</button>
+				<button class="tableBtn" id="deleteRoomBtn" onclick="deleteRoom();">- 삭제</button>
 			</div>
 			<br>
 			<div class="contentArea3">
 				<br>
 				<div class="inLeftArea">
 					<div align="center">
-						<button class="allShowButton"><h2>전체내역</h2></button>
-						<button class="allShowButton subBtn"><span>디럭스</span><span>( 0 )</span></button>
-						<button class="allShowButton subBtn"><span>프리미엄</span><span>( 0 )</span></button>
-						<button class="allShowButton subBtn"><span>스위트룸</span><span>( 0 )</span></button>
-						<button class="allShowButton subBtn"><span>스파룸</span><span>( 0 )</span></button>
+						<button class="allShowButton"><h2>룸 리스트</h2></button>
+						<c:forEach var="roomType" items="${ sessionScope.roomTypeList }">
+							<div>
+								<c:set var="names" value="${ roomType.rtName }"/>
+								<button class="allShowButton subBtn" onclick="showDetailArea(this);" value="${ roomType.rtName }"><span>${ roomType.rtName }</span></button>
+							</div>
+						</c:forEach>
 					</div>					
 				</div>
 				<div class="inRightArea">
-					<table border="1" class="roomTable" style="border-collapse: collapse;">
+				<c:forEach var="roomType" items="${ sessionScope.roomTypeList }">
+					<c:set var="names" value="${ roomType.rtName }"/>
+					<input type="hidden" value="${ names }">
+					<table border="1" class="roomTable" style="border-collapse: collapse;" rel="${ names }" id="${ names }">
 						<tr class="thArea">
-							<th width="5%"><input type="checkbox"></th>
+							<th width="5%"><input type="checkbox" class="roomAllCheck"></th>
 							<th width="10%">층</th>
 							<th width="15%">객실 번호</th>
-							<th width="40%">객실 옵션</th>
+							<th width="55%">객실 옵션</th>
 							<th width="15%">기준 인원</th>
-							<th width="15%">최대 인원</th>
 						</tr>
 					</table>
+				</c:forEach>
 				</div>
 			</div>
 			<br>
 			<div class="btnGroup" align="right" style="margin-right:150px;">
 				<button class="backBtn" onclick=""><b>이전</b></button>			
-				<button class="nextBtn" onclick=""><b>다음</b></button>			
+				<button class="nextBtn" onclick="return goRoomFareSetting();"><b>다음</b></button>			
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
-		function addRoom(){
-			$("tbody:last").append("<tr><td><input type='checkbox' style='width:34px;'></td><td><select><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;'> </td> <td> <input type='text' style='width:337px;'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;'> </td> </tr>");
-		};
+	
+
+/* 		function addRoom(){
+			
+			//table:not([style*="display: none"])
+			
+			console.log($(".roomTable").is(':visible'));
+			
+			if($(".roomTable").is(':visible')){
+				$(".roomTable:last").append("<tr><td><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;'> </td> <td> <input type='text' style='width:337px;'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;'> </td> </tr>");
+			}
+		}; */
+
+		//////////////////////////////////////////////////////
+		$(function(){
+			
+			roomtypes = "all";
+			
+			$(".roomAllCheck").click(function(){
+				if($(".roomAllCheck").is(":checked")){
+					$("input[name='roomDetailCheck']").prop('checked',true);
+				}else{
+					$("input[name='roomDetailCheck']").prop('checked',false);
+				}
+			});		
+				
+			
+		});
 		function deleteRoom(){
+			  var checkRow = "";
+			  $("input[name='roomDetailCheck']:checked").each (function (){
+			   	checkRow = checkRow + $(this).val()+"," ;
+			  });
+				checkRow = checkRow.substring(0,checkRow.lastIndexOf( ","));
+			 
+			  if(checkRow == ''){
+			    alert("삭제할 대상을 선택하세요.");
+			    return false;
+			  }
+			 
+			  if(confirm("정보를 삭제 하시겠습니까?")){
+			  	
+				  $("input[name='roomDetailCheck']:checked").parent().parent().remove();  
+				  
+			  }
+		}
+		
+		
+/* 		function showDetailArea(typeName){
+			
+			//console.log(typeName.value); // 선택 값
+			//var test = $(".contentArea3").children(".inRightArea").children().eq(0).val();
+			//console.log(test); // 디럭스
+			var xxxx = $(".contentArea3").children(".inRightArea").children().length;
+			for(var i = 0; i < xxxx; i++ ){
+				if(typeName.value != $(".contentArea3").children(".inRightArea").children("input").eq(i).val()){
+					$(".contentArea3").children(".inRightArea").children("input").siblings(".roomTable").css("display","none");
+					continue;
+				}else{
+					console.log(typeName.value);
+					$(".contentArea3").children(".inRightArea").children("input[value='typeName.value']").siblings(".roomTable").css("display","table"); */
+					/* console.log($(".contentArea3").children(".inRightArea").children().eq(i+1).attr("display","block")); */
+/* 					break;
+				}
+			}
+			
+			if(typeName.value == $(".inRightArea").children("input[type='hidden']").val()){
+				 $(".contentArea3").children(".inRightArea").children("input[type='hidden']").siblings("table").attr("display","block");
+			}
+		} */
+		function showDetailArea(obj){
+			roomtypes = obj.value;
+		    $(".subBtn").removeClass("active").css("color", "#333");
+		    $(obj).addClass("active").css("color", "darkred");
+		    $(".roomTable").hide();
+		    activeTab = obj.value;
+		    $("#" + activeTab).fadeIn();
+		    
+		}
+		$(function () {
+			
+			$("#addRoomBtn").click(function(){
+				if(roomtypes != "all"){
+				 	$("#" + activeTab).append("<tr><td><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;' name='stdPer'> </td></tr>");
+				}else{
+					alert("룸타입을 선택해주세요.");
+				}
+			});
+
+		    $(".roomTable").hide();
+		    $(".roomTable:first").show();
+
+		});
+		
+		function goRoomFareSetting(){
+			
+			console.log(roomtypes);
+			if(roomtypes == "all"){
+				alert("객실 상세 설정을 해주세요.");
+				return false;
+			}else{
+				if($("#" + activeTab).find("input[name='roomDetailCheck']").length == 0){
+					alert("객실 상세 설정을 해주세요.");
+					return false;
+				}else{
+					
+				}
+			}
+			
+			return false;
 			
 		};
 	</script>		

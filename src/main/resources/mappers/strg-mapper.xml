@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Strg">
+	
+	<resultMap type="com.kh.hotels.mngStock.model.vo.Strg" id="resultSetStrg">
+		<id property="strgNo" column="STRG_NO" />
+		<result property="strgName" column="STRG_NAME" />
+		<result property="strgStatus" column="STRG_STATUS" />
+		<result property="strgSite" column="STRG_SITE" />
+	</resultMap>
+	
+	<insert id="insertWarehouse" parameterType="Strg">
+		INSERT INTO STRG VALUES(#{strgNo},#{strgName},#{strgStatus},#{strgSite})
+	</insert>
+	
+	
+	<select id="selectList" resultMap="resultSetStrg">
+		SELECT * FROM STRG
+		ORDER BY STRG_NO ASC
+	</select>
+
+	<select id="searchList" resultMap="resultSetStrg">
+		SELECT * FROM STRG
+		WHERE STRG_STATUS = 'Y'
+		<choose>
+		
+		<when test="code != null">
+			AND STRG_NO LIKE '%' || #{code} || '%'
+		</when>
+		<when test="name != null">
+			AND STRG_NAME LIKE '%' || #{name} || '%'
+		</when>
+		<when test="status != null">
+			AND STRG_STATUS LIKE '%' || #{status} || '%'
+		</when>
+		
+		</choose>
+		ORDER BY STRG_NO ASC
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
