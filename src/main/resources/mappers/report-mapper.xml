@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Report">
+	<resultMap type="com.kh.hotels.mngApproval.model.vo.Report"
+		id="resultSetReport">
+
+		<id property="rptNo" column="RPT_NO" />
+		<result property="rptNo" column="RPT_NO" />
+		<result property="mno" column="MNO" />
+		<result property="rptDate" column="RPT_DATE" />
+		<result property="receiver" column="RECEIVER" />
+		<result property="rptTitle" column="RPT_TITLE" />
+		<result property="rptStatus" column="RPT_STATUS" />
+		<result property="apprDate" column="APPR_DATE" />
+		<result property="docNo" column="DOC_NO" />
+		<result property="rptType" column="RPT_TYPE" />
+
+	</resultMap>
+
+	<select id="selectApproveList" resultType="java.util.HashMap">
+		SELECT ROWNUM RNUM,
+		R.RPT_NO AS "RPT_NO", R.MNO AS "RMNO", M.NAME "MNAME", R.RPT_DATE AS
+		"RPTDATE", R.RECEIVER AS "RCEIVER", S.NAME AS "RNAME",
+		R.RPT_TITLE AS "RPTITLE", R.RPT_STATUS AS "RPSTATUS", R.APPR_DATE AS "APPDATE",
+		R.DOC_NO AS "DOCNO", R.RPT_TYPE AS "RPTYPE"
+		FROM REPORT R, MEMBER M, (SELECT MNO, NAME
+		FROM MEMBER
+		WHERE MNO IN (SELECT DISTINCT RECEIVER
+		FROM REPORT)
+		) S
+		WHERE R.MNO = M.MNO
+		AND R.RECEIVER = S.MNO
+		ORDER BY ROWNUM DESC
+	</select>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM Report
+	</select>
+
+
+</mapper>
+  
+  

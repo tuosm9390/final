@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
@@ -110,15 +111,54 @@
  	 		<option value="check">수령</option>
 		</select> 
 			<select class="searchCondition"  id="purSearch" style="margin-left:21.8% ; height: 26px;">
-				<option value="default">검색조건</option>
+				<option value="default" hidden="hidden">검색조건</option>
+				<option value="code">창고코드</option>
+				<option value="name">창고이름</option>
 			</select>
-		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;border: 1px solid gray;">
-		<button class="searchCondition" id="searchBtn" style="width: 56px;">검색</button>
+		<input type="text" name="serachCondition" class="searchCondition" style=";height: 20px;width: 150px;border: 1px solid gray;" id="searchValue">
+		<button class="searchCondition" id="searchBtn" style="width: 56px;" onclick="searchStrg()">검색</button>
 		</div>
 		
 		</div>
 		</div><!-- top div end -->
-		
+		<!-- 검색시작 -->
+		<script>
+			function searchStrg() {
+				var searchCondition = $("#purSearch").val();
+				var searchValue = $("#searchValue").val();
+				
+				console.log("실행");
+					$.ajax({
+						url:"search.war",
+						type:"get",
+						data:{searchCondition:searchCondition,
+							searchValue:searchValue
+							},
+						success: function(data){
+							console.log(data)
+							$("#myTb").empty();
+							
+							for(var i=0;i<data.searchList.length;i++){
+							console.log(data.searchList[i].strgNo)
+							
+							var strgNo =data.searchList[i].strgNo;
+							var strgName =data.searchList[i].strgName;
+							var strgStatus =data.searchList[i].strgStatus;
+							
+							$("#myTb").append("<tr><td><input type='checkbox'></td><td style='color: #005B9E'>"+strgNo+"</td><td style='color: #005B9E'>"+strgName+"</td><td>"+strgStatus+"</td></tr>");
+							}
+					
+							click();
+							
+						},
+						error:function(status){
+							console.log(status);
+						}
+					});
+					return false;
+			}
+		</script>
+		<!-- 검색 종료 -->
 	<div id="purDivv">
 	
 	<table id="Table" style="">  
@@ -129,15 +169,17 @@
 					<th style="color: #005B9E">사용</th>
 				
 				</tr>
-				<c:forEach var="i" begin="1" end="15">
+				<tbody id="myTb">
+				<c:forEach var="i" items="${strgList }">
 					<tr>
 						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="20191231"/></td>
-						<td style="color: #005B9E"><c:out value="이름모를창고"/></td>
-						<td><c:out value="yes"/></td>
+						<td style="color: #005B9E"><c:out value="${i.strgNo }"/></td>
+						<td style="color: #005B9E"><c:out value="${i.strgName}"/></td>
+						<td><c:out value="${i.strgStatus}"/></td>
 					
 					</tr>
 				</c:forEach>
+				</tbody>
 			</table>
 	</div><!-- purDivv end -->
 	<div class="btns"><button id="print">신규</button></div>
@@ -162,6 +204,18 @@
 	$("#print").click(function(){
 		$(".modalEnroll").fadeIn();
 	});
+	
+	function click() {
+		$("#Table").find("td").mouseenter(function(){
+			$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
+		}).mouseout(function(){
+			$(this).parent("tr").css({"background":"white"});
+		}).click(function(){
+			var bid = $(this).parent().children("td").eq(1).text();
+			$(".modalDetail").fadeIn();
+			console.log(bid);
+		});
+	}
 	</script>
 </body>
 </html>
