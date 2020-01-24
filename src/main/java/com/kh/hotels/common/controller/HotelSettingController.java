@@ -17,7 +17,7 @@ import com.kh.hotels.common.model.vo.Info;
 import com.kh.hotels.common.model.vo.NoShow;
 import com.kh.hotels.common.model.vo.Rfd;
 import com.kh.hotels.common.model.vo.Rule;
-import com.kh.hotels.mngRooms.model.vo.RoomType;
+import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 
 @SessionAttributes({"info","rule","basic","noShow","cal","offSeason","season","roomTypeList"})
 @Controller
