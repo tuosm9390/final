@@ -42,7 +42,7 @@
 	position: absolute;
 	top: -4%;
 	left: 96.5%;
-	font-size: 40px;
+	font-size: 40px; 
 	float: right;
 	color: darkgray;
 }
@@ -51,11 +51,11 @@
 	cursor: pointer;
 }
 
-/* .modalTbl {
+ .modalTbl {
 	height: 600px;
 	max-height: 500px;
 	height:100%;
-} */
+} 
 #tbl_modal {
 	padding-top: 10px;
 	border: 1px solid black;
@@ -91,9 +91,9 @@
 	margin-left: 10px;
 }
 #leftArea {
-	height: 10px;
-    margin-left: 30px;
+	margin-left: 30px;
     margin-top: 24px;
+    width: 50%;
 }
 #leftArea td {
 	height:20px;
@@ -105,10 +105,12 @@ input[type=text] {
 
 #rightTbl {
    background: white;
-    width: 279px;
+    width: 200px;
     height: 60px;
-    margin-left: 511px;
-    margin-top: -342px;
+   
+    position: relative;
+    left: 561px;
+    top: -290px;
 }
 #rightTbl td {
 	border-right:1px solid lightgray;
@@ -133,6 +135,9 @@ input[type=text] {
     height:30px;
     width:70px;
 }
+#txtId {
+	width:155px;
+}
 
 </style>
 </head>
@@ -149,8 +154,8 @@ input[type=text] {
 						<table id="leftArea">
 							<tr>
 								<td>사용자 ID</td>
-								<td><input type="text" name="" id=""></td>
-								<td><button type="button" onclick="" id="overlap">중복확인</button></td>
+								<td style="width:150px;"><input type="text" name="" id="txtId"></td>
+								<td style="text-align:left;"><button type="button" onclick="" id="overlap">중복확인</button></td>
 							</tr>
 							<tr>
 								<td>사용자명</td>
@@ -183,8 +188,7 @@ input[type=text] {
 								</td>
 							</tr>
 						</table>
-						<div class="rightAuth">
-						
+						<!-- <div class="rightAuth"> -->
 							<table id="rightTbl">
 							<tr>
 								<td colspan="3" style="border-right:0px; border-bottom:0px;"><h4>사용자 권한</h4></td>
@@ -211,7 +215,7 @@ input[type=text] {
 									<td style="border-right:0px;">권한보기</td>
 								</tr>
 							</table>
-							</div>
+							<!-- </div> -->
 							<button id="submit" onclick="">저장</button>
 							</div>
 							
