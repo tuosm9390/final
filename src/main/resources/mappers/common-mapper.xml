@@ -9,7 +9,150 @@
 		SELECT COUNT(*)
 		FROM INFO
 	</select>
+	
+	<select id="insertHotelInfo" parameterType="Info">
+		INSERT INTO INFO
+		VALUES(#{hname},#{owner},#{hemail},#{hphone},#{bizName},#{bizNo},#{htel},#{modDate})	
+	</select>
 
+	<select id="insertHotelRule" parameterType="Rule">
+		INSERT INTO RULE
+		VALUES(SEQ_RNO.NEXTVAL, #{hname}, #{rcontent})
+	</select>
+	
+	<select id="insertHotelLaw" parameterType="Law">
+		INSERT ALL
+		INTO LAW VALUES('CAL',#{hname})
+		INTO LAW VALUES('NOSHOW',#{hname})
+		INTO LAW VALUES('BASIC',#{hname})
+		INTO LAW VALUES('RFD',#{hname})
+		SELECT * FROM DUAL
+	</select>
+	
+	<select id="insertHotelBasic" parameterType="Basic">
+		INSERT INTO BASIC(CHKIN, CHKOUT, LENT_UNIT, BNO, HNAME, LTYPE)
+		VALUES(#{chkIn}, #{chkOut}, #{lentUnit}, SEQ_BNO.NEXTVAL, #{hname}, #{ltype})
+	</select>
+	
+	<select id="insertHotelNoShow" parameterType="NoShow">
+		INSERT INTO NOSHOW(NS_NO, NS_UNIT, NS_RATE, HNAME, LTYPE)
+		VALUES(SEQ_NS_NO.NEXTVAL, #{nsUnit}, #{nsRate}, #{hname}, #{ltype})
+	</select>
+	
+	<select id="insertHotelCalculate" parameterType="Cal">
+		INSERT INTO CAL(SVC_RATE, CAL_TIME, VAT_TYPE, HNAME, LTYPE, CAL_NO)
+		VALUES(#{svcRate}, #{calTime}, #{vatType}, #{hname}, #{ltype}, SEQ_CAL_NO.NEXTVAL)
+	</select>
+	
+<!-- 	<insert id="insertHotelRefundSeasonList" parameterType="Season">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '10', #{ seasonWeek10 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '7', #{ seasonWeek7 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '5', #{ seasonWeek5 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '3', #{ seasonWeek3 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '1', #{ seasonWeek1 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '0', #{ seasonWeek0 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '10', #{ seasonWeekend10 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '7', #{ seasonWeekend7 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '5', #{ seasonWeekend5 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '3', #{ seasonWeekend3 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '1', #{ seasonWeekend1 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '0', #{ seasonWeekend0 }, #{hname}, 'RFD')
+	</insert>
+	
+	<insert id="insertHotelRefundOffSeasonList" parameterType="OffSeason">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '2', #{ offSeasonWeek2 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '1', #{ offSeasonWeek1 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '0', #{ offSeasonWeek0 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '2', #{ offSeasonWeekend2 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '1', #{ offSeasonWeekend1 }, #{hname}, 'RFD'),
+		VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '0', #{ offSeasonWeekend0 }, #{hname}, 'RFD')
+	</insert> -->
+<!-- 	<insert id="insertHotelRefundSeasonList" parameterType="Season">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '10', #{ seasonWeek10 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '7', #{ seasonWeek7 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '5', #{ seasonWeek5 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '3', #{ seasonWeek3 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '1', #{ seasonWeek1 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '0', #{ seasonWeek0 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '10', #{ seasonWeekend10 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '7', #{ seasonWeekend7 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '5', #{ seasonWeekend5 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '3', #{ seasonWeekend3 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '1', #{ seasonWeekend1 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '0', #{ seasonWeekend0 }, #{hname}, 'RFD')
+	</insert>
+	
+	<insert id="insertHotelRefundOffSeasonList" parameterType="OffSeason">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '2', #{ offSeasonWeek2 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '1', #{ offSeasonWeek1 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '0', #{ offSeasonWeek0 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '2', #{ offSeasonWeekend2 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '1', #{ offSeasonWeekend1 }, #{hname}, 'RFD')
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '0', #{ offSeasonWeekend0 }, #{hname}, 'RFD')
+	</insert> -->
+	<insert id="insertHotelRefundSeasonList" parameterType="Season">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '10', #{ seasonWeek10 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList2">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '7', #{ seasonWeek7 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList3">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '5', #{ seasonWeek5 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList4">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '3', #{ seasonWeek3 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList5">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '1', #{ seasonWeek1 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList6">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEK', '0', #{ seasonWeek0 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList7">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '10', #{ seasonWeekend10 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList8">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '7', #{ seasonWeekend7 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList9">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '5', #{ seasonWeekend5 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList10">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '3', #{ seasonWeekend3 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList11">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '1', #{ seasonWeekend1 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundSeasonList12">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'SEASON', 'WEEKEND', '0', #{ seasonWeekend0 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundOffSeasonList" parameterType="OffSeason">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '2', #{ offSeasonWeek2 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundOffSeasonList2">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '1', #{ offSeasonWeek1 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundOffSeasonList3">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEK', '0', #{ offSeasonWeek0 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundOffSeasonList4">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '2', #{ offSeasonWeekend2 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundOffSeasonList5">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '1', #{ offSeasonWeekend1 }, #{hname}, 'RFD')
+	</insert>
+	<insert id="insertHotelRefundOffSeasonList6">
+		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '0', #{ offSeasonWeekend0 }, #{hname}, 'RFD')
+	</insert>
+ 
+	<insert id="insertHotelRoomType" parameterType="java.util.List">
+	INSERT INTO ROOM_TYPE(RT_NO, RT_NAME, MINPER, MAXPER, LIMITPRC, REG_DATE)
+	SELECT SEQ_RT_NO.NEXTVAL, A.* FROM(
+		<foreach collection="roomTypeList" item="roomList" separator=",">
+			SELECT #{rtName}, #{minPer}, #{maxPer}, #{limitPrc}, #{regDate} FROM DUAL
+		</foreach>
+	) A
+	</insert>
 </mapper>
 
 
