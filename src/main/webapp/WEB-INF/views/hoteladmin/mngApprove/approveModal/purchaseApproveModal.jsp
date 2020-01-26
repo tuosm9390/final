@@ -146,15 +146,14 @@
 					<tr>
 						<td>문서번호</td> 
 						<td colspan="2">
-							102020
 						</td>
-						<td>부서장</td>
+						<td colspan="1">부서장</td>
 						<td colspan="2">총지배인</td>
 					</tr>
 					<tr>
 						<td>기안부서</td>
 						<td colspan="2">
-							구매팀
+							
 						</td>
 						<td rowspan="2"></td>
 						<td rowspan="2" colspan="2"></td>
@@ -162,14 +161,12 @@
 					<tr>
 						<td>기안자</td>
 						<td colspan="2">
-							전세환
 						</td>
 						
 					</tr>
 					<tr>
 						<td>기안일</td>
 						<td colspan="2">
-							SYSDATE
 						</td>
 						<td rowspan="2" colspan="3"></td>
 						
@@ -177,7 +174,6 @@
 					<tr>
 						<td>수신자</td>
 						<td colspan="2">
-							SYSDATE
 						</td>
 						
 						
@@ -185,7 +181,7 @@
 					</tr>
 					<tr>
 						<td>제목</td>
-						<td colspan="5">구매 요청서</td>
+						<td colspan="5"></td>
 					</tr>
 					<tr style="background:lightgray;">
 						<td>NO</td>
@@ -196,27 +192,27 @@
 						<td>금액</td>
 					</tr>
 					<tr>
-						<td>1</td>
-						<td>비품</td>
-						<td>LG 36인치 TV</td>
-						<td>2</td>
-						<td>1000000</td>
-						<td>2000000</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td colspan="2">총 금액</td>
-						<td colspan="4"><a style="float:right;">2000000 원</a></td>
+						<td colspan="4"><a style="float:right;"> 원</a></td>
 					</tr>
 					<tr>
 						<td colspan="6" rowspan="6">
 							<div class="txtArea">
-								<a>아래와 같이 보고 하오니 검토후 재가 바랍니다.</a> <br><br><br><br>
+								<!-- <a>아래와 같이 보고 하오니 검토후 재가 바랍니다.</a> <br><br><br><br>
 								<a>-아 래-</a><br><br><br>
 								<a>SYSDATE</a>&nbsp; 
 								<a>OOOO</a>
 								<a>목적으로 하여</a>&nbsp;
 								<a>총금액 원</a>
-								<a>사용을 결제하고자 하오니 <br>검토후 재기하여 주시기 바랍니다.</a>								
+								<a>사용을 결제하고자 하오니 <br>검토후 재기하여 주시기 바랍니다.</a>	 -->							
 							
 							</div>
 						</td>

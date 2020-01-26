@@ -18,7 +18,12 @@ public interface ApprovalService {
 
 	int getListCount() throws ReportException;
 
-	int getListCountFilter();
+	int getListCountFilter(String cateCh);
+
+	List<HashMap<String, Object>> selectFilterReportList(PageInfo pi, String cate) throws ReportException;
+
+
+	List<HashMap<String, Object>> selectApprovePurDetail(int rptNo, String type) throws ReportException;
 
 	
 	

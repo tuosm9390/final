@@ -1,5 +1,6 @@
 package com.kh.hotels.mngApproval.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,13 +42,11 @@ public class ApproveController {
 		try {
 			
 			int listCount = as.getListCount();
-			System.out.println("listcount : " + listCount);
 				
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
 			
 			List<HashMap<String, Object>> ReportList = as.selectReportList(pi);
-			System.out.println(ReportList);
 			
 			
 			for(int i = 0; i < ReportList.size(); i++) {
@@ -65,7 +64,6 @@ public class ApproveController {
 			m.addAttribute("pi", pi);
 			
 			
-			System.out.println("list : " + ReportList);
 			
 			
 			return "hoteladmin/mngApprove/ApproveList/allApprove";
@@ -81,55 +79,86 @@ public class ApproveController {
 
 	}
 	@GetMapping("docuFilter.ap")
-	public String docuFilterWait(HttpServletRequest request, ModelAndView mv) {
+	public ModelAndView docuFilterWait(HttpServletRequest request, ModelAndView mv, String scurrentPage, String cate) {
 		
+		//int currentPage = 1;
+		System.out.println("cate : " + cate);
+		System.out.println("scurrentPage : " + scurrentPage);
 		
-		int currentPage = 1;
-		
-		
-		
-		if(request.getParameter("currentPage") != null) {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		}
-		
-		try {
-			
-			int listCount = as.getListCountFilter();
-			System.out.println("listcount : " + listCount);
+				int chScurrentPage = 0;
+				String cateCh = "";
 				
-			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-			
-			
-			List<HashMap<String, Object>> ReportList = as.selectReportList(pi);
-			System.out.println(ReportList);
-			
-			
-			for(int i = 0; i < ReportList.size(); i++) {
-				if(ReportList.get(i).get("RPSTATUS").equals("WAIT")) {
-					ReportList.get(i).put("RPSTATUS", "진행중");
-				}else if(ReportList.get(i).get("RPSTATUS").equals("APPR")) {
-					ReportList.get(i).put("RPSTATUS", "승인");
+				if(cate.equals("진행중")) {
+					cateCh = "WAIT";
+				}else if(cate.equals("반려")) {
+					cateCh = "REJECT";
+					
+				}else if(cate.equals("승인")){
+					cateCh = "APPR";
 				}else {
-					ReportList.get(i).put("RPSTATUS", "반려");
+					cateCh = "";
 				}
-			}
-			
-			
-			//m.addAttribute("list", ReportList);
-			//m.addAttribute("pi", pi);
-			
-			
-			System.out.println("list : " + ReportList);
-			
-			
-			return "hoteladmin/mngApprove/ApproveList/allApprove";
-			
-			
-		} catch (ReportException e) {
-			/* mv.addAttribute("msg", e.getMessage()); */
-			return "common/errorPage";
-		}
-		
+				
+				if(scurrentPage != null) {
+					chScurrentPage = Integer.parseInt(scurrentPage);
+				}
+				
+				try {
+					
+					int listCount = 0;
+					List<HashMap<String, Object>> reportList = null;
+					PageInfo pi = null;
+					
+					
+					if(cateCh != "") {
+						listCount = as.getListCountFilter(cateCh);
+						pi = Pagination.getPageInfo(chScurrentPage, listCount);
+						
+						
+						reportList = as.selectFilterReportList(pi, cateCh);
+						System.out.println(reportList);
+					}else {
+						listCount = as.getListCount();
+						pi = Pagination.getPageInfo(chScurrentPage, listCount);
+						reportList= as.selectReportList(pi);
+						
+					}
+					
+					
+					
+						
+					
+					
+					
+					for(int i = 0; i < reportList.size(); i++) {
+						if(reportList.get(i).get("RPSTATUS").equals("WAIT")) {
+							reportList.get(i).put("RPSTATUS", "진행중");
+						}else if(reportList.get(i).get("RPSTATUS").equals("APPR")) {
+							reportList.get(i).put("RPSTATUS", "승인");
+						}else {
+							reportList.get(i).put("RPSTATUS", "반려");
+						}
+					}
+					
+					
+					//m.addAttribute("list", ReportList);
+					//m.addAttribute("pi", pi);
+					
+					
+					mv.addObject("reportList", reportList);
+					mv.addObject("pi", pi);
+					mv.addObject("cate", cateCh);
+					mv.setViewName("jsonView");
+					
+					
+					return mv;
+					
+					
+				} catch (ReportException e) {
+					 mv.addObject("msg", e.getMessage()); 
+					 mv.setViewName("jsonView");
+					return mv;
+				}		
 	}
 	@RequestMapping("joinDocumentApproval.ap")
 	public String goJoinApproval() {
@@ -166,5 +195,36 @@ public class ApproveController {
 
 		return "hoteladmin/mngApprove/writeApprove/writeAllApprove";
 	}
+	@GetMapping("allApproveModal.ap")
+	public ModelAndView showAllApproveModal(HttpServletRequest request, ModelAndView mv, int rptNo, String type) {
+		
+		System.out.println("rptNo : " + rptNo);
+		System.out.println("type : " + type);
+		
+		if(type.equals("PURCHASE")) {
+			try {
+				List<HashMap<String, Object>> list = as.selectApprovePurDetail(rptNo, type);
+				mv.addObject("list", list);
+				mv.setViewName("jsonView");
+				
+				return mv;
+			} catch (ReportException e) {
+				mv.addObject("msg", e.getMessage()); 
+				 mv.setViewName("jsonView");
+				return mv;
+			}
+		}else if(type.equals("REPAIR")) {
+			//List<HashMap<String, Object>> list = as.selectApproveDetail(rptNo, type);
+		}else {
+			//List<HashMap<String, Object>> list = as.selectApproveDetail(rptNo, type);
+		}
+		
+		
+		
+		
+		
+		return null;
+	}
+	
 
 }
