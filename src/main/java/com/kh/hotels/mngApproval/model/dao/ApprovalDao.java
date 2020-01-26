@@ -16,4 +16,10 @@ public interface ApprovalDao {
 
 	int getListCount(SqlSessionTemplate sqlSession) throws ReportException;
 
+	int getListCountFilter(SqlSessionTemplate sqlSession, String cateCh);
+
+	List<HashMap<String, Object>> selectFilterApproveList(SqlSessionTemplate sqlSession, PageInfo pi, String cate);
+
+	List<HashMap<String, Object>> selectApprovePurDetail(SqlSessionTemplate sqlSession, int rptNo, String type);
+
 }

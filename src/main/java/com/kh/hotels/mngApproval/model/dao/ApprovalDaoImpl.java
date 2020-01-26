@@ -1,5 +1,6 @@
 package com.kh.hotels.mngApproval.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,6 +40,37 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		list = (List)sqlSession.selectList("Report.selectApproveList", null, rowBounds);
 		
 		System.out.println("daoList : " + list);
+		
+		return list;
+	}
+
+	@Override
+	public int getListCountFilter(SqlSessionTemplate sqlSession, String cateCh) {
+		
+		
+		return sqlSession.selectOne("Report.selectFilterListCount", cateCh);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectFilterApproveList(SqlSessionTemplate sqlSession, PageInfo pi,
+			String cateCh) {
+		List<HashMap<String, Object>> list = null;
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		list = (List) sqlSession.selectList("Report.selectFilterApproveList", cateCh, rowBounds);
+		
+		return list;
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectApprovePurDetail(SqlSessionTemplate sqlSession, int rptNo,
+			String type) {
+		List<HashMap<String, Object>> list = null;
+		
+		
+		list = (List) sqlSession.selectList("Report.selectApproveDetail", rptNo);
 		
 		return list;
 	}

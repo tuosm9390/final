@@ -1,5 +1,6 @@
 package com.kh.hotels.mngApproval.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,11 +55,40 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 
 	@Override
-	public int getListCountFilter() {
+	public int getListCountFilter(String cateCh) {
 		
+		int getListCountFilter = ad.getListCountFilter(sqlSession, cateCh);
 		
-		return 0;
+		return getListCountFilter;
 	}
+
+
+	@Override
+	public List<HashMap<String, Object>> selectFilterReportList(PageInfo pi, String cate) throws ReportException {
+		List<HashMap<String, Object>> list = ad.selectFilterApproveList(sqlSession, pi, cate);
+		
+		if(list == null) {
+			throw new ReportException("필터 에러");
+		}
+		
+		return list;
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> selectApprovePurDetail(int rptNo, String type) throws ReportException {
+		List<HashMap<String, Object>> list = ad.selectApprovePurDetail(sqlSession, rptNo, type);
+		
+		if(list == null) {
+			throw new ReportException("디테일 에러");
+		}
+		
+		
+		return list;
+	}
+
+
+	
 
 
 }
