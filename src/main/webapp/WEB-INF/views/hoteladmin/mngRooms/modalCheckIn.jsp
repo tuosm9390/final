@@ -73,7 +73,7 @@
 	border-radius: 0px 0px 10px 10px;
 }
 
-#ciCancelBtn {
+#ciCancelBtn, #rsvCancelBtn {
 	margin-top: 20px;
 	margin-left: 10px;
 	width: 100px;
@@ -83,6 +83,7 @@
 	background-color: white;
 	color: red;
 	font-weight: bold;
+	display: none;
 }
 
 h4 {
@@ -179,7 +180,7 @@ select[name=selRoomType], select[name=selRoomNum] {
 	display: inline-flex;
 	width: 390px;
 	height: 50px;
-	margin-top: 184px;
+	margin-top: 174px;
 }
 
 #checkoutBtn, #mdSaveBtn {
@@ -477,8 +478,9 @@ input[name=svcFee], input[name=svcTot] {
 		<div class="modal_content1">
 			<div class="statusNo">
 				<div class="statusColor mediumseagreen"></div>
-				<h1>　입실 20018366</h1>
-				<button id="ciCancelBtn">× 예약취소</button>
+				<h1>　입실</h1>&nbsp;<h1 class="staycode"></h1>
+				<button id="ciCancelBtn">× 입실취소</button>
+				<button id="rsvCancelBtn">× 예약취소</button>
 			</div>
 			<!-- 예약정보 section -->
 			<div class="info">

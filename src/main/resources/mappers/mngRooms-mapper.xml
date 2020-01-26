@@ -13,8 +13,8 @@
 		<result property="rtNo" column="RT_NO" />
 		<result property="rtName" column="RT_NAME" />
 		<result property="cleanStatus" column="CLEAN_STATUS" />
-		<result property="rmno" column="RMNO" />
-		<result property="rname" column="RNAME" />
+		<result property="reservmno" column="RMNO" />
+		<result property="reservname" column="RNAME" />
 		<result property="smno" column="SMNO" />
 		<result property="sname" column="SNAME" />
 		<result property="stayNo" column="STAY_NO" />
@@ -30,13 +30,18 @@
 		<result property="rsvStatus" column="RSV_STATUS" />
 		<result property="ciTime" column="CI_TIME" />
 		<result property="nsUnit" column="NS_UNIT" />
+		<result property="brkBegin" column="BRK_BEGIN" />
+		<result property="brkEnd" column="BRK_END" />
+		<result property="brkRsn" column="BRK_RSN" />
+		<result property="realCI" column="REAL_CI" />
 	</resultMap>
 
 	<select id="viewRoomList" resultMap="roomListSet">
-		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS,
-		       S.STAY_NO, S.CHECKIN AS "S_CHECKIN", S.CHECKOUT AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
-		       V.RSV_NO, V.CHECKIN AS "R_CHECKIN", V.CHECKOUT AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
-		       M1.MNO AS "RMNO", M1.NAME AS "RNAME", M2.MNO AS "SMNO", M2.NAME AS "SNAME"
+		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
+		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
+		       V.RSV_NO, TO_CHAR(V.CHECKIN, 'yyyy-MM-dd') AS "R_CHECKIN", TO_CHAR(V.CHECKOUT, 'yyyy-MM-dd') AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
+		       M1.MNO AS "RMNO", M1.NAME AS "RNAME", M2.MNO AS "SMNO", M2.NAME AS "SNAME", TO_CHAR(B.BRK_BEGIN, 'yyyy-MM-dd') AS "BRK_BEGIN", TO_CHAR(B.BRK_END, 'yyyy-MM-dd') AS "BRK_END",
+		       BRK_RSN
 		FROM ROOM R
 		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
 		JOIN ROOM_STT N ON (R.RM_NO = N.RM_NO)
@@ -44,8 +49,13 @@
 		LEFT JOIN RSV V ON (R.RM_NO = V.RM_NO)
 		LEFT JOIN MEMBER M1 ON (V.MNO = M1.MNO)
 		LEFT JOIN MEMBER M2 ON (S.MNO = M2.MNO)
+        LEFT JOIN (SELECT RM_NO, BRK_BEGIN, BRK_END, BRK_RSN
+                   FROM ROOM
+                   LEFT JOIN BROKEN_HIS USING (RM_NO)
+                   WHERE BRK_BEGIN <![CDATA[ <= ]]> SYSDATE
+                   AND BRK_END <![CDATA[ >= ]]> SYSDATE) B ON (R.RM_NO = B.RM_NO)
 		WHERE R.RM_STATUS = 'Y'
-		ORDER BY RM_NUM
+		ORDER BY FLOOR, RM_NUM
 	</select>
 
 </mapper>
