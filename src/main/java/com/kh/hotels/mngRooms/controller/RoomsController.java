@@ -11,6 +11,8 @@ import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.service.RoomsService;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 
+import net.sf.json.JSONArray;
+
 @Controller
 public class RoomsController {
 	
@@ -23,9 +25,8 @@ public class RoomsController {
 		try {
 			roomList = rs.viewRoomList();
 			model.addAttribute("roomList", roomList);
-			for(int i = 0; i < roomList.size(); i++) {
-				System.out.println(roomList.get(i));
-			}
+			JSONArray jsonArray = new JSONArray();
+			model.addAttribute("jsonList", jsonArray.fromObject(roomList));
 			return "mngRooms/viewRoomList";
 		} catch (RoomListException e) {
 			model.addAttribute("msg", e.getMessage());

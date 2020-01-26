@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -140,6 +141,13 @@ select {
 	left: 1028px;
 }
 
+.selectClean div, .selectUnclean div {
+	width: 90px;
+	height: 213px;
+	max-height: 213px;
+	overflow-y: auto;
+}
+
 input[type=checkbox] {
 	margin-left: 10px;
 }
@@ -204,6 +212,7 @@ input[type=checkbox] {
 	float: left;
 	margin: 0 auto;
 	margin-left: 5px;
+	margin-bottom: -5px;
 }
 
 .roomType {
@@ -216,12 +225,12 @@ input[type=checkbox] {
 	margin-top: 17px;
 }
 
-.reservName {
-	margin: 0 auto;
+.clientName {
+	margin: 0;
 	width: 140px;
 	height: 20px;
 	margin-left: 5px;
-	display: none;
+	float: left;
 }
 
 .detailBox {
@@ -232,11 +241,16 @@ input[type=checkbox] {
 	border-right: 5px solid white;
 }
 
+.detailBox hr {
+	margin-top: 4px;
+	margin-bottom: 2px;
+}
+
 .emptyRoom {
 	text-align: center;
 }
 
-.fullRoom, .reservRoom {
+.fullRoom, .reservRoom, .brokenRoom {
 	font-size: 12px;
 	display: none;
 }
@@ -251,7 +265,7 @@ input[type=checkbox] {
 	display: none;
 }
 
-#enterBtn {
+.enterBtn {
 	background-color: white;
 	margin-top: 5px;
 	width: 100px;
@@ -260,7 +274,7 @@ input[type=checkbox] {
 	border: 1px solid lightgrey;
 }
 
-#timeBtn {
+.timeBtn {
 	background-color: white;
 	width: 100px;
 	height: 30px;
@@ -294,36 +308,62 @@ input[type=checkbox] {
 			</div>
 			<!-- searchSec end -->
 			<!-- floorSec -->
+			<c:set var="nowFloor" value="" />
+			<c:set var="oldFloor" value="" />
 			<div class="floorSec">
 				<button id="allFloor">전체</button>
-				<c:forEach var="f" begin="2" end="11">
-					<button class="floorBtn" id="floor${ f }">${ f }층</button>
+				<c:forEach var="f" items="${ roomList }">
+					<c:set var="nowFloor" value="${ f.floor }" />
+					<c:if test="${ nowFloor ne oldFloor }">
+						<button class="floorBtn" id="floor${ f.floor }">${ f.floor }층</button>
+						<c:set var="oldFloor" value="${ nowFloor }" />
+					</c:if>
 				</c:forEach>
 			</div>
 			<!-- floorSec end -->
 			<!-- statusSec -->
 			<div class="statusSec">
-				<div class="stInfo"><div class="stColor lightgrey"></div><div id="stEmpty">공실</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor lightsteelblue"></div><div id="stReserv">입실예정</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor gold"></div><div id="stRent">대실</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor mediumseagreen"></div><div id="stSleep">투숙</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor coral"></div><div id="stOut">퇴실예정</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor"><div class="stClean"></div></div><div id="stClean">정비</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor"><div class="stNoClean"></div></div><div id="stUnclean">미정비</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor darkgray"></div><div id="stBroken">고장</div><div>00</div></div>
+				<div class="stInfo"><div class="stColor lightgrey"></div><div id="stEmpty">공실</div><div></div></div>
+				<div class="stInfo"><div class="stColor lightsteelblue"></div><div id="stReserv">입실예정</div><div></div></div>
+				<div class="stInfo"><div class="stColor gold"></div><div id="stRent">대실</div><div></div></div>
+				<div class="stInfo"><div class="stColor mediumseagreen"></div><div id="stSleep">투숙</div><div></div></div>
+				<div class="stInfo"><div class="stColor coral"></div><div id="stOut">퇴실예정</div><div></div></div>
+				<div class="stInfo"><div class="stColor"><div class="stClean"></div></div><div id="stClean">정비</div><div></div></div>
+				<div class="stInfo"><div class="stColor"><div class="stNoClean"></div></div><div id="stUnclean">미정비</div><div></div></div>
+				<div class="stInfo"><div class="stColor darkgray"></div><div id="stBroken">고장</div><div></div></div>
 			</div>
 			<div class="selectClean">
-				<c:forEach var="f" begin="2" end="11">
-					<input type="checkbox" name="selectClean${ f }" id="selectClean${ f }">
-					<label for="selectClean${ f }">${ f }층</label><br>
-				</c:forEach>
+				<div>
+					<input type="checkbox" name="selectCleanAll" id="selectCleanAll">
+					<label for="selectCleanAll">전체</label>
+					<c:set var="nowFloor" value="" />
+					<c:set var="oldFloor" value="" />
+					<c:forEach var="f" items="${ roomList }">
+						<c:set var="nowFloor" value="${ f.floor }" />
+						<c:if test="${ nowFloor ne oldFloor }">
+							<input type="checkbox" name="selectClean${ f.floor }" id="selectClean${ f.floor }">
+							<label for="selectClean${ f.floor }">${ f.floor }층</label><br>
+							<c:set var="oldFloor" value="${ nowFloor }" />
+						</c:if>
+					</c:forEach>
+				</div>
 				<button id="changeClean">상태변경</button>
 			</div>
 			<div class="selectUnclean">
-				<c:forEach var="f" begin="2" end="11">
-					<input type="checkbox" name="selectUnclean${ f }" id="selectUnclean${ f }">
-					<label for="selectUnclean${ f }">${ f }층</label><br>
-				</c:forEach>
+				<div>
+					<input type="checkbox" name="selectUncleanAll" id="selectUncleanAll">
+					<label for="selectUncleanAll">전체</label>
+					<c:set var="nowFloor" value="" />
+					<c:set var="oldFloor" value="" />
+					<c:forEach var="f" items="${ roomList }">
+						<c:set var="nowFloor" value="${ f.floor }" />
+						<c:if test="${ nowFloor ne oldFloor }">
+							<input type="checkbox" name="selectUnclean${ f.floor }" id="selectUnclean${ f.floor }">
+						<label for="selectUnclean${ f.floor }">${ f.floor }층</label><br>
+							<c:set var="oldFloor" value="${ nowFloor }" />
+						</c:if>
+					</c:forEach>
+				</div>
 				<button id="changeUnclean">상태변경</button>
 			</div>
 			<!-- statusSec end -->
@@ -338,7 +378,7 @@ input[type=checkbox] {
 		<!-- roomSec -->
 		<div class="roomSec lightgrey">
 			<c:forEach var="r" items="${ roomList }">
-				<div id="roomBox${ r }" class="roomBox">
+				<div id="roomBox${ r.rmNo }" class="roomBox">
 					<input type="hidden" value="${ r.rmNo }">
 					<div class="statusBox lightgrey">
 						<div class="stClean"></div>
@@ -346,36 +386,46 @@ input[type=checkbox] {
 							<p class="roomNo">${ r.rmNum }</p>
 							<p class="roomType">${ r.rtName }</p>
 						</div>
-						<p class="reservName"></p>
-					</div>
-					<!-- 재실 detail -->
-					<div class="detailBox fullRoom">
-						<fmt:parseDate var="startDate_D" value="${ r.scheckout }" pattern="yyyy-MM-dd"/>
-			            <fmt:parseDate var="endDate_D" value="${ r.scheckin }" pattern="yyyy-MM-dd"/>
-			            <fmt:parseNumber var="startDate_N" value="${ startDate_D.time/(1000*60*60*24) }" integerOnly="true"/>
-			            <fmt:parseNumber var="endDate_N" value="${ endDate_D.time/(1000*60*60*24) }" integerOnly="true"/>
-						<c:out value="${ r.scheckin }"/> ~ <c:out value="${ r.scheckout }"/> (<c:out value="${ endDate_N - startDate_N }"/>박)
-						<hr>
-						<div class="roomFee"><c:out value="${ r.stayPrice }"/></div>
-					</div>
-					<!-- 예약 detail -->
-					<div class="detailBox reservRoom">
-						<fmt:parseDate var="startDateD" value="${ r.scheckout }" pattern="yyyy-MM-dd"/>
-			            <fmt:parseDate var="endDateD" value="${ r.scheckin }" pattern="yyyy-MM-dd"/>
-			            <fmt:parseNumber var="startDateN" value="${ startDateD.time/(1000*60*60*24) }" integerOnly="true"/>
-			            <fmt:parseNumber var="endDateN" value="${ endDateD.time/(1000*60*60*24) }" integerOnly="true"/>
-						<c:out value="${ r.rcheckin }"/> ~ <c:out value="${ r.rcheckout }"/> (<c:out value="${ endDateN - startDateN }"/>박)
-						<hr>
-						<div class="roomFee"><c:out value="${ r.rsvPrice }"/></div>
+						<span class="clientName"></span>
 					</div>
 					<!-- 공실 detail -->
 					<div class="detailBox emptyRoom">
-						<button id="enterBtn">재실</button>
+						<button id="enterBtn${ r.rmNo }" class="enterBtn">재실</button>
+					</div>
+					<!-- 예약 detail -->
+					<div class="detailBox reservRoom">
+						<fmt:parseDate var="reservCI_D" value="${ r.rcheckin }" pattern="yyyy-MM-dd"/>
+						<fmt:parseDate var="reservCO_D" value="${ r.rcheckout }" pattern="yyyy-MM-dd"/>
+						<fmt:parseNumber var="reservCI_N" value="${ reservCI_D.time/(1000*60*60*24) }" integerOnly="true"/>
+			            <fmt:parseNumber var="reservCO_N" value="${ reservCO_D.time/(1000*60*60*24) }" integerOnly="true"/>
+						<c:out value="${ fn:substring(r.rcheckin, 5, 10) }"/> ~ <c:out value="${ fn:substring(r.rcheckout, 5, 10) }"/> (${ reservCO_N - reservCI_N }박)
+						<hr>
+						<div class="roomFee"><fmt:formatNumber type="number" maxFractionDigits="3" value="${ r.rsvPrice }"/></div>
+					</div>
+					<!-- 재실 detail -->
+					<div class="detailBox fullRoom">
+						<fmt:parseDate var="stayCI_D" value="${ r.scheckin }" pattern="yyyy-MM-dd"/>
+			            <fmt:parseDate var="stayCO_D" value="${ r.scheckout }" pattern="yyyy-MM-dd"/>
+			            <fmt:parseNumber var="stayCI_N" value="${ stayCI_D.time/(1000*60*60*24) }" integerOnly="true"/>
+			            <fmt:parseNumber var="stayCO_N" value="${ stayCO_D.time/(1000*60*60*24) }" integerOnly="true"/>
+						<c:out value="${ fn:substring(r.scheckin, 5, 10) }"/> ~ <c:out value="${ fn:substring(r.scheckout, 5, 10) }"/> (${ stayCO_N - stayCI_N }박)
+						<hr>
+						<div class="roomFee"><fmt:formatNumber type="number" maxFractionDigits="3" value="${ r.stayPrice }"/></div>
 					</div>
 					<!-- 대실 detail -->
 					<div class="detailBox rentRoom">
-						<button id="timeBtn">05:58</button><br>
-						<div class="roomFee"><div class="roomFee"><c:out value="${ r.stayPrice }"/></div></div>
+						<button class="timeBtn" id="timeBtn${ r.rmNo }"><span class="hour_10"></span><span class="hour_1"></span>:<span class="min_10"></span><span class="min_1"></span></button><br>
+						<div class="roomFee"><fmt:formatNumber type="number" maxFractionDigits="3" value="${ r.stayPrice }"/></div>
+					</div>
+					<!-- 고장 detail -->
+					<div class="detailBox brokenRoom">
+						<fmt:parseDate var="strBrk_D" value="${ r.brkBegin }" pattern="yyyy-MM-dd"/>
+			            <fmt:parseDate var="endBrk_D" value="${ r.brkEnd }" pattern="yyyy-MM-dd"/>
+			            <fmt:parseNumber var="strBrk_N" value="${ strBrk_D.time/(1000*60*60*24) }" integerOnly="true"/>
+			            <fmt:parseNumber var="endBrk_N" value="${ endBrk_D.time/(1000*60*60*24) }" integerOnly="true"/>
+						<c:out value="${ fn:substring(r.brkBegin, 5, 10) }"/> ~ <c:out value="${ fn:substring(r.brkEnd, 5, 10) }"/> (${ endBrk_N - strBrk_N }박)
+						<hr>
+						<div class="roomFee"><fmt:formatNumber type="number" maxFractionDigits="3" value="${ r.stayPrice }"/></div>
 					</div>
 				</div>
 			</c:forEach>
@@ -389,22 +439,138 @@ input[type=checkbox] {
 				$(".selectClean").hide();
 				$(".selectUnclean").hide();
 				
-				for(var r = 0; r < "${ roomList }".size(); r++) {
-					if("${ roomList.get(r).getStayNo() }" == 0 && "${ roomList.get(r).getRsvNo() }".equals(null)) {
-						
-					} else {
-						console.log("${ roomList.get(r).getRmNo() }");
+				var roomlist = JSON.parse('${jsonList}');
+				var today = new Date().format("yyyy-MM-dd");
+				console.log(roomlist);
+				
+				var stEmpty = roomlist.length;
+				var stReserv = 0;
+				var stRent = 0;
+				var stSleep = 0;
+				var stOut = 0;
+				var stClean = roomlist.length;
+				var stUnclean = 0;
+				var stBroken = 0;
+				for(var r = 0; r < roomlist.length; r++) {
+					//객실상태 표시
+					if(roomlist[r].stayNo == 0 && roomlist[r].rsvNo == "") {
+						//공실
+					} else if(roomlist[r].stayNo == 0 && roomlist[r].rsvNo != ""){
+						//입실대기 (예약)
+						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("lightsteelblue");
+						stReserv++;
+						var reservname = roomlist[r].reservname.substring(0, 1) + " * " + roomlist[r].reservname.substring(2);
+						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(reservname);
+						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
+						$("#roomBox" + roomlist[r].rmNo).children(".reservRoom").css({"display":"block"});
+					} else if(roomlist[r].stayNo != 0 && roomlist[r].stayType == "STAY") {
+						//투숙
+						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("mediumseagreen");
+						stSleep++;
+						var stayname = roomlist[r].sname.substring(0, 1) + " * " + roomlist[r].sname.substring(2);
+						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(stayname);
+						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
+						$("#roomBox" + roomlist[r].rmNo).children(".fullRoom").css({"display":"block"});
+					} else if(roomlist[r].stayNo != 0 && roomlist[r].stayType == "LENT") {
+						//대실
+						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("gold");
+						stRent++;
+						if(roomlist[r].sname.length < 6) {
+							var stayname = roomlist[r].sname.substring(0, 1) + " * " + roomlist[r].sname.substring(2);	
+						} else {
+							var stayname = roomlist[r].sname;
+						}
+						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(stayname);
+						var dateConvert = function(date) {
+					      const year = date.substring(0, 4);
+					      const month = date.substring(5, 7);
+					      const day = date.substring(8, 10);
+					      const hour = date.substring(11, 13);
+					      const minute = date.substring(14, 16);
+					      const second = date.substring(17, 19);
+					      const convert = year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
+					      return new Date( convert );
+						};
+						var realCI = dateConvert(roomlist[r].realCI);
+						CountDownTimer(realCI, roomlist[r].rmNo);
+						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
+						$("#roomBox" + roomlist[r].rmNo).children(".rentRoom").css({"display":"block"});
 					}
+					
+					//퇴실예정 객실상태 색상표시
+					if(roomlist[r].stayNo != 0 && roomlist[r].scheckout == today && roomlist[r].stayType != "LENT") {
+						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("mediumseagreen").addClass("coral");
+						stOut++;
+					}
+					
+					//고장 객실상태 표시
+					if(roomlist[r].brkRsn != "") {
+						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("darkgray");
+						stBroken++;
+						if(roomlist[r].brkRsn.length > 10) {
+							var brokenRsn = roomlist[r].brkRsn.substring(0, 10);
+						} else {
+							var brokenRsn = roomlist[r].brkRsn;
+						}
+						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(brokenRsn);
+						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
+						$("#roomBox" + roomlist[r].rmNo).children(".brokenRoom").css({"display":"block"});
+					}
+					
+					//미정비상태 객실 표시 
+					if(roomlist[r].cleanStatus == "N") {
+						$("#roomBox" + roomlist[r].rmNo).find(".stClean").addClass("stNoClean").removeClass("stClean");
+						stUnclean++;
+					}
+					
 				}
+				
+				//상태별 객실수 표시
+				stSleep -= stOut;
+				stClean -= stUnclean;
+				stEmpty -= (stReserv + stSleep + stRent + stOut + stBroken);
+				$("#stEmpty").next().text(stEmpty);
+				$("#stReserv").next().text(stReserv);
+				$("#stRent").next().text(stRent);
+				$("#stSleep").next().text(stSleep);
+				$("#stOut").next().text(stOut);
+				$("#stClean").next().text(stClean);
+				$("#stUnclean").next().text(stUnclean);
+				$("#stBroken").next().text(stBroken);
 			});
 			
 			//[ 정비 ] 상태 버튼
 			$("#stClean").click(function(){
 				$(".selectClean").toggle();
 			});
+			$("#selectCleanAll").change(function(){
+				if($(this).prop("checked")) {
+					$(".selectClean").find("input[type=checkbox]").prop("checked", true);
+				} else {
+					$(".selectClean").find("input[type=checkbox]").prop("checked", false);
+				}
+			});
+			$(".selectClean").find("input[type=checkbox]").change(function(){
+				if($(this).prop("checked") == false) {
+					$("#selectCleanAll").prop("checked", false);
+				}
+			});
+			
 			//[ 미정비 ] 상태 버튼
 			$("#stUnclean").click(function(){
 				$(".selectUnclean").toggle();
+			});
+			$("#selectUncleanAll").change(function(){
+				if($(this).prop("checked")) {
+					$(".selectUnclean").find("input[type=checkbox]").prop("checked", true);
+				} else {
+					$(".selectUnclean").find("input[type=checkbox]").prop("checked", false);
+				}
+			});
+			$(".selectUnclean").find("input[type=checkbox]").change(function(){
+				if($(this).prop("checked") == false) {
+					$("#selectUncleanAll").prop("checked", false);
+				}
 			});
 			
 			//상태변경 버튼
@@ -420,15 +586,106 @@ input[type=checkbox] {
 				$(this).prop({"src":"${ contextPath }/resources/images/mngRoomsNot.PNG"});
 			});
 			
-			//룸 클릭
-			$("#roomBox1").click(function(){
+			//[ 재실 ] 버튼 클릭 (공실인 경우 룸 클릭)
+			$(".enterBtn").click(function(){
+				var rmNo = $(this).parent().parent().find('input[type=hidden]').val();
 				$(".modal").fadeIn();
+				$("select[name=selRoomType]").html("<option>-</option>");
 			});
-			$("#roomBox31").click(function(){
-				$(".modalBroken").fadeIn();
-			});
-			$("#roomBox61").click(function(){
-			});
+			
+		</script>
+		
+		<script>
+		//날짜 포맷맞추기 javascript
+			Date.prototype.format = function(f) {
+				if (!this.valueOf()) return " ";
+	
+				var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+				var d = this;
+				
+				return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+					switch ($1) {
+						case "yyyy": return d.getFullYear();
+						case "yy": return (d.getFullYear() % 1000).zf(2);
+						case "MM": return (d.getMonth() + 1).zf(2);
+						case "dd": return d.getDate().zf(2);
+						case "E": return weekName[d.getDay()];
+						case "HH": return d.getHours().zf(2);
+						case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2);
+						case "mm": return d.getMinutes().zf(2);
+						case "ss": return d.getSeconds().zf(2);
+						case "a/p": return d.getHours() < 12 ? "오전" : "오후";
+						default: return $1;
+					}
+				});
+			};
+			String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
+			String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
+			Number.prototype.zf = function(len){return this.toString().zf(len);};
+		</script>
+		
+		<script>
+		//대실 남은 시간 계산 javascript
+			function CountDownTimer(dt, rmNo){
+				dt.setHours(dt.getHours() + 6);
+				dt.setMinutes(dt.getMinutes() + 1);
+	            var end = new Date(dt);
+	            
+	            var _second = 1000;
+	            var _minute = _second * 60;
+	            var _hour = _minute * 60;
+	            var _day = _hour * 24;
+	            var timer;
+
+	            function showRemaining() {
+	                var now = new Date();
+
+	                var distance = end - now;
+
+	                if (distance < 0) {
+
+	                    clearInterval(timer);
+
+	                    return;
+	                }
+	                var days = Math.floor(distance / _day);
+	                var hours = Math.floor((distance % _day) / _hour);
+	                var minutes = Math.floor((distance % _hour) / _minute);
+	                var seconds = Math.floor((distance % _minute) / _second);
+
+	                var strDays = days.toString();
+	                var strHours = hours.toString();
+	                var strMin = minutes.toString();
+	                var strSec = seconds.toString();
+
+	                /* if( strDays < 10 ){
+	                    $('.day_10').text('0');
+	                    $('.day_1').text(strDays.substring(0, 1));
+	                }else{
+	                    $('.day_10').text(strDays.substring(0, 1));
+	                    $('.day_1').text(strDays.substring(1, 2));
+	                } */
+
+	                if( strHours < 10 ){
+	                    $("#timeBtn" + rmNo).find('.hour_10').text('0');
+	                    $("#timeBtn" + rmNo).find('.hour_1').text(strHours.substring(0, 1));
+	                }else{
+	                	$("#timeBtn" + rmNo).find('.hour_10').text(strHours.substring(0, 1));
+	                	$("#timeBtn" + rmNo).find('.hour_1').text(strHours.substring(1, 2));
+	                }
+
+	                if( strMin < 10 ){
+	                	$("#timeBtn" + rmNo).find('.min_10').text('0');
+	                	$("#timeBtn" + rmNo).find('.min_1').text(strMin.substring(0, 1));
+	                }else{
+	                	$("#timeBtn" + rmNo).find('.min_10').text(strMin.substring(0, 1));
+	                	$("#timeBtn" + rmNo).find('.min_1').text(strMin.substring(1, 2));
+	                }
+	            }
+
+	            showRemaining();
+	            timer = setInterval(showRemaining, 1000);
+	        }
 		</script>
 </body>
 </html>
