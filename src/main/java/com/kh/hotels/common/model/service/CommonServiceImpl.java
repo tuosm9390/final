@@ -1,10 +1,22 @@
 package com.kh.hotels.common.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.hotels.common.model.dao.CommonDao;
+import com.kh.hotels.common.model.vo.Basic;
+import com.kh.hotels.common.model.vo.Cal;
+import com.kh.hotels.common.model.vo.Info;
+import com.kh.hotels.common.model.vo.Law;
+import com.kh.hotels.common.model.vo.NoShow;
+import com.kh.hotels.common.model.vo.OffSeason;
+import com.kh.hotels.common.model.vo.Rfd;
+import com.kh.hotels.common.model.vo.Rule;
+import com.kh.hotels.common.model.vo.Season;
+import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 
 @Service
 public class CommonServiceImpl implements CommonService{
@@ -19,6 +31,43 @@ public class CommonServiceImpl implements CommonService{
 	public int selectHotelInfoCount() {
 		
 		return cd.selectHotelInfoCount(sqlSession);
+	}
+
+	
+	@Override
+	public int insertHotelInfomation(Info info, Rule rule,Law law, Basic basic, NoShow noShow, Cal cal, Rfd rfd,
+			OffSeason offSeason, Season season) {
+		
+		int result = 0;
+		
+		int result1 = cd.insertHotelInfo(info,sqlSession);
+		
+		int result2 = cd.insertHotelRule(rule,sqlSession);
+		
+		int result3 = cd.insertHotelLaw(law, sqlSession);
+		
+		int result4 = cd.insertHotelBasic(basic, sqlSession);
+		
+		int result5 = cd.insertHotelNoShow(noShow, sqlSession);
+		
+		int result6 = cd.insertHotelCalculate(cal, sqlSession);
+		
+		int result7 = cd.insertHotelRefund(offSeason, season, sqlSession);
+		
+		if( result1 > 0 && result2 > 0 && result3 > 0 && result4 > 0 && result5 > 0 && result6 > 0 && result7 > 0) {
+			result = 1;
+			return result;
+		}else {
+			result = 0;
+			return result;
+		}
+	}
+
+
+	@Override
+	public int insertHotelRoomType(ArrayList<RoomType> roomTypeList) {
+		
+		return cd.insertHotelRoomType(roomTypeList, sqlSession);
 	}
 	
 

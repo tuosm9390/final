@@ -261,10 +261,11 @@
 						</c:forEach>
 					</div>					
 				</div>
-				<div class="inRightArea">
+			<form action="goRoomFarePage.set" method="post" class="fareForm">
+			<div class="inRightArea">
 				<c:forEach var="roomType" items="${ sessionScope.roomTypeList }">
 					<c:set var="names" value="${ roomType.rtName }"/>
-					<input type="hidden" value="${ names }">
+					<input type="hidden" name="roomType" value="${ names }">
 					<table border="1" class="roomTable" style="border-collapse: collapse;" rel="${ names }" id="${ names }">
 						<tr class="thArea">
 							<th width="5%"><input type="checkbox" class="roomAllCheck"></th>
@@ -276,13 +277,14 @@
 					</table>
 				</c:forEach>
 				</div>
+			</form>
 			</div>
 			<br>
-			<div class="btnGroup" align="right" style="margin-right:150px;">
-				<button class="backBtn" onclick=""><b>이전</b></button>			
-				<button class="nextBtn" onclick="return goRoomFareSetting();"><b>다음</b></button>			
+				<div class="btnGroup" align="right" style="margin-right:150px;">
+					<button class="backBtn" onclick="location.href='backRoomTypeSetting.set'"><b>이전</b></button>			
+					<button type="submit" class="nextBtn" onclick="return goRoomFareSetting();"><b>다음</b></button>			
+				</div>
 			</div>
-		</div>
 	</div>
 	<script type="text/javascript">
 	
@@ -362,13 +364,14 @@
 		    $(".roomTable").hide();
 		    activeTab = obj.value;
 		    $("#" + activeTab).fadeIn();
+					
 		    
 		}
 		$(function () {
 			
 			$("#addRoomBtn").click(function(){
 				if(roomtypes != "all"){
-				 	$("#" + activeTab).append("<tr><td><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;' name='stdPer'> </td></tr>");
+				 	$("#" + activeTab).append("<tr><td><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' class='rmNum' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption' class='rmOption'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;' class='stdPer' name='stdPer'> </td></tr>");
 				}else{
 					alert("룸타입을 선택해주세요.");
 				}
@@ -377,11 +380,11 @@
 		    $(".roomTable").hide();
 		    $(".roomTable:first").show();
 
+	
 		});
 		
 		function goRoomFareSetting(){
 			
-			console.log(roomtypes);
 			if(roomtypes == "all"){
 				alert("객실 상세 설정을 해주세요.");
 				return false;
@@ -390,12 +393,22 @@
 					alert("객실 상세 설정을 해주세요.");
 					return false;
 				}else{
-					
+					if($(".floor").val() == ""){
+						alert("층을 선택해주세요.");
+						return false;
+					}
+					if($(".rmNum").val() == ""){
+						alert("호실을 입력해주세요.");
+						return false;
+					}
+					if($(".rmOption").val() == ""){
+						alert("객실 옵션을 입력해주세요.");
+						return false;
+					}
+					$(".fareForm").submit();
 				}
 			}
-			
 			return false;
-			
 		};
 	</script>		
 </body>

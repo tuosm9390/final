@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NoShow {
+public class NoShow implements java.io.Serializable{
 
 	private int nsNo;
 	private String nsUnit;

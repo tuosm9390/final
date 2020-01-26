@@ -18,6 +18,6 @@ public class Info implements java.io.Serializable {
 	private String bizName;
 	private String bizNo;
 	private String htel;
-	private Date modDate;
+	private String modDate;
 	
 }
