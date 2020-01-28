@@ -13,6 +13,9 @@ import com.kh.hotels.common.model.vo.NoShow;
 import com.kh.hotels.common.model.vo.OffSeason;
 import com.kh.hotels.common.model.vo.Rule;
 import com.kh.hotels.common.model.vo.Season;
+import com.kh.hotels.common.model.vo.Svc;
+import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 
 public interface CommonDao {
@@ -35,5 +38,16 @@ public interface CommonDao {
 			SqlSessionTemplate sqlSession);
 
 	int insertHotelRoomType(ArrayList<RoomType> roomTypeList, SqlSessionTemplate sqlSession);
+
+	int selectRtNo(String string, SqlSessionTemplate sqlSession);
+
+	int insertHotelRoom(ArrayList<Room> roomList, SqlSessionTemplate sqlSession);
+
+	int selectRtNoFare(String string, SqlSessionTemplate sqlSession);
+
+	int insertHotelRoomFare(ArrayList<RoomPrc> roomPrcList, SqlSessionTemplate sqlSession);
+
+	int insertHotelService(ArrayList<Svc> svcList, SqlSessionTemplate sqlSession);
+
 
 }

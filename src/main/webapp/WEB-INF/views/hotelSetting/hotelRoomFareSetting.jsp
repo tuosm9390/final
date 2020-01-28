@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,6 +122,7 @@
 				<h3 style="margin-left:40px; ">기본 요금 설정</h3>
 			</div>
 			
+			<form action="goAddServicePage.set" method="post">
 			<div class="tableArea">
 				<table class="fareTable" border="1">
 					 <tr>
@@ -135,57 +137,73 @@
 					 	<th width="10%">토</th>
 					 	<th width="10%">일</th>
 					 </tr>
-					 <tr>
-					 	<td rowspan="4">디럭스</td>
-					 	<td rowspan="2">비성수기</td>
-					 	<td>대실료</td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 </tr>
-					 <tr>
-					 	<td>숙박료</td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 </tr>
-					 <tr>
-					 	<td rowspan="2">성수기</td>
-					 	<td>대실료</td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 </tr>
-					 <tr>
-					 	<td>숙박료</td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 	<td><input type="text" class="money"></td>
-					 </tr>
+					 <c:forEach var="roomType" items="${ sessionScope.roomTypeList }">
+					 <c:set var="rtName" value="${ roomType.rtName }"></c:set>
+						 <tr>
+						 	<td rowspan="4">${ rtName }<input type="hidden" name="rtName" value="${ rtName }"></td>
+						 	<td rowspan="2">비성수기</td>
+						 	<td>대실료</td>
+						 	<td><input type="text" class="money" name="offRentMon"></td>
+						 	<td><input type="text" class="money" name="offRentTue"></td>
+						 	<td><input type="text" class="money" name="offRentWed"></td>
+						 	<td><input type="text" class="money" name="offRentThu"></td>
+						 	<td><input type="text" class="money" name="offRentFri"></td>
+						 	<td><input type="text" class="money" name="offRentSat"></td>
+						 	<td><input type="text" class="money" name="offRentSun"></td>
+						 </tr>
+						 <tr>
+						 	<td>숙박료</td>
+						 	<td><input type="text" class="money" name="offStayMon"></td>
+						 	<td><input type="text" class="money" name="offStayTue"></td>
+						 	<td><input type="text" class="money" name="offStayWed"></td>
+						 	<td><input type="text" class="money" name="offStayThu"></td>
+						 	<td><input type="text" class="money" name="offStayFri"></td>
+						 	<td><input type="text" class="money" name="offStaySat"></td>
+						 	<td><input type="text" class="money" name="offStaySun"></td>
+						 </tr>
+						 <tr>
+						 	<td rowspan="2">성수기</td>
+						 	<td>대실료</td>
+						 	<td><input type="text" class="money" name="rentMon"></td>
+						 	<td><input type="text" class="money" name="rentTue"></td>
+						 	<td><input type="text" class="money" name="rentWed"></td>
+						 	<td><input type="text" class="money" name="rentThu"></td>
+						 	<td><input type="text" class="money" name="rentFri"></td>
+						 	<td><input type="text" class="money" name="rentSat"></td>
+						 	<td><input type="text" class="money" name="rentSun"></td>
+						 </tr>
+						 <tr>
+						 	<td>숙박료</td>
+						 	<td><input type="text" class="money" name="stayMon"></td>
+						 	<td><input type="text" class="money" name="stayTue"></td>
+						 	<td><input type="text" class="money" name="stayWed"></td>
+						 	<td><input type="text" class="money" name="stayThu"></td>
+						 	<td><input type="text" class="money" name="stayFri"></td>
+						 	<td><input type="text" class="money" name="staySat"></td>
+						 	<td><input type="text" class="money" name="staySun"></td>
+						 </tr>
+					 </c:forEach>
 				</table>
 			</div>
 			<br> 
 			<div align="right" style="margin-right:60px;">
 				<button class="backBtn" onclick=""><b>이전</b></button>			
-				<button class="nextBtn" onclick=""><b>다음</b></button>			
+				<button type="submit" class="nextBtn" onclick="return goHotelAddService();"><b>다음</b></button>			
 			</div>
+			</form>
 		</div>
 	</div>
+	<script type="text/javascript">
+	
+	function goHotelAddService(){
+		if($(".monet").val() == ""){
+			alert("객실 금액을 입력해주세요.");
+			return false;
+		}
+		return true;
+		
+	}
+	
+	</script>
 </body>
 </html>

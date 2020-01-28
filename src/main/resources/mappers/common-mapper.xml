@@ -145,14 +145,156 @@
 		INSERT INTO RFD(RFD_NO, TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE, HNAME, LTYPE) VALUES(SEQ_RFD_NO.NEXTVAL, 'OFFSEASON', 'WEEKEND', '0', #{ offSeasonWeekend0 }, #{hname}, 'RFD')
 	</insert>
  
-	<insert id="insertHotelRoomType" parameterType="java.util.List">
-	INSERT INTO ROOM_TYPE(RT_NO, RT_NAME, MINPER, MAXPER, LIMITPRC, REG_DATE)
-	SELECT SEQ_RT_NO.NEXTVAL, A.* FROM(
-		<foreach collection="roomTypeList" item="roomList" separator=",">
-			SELECT #{rtName}, #{minPer}, #{maxPer}, #{limitPrc}, #{regDate} FROM DUAL
-		</foreach>
-	) A
+	<insert id="insertHotelRoomType" parameterType="RoomType">
+		INSERT INTO ROOM_TYPE(RT_NO, RT_NAME, MINPER, MAXPER, LIMITPRC, REG_DATE)
+		VALUES(SEQ_RT_NO.NEXTVAL, #{rtName}, #{minPer}, #{maxPer}, #{limitprc}, #{regDate})
 	</insert>
+	
+	<select id="selectRtNo" resultType="_int" parameterType="java.lang.String">
+		SELECT RT_NO
+		FROM ROOM_TYPE
+		WHERE RT_NAME = #{string}
+	</select>
+	
+	<insert id="insertHotelRoom" parameterType="Room">
+		INSERT INTO ROOM(RM_NO, RM_NUM, STD_PER, RM_OPTION, FLOOR, RT_NO, REG_DATE, RM_STATUS)
+		VALUES(SEQ_RM_NO.NEXTVAL, #{rmNum}, #{stdPer}, #{rmOption}, #{floor}, #{rtNo}, #{regDate}, 'Y')
+	</insert>
+	
+	<select id="selectRtNoFare" resultType="_int" parameterType="java.lang.String">
+		SELECT RT_NO
+		FROM ROOM_TYPE
+		WHERE RT_NAME = #{string}
+	</select>
+	
+	<!-- OFFseason 대실요금 -->
+	<insert id="insertOffMonRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'MON', 'LENT', #{offRentMon}, #{regDate})
+	</insert>
+	<insert id="insertOffTueRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'TUE', 'LENT', #{offRentTue}, #{regDate})
+	</insert>
+	<insert id="insertOffWedRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'WED', 'LENT', #{offRentWed}, #{regDate})
+	</insert>
+	<insert id="insertOffThuRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'THU', 'LENT', #{offRentThu}, #{regDate})
+	</insert>
+	<insert id="insertOffFriRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'FRI', 'LENT', #{offRentFri}, #{regDate})
+	</insert>
+	<insert id="insertOffSatRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'SAT', 'LENT', #{offRentSat}, #{regDate})
+	</insert>
+	<insert id="insertOffSunRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'SUN', 'LENT', #{offRentSun}, #{regDate})
+	</insert>
+	<!-- 끝 -->
+	<!-- Offseason 숙박 요금 -->
+	<insert id="insertOffMonStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'MON', 'STAY', #{offStayMon}, #{regDate})
+	</insert>
+	<insert id="insertOffTueStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'TUE', 'STAY', #{offStayTue}, #{regDate})
+	</insert>
+	<insert id="insertOffWedStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'WED', 'STAY', #{offStayWed}, #{regDate})
+	</insert>
+	<insert id="insertOffThuStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'THU', 'STAY', #{offStayThu}, #{regDate})
+	</insert>
+	<insert id="insertOffFriStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'FRI', 'STAY', #{offStayFri}, #{regDate})
+	</insert>
+	<insert id="insertOffSatStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'SAT', 'STAY', #{offStaySat}, #{regDate})
+	</insert>
+	<insert id="insertOffSunStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'OFFSEASON', 'SUN', 'STAY', #{offStaySun}, #{regDate})
+	</insert>
+	<!--  -->
+	
+	<!-- Season 대실 요금 -->
+	<insert id="insertMonRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'MON', 'LENT', #{rentMon}, #{regDate})
+	</insert>
+	<insert id="insertTueRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'TUE', 'LENT', #{rentTue}, #{regDate})
+	</insert>
+	<insert id="insertWedRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'WED', 'LENT', #{rentWed}, #{regDate})
+	</insert>
+	<insert id="insertThuRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'THU', 'LENT', #{rentThu}, #{regDate})
+	</insert>
+	<insert id="insertFriRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'FRI', 'LENT', #{rentFri}, #{regDate})
+	</insert>
+	<insert id="insertSatRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'SAT', 'LENT', #{rentSat}, #{regDate})
+	</insert>
+	<insert id="insertSunRentFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'SUN', 'LENT', #{rentSun}, #{regDate})
+	</insert>
+	<!-- 끝 -->
+	
+	<!-- Season 숙박요금 -->
+	<insert id="insertMonStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'MON', 'STAY', #{stayMon}, #{regDate})
+	</insert>
+	<insert id="insertTueStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'TUE', 'STAY', #{stayTue}, #{regDate})
+	</insert>
+	<insert id="insertWedStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'WED', 'STAY', #{stayWed}, #{regDate})
+	</insert>
+	<insert id="insertThuStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'THU', 'STAY', #{stayThu}, #{regDate})
+	</insert>
+	<insert id="insertFriStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'FRI', 'STAY', #{stayFri}, #{regDate})
+	</insert>
+	<insert id="insertSatStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'SAT', 'STAY', #{staySat}, #{regDate})
+	</insert>
+	<insert id="insertSunStayFare" parameterType="RoomPrc">
+		INSERT INTO PRC(RPNO, RT_NO, TERM_TYPE, DAY_TYPE, STAY_TYPE, PRICE, REG_DATE)
+		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'SUN', 'STAY', #{staySun}, #{regDate})
+	</insert>
+	<!-- 끝 -->
+	
+	<insert id="insertHotelService" parameterType="Svc">
+		INSERT INTO SVC(SVC_CODE, SVC_NAME, SALES_TYPE, SVC_PRICE, REG_DATE, SVC_STATUS)
+		VALUES(#{svcCode}, #{svcName}, #{salesType}, #{svcPrice}, #{regDate}, 'Y')
+	</insert>
+	
 </mapper>
 
 

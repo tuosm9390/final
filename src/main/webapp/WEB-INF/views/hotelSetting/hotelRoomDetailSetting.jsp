@@ -264,9 +264,9 @@
 			<form action="goRoomFarePage.set" method="post" class="fareForm">
 			<div class="inRightArea">
 				<c:forEach var="roomType" items="${ sessionScope.roomTypeList }">
-					<c:set var="names" value="${ roomType.rtName }"/>
-					<input type="hidden" name="roomType" value="${ names }">
-					<table border="1" class="roomTable" style="border-collapse: collapse;" rel="${ names }" id="${ names }">
+					<c:set var="name" value="${ roomType.rtName }"/>
+					<input type="hidden" name="roomType" value="${ name }">
+					<table border="1" class="roomTable" style="border-collapse: collapse;" rel="${ name }" id="${ name }">
 						<tr class="thArea">
 							<th width="5%"><input type="checkbox" class="roomAllCheck"></th>
 							<th width="10%">층</th>
@@ -364,14 +364,13 @@
 		    $(".roomTable").hide();
 		    activeTab = obj.value;
 		    $("#" + activeTab).fadeIn();
-					
 		    
 		}
 		$(function () {
 			
 			$("#addRoomBtn").click(function(){
 				if(roomtypes != "all"){
-				 	$("#" + activeTab).append("<tr><td><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' class='rmNum' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption' class='rmOption'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;' class='stdPer' name='stdPer'> </td></tr>");
+				 	$("#" + activeTab).append("<tr><td><input type='hidden' name='rtName' value='"+activeTab+"'><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' class='rmNum' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption' class='rmOption'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;' class='stdPer' name='stdPer'> </td></tr>");
 				}else{
 					alert("룸타입을 선택해주세요.");
 				}
