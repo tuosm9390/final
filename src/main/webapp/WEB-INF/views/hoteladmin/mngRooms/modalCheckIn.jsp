@@ -51,7 +51,7 @@
 
 .btn_close {
 	position: absolute;
-	top: -2%;
+	top: -3%;
 	left: 70%;
 	font-size: 60px;
 	float: right;
@@ -168,19 +168,20 @@ select[name=selRoomType], select[name=selRoomNum] {
 #checkinBtn {
 	width: 390px;
 	height: 50px;
-	margin-top: 184px;
+	margin-top: 163px;
 	border: none;
 	background-color: black;
 	color: white;
 	font-weight: bold;
 	font-size: 20px;
+	display: hidden;
 }
 
 .infoBtnSec {
 	display: inline-flex;
 	width: 390px;
 	height: 50px;
-	margin-top: 174px;
+	margin-top: 160px;
 }
 
 #checkoutBtn, #mdSaveBtn {
@@ -348,7 +349,7 @@ input[name=svcFee], input[name=svcTot] {
 	display: inline-flex;
 	width: 440px;
 	height: 50px;
-	margin-top: 32px;
+	margin-top: 20px;
 }
 
 .totalPrice h1 {
@@ -508,7 +509,7 @@ input[name=svcFee], input[name=svcTot] {
 						<td>입실일자</td>
 						<td><input type="datetime" name="checkinTime" id="checkIn">
 							<select name="stayDay">
-								<c:forEach var="day" begin="1" end="10">
+								<c:forEach var="day" begin="1" end="30">
 									<option>${ day }</option>
 								</c:forEach>
 						</select> 박</td>
@@ -516,44 +517,33 @@ input[name=svcFee], input[name=svcTot] {
 					<tr>
 						<td><div class="Mred"></div></td>
 						<td>퇴실일자</td>
-						<td><input type="datetime" name="checkoutTime" id="checkOut"><input
-							type="checkbox" name="rentYN" id="rentYN"><label
-							for="rentYN">대실</label></td>
+						<td><input type="datetime" name="checkoutTime" id="checkOut">
+							<input type="checkbox" name="rentYN" id="rentYN"><label for="rentYN">대실</label></td>
 					</tr>
 					<tr>
 						<td><div class="Mred"></div></td>
 						<td>성인/소인</td>
 						<td>성인 : <select name="adultSu">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
+							<c:forEach var="i" begin="1" end="10">
+								<option>${ i }</option>
+							</c:forEach>
 						</select> / 소인 : <select name="childSu">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
+							<c:forEach var="i" begin="1" end="10">
+								<option>${ i }</option>
+							</c:forEach>
 						</select>
 						</td>
 					</tr>
 					<tr>
 						<td><div class="Mred"></div></td>
 						<td>객실타입</td>
-						<td><select name="selRoomType">
-								<option>스탠다드</option>
-								<option>디럭스</option>
-								<option>스위트</option>
+						<td><select name="selRoomType" id="selRoomType">
 						</select></td>
 					</tr>
 					<tr>
 						<td><div class="Mred"></div></td>
 						<td>객실번호</td>
-						<td><select name="selRoomNum">
-								<option>101</option>
-								<option>202</option>
-								<option>303</option>
+						<td><select name="selRoomNum" id="selRoomNum">
 						</select></td>
 					</tr>
 				</table>
@@ -566,7 +556,7 @@ input[name=svcFee], input[name=svcTot] {
 				<button id="openMemoMD">메모</button>
 			</div>
 			<br>
-			<!-- <button id="checkinBtn">입실</button> -->
+			<button id="checkinBtn">입실</button>
 			<div class="infoBtnSec">
 				<button id="checkoutBtn">퇴실</button>
 				<button id="openHisMD">변경내역</button>
@@ -713,10 +703,14 @@ input[name=svcFee], input[name=svcTot] {
 			$(".modal_content3").hide();
 			$("#viewMemo").hide();
 			$("#viewHistory").hide();
+			$("#checkinBtn").hide();
+			$(".infoBtnSec").hide();
+			$("#printRecipt").hide();
 			
 			date = new Date();
 			checkIn = $("#checkIn").datepicker({
 				autoClose : true,
+				minDate : new Date(),
 				//선택한 날짜를 가져옴
 				onSelect : function(date) {
 					endNum = date;
@@ -729,6 +723,7 @@ input[name=svcFee], input[name=svcTot] {
 
 			checkOut = $("#checkOut").datepicker({
 				autoClose : true,
+				minDate : new Date(),
 				//선택한 날짜를 가져옴
 				onSelect : function(date) {
 					startNum = date;
@@ -753,6 +748,11 @@ input[name=svcFee], input[name=svcTot] {
 				//$("#viewHistory").show();
 			});
 		});
+		
+		$("#rentYN").change(function(){
+			$("#checkOut").val(today);
+		});
+
 	</script>
 </body>
 </html>
