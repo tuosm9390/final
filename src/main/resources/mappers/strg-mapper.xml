@@ -12,6 +12,12 @@
 		<result property="strgSite" column="STRG_SITE" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngStock.model.vo.StrgArea" id="resultSetStrgArea">
+		<id property="strgNo" column="STRG_NO" />
+		<result property="areaNo" column="AREA_NO" />
+		<result property="areaName" column="AREA_NAME" />
+	</resultMap>
+	
 	<insert id="insertWarehouse" parameterType="Strg">
 		INSERT INTO STRG VALUES(#{strgNo},#{strgName},#{strgStatus},#{strgSite})
 	</insert>
@@ -24,7 +30,7 @@
 
 	<select id="searchList" resultMap="resultSetStrg">
 		SELECT * FROM STRG
-		WHERE STRG_STATUS = 'Y'
+		WHERE 1=1
 		<choose>
 		
 		<when test="code != null">
@@ -39,10 +45,22 @@
 		
 		</choose>
 		ORDER BY STRG_NO ASC
+		
 	</select>
+	
+	
+	<select id="detailList" resultMap="resultSetStrgArea">
+		SELECT * FROM STRG_AREA WHERE STRG_NO = #{strgNo}
+	</select>
+	
+	<update id="updateWarehouse" parameterType="Strg">
+		UPDATE STRG
+		SET STRG_NAME=#{strgName},STRG_STATUS=#{strgStatus},STRG_SITE=#{strgSite}
+		WHERE STRG_NO=#{strgNo}
+	</update>
 </mapper>
 
-
+ 
 
 
 

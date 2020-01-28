@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.hotels.mngStock.model.Service.warehouseService;
 import com.kh.hotels.mngStock.model.vo.SearchCondition;
 import com.kh.hotels.mngStock.model.vo.Strg;
+import com.kh.hotels.mngStock.model.vo.StrgArea;
 
 @Controller
 public class warehouseController {
@@ -23,8 +24,9 @@ public class warehouseController {
 	
 	@PostMapping("insert.war")
 	public String insertWarehouse(Model m, Strg st) {
-		
-		System.out.println(st);
+		System.out.println("insert m : " + m);
+		System.out.println("insert st : " + st);
+	
 		
 		if(st.getStrgStatus().equals("strg")) {
 			st.setStrgStatus("Y");
@@ -73,9 +75,38 @@ public class warehouseController {
 		
 		System.out.println("검색결과 : " + searchList);
 		
-	
 		
 		return mv;
+	}
+	@PostMapping("detail.war")
+	public ModelAndView wareDetail(String strgNo , ModelAndView mv) {
+		
+		System.out.println("strgNo = "  + strgNo);
+		
+		ArrayList<StrgArea> detailList = ws.detailList(strgNo);
+		
+		mv.setViewName("jsonView");
+		mv.addObject("detailList",detailList);
+		
+		System.out.println("디테일 : "  +detailList);
+		
+		return mv;
+		 
+	}
+	
+	@PostMapping("update.war")
+	public String updateWarehouse(Model m, Strg st) {
+		
+		System.out.println("St : "+st);
+		System.out.println("m : " + m);
+		
+		int result = ws.updateWarehouse(m,st);
+		
+		if(result > 0) {
+			return "redirect:select.war";
+		}else {
+			return "common/errorPage";
+		}
 	}
 	
 }

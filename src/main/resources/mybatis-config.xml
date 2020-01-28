@@ -23,6 +23,7 @@
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomPrc" alias="RoomPrc"/>
 		<typeAlias type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" alias="ReservationCheck"/>
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.Report" alias="Report"/>
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.stock.Stock" alias="Stock"/>
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.Que" alias="Que"/>
 	</typeAliases>
 	<mappers>
@@ -32,6 +33,7 @@
 		<mapper resource="mappers/strg-mapper.xml"/>
 		<mapper resource="mappers/report-mapper.xml"/>
         <mapper resource="mappers/hotel-mapper.xml"/>
+        <mapper resource="mappers/stock-mapper.xml"/>
 	</mappers>
 		
 	

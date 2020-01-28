@@ -165,13 +165,12 @@ background : white;
 					<th style="color: #005B9E">상태</th>
 				
 				</tr>
-				<c:forEach var="i" begin="1" end="10">
+				<c:forEach var="i" items="${repairList}">
 					<tr>
 						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="20191231"/></td>
-						<td style="color: #005B9E"><c:out value="익스트림울트라명품조립pc컴외 2건"/></td>
-						<td><c:out value="완료"/></td>
-					
+						<td style="color: #005B9E"><c:out value="${i.rptNo} "/></td>
+						<td style="color: #005B9E"><c:out value="${i.rptTitle}"/></td>
+						<td><c:out value="${i.rptStatus}"/></td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -196,9 +195,10 @@ background : white;
 			}).mouseout(function(){
 				$(this).parent("tr").css({"background":"white"});
 			}).click(function(){
-				var bid = $(this).parent().children("td").eq(1).text();
+				var rptNo = $(this).parent().children("td").eq(1).text();
+				
 				$(".modal").fadeIn();
-				console.log(bid);
+				console.log(rptNo);
 			});
 		});
 		
