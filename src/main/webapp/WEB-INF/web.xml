@@ -189,6 +189,21 @@
 		<servlet-name>warehouse</servlet-name>
 		<url-pattern>*.war</url-pattern>
 	</servlet-mapping>
+	<!--  -->
+	<servlet>
+		<servlet-name>stock</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/stock-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>stock</servlet-name>
+		<url-pattern>*.sto</url-pattern>
+	</servlet-mapping>
 	
 
 

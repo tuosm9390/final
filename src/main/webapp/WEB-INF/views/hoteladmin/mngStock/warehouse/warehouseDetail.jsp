@@ -62,6 +62,8 @@
 	}
 	#botTableDiv{
 	width: 710px;
+	height: 170px;
+	border: 1px solid gray;
 	
 	}
 	#wareWrap{
@@ -73,7 +75,7 @@
 	border: 1px solid #3498DB;
 	font-weight: bold;
 	height: 25px;
-	margin-left: 60.3%;
+	margin-left: 64.7%;
 	}
 </style>
 </head>
@@ -82,12 +84,15 @@
 	</header>
 		<div id="wareWrap">
 		<div class="bodyDiv">
-		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px"  id="sam"></div>  </div>
-		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:300px" id="sam" ></div>  </div>
-		<div>	<div class="same" id="ssam">구분</div>  <div class="same"><input type="radio">창고 &nbsp;&nbsp;<input type="radio" >기타 </div>  </div>
-		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:300px" id="sam" ></div>  </div>
+		<form action="update.war" method="post" id="updateWar">
+		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px"  id="detailCode" name="strgNo" disabled="disabled"></div>  </div>
+		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:300px" id="detailName" name="strgName"></div>  </div>
+		<div>	<div class="same" id="ssam">사용여부</div>  <div class="same"><input type="radio"  value="Y" id="yCheck" name="strgStatus">사용 &nbsp;&nbsp;<input type="radio" name="strgStatus" value="N" id="nCheck">미사용</div>  </div>
+		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:300px" id="detailArea" name="strgSite" ></div>  </div>
+		</form>
 		</div><!-- end -->
 		<div id="botTableDiv">
+	
 			<table id="botTable">
 				<tr>
 					<th>No</th>
@@ -96,18 +101,19 @@
 					<th>수량</th>			
 					<th style="width: 150px;">위치명</th>			
 				</tr>
-				<c:forEach var="i" begin="1" end="5">
+				<c:forEach var="i" items="${detailList}">
 					<tr>
-						<td>${i }</td>
-						<td>품목명</td>
+						<td>${i}</td>
+						<td></td>
 						<td>ass13123</td>
 						<td>13</td>
 						<td>1층 지하창고</td>
 					</tr>
 				</c:forEach>
 			</table>
+		
 		</div>
-	
+	  
 		<div class="btn">
 		<button id="resetBtn">사용중단/재사용</button>
 		<button id="reBtn2">다시작성</button>

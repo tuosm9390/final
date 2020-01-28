@@ -16,7 +16,7 @@
 	} 
 	.same{
 	display: inline-block;
-
+  
 	margin-top: 20px;
 	}
 	#sam{
@@ -91,9 +91,9 @@
 		<div id="enrDiv">
 		<div class="bodyDivx">
 		<form action="insert.war" method="post" id="insertwar">
-		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:600px"  id="sam" name="strgNo"></div>  </div>
+		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px"  id="strgNo" name="strgNo"></div>  </div>
 		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="strgName"></div>  </div>
-		<div>	<div class="same" id="ssam">구분</div>  <div class="same"><input type="radio" name="strgStatus" value="strg">창고 &nbsp;&nbsp;<input type="radio" name="strgStatus" value="etc">기타 </div>  </div>
+		<div>	<div class="same" id="ssam">사용여부</div>  <div class="same"><input type="radio" name="strgStatus" value="strg">사용 &nbsp;&nbsp;<input type="radio" name="strgStatus" value="etc">미사용 </div>  </div>
 		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="strgSite"></div>  </div>
 		</form>
 		</div><!-- end -->
@@ -107,7 +107,7 @@
 <script>
 	$(function(){
 		$("#enrollBtnn").click(function(){
-			console.log("쥐인장");
+		$("#strgNo").val($.trim($("#strgNo").val()));
 			$("#insertwar").submit();
 		});
 	});

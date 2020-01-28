@@ -253,7 +253,7 @@ background : white;
 		
 		//수리현황탭
 		$("#mailText").click(function(){
-			location.href='goRepairRequest.st';
+			location.href='selectRepair.sto';
 		})
 		
 		//신규등록

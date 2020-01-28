@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import com.kh.hotels.mngStock.model.dao.warehouseDao;
 import com.kh.hotels.mngStock.model.vo.SearchCondition;
 import com.kh.hotels.mngStock.model.vo.Strg;
+import com.kh.hotels.mngStock.model.vo.StrgArea;
 
 @Service
 public class warehouseServiceImpl implements warehouseService{
@@ -29,11 +30,23 @@ public class warehouseServiceImpl implements warehouseService{
 		// TODO Auto-generated method stub
 		return wd.selectList(sqlSession);
 	}
-
+  
 	@Override
 	public ArrayList<Strg> searchList(SearchCondition sc) {
 		// TODO Auto-generated method stub
-		return wd.searchList(sqlSession,sc);
+		return wd.searchList(sqlSession,sc); 
+	}
+
+	@Override
+	public ArrayList<StrgArea> detailList(String strgNo) {
+		// TODO Auto-generated method stub
+		return wd.detailList(sqlSession,strgNo);
+	}
+
+	@Override
+	public int updateWarehouse(Model m, Strg st) {
+		// TODO Auto-generated method stub
+		return wd.updateWarehouse(sqlSession,m,st);
 	}
 	
 }
