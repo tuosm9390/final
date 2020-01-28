@@ -174,19 +174,19 @@
 							</tr>
 							<tr style="background: lightgray;">
 								<td>NO</td>
-								<td>항목</td>
-								<td>품목명</td>
-								<td>수량</td>
-								<td>공급가액</td>
+								<td>제품코드</td>
+								<td>제품 명</td>
+								<td>수리 업체명</td>
 								<td>금액</td>
+								<td>수리사유</td>
 							</tr>
 							<tr>
-								<td>1</td>
-								<td>비품</td>
-								<td>LG 36인치 TV</td>
-								<td>2</td>
-								<td>1000000</td>
-								<td>2000000</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 							<tr>
 								<td colspan="2">총 금액</td>
@@ -195,11 +195,7 @@
 							<tr>
 								<td colspan="6" rowspan="6">
 									<div class="txtArea">
-										<a>아래와 같이 보고 하오니 검토후 재가 바랍니다.</a> <br> <br> <br>
-										<br> <a>-아 래-</a><br> <br> <br> <a>SYSDATE</a>&nbsp;
-										<a>OOOO</a> <a>목적으로 하여</a>&nbsp; <a>총금액 원</a> <a>사용을 결제하고자
-											하오니 <br>검토후 재기하여 주시기 바랍니다.
-										</a>
+										
 
 									</div>
 								</td>

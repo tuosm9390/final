@@ -37,7 +37,7 @@
 .tbl_wrap .tbl td {
 	padding:10px;
 }
-#txtLong {
+#txtLong, #txtLong_price {
 	border-radius:3px;
 	border:1px solid lightgray;
 	height:30px;
@@ -92,7 +92,7 @@ textarea {
 #noTxt {
 	width:50px;
 }
-#anoTxt {
+#anoTxt, #anoTxt_cate, #anoTxt_amount, #anoTxt_vos, #anoTxt_price, #anoTxt_name {
 	border-radius:3px;
 	height:17px;
 	border:1px solid lightgray;
@@ -154,9 +154,12 @@ textarea {
 	
 	<div class="tbl_wrap purchase">
 		<div class="inArea">
-	<div class="resultBtnPur">
+		
+		<form action="insertPurchase.ap" method="get">
+		
+			<div class="resultBtnPur">
 				<button id="pre" onclick="preWatch();">미리보기</button>
-				<button id="submit">기안하기</button>
+				<button id="submit" type="button" onclick="insertPur();">기안하기</button>
 			</div>
 	
 	<table class="tbl">
@@ -175,13 +178,13 @@ textarea {
 				</tr>
 				<tr class="tbl_tit">
 					<td>문서번호</td>
-					<td colspan="3"><input type="text" id="txt" placeholder="2020-01" style="text-align:center;"></td>
+					<td colspan="3" id="txt" style="text-align:center;"></td>
 					
 					
 				</tr>
 				<tr class="tbl_tit">
 					<td>기안부서</td>
-					<td><input type="text" id="txt" placeholder="구매팀"></td>
+					<td>구매팀</td>
 					<td>기안자</td>
 					<td><input type="text" id="txt" placeholder="이름을 입력하세요"></td>
 					
@@ -192,10 +195,12 @@ textarea {
 					<td><input type="text" id="txt" placeholder="SYSDATE"></td>
 					<td >수신자</td>
 					<td colspan="">
+					
 						<select id="receiver">
 							<option selected disabled hidden>수신자를 선택하세요</option>
-							<option>부서명(부서장)</option>
-							<option>부서명(부서장)</option>
+							<c:forEach var="b" items="${list }">
+							<option><c:out value="${b. NAME}"/>(<c:out value="${b.DNAME }"/>)</option>
+							</c:forEach>
 						</select>
 					</td>
 					
@@ -207,7 +212,7 @@ textarea {
 				<tr>
 					<td>내용</td>
 					<td colspan="3">
-						<textarea style="resize:none;"></textarea>
+						<textarea style="resize:none;" id="content"></textarea>
 					</td>
 				</tr>
 				
@@ -233,13 +238,13 @@ textarea {
 					<th>공급가액</th>
 					<th>금액</th>
 				</tr>
-				<tr >
+				<tr id="insertArea">
 					<td><input type="text" id="noTxt" placeholder="No"></td>
-					<td><input type="text" id="anoTxt" placeholder="항목"></td>
-					<td><input type="text" id="anoTxt" placeholder="품목명"></td>
-					<td><input type="text" id="anoTxt" placeholder="수량"></td>
-					<td><input type="text" id="anoTxt" placeholder="공급가액"></td>
-					<td><input type="text" id="anoTxt" placeholder="금액"></td>
+					<td><input type="text" id="anoTxt_cate" placeholder="항목"></td>
+					<td><input type="text" id="anoTxt_name" placeholder="품목명"></td>
+					<td><input type="text" id="anoTxt_amount" placeholder="수량"></td>
+					<td><input type="text" id="anoTxt_vos" placeholder="공급가액"></td>
+					<td><input type="text" id="anoTxt_price" placeholder="금액"></td>
 				</tr>
 				
 			</table>
@@ -255,10 +260,12 @@ textarea {
 				</colgroup>
 				<tr>
 					<td colspan="2" id="total">총금액</td>
-					<td colspan="4"><input type="text" id="txtLong"></td>
+					<td colspan="4"><input type="text" id="txtLong_price"></td>
 				</tr>
 			</table>
+			
 			</div>
+			</form>
 			</div>
 </div>
 <div style="height:200px;">
@@ -266,30 +273,128 @@ textarea {
 </div>
 </section>
 <script>
+	
+	
+	$(document).ready(function(){
+		//var docuNum = 
+		var now = new Date();
+	    var year = now.getFullYear();
+	    var month = now.getMonth() + 1;    //1월이 0으로 되기때문에 +1을 함.
+
+	    if((month + "").length < 2){        //2자리가 아니면 0을 붙여줌.
+	        month = "0" + month;
+	    }
+	     // ""을 빼면 year + month (숫자+숫자) 됨.. ex) 2018 + 12 = 2030이 리턴됨.
+	    var today = ""+year + month; 
+		var random = Math.floor(Math.random() * 1000) + 1;
+		var docuNum = today.concat(random);
+		console.log(random);
+		//var docuNum = 
+	
+		$("#txt").text(docuNum);
+	})
+
 	$(function(){
+		
+		
+		
 		console.log("purchase")
 		$("#plusBtn2").click(function() {
-			console.log("1");
 
 					var plusTable = "<tr>";
 					plusTable += "<td> <input type='text' id='noTxt' placeholder='No'></td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='항목'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='품목명'> </div> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='수량'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='공급가액'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='금액'> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt_cate' placeholder='항목'> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt_name' placeholder='품목명'> </div> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt_amount' placeholder='수량'> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt_vos' placeholder='공급가액'> </td>"
+					plusTable += "<td> <input type='text' id='anoTxt_price' placeholder='금액'> </td>"
 					plusTable += "</tr>"
 					var n = $(".payTbl.purchase").eq(0);
 					
-					console.log("2");
 					n.append(plusTable);
+					//$("#insertArea").clone().appendTo("#insertAre");
+					
+					return false;
 
 				})
 				
 		function preWatch() {
 			
-		}		
+		}
+		
 	});
+	function insertPur() {
+		var cnt = $(".payTbl.purchase tr:not(:first)").length;
+		if($("#txtLong").val() == "" || $("#content").val() == "" || $("#noTxt").val() == "" ||
+				$("#anoTxt_cate").val() == "" || $("#anoTxt_name").val() == "" || $("#anoTxt_amount").val() == "" || 
+				$("#anoTxt_vos").val() == "" || $("#anoTxt_price").val() == "" || $(".payTbl.purchase tr:not(:first) td").find('input').val() == "") {
+			alert("내용을 채워주세요!");
+		}
+		var p = $(".payTbl.purchase tr:not(:first)").find('input').val();
+		//console.log(p);
+		
+		console.log("??");
+		var str = "";
+		var tdArr = new Array();  //배열 선언
+		var tr = new Array();
+		var tr1 = $(".payTbl.purchase tr:not(:first)");
+		//현재 클릭된 Row(<tr>)
+		tdArr[0] = tr1.children().eq(0).find('input').val() + ", ";
+		tdArr[0] += tr1.children().eq(1).find('input').val() + ", ";
+		tdArr[0] += tr1.children().eq(2).find('input').val() + ", ";
+		tdArr[0] += tr1.children().eq(3).find('input').val() + ", ";
+		tdArr[0] += tr1.children().eq(4).find('input').val() + ", ";
+		tdArr[0] += tr1.children().eq(5).find('input').val() + ", ";
+		console.log("tdArr[0] : " + tdArr[0]);
+		console.log(cnt);
+			for(var i = 1; i < cnt; i++) {
+				
+				//cnt : 행의 갯수
+				if(cnt >= 2) {
+					
+					//find 추가하기
+					tr[i-1] = $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(i-1).val() + ", ";
+					tr[i-1] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(i).val() + ", ";
+					tr[i-1] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(i + 1).val() + ", ";
+					tr[i-1] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(i + 2).val() + ", ";
+					tr[i-1] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(i + 3).val() + ", ";
+					tr[i-1] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(i + 4).val() + ", ";
+					
+					//console.log("TR : " + tr[i]);
+					
+					/* tdArr[i] = tr[i].children().eq(i-1).find('input').val();
+					console.log("tdArr : " + tdArr[i]); */
+				}
+				console.log(tr[i-1]);
+				
+			}
+		
+		
+		
+		//var tr2 = $(".payTbl.purchase tr:nth-child(3)" );
+		//var td = tr.children();
+		
+		
+		
+		/* var cnt2 = $(".payTbl.purchase tr:not(:first)");
+		var cnt3 = cnt2.children().eq(1).find('input').val(); */
+		
+		
+		/*  for(var i = 0; i < cnt-1; i++) { 
+			 for(var j = 0; j < 6; j++) {
+				
+				tdArr[i] += tr.children().eq(j).find('input').val() + ", ";
+				
+			} 
+			console.log("tr의 모든 데이터 : " + tdArr);
+		 } 
+		 */
+		
+		
+		
+		
+		
+	}	
 </script>
 
 

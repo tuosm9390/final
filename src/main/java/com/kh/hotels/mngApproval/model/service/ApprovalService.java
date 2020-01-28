@@ -25,6 +25,12 @@ public interface ApprovalService {
 
 	List<HashMap<String, Object>> selectApprovePurDetail(int rptNo, String type) throws ReportException;
 
+	List<HashMap<String, Object>> selectApproveRepairDetail(int rptNo, String type) throws ReportException;
+
+	List<HashMap<String, Object>> selectApproveOrderDetail(int rptNo, String type) throws ReportException;
+
+	List<HashMap<String, Object>> selectInfo() throws ReportException;
+
 	
 	
 	

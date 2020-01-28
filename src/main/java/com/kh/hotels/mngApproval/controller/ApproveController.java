@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.common.controller.Pagination;
@@ -58,6 +59,15 @@ public class ApproveController {
 					ReportList.get(i).put("RPSTATUS", "반려");
 				}
 			}
+			for(int i = 0; i < ReportList.size(); i++) {
+				if(ReportList.get(i).get("RPTYPE").equals("PURCHASE")) {
+					ReportList.get(i).put("RPTYPE", "구매 요청서");
+				}else if(ReportList.get(i).get("RPTYPE").equals("ORDER")) {
+					ReportList.get(i).put("RPTYPE", "발주 요청서");
+				}else {
+					ReportList.get(i).put("RPTYPE", "수리 요청서");
+				}
+			}
 			
 			
 			m.addAttribute("list", ReportList);
@@ -82,8 +92,6 @@ public class ApproveController {
 	public ModelAndView docuFilterWait(HttpServletRequest request, ModelAndView mv, String scurrentPage, String cate) {
 		
 		//int currentPage = 1;
-		System.out.println("cate : " + cate);
-		System.out.println("scurrentPage : " + scurrentPage);
 		
 				int chScurrentPage = 0;
 				String cateCh = "";
@@ -116,7 +124,6 @@ public class ApproveController {
 						
 						
 						reportList = as.selectFilterReportList(pi, cateCh);
-						System.out.println(reportList);
 					}else {
 						listCount = as.getListCount();
 						pi = Pagination.getPageInfo(chScurrentPage, listCount);
@@ -137,6 +144,15 @@ public class ApproveController {
 							reportList.get(i).put("RPSTATUS", "승인");
 						}else {
 							reportList.get(i).put("RPSTATUS", "반려");
+						}
+					}
+					for(int i = 0; i < reportList.size(); i++) {
+						if(reportList.get(i).get("RPTYPE").equals("PURCHASE")) {
+							reportList.get(i).put("RPTYPE", "구매 요청서");
+						}else if(reportList.get(i).get("RPTYPE").equals("ORDER")) {
+							reportList.get(i).put("RPTYPE", "발주 요청서");
+						}else {
+							reportList.get(i).put("RPTYPE", "수리 요청서");
 						}
 					}
 					
@@ -168,11 +184,25 @@ public class ApproveController {
 
 
 	@RequestMapping("writeApprove.ap")
-	public String gowrite() {
+	public String gowrite(HttpServletRequest request, Model m) {
+		
+		
+		
+		
+		
 		return "hoteladmin/mngApprove/writeApprove/writePurchaseApprove";
 	}
 	@RequestMapping("writePurchaseApprove.ap")
-	public String goWrite() {
+	public String goWrite(HttpServletRequest request, Model m) {
+		try {
+			List<HashMap<String, Object>> list = as.selectInfo();
+			m.addAttribute("list", list);
+			
+			
+		} catch (ReportException e) {
+			m.addAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 		return "hoteladmin/mngApprove/writeApprove/writerPurchaseApprove";
 	}
 	@RequestMapping("writeFixApprove.ap")
@@ -198,32 +228,82 @@ public class ApproveController {
 	@GetMapping("allApproveModal.ap")
 	public ModelAndView showAllApproveModal(HttpServletRequest request, ModelAndView mv, int rptNo, String type) {
 		
-		System.out.println("rptNo : " + rptNo);
-		System.out.println("type : " + type);
-		
-		if(type.equals("PURCHASE")) {
+		if(type.equals("구매 요청서")) {
 			try {
+				type = "";
+				type = "PURCHASE";
 				List<HashMap<String, Object>> list = as.selectApprovePurDetail(rptNo, type);
 				mv.addObject("list", list);
 				mv.setViewName("jsonView");
 				
+				
+				/*
+				 * for(int i = 0; i < list.size(); i++) { int vos = (int)list.get(i).get("VOS");
+				 * int amount = (int) list.get(i).get("AMOUNT"); System.out.println("vos : " +
+				 * vos); System.out.println("amount : " + amount); }
+				 */
+				
 				return mv;
+				
 			} catch (ReportException e) {
 				mv.addObject("msg", e.getMessage()); 
 				 mv.setViewName("jsonView");
+				 
+				 
+				 
 				return mv;
 			}
-		}else if(type.equals("REPAIR")) {
-			//List<HashMap<String, Object>> list = as.selectApproveDetail(rptNo, type);
+		}else if(type.equals("수리 요청서")) {
+			type = "";
+			type = "REPAIR";
+			
+			List<HashMap<String, Object>> list;
+			try {
+				list = as.selectApproveRepairDetail(rptNo, type);
+				
+				mv.addObject("list", list);
+				mv.setViewName("jsonView");
+				return mv;
+				
+			} catch (ReportException e) {
+				mv.addObject("msg", e.getMessage()); 
+				 mv.setViewName("jsonView");
+				 
+				 
+				 
+				return mv;
+			}
+			
+			
+			
 		}else {
-			//List<HashMap<String, Object>> list = as.selectApproveDetail(rptNo, type);
+			type = "";
+			type = "ORDER";
+			
+			List<HashMap<String, Object>> list;
+			try {
+				list = as.selectApproveOrderDetail(rptNo, type);
+				
+				mv.addObject("list", list);
+				mv.setViewName("jsonView");
+				return mv;
+				
+			} catch (ReportException e) {
+				mv.addObject("msg", e.getMessage()); 
+				 mv.setViewName("jsonView");
+				 
+				 
+				
+				return mv;
+			}
+			
 		}
 		
 		
 		
 		
 		
-		return null;
+		
 	}
 	
 

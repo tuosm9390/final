@@ -20,15 +20,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Autowired
 	private ApprovalDao ad;
 
-
-
-
-
-
-
-
-
-
 	@Override
 	public int getListCount() throws ReportException {
 
@@ -46,7 +37,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		System.out.println("service");
 		if(list != null) {
 
-			System.out.println("list : " + list);
 		}else {
 			throw new ReportException("조회중 에러");
 		}
@@ -83,6 +73,44 @@ public class ApprovalServiceImpl implements ApprovalService {
 			throw new ReportException("디테일 에러");
 		}
 		
+		
+		return list;
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> selectApproveRepairDetail(int rptNo, String type) throws ReportException {
+		List<HashMap<String, Object>> list = ad.selectApproveRepairDetail(sqlSession, rptNo, type);
+		
+		if(list == null) {
+			throw new ReportException("디테일 에러");
+		}
+		
+		
+		return list;
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> selectApproveOrderDetail(int rptNo, String type) throws ReportException {
+		List<HashMap<String, Object>> list = ad.selectApproveOrderDetail(sqlSession, rptNo, type);
+		
+		if(list == null) {
+			throw new ReportException("디테일 에러");
+		}
+		
+		
+		return list;
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> selectInfo() throws ReportException {
+		List<HashMap<String, Object>> list = ad.selectApproveInfo(sqlSession);
+		
+		if(list == null) {
+			throw new ReportException("에러났어요~");
+		}
 		
 		return list;
 	}

@@ -7,7 +7,7 @@
 <title>MODAL</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
-.modal {
+.modal_order {
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -23,8 +23,8 @@
 	left: 50%;
 	top: 45%;
 	transform: translate(-50%, -50%);
-	width: 1000px;
-	height: 670px;
+	width: 918px;
+    height: 601px;
 	background-color: white;
 	margin-top:50px;
 }
@@ -57,7 +57,7 @@
 	height:100%;
 }
 
-#tbl_modal {
+#tbl_modal_order {
 	padding-top: 10px;
 	border: 1px solid black;
 	border-collapse: collapse;
@@ -66,16 +66,16 @@
 	height:auto;
 }
 
-#tbl_modal td {
+#tbl_modal_order td {
 	height: 30px;
 	border: 1px solid black;
 }
 
-#tbl_modal td:last-child {
+#tbl_modal_order td:last-child {
 	border-right: 0px;
 }
 
-#tbl_modal td:fisrt-child {
+#tbl_modal_order td:fisrt-child {
 	border-left: 0px;
 }
 
@@ -125,29 +125,30 @@
 </style>
 </head>
 <body>
-	<div class="modal">
+	<div class="modal_order">
 		<div class="modal_content">
 			<div class="titleBarplus">
-				<h1 style="text-align: left;">구매 요청서</h1>
+				<h1 style="text-align: left;">발주 요청서</h1>
 			</div>
 			<a class="btn_close_plus">×</a>
 			<div class="modal_content_real">
 			<div class="modalTbl">
-				<table id="tbl_modal">
+				<table id="tbl_modal_order">
 					<colgroup>
 						<col width="10%">
 						<col width="10%">
 						<col width="25%">
 						<col width="15%">
-						<col width="20%">
-						<col width="20%">
+						<col width="10%">
+						<col width="15%">
+						<col width="10%">
 
 					</colgroup>
 					<tr>
 						<td>문서번호</td> 
 						<td colspan="2">
 						</td>
-						<td colspan="1">부서장</td>
+						<td colspan="2">부서장</td>
 						<td colspan="2">총지배인</td>
 					</tr>
 					<tr>
@@ -155,7 +156,7 @@
 						<td colspan="2">
 							
 						</td>
-						<td rowspan="2"></td>
+						<td rowspan="2" colspan="2"></td>
 						<td rowspan="2" colspan="2"></td>
 					</tr>
 					<tr>
@@ -168,7 +169,7 @@
 						<td>기안일</td>
 						<td colspan="2">
 						</td>
-						<td rowspan="2" colspan="3"></td>
+						<td rowspan="2" colspan="4"></td>
 						
 					</tr>
 					<tr>
@@ -181,7 +182,7 @@
 					</tr>
 					<tr>
 						<td>제목</td>
-						<td colspan="5"></td>
+						<td colspan="6"></td>
 					</tr>
 					<tr style="background:lightgray;">
 						<td>NO</td>
@@ -189,10 +190,12 @@
 						<td>품목명</td>
 						<td>수량</td>
 						<td>공급가액</td>
+						<td>업체명</td>
 						<td>금액</td>
 					</tr>
 					
-					<tr id="repeat">
+					<tr id="repeatOrder">
+						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
@@ -201,11 +204,11 @@
 						<td></td>
 					</tr>
 					<tr id="totalPrice">
-						<td colspan="2">총 금액</td>
-						<td colspan="4" style="text-align:right;"> </td>
+						<td colspan="2" style="text-align:center;">총 금액</td>
+						<td colspan="5"  style="text-align:right;"> </td>
 					</tr>
-					<tr id="content">
-						<td colspan="6" rowspan="6">
+					<tr id="content_order">
+						<td colspan="7" rowspan="6">
 							<div class="txtArea">
 							<br><br>
 								<!-- <a>아래와 같이 보고 하오니 검토후 재가 바랍니다.</a> <br><br><br><br>
@@ -232,7 +235,7 @@
 	<script>
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
-				$(".modal").fadeOut();
+				$(".modal_order").fadeOut();
 			});
 		});
 	</script>
