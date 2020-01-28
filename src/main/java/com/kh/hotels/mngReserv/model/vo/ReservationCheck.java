@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReservationCheck {
 	private String rsvNo; // 예약번호
+	private int mno; // 예약자회원번호
 	private String userName; // 예약자명
 	private String phone; // 전화번호
 	private String email; // 이메일

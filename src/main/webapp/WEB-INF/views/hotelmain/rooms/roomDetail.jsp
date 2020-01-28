@@ -323,6 +323,7 @@ input[type=text] {
 
 			checkIn = $("#checkIn").datepicker({
 				autoClose : true,
+				minDate : new Date(),
 				//선택한 날짜를 가져옴
 				onSelect : function(date) {
 					//종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
@@ -335,6 +336,7 @@ input[type=text] {
 
 			checkOut = $("#checkOut").datepicker({
 				autoClose : true,
+				minDate : new Date(),
 				//선택한 날짜를 가져옴
 				onSelect : function(date) {
 					endNum = date;

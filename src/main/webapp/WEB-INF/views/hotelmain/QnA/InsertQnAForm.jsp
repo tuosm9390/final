@@ -44,7 +44,7 @@ textarea{
 	height: auto !important;
 }
 
-.qnaCondition{
+.qtype{
 	font-size: 14px !important;
 }
 </style>
@@ -71,49 +71,48 @@ textarea{
 				<br><br>
 				
 				<!-- 내용 영역 -->
-				<table class="qnaDetail-table">
-					<tr>
-						<td><li>문의유형</li></td>
-						<td>
-							<select name="qnaCondition" class="qnaCondition">
-								<option value="">객실</option>
-								<option value="">환불</option>
-								<option value="">예약</option>
-								<option value="">기타</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td><li>작성자명</li></td>
-						<td><input type="text" name="author"></td>
-					</tr>
-					<tr>
-						<td><li>제목</li></td>
-						<td><input type="text" name="title"></td>
-						<td><label style="font-size: 16px;"><input
-								type="checkbox" id="passwordCheck" name="passwordCheck"
-								style="width: 19px; height: 19px; vertical-align: top; margin-top: 0px;">
-								비밀글 </label></td>
-					</tr>
-					<tr>
-						<td><li>이메일</li></td>
-						<td colspan="3"><input type="text" id="email" name="email"> @ <select
-							id="email2" name="email2">
-								<option selected>naver.com</option>
-								<option>kakao.co.kr</option>
-								<option>daum.com</option>
-								<option>gmail.com</option>
-						</select></td>
-					</tr>
-					<tr>
-						<td><li>비밀번호</li></td>
-						<td><input type="text" name="password" class="password" disabled></td>
-					</tr>
-					<tr>
-						<td style="vertical-align: top; padding-top: 5px;"><li>문의 내용</li></td>
-						<td colspan="10" style="padding-top: 5px;"><textarea rows="7" cols="70" readonly></textarea>
-					</tr>
-				</table>
+				<form id="insertQnAForm" action="goQnAInsert.hmain" method="post">
+					<table class="qnaDetail-table">
+						<tr>
+							<td><li>문의유형</li></td>
+							<td>
+								<select name="qtype" class="qtype">
+									<option value="ROOM">객실</option>
+									<option value="SERVICE">환불</option>
+									<option value="RESERV">예약</option>
+									<option value="ETC">기타</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><li>작성자명</li></td>
+							<td><input type="text" name="userName"></td>
+						</tr>
+						<tr>
+							<td><li>제목</li></td>
+							<td><input type="text" name="qtitle"></td>
+							<td><label style="font-size: 16px;"><input
+									type="checkbox" id="pwdCheck"
+									style="width: 19px; height: 19px; vertical-align: top; margin-top: 0px;">
+									비밀글 </label></td>
+							<input type="hidden" id="pwdStatus" name="pwdStatus" value="N">
+						</tr>
+						<tr>
+							<td><li>이메일</li></td>
+							<td colspan="3">
+								<input type="text" id="email" name="email">
+							</td>
+						</tr>
+						<tr>
+							<td><li>비밀번호</li></td>
+							<td><input type="text" id="qpwd" name="qpwd" class="qpwd" style="display: none;"></td>
+						</tr>
+						<tr>
+							<td style="vertical-align: top; padding-top: 5px;"><li>문의 내용</li></td>
+							<td colspan="10" style="padding-top: 5px;"><textarea rows="7" cols="70" name="qcontent"></textarea>
+						</tr>
+					</table>
+				</form>
 				<!-- 내용 영역 끝 -->
 				<br>
 				<button style="float: right; width: 100px; margin-left: 20px; margin-right: 95px;" onclick="complete();">완료</button>
@@ -126,19 +125,19 @@ textarea{
 	<footer>
 	</footer>
 	<script>
-		$("#passwordCheck").click(function(){
+		$("#pwdCheck").click(function(){
 			if($(this).prop("checked") == true){
-				console.log("checked");
-				$(".password").attr("disabled", false);
-			} else {
-				console.log("unchecked");
-				$(".password").attr("disabled", true);
+				$("#pwdStatus").val("Y");
+				$(".qpwd").css("display", "block");
+			} else { 
+				$("#pwdStatus").val("N");
+				$(".qpwd").css("display", "none").val("");
 			};
 		});
 		
 		function complete(){
-			window.alert("작성이 완료되었습니다.");
-			location.href='goQnA.hmain';
+			$("#insertQnAForm").submit();
+// 			window.alert("작성이 완료되었습니다.");
 		};
 	</script>
 </body>
