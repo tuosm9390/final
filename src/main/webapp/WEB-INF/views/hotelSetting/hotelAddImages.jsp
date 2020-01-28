@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,8 +77,19 @@
 		background:lightgray;
 		text-align: center;
 	}
+	.roomSubPhotoArea{
+		margin-left:10px;
+		width:200px;
+		height:200px;
+		border:5px dashed darkgray;
+		background:lightgray;
+		text-align: center;
+	}
 	.roomMainPhotoArea h3{
-		margin-top:85px;
+		margin-top:15px;
+	}
+	.roomSubPhotoArea h3{
+		margin-top:15px;
 	}
 	.room{
 		margin-top:10px;
@@ -86,11 +98,46 @@
 	.imageBtn{
 		width:75px; 
 	}
+	.nextBtn{
+		width:180px;
+		height:50px;
+		font-size: 25px;
+		background:#060E33;
+		border:0;
+		color:#EAC064;
+	}
+	.nextBtn:hover{
+		cursor:pointer;
+		background:gray;
+		color:black;
+	}
+	.backBtn{
+		width:180px;
+		height:50px;
+		font-size: 25px;
+		background:#060E33;
+		border:0;
+		color:#EAC064;
+	}
+	.backBtn:hover{
+		cursor:pointer;
+		background:gray;
+	}
+	.btnGroup{
+		padding-top:10px;
+		border-top-color:lightgray;
+		border-top-width:1px;
+		border-top-style:solid;
+		margin-top:30px;
+		vertical-align: middle;
+		margin-right:50px;
+	}	
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>HotelsCompile</title>
 </head>
 <body>
+	<c:set var="roomType" value="${ sessionScope.roomTypeList }" />
 	<div class="contentArea">
 	<jsp:include page="hotelSettingMenubar.jsp"/>
 		<div class="rightArea"><!-- 오른쪽 영역 -->
@@ -102,25 +149,70 @@
 					<h6 class="titleContentText">객실 이미지를 등록할 수 있습니다. (대표이미지는 꼭 등록해주세요.)</h6>
 				</div>
 			</div>
-			<div class="room">
-				<div class="roomArea">
-					<div class="roomTitleArea">
-						<h3>디럭스</h3>
+			<form action="" method="post" enctype="multipart/form-data">
+			<c:forEach var="roomType" items="${ roomType }">
+			<div class="area" id="${ roomType.rtName }">
+				<div class="room">
+					<div class="roomArea">
+						<div class="roomTitleArea">
+							<h3>${ roomType.rtName }</h3>
+						</div>
+						<button type="button" class="addBtn" onclick="addImages(this);" value="${ roomType.rtName }">+ 추가</button>
 					</div>
-					<button class="addBtn" onclick="addImages();">+ 추가</button>
-				</div>
-				<div class="roomMainPhotoArea">
-					<h3>대표이미지</h3>
-					<input type="file" class="imageBtn">
+					<div class="roomMainPhotoArea">
+						<img alt="" src="" width="190" height="100">
+						<h3>대표이미지</h3>
+						<input type="file" name="mainPhoto" class="imageBtn">
+					</div>
 				</div>
 			</div>
+			</c:forEach>
+			<div align="right" class="btnGroup">
+				<button class="backBtn" onclick=""><b>이전</b></button>			
+				<button class="nextBtn" onclick="return saveHotel();"><b>완료</b></button>			
+			</div>
+			</form>
 		</div>
 	</div>
 	<script type="text/javascript">
-		function addImages(){
+		
+	
+		function addImages(obj){
 			
-			$(".roomMainPhotoArea:last").after("<div class='roomMainPhotoArea'> <h3>객실이미지</h3> <input type='file' class='imageBtn'>");
+			roomType = obj.value;
 			
+			
+			$("#"+roomType+" .roomMainPhotoArea:last").after("<div class='roomSubPhotoArea'><h3>객실이미지</h3><input type='file' name='subPhoto' class='imageBtn'><input type='hidden' value='${ roomType.rtName }' name='SubPhotoRoomTypeName'><button onclick='deleteArea(this);'>삭제</button>");
+			
+			$("#"+roomType+" .roomSubPhotoArea").each(function(){
+				if($("#"+roomType+" .roomSubPhotoArea").length >= 4){
+					$("#"+roomType+" .addBtn").attr("onclick", null);
+				}
+			});
+			
+		}
+		
+		function deleteArea(debtn){
+			
+			$(debtn).parent().remove();
+			
+		}
+		function saveHotel(){
+			
+			$("#"+roomType).each(function(){
+				if($(this + " input[name='mainPhoto']").val() == ""){
+					alert("대표이미지를 등록해주세요");
+					return false;
+				}
+				if($(this + " input[name='subPhoto']").val() == ""){
+					alert("객실이미지를 등록해주세요");
+					return false;
+				}
+			});
+			
+			//$("#"+roomType+" input[name='mainPhoto']")
+			
+			return false;
 		}
 	</script>
 </body>

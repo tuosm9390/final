@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +24,12 @@ import com.kh.hotels.common.model.vo.OffSeason;
 import com.kh.hotels.common.model.vo.Rfd;
 import com.kh.hotels.common.model.vo.Rule;
 import com.kh.hotels.common.model.vo.Season;
+import com.kh.hotels.common.model.vo.Svc;
+import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 
-@SessionAttributes({"info","rule","basic","noShow","cal","offSeason","season","roomTypeList"})
+@SessionAttributes({"info","rule","basic","noShow","cal","offSeason","season","roomTypeList","roomList","roomPrcList","svcList"})
 @Controller
 public class HotelSettingController {
 	
@@ -38,6 +42,43 @@ public class HotelSettingController {
 		return "hotelSetting/hotelRoomTypeSetting";
 		
 	}
+	@RequestMapping("goHotelRoomDetailPage.set")
+	public String goHotelRoomDetailSetting() {
+		
+		return "hotelSetting/hotelRoomDetailSetting";
+		
+	}
+	@RequestMapping("goHotelRoomFarePage.set")
+	public String goHotelRoomFareSetting() {
+		
+		return "hotelSetting/hotelRoomFareSetting";
+		
+	}
+	@RequestMapping("goHotelAddServicePage.set")
+	public String goHotelAddServicePage() {
+		
+		return "hotelSetting/hotelAddService";
+		
+	}
+	@RequestMapping("goHotelFormSettingPage.set")
+	public String goHotelFormSettingPage() {
+		
+		return "hotelSetting/hotelFormSetting";
+		
+	}
+	@RequestMapping("goHotelSettingSummaryPage.set")
+	public String goHotelSettingSummaryPage() {
+		
+		return "hotelSetting/hotelSettingSummary";
+		
+	}
+	@RequestMapping("goHotelAddImages.set")
+	public String goHotelAddImagesPage() {
+		
+		return "hotelSetting/hotelAddImages";
+		
+	}
+	
 	@RequestMapping("backHotelInfoSettingPage.set")
 	public String goHotelInfoSetting() {
 		
@@ -123,7 +164,7 @@ public class HotelSettingController {
 		
 
 		if(result > 0) { 
-			return "hotelSetting/hotelRoomTypeSetting"; 
+			return "redirect:/goHotelRoomTypePage.set"; 
 		}else {
 			model.addAttribute("msg", "호텔정보 설정 실패");
 			return "commom/errorPage"; 
@@ -134,7 +175,7 @@ public class HotelSettingController {
 	}
 	
 	@PostMapping("goRoomDetailPage.set")
-	public String goRoomDetailPage(String rtName, String minPer, String maxPer, String limitprc, Model model) {
+	public String goRoomDetailPage(@Param("rtName") String rtName,@Param("minPer") String minPer,@Param("maxPer") String maxPer,@Param("limitprc") String limitprc, Model model) {
 
 		String[] rtNames = rtName.split(",");
 		String[] minPers = minPer.split(",");
@@ -164,17 +205,227 @@ public class HotelSettingController {
 
 		int result = cs.insertHotelRoomType(roomTypeList);
 		
-		return "hotelSetting/hotelRoomDetailSetting";
+		
+		
+		if(result > 0) {
+			return "redirect:/goHotelRoomDetailPage.set";
+		}else {
+			model.addAttribute("msg", "객실타입설정실패");
+			return "common/errorPage";
+		}
+		
 	}
 	
 	@PostMapping("goRoomFarePage.set")
-	public String goRoomFarePage(String roomType, String rmNum, String strPer, String rmOption, String floor) {
+	public String goRoomFarePage(String rtName, String rmNum, String stdPer, String rmOption, String floor, Model model, HttpServletRequest request) {
 		
-		System.out.println("roomType : " + roomType);
+		Date from = new Date();
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String to = transFormat.format(from);
 		
-		return "hotelSetting/hotelRoomFareSetting";
+		String[] rtNames = rtName.split(",");
+		
+		int[] rtNos = new int[rtNames.length];
+		
+		for(int i = 0; i < rtNames.length; i++) {
+			rtNos[i] = cs.selectRtNo(rtNames[i]);
+		}
+		
+		String[] rmNums = rmNum.split(",");
+		
+		String[] stdPers = stdPer.split(",");
+		int[] stdPersInt = new int[stdPers.length];
+		for(int i = 0; i < stdPers.length; i++) {
+			stdPersInt[i] = Integer.parseInt(stdPers[i]);
+		}
+		String[] rmOptions = rmOption.split(",");
+		
+		String[] floors = floor.split(",");
+		int[] floorsInt = new int[floors.length];
+		for(int i = 0; i < floors.length; i++) {
+			floorsInt[i] = Integer.parseInt(floors[i]);
+		}
+		
+		Room room;
+		
+		ArrayList<Room> roomList = new ArrayList<>();
+		
+		for(int i = 0; i < rtNos.length; i++) {
+			room = new Room();
+			room.setRmNum(rmNums[i]);
+			room.setStdPer(stdPersInt[i]);
+			room.setRtNo(rtNos[i]);
+			room.setRmOption(rmOptions[i]);
+			room.setFloor(floorsInt[i]);
+			room.setRegDate(to);
+			roomList.add(room);
+		}
+		
+		int result = cs.insertHotelRoom(roomList);
+		
+		
+		if(result > 0) {
+			System.out.println("roomTypeList : " + request.getSession().getAttribute("roomTypeList") );
+			model.addAttribute("roomList", roomList);
+			return "redirect:/goHotelRoomFarePage.set";
+		}else {
+			model.addAttribute("msg", "룸 설정 실패");
+			return "common/errorPage";
+		}
+		
 	}
+	@PostMapping("goAddServicePage.set")
+	public String goAddServicePage(String rtName, String offRentMon, String offRentTue, String offRentWed, String offRentThu
+			, String offRentFri, String offRentSat, String offRentSun, String offStayMon, String offStayTue, String offStayWed,
+			String offStayThu, String offStayFri, String offStaySat, String offStaySun, String rentMon, 
+			String rentTue, String rentWed, String rentThu
+			, String rentFri, String rentSat, String rentSun, String stayMon, String stayTue, String stayWed,
+			String stayThu, String stayFri, String staySat, String staySun, Model model) {
+		
+		Date from = new Date();
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String to = transFormat.format(from);
+		
+		String[] rtNames = rtName.split(",");
+		
+		int[] rtNos = new int[rtNames.length];
+		
+		for(int i = 0; i < rtNames.length; i++) {
+			rtNos[i] = cs.selectRtNoFare(rtNames[i]);
+		}
+		
+		RoomPrc roomPrc;
+		
+		ArrayList<RoomPrc> roomPrcList = new ArrayList<>();
+		
+		String[] offRentMons = offRentMon.split(",");
+		String[] offRentTues = offRentTue.split(",");
+		String[] offRentWeds = offRentWed.split(",");
+		String[] offRentThus = offRentThu.split(",");
+		String[] offRentFris = offRentFri.split(",");
+		String[] offRentSats = offRentSat.split(",");
+		String[] offRentSuns = offRentSun.split(",");
+		
+		String[] offStayMons = offStayMon.split(",");
+		String[] offStayTues = offStayTue.split(",");
+		String[] offStayWeds = offStayWed.split(",");
+		String[] offStayThus = offStayThu.split(",");
+		String[] offStayFris = offStayFri.split(",");
+		String[] offStaySats = offStaySat.split(",");
+		String[] offStaySuns = offStaySun.split(",");
+		
+		////////////////////////////////////////
+		
+		String[] rentMons = rentMon.split(",");
+		String[] rentTues = rentTue.split(",");
+		String[] rentWeds = rentWed.split(",");
+		String[] rentThus = rentThu.split(",");
+		String[] rentFris = rentFri.split(",");
+		String[] rentSats = rentSat.split(",");
+		String[] rentSuns = rentSun.split(",");
+		
+		String[] stayMons = stayMon.split(",");
+		String[] stayTues = stayTue.split(",");
+		String[] stayWeds = stayWed.split(",");
+		String[] stayThus = stayThu.split(",");
+		String[] stayFris = stayFri.split(",");
+		String[] staySats = staySat.split(",");
+		String[] staySuns = staySun.split(",");
+		
+		for(int i = 0; i < rtNos.length; i++) {
+			
+			roomPrc = new RoomPrc();
+			roomPrc.setRtNo(rtNos[i]);
+			
+			roomPrc.setOffRentMon(Integer.parseInt(offRentMons[i]));
+			roomPrc.setOffRentTue(Integer.parseInt(offRentTues[i]));
+			roomPrc.setOffRentWed(Integer.parseInt(offRentWeds[i]));
+			roomPrc.setOffRentThu(Integer.parseInt(offRentThus[i]));
+			roomPrc.setOffRentFri(Integer.parseInt(offRentFris[i]));
+			roomPrc.setOffRentSat(Integer.parseInt(offRentSats[i]));
+			roomPrc.setOffRentSun(Integer.parseInt(offRentSuns[i]));
+			
+			roomPrc.setOffStayMon(Integer.parseInt(offStayMons[i]));
+			roomPrc.setOffStayTue(Integer.parseInt(offStayTues[i]));
+			roomPrc.setOffStayWed(Integer.parseInt(offStayWeds[i]));
+			roomPrc.setOffStayThu(Integer.parseInt(offStayThus[i]));
+			roomPrc.setOffStayFri(Integer.parseInt(offStayFris[i]));
+			roomPrc.setOffStaySat(Integer.parseInt(offStaySats[i]));
+			roomPrc.setOffStaySun(Integer.parseInt(offStaySuns[i]));
+			
+			roomPrc.setRentMon(Integer.parseInt(rentMons[i]));
+			roomPrc.setRentTue(Integer.parseInt(rentTues[i]));
+			roomPrc.setRentWed(Integer.parseInt(rentWeds[i]));
+			roomPrc.setRentThu(Integer.parseInt(rentThus[i]));
+			roomPrc.setRentFri(Integer.parseInt(rentFris[i]));
+			roomPrc.setRentSat(Integer.parseInt(rentSats[i]));
+			roomPrc.setRentSun(Integer.parseInt(rentSuns[i]));
+			
+			roomPrc.setStayMon(Integer.parseInt(stayMons[i]));
+			roomPrc.setStayTue(Integer.parseInt(stayTues[i]));
+			roomPrc.setStayWed(Integer.parseInt(stayWeds[i]));
+			roomPrc.setStayThu(Integer.parseInt(stayThus[i]));
+			roomPrc.setStayFri(Integer.parseInt(stayFris[i]));
+			roomPrc.setStaySat(Integer.parseInt(staySats[i]));
+			roomPrc.setStaySun(Integer.parseInt(staySuns[i]));
+			
+			roomPrc.setRegDate(to);
+			
+			roomPrcList.add(roomPrc);
+			
+		}
 
+		int result = cs.insertHotelRoomFare(roomPrcList);
+		
+		
+		if( result > 0 ) {
+			model.addAttribute("roomPrcList", roomPrcList);
+			return "redirect:/goHotelAddServicePage.set";
+		}else {
+			model.addAttribute("msg", "객실요금 설정 실패");
+			return "common/errorPage";
+		}
+	}
+	
+	@PostMapping("goFormSettingPage.set")
+	public String goFormSettingPage(String svcCode, String svcName, String salesType, String svcPrice, Model model) {
+		
+		Date from = new Date();
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String to = transFormat.format(from);
+		
+		String[] svcCodes = svcCode.split(",");
+		String[] svcNames = svcName.split(",");
+		String[] salesTypes = salesType.split(",");
+		String[] svcPrices = svcPrice.split(",");
+		
+		Svc svc;
+		ArrayList<Svc> svcList = new ArrayList<>();
+		
+		for(int i = 0; i < svcCodes.length; i++) {
+			
+			svc = new Svc();
+			svc.setSvcCode(svcCodes[i]);
+			svc.setSvcName(svcNames[i]);
+			svc.setSalesType(salesTypes[i]);
+			svc.setSvcPrice(Integer.parseInt(svcPrices[i]));
+			svc.setRegDate(to);
+			svcList.add(svc);
+			
+		}
+		
+		int result = cs.insertHotelService(svcList);
+		
+		if(result > 0) {
+			model.addAttribute("svcList", svcList);
+			return "redirect:/goHotelFormSettingPage.set";
+		}else {
+			model.addAttribute("msg", "서비스 설정 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	 //@RequestParam(name="photo") MultipartFile photo
 }
 
 

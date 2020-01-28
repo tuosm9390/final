@@ -283,6 +283,10 @@ input[type=checkbox] {
 	color:blue;
 	font-weight:bold;
 }
+
+.boldFont {
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -315,7 +319,7 @@ input[type=checkbox] {
 				<c:forEach var="f" items="${ roomList }">
 					<c:set var="nowFloor" value="${ f.floor }" />
 					<c:if test="${ nowFloor ne oldFloor }">
-						<button class="floorBtn" id="floor${ f.floor }">${ f.floor }층</button>
+						<button class="floorBtn" id="floor${ f.floor }" onclick="filterFloor(${ f.floor })">${ f.floor }층</button>
 						<c:set var="oldFloor" value="${ nowFloor }" />
 					</c:if>
 				</c:forEach>
@@ -323,14 +327,14 @@ input[type=checkbox] {
 			<!-- floorSec end -->
 			<!-- statusSec -->
 			<div class="statusSec">
-				<div class="stInfo"><div class="stColor lightgrey"></div><div id="stEmpty">공실</div><div></div></div>
-				<div class="stInfo"><div class="stColor lightsteelblue"></div><div id="stReserv">입실예정</div><div></div></div>
-				<div class="stInfo"><div class="stColor gold"></div><div id="stRent">대실</div><div></div></div>
-				<div class="stInfo"><div class="stColor mediumseagreen"></div><div id="stSleep">투숙</div><div></div></div>
-				<div class="stInfo"><div class="stColor coral"></div><div id="stOut">퇴실예정</div><div></div></div>
-				<div class="stInfo"><div class="stColor"><div class="stClean"></div></div><div id="stClean">정비</div><div></div></div>
-				<div class="stInfo"><div class="stColor"><div class="stNoClean"></div></div><div id="stUnclean">미정비</div><div></div></div>
-				<div class="stInfo"><div class="stColor darkgray"></div><div id="stBroken">고장</div><div></div></div>
+				<div class="stInfo"><div class="stColor lightgrey"></div><div id="stEmpty">공실</div><div onclick="clickSttNum(this);"></div></div>
+				<div class="stInfo"><div class="stColor lightsteelblue"></div><div id="stReserv">입실예정</div><div onclick="clickSttNum(this);"></div></div>
+				<div class="stInfo"><div class="stColor gold"></div><div id="stRent">대실</div><div onclick="clickSttNum(this);"></div></div>
+				<div class="stInfo"><div class="stColor mediumseagreen"></div><div id="stSleep">투숙</div><div onclick="clickSttNum(this);"></div></div>
+				<div class="stInfo"><div class="stColor coral"></div><div id="stOut">퇴실예정</div><div onclick="clickSttNum(this);"></div></div>
+				<div class="stInfo"><div class="stColor"><div class="stClean"></div></div><div id="stClean">정비</div><div onclick="clickSttNum(this);"></div></div>
+				<div class="stInfo"><div class="stColor"><div class="stNoClean"></div></div><div id="stUnclean">미정비</div><div onclick="clickSttNum(this);"></div></div>
+				<div class="stInfo"><div class="stColor darkgray"></div><div id="stBroken">고장</div><div onclick="clickSttNum(this);"></div></div>
 			</div>
 			<div class="selectClean">
 				<div>
@@ -369,7 +373,8 @@ input[type=checkbox] {
 			<!-- statusSec end -->
 			<!-- filterSec -->
 			<div class="filterSec">
-				<img id="changeFilter" alt="" src="${ contextPath }/resources/images/mngRoomsFloor.PNG">
+				<img id="changeFilterF" alt="" src="${ contextPath }/resources/images/mngRoomsFloor.PNG">
+				<img id="changeFilterA" alt="" src="${ contextPath }/resources/images/mngRoomsNot.PNG">
 			</div>
 			<!-- filterSec end -->
 		</div>
@@ -380,6 +385,7 @@ input[type=checkbox] {
 			<c:forEach var="r" items="${ roomList }">
 				<div id="roomBox${ r.rmNo }" class="roomBox">
 					<input type="hidden" value="${ r.rmNo }">
+					<input type="hidden" name="floor" value="${ r.floor }">
 					<div class="statusBox lightgrey">
 						<div class="stClean"></div>
 						<div class="stDetail">
@@ -434,13 +440,16 @@ input[type=checkbox] {
 		
 	</section>
 		<script>
+			var roomlist;
+			var today;
 			$(function(){
 				$("#allFloor").css({"background-color":"#EAC064", "color":"white"});
 				$(".selectClean").hide();
 				$(".selectUnclean").hide();
+				$("#changeFilterA").hide();
 				
-				var roomlist = JSON.parse('${jsonList}');
-				var today = new Date().format("yyyy-MM-dd");
+				roomlist = JSON.parse('${jsonList}');
+				today = new Date().format("yyyy-MM-dd");
 				console.log(roomlist);
 				
 				var stEmpty = roomlist.length;
@@ -522,7 +531,6 @@ input[type=checkbox] {
 						$("#roomBox" + roomlist[r].rmNo).find(".stClean").addClass("stNoClean").removeClass("stClean");
 						stUnclean++;
 					}
-					
 				}
 				
 				//상태별 객실수 표시
@@ -537,6 +545,29 @@ input[type=checkbox] {
 				$("#stClean").next().text(stClean);
 				$("#stUnclean").next().text(stUnclean);
 				$("#stBroken").next().text(stBroken);
+				
+				//모달 기본 내용 불러오기
+				var roomTypeArr = new Array();
+				var tempCnt = 0;
+				roomTypeArr.push(roomlist[0].rtName);
+				for(var i = 0; i < roomlist.length; i++) {
+					var tempRtName = roomlist[i].rtName;
+					for(var j = 0; j < roomTypeArr.length; j++) {
+						if(roomTypeArr[j] == tempRtName) {
+							tempCnt++;
+						}
+					}
+					if(tempCnt == 0) {
+						roomTypeArr.push(tempRtName);
+					}
+					tempCnt = 0;
+					
+					$("#selRoomNum").append("<option>" + roomlist[i].rmNum + "호</option>")
+				}
+				for(var i = 0; i < roomTypeArr.length; i++) {
+					$("#selRoomType").append("<option>" + roomTypeArr[i] + "</option>")
+				}
+				
 			});
 			
 			//[ 정비 ] 상태 버튼
@@ -582,16 +613,105 @@ input[type=checkbox] {
 			});
 			
 			//필터변경 버튼
-			$("#changeFilter").click(function(){
-				$(this).prop({"src":"${ contextPath }/resources/images/mngRoomsNot.PNG"});
+			$("#changeFilterF").click(function(){
+				$(this).hide();
+				$("#changeFilterA").show();
+				var tempFloor = $(".roomBox").find("input[name=floor]").eq(0).val();
+				$(".roomBox").find("input[name=floor]").each(function(){
+					if($(this).val() != tempFloor) {
+						tempFloor = $(this).val();
+						$(this).parent().before("<hr id='floorHR' style='border:1px dashed darkgray;'>");
+					}
+				});
+			});
+			$("#changeFilterA").click(function(){
+				$(this).hide();
+				$("#changeFilterF").show();
+				$("hr").remove("#floorHR");
 			});
 			
 			//[ 재실 ] 버튼 클릭 (공실인 경우 룸 클릭)
 			$(".enterBtn").click(function(){
 				var rmNo = $(this).parent().parent().find('input[type=hidden]').val();
+				$("#checkinBtn").show();
+				//$("#checkIn").val(today);
+				//$("#checkIn").datepicker('setDate', 'today');
+				//$("#checkIn").selectDate(today);
+				//여기여기여기여기여기여기여기
+				for(var i = 0; i < roomlist.length; i++) {
+					if(rmNo == roomlist[i].rmNo) {
+						console.log(rmNo);
+						$("#selRoomType").val(roomlist[i].rtName).prop("selected", true);
+						$("#selRoomNum").val(roomlist[i].rmNum + "호").prop("selected", true);
+					}
+				}
 				$(".modal").fadeIn();
-				$("select[name=selRoomType]").html("<option>-</option>");
 			});
+			
+			//층수 버튼 클릭
+			function filterFloor(num) {
+				$(".roomBox").show();
+				$(".floorBtn").css({"background-color":"white", "color":"black"});
+				$("#allFloor").css({"background-color":"white", "color":"black"});
+				$("#floor" + num).css({"background-color":"#EAC064", "color":"white"});
+				$(".roomBox").find("input[name=floor]").each(function(){
+					if($(this).val() != num) {
+						$(this).parent().hide();
+					}
+				});
+			}
+			
+			//전체 층수 버튼 클릭
+			$("#allFloor").click(function(){
+				$(".roomBox").show();
+				$("#allFloor").css({"background-color":"#EAC064", "color":"white"});
+				$(".floorBtn").css({"background-color":"white", "color":"black"});
+			});
+			
+			
+			//상태바 클릭
+			$(".stColor").click(function(){
+				$(this).siblings().eq(0).toggleClass('boldFont');
+				$(this).siblings().eq(1).toggleClass('boldFont');
+				var cnt = cntBoldFont();
+				var boldFontCnt = cnt.length;
+				if(boldFontCnt == 0) {
+					$(".roomBox").show();
+				} else {
+					statusHide(cnt);
+				}
+			});
+			function clickSttNum(thisDiv){
+				$(".stInfo").find(thisDiv).parent().find(".stColor").click();
+			}
+			
+			function cntBoldFont(){
+				var cnt = new Array();
+				for(var i = 0; i < 8; i++) {
+					if($(".statusSec").children().eq(i).children().eq(1).hasClass('boldFont')) {
+						var tempCls = $(".statusSec").children().eq(i).children().eq(0).attr('class').substring(8);
+						if(tempCls == "") {
+							tempCls = $(".statusSec").children().eq(i).children().eq(0).children().attr('class');
+						}
+						cnt.push(tempCls);
+					}
+				}
+				return cnt;
+			}
+			
+			function statusHide(cntBoldFont){
+				$(".roomBox").each(function(){
+					var tempRoomBox = $(this).children();
+					for(var i = 0; i < cntBoldFont.length; i++) {
+						if(tempRoomBox.hasClass(cntBoldFont[i]) || tempRoomBox.children().eq(0).hasClass(cntBoldFont[i])) {
+							$(this).show();
+							break;
+						} else {
+							$(this).hide();
+						}
+					}
+				});
+			}
 			
 		</script>
 		

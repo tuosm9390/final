@@ -205,6 +205,9 @@
 		<url-pattern>*.sto</url-pattern>
 	</servlet-mapping>
 	
+	<session-config>
+		<session-timeout>360</session-timeout>
+	</session-config>
 
 
 	<!-- 인코딩 필터 -->

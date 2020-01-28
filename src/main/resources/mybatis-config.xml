@@ -14,12 +14,17 @@
 		<typeAlias type="com.kh.hotels.common.model.vo.NoShow" alias="NoShow"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Cal" alias="Cal"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Rfd" alias="Rfd"/>
+		<typeAlias type="com.kh.hotels.common.model.vo.Rfd" alias="Svc"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.OffSeason" alias="OffSeason"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Season" alias="Season"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomInfo" alias="RoomInfo"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomType" alias="RoomType"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.Room" alias="Room"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomPrc" alias="RoomPrc"/>
 		<typeAlias type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" alias="ReservationCheck"/>
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.Report" alias="Report"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.stock.Stock" alias="Stock"/>
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.Que" alias="Que"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>

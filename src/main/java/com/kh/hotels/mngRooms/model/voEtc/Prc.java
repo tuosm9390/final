@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Prc {
+public class Prc implements java.io.Serializable{
 
 	private int rpNo; // 기본요금고유번호
 	private int rtNo; // 객실유형고유번호

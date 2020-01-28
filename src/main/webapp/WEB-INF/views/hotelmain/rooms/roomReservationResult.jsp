@@ -104,31 +104,31 @@
 					<table class="reservation-table">
 						<tr>
 							<td><li>예약번호</li></td>
-							<td><label>${ rsvNo }</label></td>
+							<td><label>${ rsvCheck.rsvNo }</label></td>
 						</tr>
 						<tr>
 							<td><li>예약자명</li></td>
-							<td><label>${ Member.userName }</label></td>
+							<td><label>${ rsvCheck.userName }</label></td>
 						</tr>
 						<tr>
 							<td><li>전화번호</li></td>
-							<td><label>${ Member.phone }</label></td>
+							<td><label>${ rsvCheck.phone }</label></td>
 						</tr>
 						<tr>
 							<td><li>이메일</li></td>
-							<td><label>${ Member.email }</label></td>
+							<td><label>${ rsvCheck.email }</label></td>
 						</tr>
 						<tr>
 							<td><li>결제금액</li></td>
-							<td><label>${ Reservation.stayPrice }</label></td>
+							<td><label>${ rsvCheck.stayPrice }</label></td>
 						</tr>
 						<tr>
 							<td><li>체크인일자</li></td>
-							<td><label>${ Reservation.checkIn } (${ Reservation.checkInTime })</label></td>
+							<td><label>${ rsvCheck.checkIn } (${ rsvCheck.checkInTime })</label></td>
 						</tr>
 						<tr>
 							<td><li>체크아웃일자</li></td>
-							<td><label>${ Reservation.checkOut }</label></td>
+							<td><label>${ rsvCheck.checkOut }</label></td>
 						</tr>
 					</table>
 				<br>
@@ -139,14 +139,14 @@
 				<table class="reservation-table">
 					<tr>
 						<td><li>객실명</li></td>
-						<td colspan="4"><label>2020202020</label></td>
+						<td colspan="4"><label>${ rsvCheck.rtName }</label></td>
 					</tr>
 					<tr>
 						<td><li>객실 인원</li></td>
 						<td><label>성인</label></td>
-						<td><label>${ Reservation.adult }명</label></td>
+						<td><label>${ rsvCheck.adult }명</label></td>
 						<td><label>소인</label></td>
-						<td><label>${ Reservation.child }명</label></td>
+						<td><label>${ rsvCheck.child }명</label></td>
 					</tr>
 					<tr>
 						<td><li>옵션</li></td>

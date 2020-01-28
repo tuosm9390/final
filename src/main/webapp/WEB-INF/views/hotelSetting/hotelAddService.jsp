@@ -117,6 +117,9 @@
    		cursor:pointer;
    		margin-left:40px;
 	}
+	select{
+		border:0;
+	}
 </style>
 </head>
 <body>
@@ -138,6 +141,7 @@
 			</div>
 			
 			<button class="addServiceBtn" onclick="return addService();">+ 서비스추가</button>
+			<form action="goFormSettingPage.set" method="post">
 			<div class="tableArea">
 				<table class="serviceTable" border="1">
 					<tr>
@@ -148,45 +152,81 @@
 						<th width="10%">삭제</th>
 					</tr>
 					<tr>
-						<td><input type="text" class="serviceCode" value="1HH"></td>
-						<td><input type="text" class="serviceName" value="한시간추가"></td>
-						<td><input type="text" class="fareType" value="객실매출"></td>
-						<td><input type="text" class="servicePrice" value="0"></td>
+						<td><input type="text" class="svcCode" name="svcCode" value="1HH"></td>
+						<td><input type="text" class="svcName" name="svcName" value="한시간추가"></td>
+						<td>
+							<select class="salesType" name="salesType">
+								<option value="">선택구분</option>
+								<option value="ADDTIME" selected>시간추가</option>
+								<option value="ETC">기타</option>
+							</select>
+						</td>
+						<td><input type="text" class="svcPrice" name="svcPrice" value=""></td>
 						<td><button onclick="deleteService(this);">x</button></td>
 					</tr>
 					<tr>
-						<td><input type="text" class="serviceCode" value="2HH"></td>
-						<td><input type="text" class="serviceName" value="두시간추가"></td>
-						<td><input type="text" class="fareType" value="객실매출"></td>
-						<td><input type="text" class="servicePrice" value="0"></td>
+						<td><input type="text" class="svcCode" name="svcCode" value="2HH"></td>
+						<td><input type="text" class="svcName" name="svcName" value="두시간추가"></td>
+						<td>
+							<select class="salesType" name="salesType">
+								<option value="">선택구분</option>
+								<option value="ADDTIME" selected>시간추가</option>
+								<option value="ETC">기타</option>
+							</select>
+						</td>
+						<td><input type="text" class="svcPrice" name="svcPrice" value=""></td>
 						<td><button onclick="deleteService(this);">x</button></td>
 					</tr>
 					<tr>
-						<td><input type="text" class="serviceCode" value="3HH"></td>
-						<td><input type="text" class="serviceName" value="세시간추가"></td>
-						<td><input type="text" class="fareType" value="객실매출"></td>
-						<td><input type="text" class="servicePrice" value="0"></td>
+						<td><input type="text" class="svcCode" name="svcCode" value="3HH"></td>
+						<td><input type="text" class="svcName" name="svcName" value="세시간추가"></td>
+						<td>
+							<select class="salesType" name="salesType">
+								<option value="">선택구분</option>
+								<option value="ADDTIME" selected>시간추가</option>
+								<option value="ETC">기타</option>
+							</select>
+						</td>
+						<td><input type="text" class="svcPrice" name="svcPrice" value=""></td>
 						<td><button onclick="deleteService(this);">x</button></td>
 					</tr>
 					<tr>
-						<td><input type="text" class="serviceCode" value="4HH"></td>
-						<td><input type="text" class="serviceName" value="네시간추가"></td>
-						<td><input type="text" class="fareType" value="객실매출"></td>
-						<td><input type="text" class="servicePrice" value="0"></td>
+						<td><input type="text" class="svcCode" name="svcCode" value="4HH"></td>
+						<td><input type="text" class="svcName" name="svcName" value="네시간추가"></td>
+						<td>
+							<select class="salesType" name="salesType">
+								<option value="">선택구분</option>
+								<option value="ADDTIME" selected>시간추가</option>
+								<option value="ETC">기타</option>
+							</select>
+						</td>
+						<td><input type="text" class="svcPrice" name="svcPrice" value=""></td>
 						<td><button onclick="deleteService(this);">x</button></td>
 					</tr>
 					<tr>
-						<td><input type="text" class="serviceCode" value="5HH"></td>
-						<td><input type="text" class="serviceName" value="다섯시간추가"></td>
-						<td><input type="text" class="fareType" value="객실매출"></td>
-						<td><input type="text" class="servicePrice" value="0"></td>
+						<td><input type="text" class="svcCode" name="svcCode" value="5HH"></td>
+						<td><input type="text" class="svcName" name="svcName" value="다섯시간추가"></td>
+						<td>
+							<select class="salesType" name="salesType">
+								<option value="">선택구분</option>
+								<option value="ADDTIME" selected>시간추가</option>
+								<option value="ETC">기타</option>
+							</select>
+						</td>
+						<td><input type="text" class="svcPrice" name="svcPrice" value=""></td>
 						<td><button onclick="deleteService(this);">x</button></td>
 					</tr>
 					<tr>
-						<td><input type="text" class="serviceCode" value="6HH"></td>
-						<td><input type="text" class="serviceName" value="여섯시간추가"></td>
-						<td><input type="text" class="fareType" value="객실매출"></td>
-						<td><input type="text" class="servicePrice" value="0"></td>
+						<td><input type="text" class="svcCode" name="svcCode" value="6HH"></td>
+						<td><input type="text" class="svcName" name="svcName" value="여섯시간추가"></td>
+						<td>
+							<select class="salesType" name="salesType">
+								<option value="">선택구분</option>
+								<option value="ADDTIME" selected>시간추가</option>
+								<option value="ETC">기타</option>
+							</select>
+						</td>
+						<td><input type="text" class="svcPrice" name="svcPrice" value=""></td>
 						<td><button onclick="deleteService(this);">x</button></td>
 					</tr>
 				</table>
@@ -194,19 +234,77 @@
 			<br>
 			<div align="right" style="margin-right:160px;"> 
 				<button class="backBtn" onclick=""><b>이전</b></button>			
-				<button class="nextBtn" onclick=""><b>다음</b></button>			
+				<button class="nextBtn" onclick="return goHotelFormSetting();"><b>다음</b></button>			
 			</div>
+			</form>
 		</div>
 	</div>
 	<script type="text/javascript">
 		function addService(){
 			
-			$("tbody:last").append("<tr><td><input type='text' class='serviceCode' value=''></td><td><input type='text' class='serviceName' value=''></td><td><input type='text' class='fareType' value='객실매출'></td><td><input type='text' class='servicePrice' value='0'></td><td><button onclick='deleteService(this);'>x</button></td></tr>");
+			$("tbody:last").append("<tr><td><input type='text' class='svcCode' name='svcCode'></td><td><input type='text' class='svcName' name='svcName'></td><td><select class='salesType' name='salesType'><option value=''>선택구분</option><option value='ADDTIME' selected>시간추가</option><option value='ETC'>기타</option></select></td><td><input type='text' class='svcPrice' name='svcPrice' value=''></td><td><button onclick='deleteService(this);'>x</button></td></tr>");
 			
 		}
 		function deleteService(obj){
 			
 			$(obj).parent().parent().remove();
+			
+		}
+		function goHotelFormSetting(){
+			
+			var temp = 0;
+			
+			$(".svcCode").each(function(){
+				if($(this).val() == ""){
+					alert("서비스 코드를 입력해주세요.")
+					temp = 1;
+					return false;
+				}else{
+					temp = 0;
+				}
+			});
+			$(".svcName").each(function(){
+				if($(this).val() == ""){
+					alert("서비스 명을 입력해주세요.")
+					temp = 1;
+					return false;
+				}else{
+					temp = 0;
+				}
+			});
+			$(".salesType").each(function(){
+				if($(this).val() == ""){
+					alert("서비스 타입을 선택해주세요");
+					temp = 1;
+					return false;
+				}else{
+					temp = 0;
+				}
+			});
+			$(".svcPrice").each(function(){
+				if($(this).val() == ""){
+					alert("서비스 금액을 입력해주세요");
+					temp = 1;
+					return false;
+				}else{
+					temp = 0;
+				}
+			});
+			
+			var regExpPrice = /^[0-9]{1,}/;
+			if (!regExpPrice.test($(".svcPrice").val())) {
+				alert("숫자만 입력해주세요.");
+				$(".svcPrice").focus();
+				$(".svcPrice").select();
+				return false;
+			}
+			
+			
+			if(temp == 0){
+				return true;
+			}else{
+				return false;
+			}
 			
 		}
 	</script>
