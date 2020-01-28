@@ -58,6 +58,7 @@
 .qnalist-item .title {
 	font-weight: bold;
 	font-size: 24px;
+	color: black;
 }
 
 .qnalist-item label:not(:first-child) {
@@ -74,7 +75,6 @@
 </style>
 </head>
 <body>
-	<c:set var="listCount" value="5"></c:set>
 	<header>
 		<jsp:include page="../common/menubar.jsp" />
 		<jsp:include page="../common/qnaModalForm.jsp"></jsp:include>
@@ -103,7 +103,7 @@
 					</select>
 					<input type="text" class="searchValue" name="searchValue">
 					<button class="search-btn" onclick="">검색</button>
-					<button class="insert-btn" onclick="location.href='qnaInsert.hmain'">등록</button>
+					<button class="insert-btn" onclick="location.href='qnaInsertForm.hmain'">등록</button>
 				</div>
 				<!-- 검색 영역 끝 -->
 				
@@ -111,24 +111,77 @@
 				<div class="qnalist">
 					<br>
 					<c:set var="status" value="Y"></c:set>
-					<c:forEach var="i" begin="1" end="${ listCount }">
+					<c:forEach var="list" items="${ qnaList }" varStatus="st">
 						<div class="qnalist-item">
-							<label class="title">타이틀</label><br>
-							<input type="hidden" id="status" value="${ status }" name="">
-							<label>작성자명</label>
-							<label>날짜</label>
-							<label>분류</label>
-							<label>상태</label>
-							<label>비밀글여부</label>
+							<label class="title">${ list.qtitle }</label><br>
+							<input type="hidden" id="qno" value="${ list.qno }">
+							<input type="hidden" id="status" value="${ list.pwdStatus }" name="${ list.pwdStatus }">
+							<label>${ list.userName }</label>
+							<label>${ list.qdate }</label>
+							<label>
+							<c:if test="${ list.qtype eq 'ROOM'}">
+							객실
+							</c:if>
+							<c:if test="${ list.qtype eq 'SERVICE'}">
+							서비스
+							</c:if>
+							<c:if test="${ list.qtype eq 'RESERV'}">
+							예약
+							</c:if>
+							<c:if test="${ list.qtype eq 'ETC'}">
+							기타
+							</c:if>
+							</label>
+							<label>
+							<c:if test="${ list.ansStatus eq 'Y'}">
+							완료
+							</c:if>
+							<c:if test="${ list.ansStatus eq 'N'}">
+							대기
+							</c:if>
+							</label>
+							<label>
+							<c:if test="${ list.pwdStatus eq 'Y'}">
+							비밀글
+							</c:if>
+							<c:if test="${ list.pwdStatus eq 'N'}">
+							안비밀글
+							</c:if>
+							</label>
 						</div>
 					</c:forEach>
 				</div>
 				<br>
 				<!-- 페이징 영역 -->
-				<div align="center" class="pagingArea">
-					<div class="paging-item">
-						<p>페이징 영역</p>
-					</div>
+				<div class="pagingArea" align="center">
+					<button onclick="location.href='goQnA.hmain?currentPage=1'"><<</button>
+					
+					<c:if test="${ pi.currentPage <= 1 }">
+					<button disabled><</button>
+					</c:if>
+					
+					<c:if test="${ pi.currentPage > 1 }">
+					<button onclick="location.href='goQnA.hmain?currentPage=${ pi.currentPage - 1 }'"><</button>
+					</c:if>
+					
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+						<c:if test="${ p == pi.currentPage }">
+							<button disabled>${ p }</button>
+						</c:if>
+						
+						<c:if test="${ p != pi.currentPage }">
+							<button onclick="location.href='goQnA.hmain?currentPage=${ p }'">${ p }</button>
+						</c:if>
+					</c:forEach>
+					
+					<c:if test="${ pi.currentPage >= pi.maxPage }">
+						<button disabled>></button>
+					</c:if>
+					
+					<c:if test="${ pi.currentPage < pi.maxPage }">
+					<button onclick="location.href='goQnA.hmain?currentPage=${ pi.currentPage + 1}'">></button>
+					</c:if>
+					<button onclick="location.href='goQnA.hmain?currentPage=${ pi.maxPage }'">>></button>
 				</div>
 				<!-- 페이징 영역 끝 -->
 			</div>
@@ -139,15 +192,18 @@
 	<footer></footer>
 	
 	<script>
+		
 		$(".qnalist-item").mouseenter(function(){
 			$(this).css({"background":"rgba(211, 211, 211, .4)", "cursor":"pointer"});
 		}).mouseout(function(){
 			$(this).css({"background":"none"});
 		}).click(function(){
+			var qno = $(this).children("#qno").val();
+			
 			if($(this).children("#status").val() == "Y"){
 				$(".qna-modal").fadeIn();
 			} else {
-				location.href='qnadetail.hmain';
+				location.href='qnadetail.hmain?qno=' + qno;
 			}
 		});
 	</script>

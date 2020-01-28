@@ -4,7 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="hotel">
-	<resultMap type="com.kh.hotels.mngRooms.model.vo.RoomInfo" id="RoomInfoResultSet">
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.RoomInfo"
+		id="RoomInfoResultSet">
 		<id property="rt_No" column="RT_NO" />
 		<result property="std_Per" column="STD_PER" />
 		<result property="rm_Option" column="RM_OPTION" />
@@ -14,8 +15,10 @@
 		<result property="maxPer" column="MAXPER" />
 		<result property="limitPrc" column="LIMITPRC" />
 	</resultMap>
-	
-	<resultMap type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" id="ReservationCheck">
+
+	<resultMap
+		type="com.kh.hotels.mngReserv.model.vo.ReservationCheck"
+		id="ReservationCheck">
 		<id property="rsvNo" column="RSV_NO" />
 		<result property="userName" column="NAME" />
 		<result property="phone" column="PHONE" />
@@ -29,25 +32,55 @@
 		<result property="child" column="child" />
 	</resultMap>
 
-	<select id="selectRoomList" resultMap="RoomInfoResultSet" resultType="Map">
-		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER, LIMITPRC
+	<resultMap id="Member"
+		type="com.kh.hotels.mngMember.model.vo.Member">
+		<id column="mno" property="mno" />
+		<result column="Name" property="userName" />
+		<result column="phone" property="phone" />
+		<result column="email" property="email" />
+		<result column="status" property="status" />
+		<result column="type" property="type" />
+		<result column="mmemo" property="mmemo" />
+	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngClient.model.vo.Que" id="QueResultSet">
+		<id property="qno" column="qno" />
+		<result property="mno" column="mno" />
+		<result property="qtype" column="qtype" />
+		<result property="qtitle" column="qtitle" />
+		<result property="qdate" column="qdate" />
+		<result property="qcontent" column="qcontent" />
+		<result property="ansStatus" column="ans_Status" />
+		<result property="delStatus" column="del_Status" />
+		<result property="qpwd" column="qpwd" />
+		<result property="pwdStatus" column="pwd_Status" />
+		<result property="userName" column="Name" />
+	</resultMap>
+
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM QUE
+		WHERE DEL_STATUS = 'N'
+	</select>
+	
+	<select id="selectRoomList" resultType="Map" resultMap="RoomInfoResultSet">
+		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER,	LIMITPRC
 		FROM ROOM R
 		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
 	</select>
 
-	<select id="selectRoom" resultMap="RoomInfoResultSet" resultType="RoomInfo">
-		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS,
-		RT_NAME, MINPER, MAXPER, LIMITPRC
+	<select id="selectRoom" resultType="RoomInfo" resultMap="RoomInfoResultSet">
+		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS,RT_NAME, MINPER, MAXPER, LIMITPRC
 		FROM ROOM R
 		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
 		WHERE R.RT_NO = #{roomType}
-		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS, RT_NAME,
-		MINPER, MAXPER, LIMITPRC
+		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS,
+		RT_NAME,MINPER, MAXPER, LIMITPRC
 	</select>
-	
-	<select id="reservationCheck" resultMap="ReservationCheck" resultType="ReservationCheck" parameterType="ReservationCheck">
-		SELECT RSV_NO, M.NAME, M.PHONE, M.EMAIL, RS.STAY_PRICE, RS.CHECKIN,
-		RS.CHECKOUT, RS.CI_TIME, RT_NAME, RS.ADULT, RS.CHILD
+
+	<select id="reservationCheck" resultType="ReservationCheck"
+		resultMap="ReservationCheck" parameterType="ReservationCheck">
+		SELECT RSV_NO, M.NAME, M.PHONE, M.EMAIL, RS.STAY_PRICE, RS.CHECKIN, RS.CHECKOUT, RS.CI_TIME, RT_NAME, RS.ADULT, RS.CHILD
 		FROM ROOM R
 		JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
 		JOIN RSV RS ON (R.RM_NO = RS.RM_NO)
@@ -56,14 +89,63 @@
 		AND RSV_NO = #{rsvNo}
 		AND M.NAME = #{userName}
 		AND M.PHONE = #{phone}
-		GROUP BY RT_NAME, RSV_NO, RS.MNO, M.NAME, RS.STAY_PRICE,
-		M.PHONE, M.EMAIL, RS.CHECKIN, RS.CHECKOUT, RS.CI_TIME,
-		RS.ADULT, RS.CHILD
+		GROUP BY RT_NAME, RSV_NO, RS.MNO, M.NAME, RS.STAY_PRICE,M.PHONE, M.EMAIL,
+		RS.CHECKIN, RS.CHECKOUT, RS.CI_TIME,RS.ADULT, RS.CHILD
+	</select>
+
+	<select id="reservationCnt" resultType="_int">
+		SELECT COUNT(*)
+		FROM RSV
+		WHERE RSV_NO LIKE '%'||#{rsvNo}||'%'
+	</select>
+
+	<insert id="insertMember" parameterType="ReservationCheck">
+		INSERT INTO MEMBER
+		VALUES(SEQ_MNO.NEXTVAL, #{userName}, #{phone},
+		#{email}, 'Y','CLIENT',
+		NULL)
+	</insert>
+	
+	<insert id="insertQnAMember" parameterType="Member">
+		INSERT INTO MEMBER
+		VALUES(SEQ_MNO.NEXTVAL, #{userName}, NULL,
+		#{email}, 'Y','CLIENT',
+		NULL)
+	</insert>
+
+	<select id="selectMember" resultType="Member" resultMap="Member" parameterType="ReservationCheck">
+		SELECT *
+		FROM MEMBER 
+		WHERE TYPE = 'CLIENT'
+		AND NAME = #{userName}
+		AND PHONE = #{phone}
+		AND EMAIL = #{email}
+	</select>
+
+	<select id="selectQnAMember" resultType="Member" resultMap="Member" parameterType="Member">
+		SELECT *
+		FROM MEMBER 
+		WHERE TYPE = 'CLIENT'
+		AND NAME = #{userName}
+		AND EMAIL = #{email}
 	</select>
 	
-	<insert id="insertReservation">
-		
+	<insert id="insertReservation" parameterType="ReservationCheck">
+		INSERT INTO RSV
+		VALUES(#{rsvNo}, 3, #{mno}, #{checkIn}, #{checkOut},
+		#{stayPrice}, SYSDATE, 'OK', 'ONLINE', #{adult}, #{child}, #{checkInTime})
 	</insert>
+	
+	<insert id="insertQnA" parameterType="Que">
+		INSERT INTO QUE
+		VALUES (SEQ_QNO.NEXTVAL, #{mno}, #{qtype}, #{qtitle}, SYSDATE, #{qcontent}, 'N', 'N', #{qpwd}, #{pwdStatus})
+	</insert>
+	
+	<select id="selectQnAList" resultType="Que" resultMap="QueResultSet">
+		SELECT *
+		FROM QUE Q
+		LEFT JOIN MEMBER M ON (Q.MNO = M.MNO)
+	</select>
 </mapper>
 
 
