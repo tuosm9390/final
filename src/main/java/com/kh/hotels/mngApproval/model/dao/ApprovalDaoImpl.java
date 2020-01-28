@@ -75,4 +75,34 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		return list;
 	}
 
+	@Override
+	public List<HashMap<String, Object>> selectApproveRepairDetail(SqlSessionTemplate sqlSession, int rptNo,
+			String type) {
+		List<HashMap<String, Object>> list = null;
+		
+		
+		list = (List) sqlSession.selectList("Report.selectApproveRepairDetail", rptNo);
+		
+		return list;
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectApproveOrderDetail(SqlSessionTemplate sqlSession, int rptNo,
+			String type) {
+		List<HashMap<String, Object>> list = null;
+		
+		
+		list = (List) sqlSession.selectList("Report.selectApproveOrderDetail", rptNo);
+		
+		return list;
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectApproveInfo(SqlSessionTemplate sqlSession) {
+		List<HashMap<String, Object>> list = null;
+		list = (List)sqlSession.selectList("Report.selectApproveInfo");
+		
+		return list;
+	}
+
 }

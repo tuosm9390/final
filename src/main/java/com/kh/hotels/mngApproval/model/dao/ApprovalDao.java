@@ -22,4 +22,10 @@ public interface ApprovalDao {
 
 	List<HashMap<String, Object>> selectApprovePurDetail(SqlSessionTemplate sqlSession, int rptNo, String type);
 
+	List<HashMap<String, Object>> selectApproveRepairDetail(SqlSessionTemplate sqlSession, int rptNo, String type);
+
+	List<HashMap<String, Object>> selectApproveOrderDetail(SqlSessionTemplate sqlSession, int rptNo, String type);
+
+	List<HashMap<String, Object>> selectApproveInfo(SqlSessionTemplate sqlSession);
+
 }
