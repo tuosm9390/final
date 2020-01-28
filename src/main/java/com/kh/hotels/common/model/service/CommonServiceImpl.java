@@ -16,6 +16,9 @@ import com.kh.hotels.common.model.vo.OffSeason;
 import com.kh.hotels.common.model.vo.Rfd;
 import com.kh.hotels.common.model.vo.Rule;
 import com.kh.hotels.common.model.vo.Season;
+import com.kh.hotels.common.model.vo.Svc;
+import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 
 @Service
@@ -69,6 +72,42 @@ public class CommonServiceImpl implements CommonService{
 		
 		return cd.insertHotelRoomType(roomTypeList, sqlSession);
 	}
+
+
+	@Override
+	public int selectRtNo(String string) {
+		
+		return cd.selectRtNo(string, sqlSession);
+	}
+
+
+	@Override
+	public int insertHotelRoom(ArrayList<Room> roomList) {
+		
+		return cd.insertHotelRoom(roomList, sqlSession);
+	}
+
+
+	@Override
+	public int selectRtNoFare(String string) {
+		
+		return cd.selectRtNoFare(string, sqlSession);
+	}
+
+
+	@Override
+	public int insertHotelRoomFare(ArrayList<RoomPrc> roomPrcList) {
+
+		return cd.insertHotelRoomFare(roomPrcList, sqlSession);
+	}
+
+
+	@Override
+	public int insertHotelService(ArrayList<Svc> svcList) {
+		
+		return cd.insertHotelService(svcList, sqlSession);
+	}
+
 	
 
 }

@@ -190,6 +190,9 @@
 		<url-pattern>*.war</url-pattern>
 	</servlet-mapping>
 	
+	<session-config>
+		<session-timeout>360</session-timeout>
+	</session-config>
 
 
 	<!-- 인코딩 필터 -->

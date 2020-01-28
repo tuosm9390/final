@@ -12,6 +12,9 @@ import com.kh.hotels.common.model.vo.OffSeason;
 import com.kh.hotels.common.model.vo.Rfd;
 import com.kh.hotels.common.model.vo.Rule;
 import com.kh.hotels.common.model.vo.Season;
+import com.kh.hotels.common.model.vo.Svc;
+import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 
 public interface CommonService {
@@ -22,6 +25,16 @@ public interface CommonService {
 			OffSeason offSeason, Season season);
 
 	int insertHotelRoomType(ArrayList<RoomType> roomTypeList);
+
+	int selectRtNo(String string);
+
+	int insertHotelRoom(ArrayList<Room> roomList);
+
+	int selectRtNoFare(String string);
+
+	int insertHotelRoomFare(ArrayList<RoomPrc> roomPrcList);
+
+	int insertHotelService(ArrayList<Svc> svcList);
 
 
 }

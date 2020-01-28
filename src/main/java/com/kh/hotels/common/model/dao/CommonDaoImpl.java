@@ -13,6 +13,9 @@ import com.kh.hotels.common.model.vo.NoShow;
 import com.kh.hotels.common.model.vo.OffSeason;
 import com.kh.hotels.common.model.vo.Rule;
 import com.kh.hotels.common.model.vo.Season;
+import com.kh.hotels.common.model.vo.Svc;
+import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 
 @Component
@@ -101,7 +104,108 @@ public class CommonDaoImpl implements CommonDao{
 	@Override
 	public int insertHotelRoomType(ArrayList<RoomType> roomTypeList, SqlSessionTemplate sqlSession) {
 
-		return sqlSession.insert("Common.insertHotelRoomType", roomTypeList);
+		int result = 0;
+		
+		for(int i = 0; i < roomTypeList.size(); i++ ) {
+			result = sqlSession.insert("Common.insertHotelRoomType", roomTypeList.get(i));
+		}
+		
+		return result;
 	}
+
+	@Override
+	public int selectRtNo(String string, SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("Common.selectRtNo", string);
+	}
+
+	@Override
+	public int insertHotelRoom(ArrayList<Room> roomList, SqlSessionTemplate sqlSession) {
+
+		int result = 0;
+		
+		for(int i = 0; i < roomList.size(); i++) {
+			result = sqlSession.insert("Common.insertHotelRoom", roomList.get(i));
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int selectRtNoFare(String string, SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("Common.selectRtNoFare", string);
+	}
+
+	@Override
+	public int insertHotelRoomFare(ArrayList<RoomPrc> roomPrcList, SqlSessionTemplate sqlSession) {
+		
+		int result = 0;
+		for(int i = 0; i < roomPrcList.size(); i++) {
+			// 비성수기 /////////////////////////////////////////////////////////////////////////////////////
+			int monOffRentResult = sqlSession.insert("Common.insertOffMonRentFare", roomPrcList.get(i));
+			int tueOffRentResult = sqlSession.insert("Common.insertOffTueRentFare", roomPrcList.get(i));
+			int wedOffRentResult = sqlSession.insert("Common.insertOffWedRentFare", roomPrcList.get(i));
+			int thuOffRentResult = sqlSession.insert("Common.insertOffThuRentFare", roomPrcList.get(i));
+			int friOffRentResult = sqlSession.insert("Common.insertOffFriRentFare", roomPrcList.get(i));
+			int satOffRentResult = sqlSession.insert("Common.insertOffSatRentFare", roomPrcList.get(i));
+			int sunOffRentResult = sqlSession.insert("Common.insertOffSunRentFare", roomPrcList.get(i));
+			
+			int monOffResult = sqlSession.insert("Common.insertOffMonStayFare", roomPrcList.get(i));
+			int tueOffResult = sqlSession.insert("Common.insertOffTueStayFare", roomPrcList.get(i));
+			int wedOffResult = sqlSession.insert("Common.insertOffWedStayFare", roomPrcList.get(i));
+			int thuOffResult = sqlSession.insert("Common.insertOffThuStayFare", roomPrcList.get(i));
+			int friOffResult = sqlSession.insert("Common.insertOffFriStayFare", roomPrcList.get(i));
+			int satOffResult = sqlSession.insert("Common.insertOffSatStayFare", roomPrcList.get(i));
+			int sunOffResult = sqlSession.insert("Common.insertOffSunStayFare", roomPrcList.get(i));
+			///////////////////////////////////////////////////////////////////////////////////////////////
+			
+			// 성수기 ///////////////////////////////////////////////////////////////////////////////////////
+			int monRentResult = sqlSession.insert("Common.insertMonRentFare", roomPrcList.get(i));
+			int tueRentResult = sqlSession.insert("Common.insertTueRentFare", roomPrcList.get(i));
+			int wedRentResult = sqlSession.insert("Common.insertWedRentFare", roomPrcList.get(i));
+			int thuRentResult = sqlSession.insert("Common.insertThuRentFare", roomPrcList.get(i));
+			int friRentResult = sqlSession.insert("Common.insertFriRentFare", roomPrcList.get(i));
+			int satRentResult = sqlSession.insert("Common.insertSatRentFare", roomPrcList.get(i));
+			int sunRentResult = sqlSession.insert("Common.insertSunRentFare", roomPrcList.get(i));
+			
+			int monResult = sqlSession.insert("Common.insertMonStayFare", roomPrcList.get(i));
+			int tueResult = sqlSession.insert("Common.insertTueStayFare", roomPrcList.get(i));
+			int wedResult = sqlSession.insert("Common.insertWedStayFare", roomPrcList.get(i));
+			int thuResult = sqlSession.insert("Common.insertThuStayFare", roomPrcList.get(i));
+			int friResult = sqlSession.insert("Common.insertFriStayFare", roomPrcList.get(i));
+			int satResult = sqlSession.insert("Common.insertSatStayFare", roomPrcList.get(i));
+			int sunResult = sqlSession.insert("Common.insertSunStayFare", roomPrcList.get(i));
+			///////////////////////////////////////////////////////////////////////////////////////////////
+			
+			if(monOffRentResult > 0 && tueOffRentResult > 0 && wedOffRentResult > 0 && thuOffRentResult > 0 && friOffRentResult > 0 && satOffRentResult > 0 &&
+					sunOffRentResult > 0 && monOffResult > 0 && tueOffResult > 0 && wedOffResult > 0 && thuOffResult > 0 && friOffResult > 0 
+					&& satOffResult > 0 && sunOffResult > 0 && monRentResult > 0 && tueRentResult > 0 && wedRentResult > 0 && thuRentResult > 0 
+					&& friRentResult > 0 && satRentResult > 0 && sunRentResult > 0 && monResult > 0 && tueResult > 0 && wedResult > 0 
+					&& thuResult > 0 && friResult > 0 && satResult > 0 && sunResult > 0 ) {
+				result = 1;
+			}else {
+				result = 0;
+			}
+		}
+		
+		
+		return result;
+	}
+
+	@Override
+	public int insertHotelService(ArrayList<Svc> svcList, SqlSessionTemplate sqlSession) {
+		
+		int result = 0;
+		
+		for(int i = 0; i < svcList.size(); i++) {
+			
+			result = sqlSession.insert("Common.insertHotelService", svcList.get(i));
+			
+		}
+		
+		return result;
+	}
+
 	
 }

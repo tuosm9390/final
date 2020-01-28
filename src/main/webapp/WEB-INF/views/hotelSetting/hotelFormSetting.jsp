@@ -98,6 +98,7 @@
 <body>
 	<div class="contentArea">
 	<jsp:include page="hotelSettingMenubar.jsp"/>
+	<jsp:include page="modal/reservModal.jsp"/>
 		<div class="rightArea"><!-- 오른쪽 영역 -->
 			<div class="titleArea">
 				<div class="title">
@@ -113,7 +114,7 @@
 				<h3 style="margin-left:40px; ">문서양식</h3>
 			</div>
 			<div class="contentArea3">
-				<div class="reservation">
+				<div class="reservation" onclick="openModal();">
 					<h2>예약확정서</h2>
 				</div>
 			</div>
@@ -121,9 +122,14 @@
 			<br>
 			<div align="right" style="margin-right:100px;">
 				<button class="backBtn" onclick=""><b>이전</b></button>			
-				<button class="nextBtn" onclick=""><b>다음</b></button>			
+				<button class="nextBtn" onclick="location.href='goHotelSettingSummaryPage.set'"><b>다음</b></button>			
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		function openModal(){
+			$(".formModal").fadeIn();		
+		}
+	</script>
 </body>
 </html>
