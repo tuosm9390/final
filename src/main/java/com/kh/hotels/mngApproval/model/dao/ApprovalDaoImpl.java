@@ -105,4 +105,45 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		return list;
 	}
 
+	@Override
+	public int selectVos(SqlSessionTemplate sqlSession, String iName) {
+		
+		
+		
+		return sqlSession.selectOne("Report.selectVos", iName);
+	}
+
+	@Override
+	public List<String> selectConnName(SqlSessionTemplate sqlSession, String value) {
+		System.out.println("dao : value" + value);
+		
+		return (List)sqlSession.selectList("Report.selectConnName", value);
+	}
+
+	
+
+	@Override
+	public List<String> selectItemName(SqlSessionTemplate sqlSession, String value) {
+		
+		
+		return (List)sqlSession.selectList("Report.selectItemName", value);
+	}
+
+	@Override
+	public List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value) {
+		
+		
+		return (List)sqlSession.selectList("Report.selectMadeComName", value);
+	}
+
+
+	/*
+	 * @Override public List<String> selectItemName(SqlSessionTemplate sqlSession,
+	 * String value) {
+	 * 
+	 * 
+	 * 
+	 * return return (List)sql; }
+	 */
+
 }

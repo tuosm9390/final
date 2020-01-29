@@ -31,6 +31,14 @@ public interface ApprovalService {
 
 	List<HashMap<String, Object>> selectInfo() throws ReportException;
 
+	int selectVos(String iName);
+
+	List<String> selectConnName(String value) throws ReportException;
+
+	List<String> selectItemName(String value) throws ReportException;
+
+	List<String> selectMadeComName(String value) throws ReportException;
+
 	
 	
 	
