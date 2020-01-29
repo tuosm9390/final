@@ -350,6 +350,9 @@ solid
            			   //console.log(data.list.DOCNO);
            			    $("#tbl_modal_order tr:first-child").children().eq(1).text(list.DOCNO);
            			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(list.MNAME);
+           			 	if(list.RSTATUS == "APPR") {
+           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(list.MNAME);
+           			 	}
            			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
            			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(list.DNAME);
            			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(list.MNAME);
@@ -364,7 +367,7 @@ solid
            		 	    	 console.log(data.list.length);
            		 	    	  if(i == 0) {
        		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(0).text(data.list[i].RNUM);
-       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].LCATEGORY);
+       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].ITYPE);
        		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(2).text(data.list[i].INAME);
        		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(3).text(data.list[i].AMOUNT);
        		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(4).text(data.list[i].VOS + "원");
@@ -434,6 +437,9 @@ solid
               			   //console.log(data.list.DOCNO);
               			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(list.DOCNO);
               			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(list.MNAME);
+              			 	if(list.RSTATUS == "APPR") {
+              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(list.SNAME);
+              			 	}
               			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
               			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(list.DNAME);
               			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(list.MNAME);
@@ -516,7 +522,8 @@ solid
              			   //console.log(data.list.DOCNO);
              			    $("#tbl_modal tr:first-child").children().eq(1).text(list.DOCNO);
              			    if(list.RSTATUS == 'WAIT' || list.RSTATUS == 'REJECT') {
-             			    	
+             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
+
              			    }else {
              			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
              			    }
@@ -535,7 +542,7 @@ solid
              		 	    	 console.log(data.list.length);
              		 	    	  if(i == 0) {
          		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].RNUM);
-         		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].LCATEGORY);
+         		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].ITYPE);
          		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
          		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].AMOUNT);
          		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
@@ -746,7 +753,9 @@ solid
       			   //console.log(data.list.DOCNO);
       			    $("#tbl_modal_order tr:first-child").children().eq(1).text(list.DOCNO);
       			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(list.MNAME);
-      			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+      			 	if(list.RSTATUS == "APPR") {
+           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(list.MNAME);
+           			 	}
       			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(list.DNAME);
       			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(list.MNAME);
       			   $("#tbl_modal_order tr:nth-child(4)").children().eq(1).text(list.RDATE);
@@ -760,7 +769,7 @@ solid
       		 	    	 console.log(data.list.length);
       		 	    	  if(i == 0) {
   		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(0).text(data.list[i].RNUM);
-  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].LCATEGORY);
+  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].ITYPE);
   		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(2).text(data.list[i].INAME);
   		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(3).text(data.list[i].AMOUNT);
   		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(4).text(data.list[i].VOS + "원");
@@ -830,8 +839,10 @@ solid
          			   //console.log(data.list.DOCNO);
          			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(list.DOCNO);
          			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(list.MNAME);
-         			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-         			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(list.DNAME);
+         			 	if(list.RSTATUS == "APPR") {
+              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(list.SNAME);
+              			 	}         			   
+         			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(list.DNAME);
          			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(list.MNAME);
          			   $("#tbl_modal_repair tr:nth-child(4)").children().eq(1).text(list.RDATE);
          			   $("#tbl_modal_repair tr:nth-child(5)").children().eq(1).text(list.SNAME);
@@ -912,10 +923,11 @@ solid
         			   //console.log(data.list.DOCNO);
         			    $("#tbl_modal tr:first-child").children().eq(1).text(list.DOCNO);
         			    if(list.RSTATUS == 'WAIT' || list.RSTATUS == 'REJECT') {
-        			    	
-        			    }else {
-        			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-        			    }
+         			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
+
+         			    }else {
+         			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+         			    }
         			 	
         			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
         			   $("#tbl_modal tr:nth-child(2)").children().eq(1).text(list.DNAME);
@@ -931,7 +943,7 @@ solid
         		 	    	 console.log(data.list.length);
         		 	    	  if(i == 0) {
     		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].RNUM);
-    		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].LCATEGORY);
+    		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].ITYPE);
     		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
     		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].AMOUNT);
     		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
@@ -1165,8 +1177,9 @@ solid
 				      			   //console.log(data.list.DOCNO);
 				      			    $("#tbl_modal_order tr:first-child").children().eq(1).text(list.DOCNO);
 				      			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(list.MNAME);
-				      			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-				      			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(list.DNAME);
+				      			 	if(list.RSTATUS == "APPR") {
+				           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(list.MNAME);
+				           			 	}				      			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(list.DNAME);
 				      			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(list.MNAME);
 				      			   $("#tbl_modal_order tr:nth-child(4)").children().eq(1).text(list.RDATE);
 				      			   $("#tbl_modal_order tr:nth-child(5)").children().eq(1).text(list.SNAME);
@@ -1179,7 +1192,7 @@ solid
 				      		 	    	 console.log(data.list.length);
 				      		 	    	  if(i == 0) {
 				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(0).text(data.list[i].RNUM);
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].LCATEGORY);
+				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].ITYPE);
 				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(2).text(data.list[i].INAME);
 				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(3).text(data.list[i].AMOUNT);
 				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(4).text(data.list[i].VOS + "원");
@@ -1249,8 +1262,13 @@ solid
 				         			   //console.log(data.list.DOCNO);
 				         			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(list.DOCNO);
 				         			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(list.MNAME);
-				         			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-				         			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(list.DNAME);
+				         			 	if(list.RSTATUS == 'WAIT' || list.RSTATUS == 'REJECT') {
+			             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
+
+			             			    }else {
+			             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+			             			    }		         			   
+				         			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(list.DNAME);
 				         			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(list.MNAME);
 				         			   $("#tbl_modal_repair tr:nth-child(4)").children().eq(1).text(list.RDATE);
 				         			   $("#tbl_modal_repair tr:nth-child(5)").children().eq(1).text(list.SNAME);

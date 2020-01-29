@@ -28,4 +28,13 @@ public interface ApprovalDao {
 
 	List<HashMap<String, Object>> selectApproveInfo(SqlSessionTemplate sqlSession);
 
+	int selectVos(SqlSessionTemplate sqlSession, String iName);
+
+	List<String> selectConnName(SqlSessionTemplate sqlSession, String value);
+
+
+	List<String> selectItemName(SqlSessionTemplate sqlSession, String value);
+
+	List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value);
+
 }

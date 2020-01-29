@@ -116,6 +116,56 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 
+	@Override
+	public int selectVos(String iName) {
+		
+		int vos = ad.selectVos(sqlSession, iName);
+		
+		
+		
+		return vos;
+	}
+
+
+	@Override
+	public List<String> selectConnName(String value) throws ReportException {
+		List<String> connName = ad.selectConnName(sqlSession, value);
+		
+		if(connName == null) {
+			throw new ReportException("에러발생~~");
+		}
+		
+		
+		return connName;
+	}
+
+
+	@Override
+	public List<String> selectItemName(String value) throws ReportException {
+		
+		List<String> list = ad.selectItemName(sqlSession, value);
+		
+		if(list == null) {
+			throw new ReportException("에러발생~~");
+		}
+		
+		
+		return list;
+	}
+
+
+	@Override
+	public List<String> selectMadeComName(String value) throws ReportException {
+		List<String> list = ad.selectMadeComName(sqlSession, value);
+		
+		if(list == null) {
+			throw new ReportException("에러");
+		}
+		
+		return list;
+	}
+
+
 	
 
 
