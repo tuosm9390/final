@@ -83,7 +83,6 @@
 	background-color: white;
 	color: red;
 	font-weight: bold;
-	display: none;
 }
 
 h4 {
@@ -477,6 +476,7 @@ input[name=svcFee], input[name=svcTot] {
 
 		<!-- 고객정보 모달 -->
 		<div class="modal_content1">
+		<form>
 			<div class="statusNo">
 				<div class="statusColor mediumseagreen"></div>
 				<h1>　입실</h1>&nbsp;<h1 class="staycode"></h1>
@@ -507,9 +507,9 @@ input[name=svcFee], input[name=svcTot] {
 					<tr>
 						<td><div class="Mred"></div></td>
 						<td>입실일자</td>
-						<td><input type="datetime" name="checkinTime" id="checkIn">
+						<td><!-- <input type="text" name="checkinTime" id="checkIn"> -->
 							<select name="stayDay">
-								<c:forEach var="day" begin="1" end="30">
+								<c:forEach var="day" begin="0" end="30">
 									<option>${ day }</option>
 								</c:forEach>
 						</select> 박</td>
@@ -517,7 +517,7 @@ input[name=svcFee], input[name=svcTot] {
 					<tr>
 						<td><div class="Mred"></div></td>
 						<td>퇴실일자</td>
-						<td><input type="datetime" name="checkoutTime" id="checkOut">
+						<td><!-- <input type="text" name="checkoutTime" id="checkOut"> -->
 							<input type="checkbox" name="rentYN" id="rentYN"><label for="rentYN">대실</label></td>
 					</tr>
 					<tr>
@@ -547,6 +547,7 @@ input[name=svcFee], input[name=svcTot] {
 						</select></td>
 					</tr>
 				</table>
+			</form>
 			</div>
 			<!-- 예약정보 section end -->
 			<!-- 기타정보 section -->
@@ -572,14 +573,10 @@ input[name=svcFee], input[name=svcTot] {
 			<div class="charge">
 				<div class="feeDetailBar">
 					<h4>객실료</h4>
-					<h4 style="margin-left: 285px;">100,000</h4>
+					<h4 style="margin-left: 285px;" id="totalRoom"></h4>
 				</div>
 				<div class="feeDetailSec">
 					<table style="border-collapse: collapse;">
-						<tr>
-							<td>01-11</td>
-							<td>100,000</td>
-						</tr>
 					</table>
 				</div>
 
@@ -691,7 +688,11 @@ input[name=svcFee], input[name=svcTot] {
 	<script>
 		$(document).ready(function() {
 			$(".btn_close").click(function() {
+				$("input").val('');
+				$("#checkIn").remove();
+				$("#checkOut").remove();
 				$(".modal").fadeOut();
+				$(".feeDetailSec tr").remove();
 			});
 			
 			$("#insertClient").click(function(){
@@ -706,34 +707,6 @@ input[name=svcFee], input[name=svcTot] {
 			$("#checkinBtn").hide();
 			$(".infoBtnSec").hide();
 			$("#printRecipt").hide();
-			
-			date = new Date();
-			checkIn = $("#checkIn").datepicker({
-				autoClose : true,
-				minDate : new Date(),
-				//선택한 날짜를 가져옴
-				onSelect : function(date) {
-					endNum = date;
-					//종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
-					$("#checkOut").datepicker({
-						minDate : new Date(endNum),
-					});
-				}
-			}).data('datepicker');
-
-			checkOut = $("#checkOut").datepicker({
-				autoClose : true,
-				minDate : new Date(),
-				//선택한 날짜를 가져옴
-				onSelect : function(date) {
-					startNum = date;
-					$('#checkIn').datepicker({
-						//시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
-						maxDate : new Date(startNum),
-					});
-				}
-			}).data('datepicker');
-			
 			
 			
 			$(".btn_close_sub").click(function() {
@@ -751,8 +724,15 @@ input[name=svcFee], input[name=svcTot] {
 		
 		$("#rentYN").change(function(){
 			$("#checkOut").val(today);
+			$("select[name=stayDay]").val('0').prop('selected', true);
 		});
-
+		
+		$("select[name=stayDay]").change(function(){
+			var plusDay = $(this).val() * 1;
+			var coDay = new Date(today); coDay.setDate(coDay.getDate() + plusDay); coDay = coDay.format("yyyy-MM-dd");
+			$("#checkOut").val(coDay);
+		});
+		
 	</script>
 </body>
 </html>
