@@ -45,11 +45,8 @@
 	th{
 	background-color: #f7f7f7;
 	color: #005B9E;
-	height: 30px;
 	}
-	td{
 
-	}
 	
 	#hrDiv{
 	border-bottom: 1px solid lightgray;
@@ -150,6 +147,33 @@ background : white;
 	font-size: 25px;
 	font-weight: bold;
 }
+
+#pager_wrap {
+width:1000px;
+	padding: 60px 0;
+	text-align: center;
+}
+
+#pager_wrap .pager_com {
+	display: inline-block;
+	width: 40px;
+	margin: 0 2px;
+	background-color: #f1f1f1;
+}
+
+#pager_wrap .pager_num.on {
+	background-color: #171f57;
+}
+
+#pager_wrap .pager_com a {
+	padding: 10px 0;
+	text-align: center;
+	color: #171f57;
+}
+
+#pager_wrap .pager_num.on a {
+	color: #fff;
+}
 </style>
 </head>
 <body>
@@ -196,10 +220,10 @@ background : white;
 		</div>
 	</div><!-- top div end -->
 		<div id="stockTb">
-			<table style="border-collapse: collapse; width: 100%; height: 100%">  
+			<table style="border-collapse: collapse; width: 100%;">  
 				<tr>  
 					<th><input type="checkbox"></th>
-					<th >품목코드</th>
+				
 					<th width="250px;">품목명</th>
 					<th>소분류</th>
 					<th>재고수량</th>
@@ -208,17 +232,16 @@ background : white;
 					<th>매입처</th>
 					<th>품목구분</th>
 				</tr>
-				<c:forEach var="i" begin="1" end="10">
+				<c:forEach var="i" items="${stockList }">
 					<tr>
 						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="품목코드"/></td>
-						<td style="color: #005B9E"><c:out value="무슨무슨 pc pcpcpcpc"/></td>
-						<td><c:out value="소분류"/></td>
-						<td><c:out value="재고수량"/></td>
-						<td><c:out value="공급가액"/></td>
-						<td><c:out value="제조사"/></td>
-						<td><c:out value="매입처"/></td>
-						<td><c:out value="품목구분"/></td>
+						<td style="color: #005B9E"><c:out value="${i.iname}"/></td>
+						<td><c:out value="${i.scategory} "/></td>
+						<td><c:out value="${i.cnt }"/></td>
+						<td><c:out value="${i.vos }"/></td>
+						<td><c:out value="${i.mfg }"/></td>
+						<td><c:out value="${i.cnname }"/></td>
+						<td><c:out value="${i.type }"/></td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -230,7 +253,52 @@ background : white;
 			<button id="new">신규</button>&nbsp;
 			</div>
 	
-	
+	<!-- ddddddddddddddddddddddddddd  -->
+	<!-- 페이저 시작 -->
+			<!-- 페이징 영역 시작 -->
+			<div id="pager_wrap" align="center">
+				<ul class="pager_cnt clearfix add">
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="pager_com pager_arr prev on"><a
+							href="javascirpt: void(0);">&#x003C;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="blistBack" value="selectStock.sto">
+							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
+							<c:param name="scurrentPage" value=""/>
+						</c:url>
+						<li class="pager_com pager_arr prev "><a href="${blistBack }">&#x003C;</a></li>
+					</c:if>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<li class="pager_com pager_num on"><a
+								href="javascript: void(0);">${p }</a></li>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+
+							<c:url var="blistCheck" value="selectStock.sto">
+								<c:param name="currentPage" value="${p }" />
+							</c:url>
+							<li class="pager_com pager_num"><a href="${blistCheck }">${p }</a></li>
+						</c:if>
+					</c:forEach>
+
+
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="pager_com pager_arr next on"><a
+							href="javascript: void(0);">&#x003E;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="blistEnd" value="selectStock.sto">
+							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
+						</c:url>
+						<li class="pager_com pager_arr next"><a href="${blistEnd }">&#x003E;</a></li>
+					</c:if>
+				</ul>
+			</div>
+
+			<!-- 페이징 영역 종료 -->
 	
 	</section>
 	
@@ -243,8 +311,31 @@ background : white;
 			}).mouseout(function(){
 				$(this).parent("tr").css({"background":"white"});
 			}).click(function(){
-				var bid = $(this).parent().children("td").eq(1).text();
-				console.log(bid);
+				
+				var iname = $(this).parent().children("td").eq(1).text();
+				
+				$.ajax({
+					url:"selectStockDetail.sto",
+					type:"post",
+					data:{iname:iname},
+					success:function(data){
+						console.log(data)
+						$("#detailBody").empty();
+						for(var i=0;i<data.stockDetailList.length;i++){
+							$("detailBody").append();
+						}
+					
+					},error:function(status){
+						console.log(status)
+					}
+					
+				});
+				
+				
+				
+				
+				
+				
 				$(".modal").fadeIn();
 			});
 		});

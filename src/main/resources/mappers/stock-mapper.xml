@@ -5,25 +5,85 @@
   
 <mapper namespace="Stock">
 	
-	<resultMap type="com.kh.hotels.mngStock.model.vo.stock.Stock" id="resultSetStock">
+	<resultMap type="com.kh.hotels.mngStock.model.vo.Stock" id="resultSetStock">
 	
+		<id property="iname" column="INAME" />
+		<result property="scategory" column="SCATEGORY" />
+		<result property="amount" column="AMOUNT" />
+		<result property="vos" column="VOS" />
+		<result property="mfg" column="MFG" />
+		<result property="cnname" column="CN_NAME" />
+		<result property="type" column="TYPE" />
+		<result property="cnt" column="CNT" />
+		
+	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngStock.model.vo.StockDetail" id="resultSetStockDetail">
+	<id property="ino" column="INO" />
+		<result property="lcategory" column="LCATEGORY" />
+		<result property="mcategory" column="MCATEGORY" />
+		<result property="scategory" column="SCATEGORY" />
+		<result property="vos" column="VOS" />
+		<result property="vat" column="VAT" />
+		<result property="up" column="UP" />
+		<result property="mfg" column="MFG" />
+		<result property="cnname" column="CN_NAME" />
+		<result property="strgname" column="STRG_NAME" />
+		<result property="areaname" column="AREA_NAME" />
 	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.Repair" id="resultSetRepair">
-		<id property="rptNo" column="RPT_NO" />
+		<result property="rptNo" column="RPT_NO" />
 		<result property="rptTitle" column="RPT_TITLE" />
 		<result property="rptStatus" column="RPT_STATUS" />
 	</resultMap>
 	
+	
+	
+	
 	<!-- 리스트카운트 -->
-	<select id="dd">
-		
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM(
+		SELECT DISTINCT I.INAME,T.SCATEGORY,I.AMOUNT,I.VOS,I.MFG,C.CN_NAME,T.TYPE, N.CNT
+		FROM ITEM I
+		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
+		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
+		JOIN STRG_AREA A ON (A.AREA_NO = I.AREA_NO)
+		JOIN STRG S ON (A.STRG_NO = S.STRG_NO)
+		JOIN (SELECT INAME, COUNT(*) AS CNT
+		FROM ITEM
+		GROUP BY INAME) N ON (I.INAME = N.INAME))
 	</select>
 	
-	<!-- 물품 현황 리스트 조회 -->
-	<select id="selectList" resultMap="resultSetStock">
-	
+	<select id="selectStockList" resultMap="resultSetStock">
+		SELECT DISTINCT I.INAME,T.SCATEGORY,I.AMOUNT,I.VOS,I.MFG,C.CN_NAME,T.TYPE, N.CNT
+		FROM ITEM I
+		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
+		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
+		JOIN STRG_AREA A ON (A.AREA_NO = I.AREA_NO)
+		JOIN STRG S ON (A.STRG_NO = S.STRG_NO)
+		JOIN (SELECT INAME, COUNT(*) AS CNT
+		FROM ITEM
+		GROUP BY INAME) N ON (I.INAME = N.INAME)
 	</select>
+	
+	
+	
+	<!-- 물품 디테일 -->
+	
+	<select id="selectStockDetailList" resultMap="resultSetStockDetail">
+		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME
+		FROM STRG_AREA A
+		JOIN STRG S ON (S.STRG_NO=A.STRG_NO)
+		JOIN ITEM I ON (I.AREA_NO=A.AREA_NO)
+		JOIN ITEM_TYPE T ON (I.TYPE_NO=T.TYPE_NO)
+		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
+		WHERE I.INAME=#{iname}
+	</select>
+	
+
+	
+
 	
 	<!-- 수리 현황 리스트 조회-->
 	<select id="selectRepairList" resultMap="resultSetRepair">

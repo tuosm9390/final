@@ -103,6 +103,7 @@
 					<th style="color: #005B9E">창고명</th>
 					<th style="color: #005B9E">위치</th>
 				</tr>
+				<tbody id="detailBody">
 				<c:forEach var="i" begin="1" end="19">
 					<tr>
 						<td><input type="checkbox"></td>
@@ -120,7 +121,9 @@
 						
 					</tr>
 				</c:forEach>
+				</tbody>
 			</table>
+				
 		</div>
 			<div class="btnss">
 			<button id="detail-modify-btn">수정</button>&nbsp;
