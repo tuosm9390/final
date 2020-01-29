@@ -1,8 +1,11 @@
 package com.kh.hotels.common.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,8 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.kh.hotels.common.model.service.CommonService;
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.Basic;
 import com.kh.hotels.common.model.vo.Cal;
 import com.kh.hotels.common.model.vo.Info;
@@ -425,7 +431,110 @@ public class HotelSettingController {
 		}
 		
 	}
-	 //@RequestParam(name="photo") MultipartFile photo
+	@PostMapping("endHotelSetting.set")
+	public String endHotelSetting(MultipartHttpServletRequest mainPhoto,MultipartHttpServletRequest subPhoto, Model model, HttpServletRequest request,
+			String subPhotoRoomTypeName, String mainPhotoRoomTypeName) {
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String filePath = root + "\\uploadFiles";
+		
+		
+		String[] mainPhotoRoomTypeNames = mainPhotoRoomTypeName.split(",");
+		String[] subPhotoRoomTypeNames = subPhotoRoomTypeName.split(",");
+		
+		int[] mainPhotoRtNo = new int[mainPhotoRoomTypeNames.length];
+		int[] subPhotoRtNo = new int[subPhotoRoomTypeNames.length];
+		
+		for(int i = 0; i < mainPhotoRoomTypeNames.length; i++) {
+			mainPhotoRtNo[i] = cs.selectPhotoRtNo(mainPhotoRoomTypeNames[i]);
+		}
+		
+		for(int i = 0; i < subPhotoRoomTypeNames.length; i++) {
+			subPhotoRtNo[i] = cs.selectPhotoRtNo(subPhotoRoomTypeNames[i]);
+		}
+				
+		List<MultipartFile> mfListMain = mainPhoto.getFiles("mainPhoto");
+		
+		String[] mainPhotoOriginFileNames = new String[mfListMain.size()];
+		
+		
+		for(int i = 0; i < mfListMain.size(); i++) {
+			mainPhotoOriginFileNames[i] = mfListMain.get(i).getOriginalFilename();
+		}
+		
+		
+		List<MultipartFile> mfListSub = subPhoto.getFiles("subPhoto");
+		
+		String[] subPhotoOriginFileNames = new String[mfListSub.size()];;
+		
+		for(int i = 0; i < mfListSub.size(); i++) {
+			subPhotoOriginFileNames[i] = mfListSub.get(i).getOriginalFilename();
+		}
+		
+		String[] extMain = new String[mainPhotoOriginFileNames.length];
+		for(int i = 0; i < mainPhotoOriginFileNames.length; i++) {
+			extMain[i] = mainPhotoOriginFileNames[i].substring(mainPhotoOriginFileNames[i].lastIndexOf("."));
+		}
+		
+		String[] extSub = new String[subPhotoOriginFileNames.length];
+		for(int i = 0; i < subPhotoOriginFileNames.length; i++) {
+			extSub[i] = subPhotoOriginFileNames[i].substring(subPhotoOriginFileNames[i].lastIndexOf("."));
+		}
+		
+		
+		ArrayList<Attach> attachList = new ArrayList<>();
+		Attach attachMain;
+		Attach attachSub;
+		
+		for(int i = 0; i < mfListMain.size(); i++) {
+			attachMain = new Attach();
+			attachMain.setRtNo(mainPhotoRtNo[i]);
+			attachMain.setOriginName(mainPhotoOriginFileNames[i]);
+			attachMain.setChangeName(CommonsUtils.getRandomString());
+			attachMain.setFilePath(filePath + "\\" + attachMain.getChangeName() + extMain[i]);
+			attachMain.setFileLevel(1);
+			attachList.add(attachMain);
+			try {
+				
+				mfListMain.get(i).transferTo(new File(filePath + "\\" + attachMain.getChangeName() +  extMain[i]));
+				
+			} catch (IllegalStateException | IOException e) {
+				
+				new File(filePath + "\\" + attachMain.getChangeName() +  extMain[i]).delete();
+				
+			}
+		}
+		
+		for(int i = 0; i < mfListSub.size(); i++) {
+			attachSub = new Attach();
+			attachSub.setRtNo(subPhotoRtNo[i]);
+			attachSub.setOriginName(subPhotoOriginFileNames[i]);
+			attachSub.setChangeName(CommonsUtils.getRandomString());
+			attachSub.setFilePath(filePath + "\\" + attachSub.getChangeName() + extSub[i]);
+			attachSub.setFileLevel(2);
+			attachList.add(attachSub);
+			try {
+				
+				mfListSub.get(i).transferTo(new File(filePath + "\\" + attachSub.getChangeName() +  extSub[i]));
+				
+			} catch (IllegalStateException | IOException e) {
+				
+				new File(filePath + "\\" + attachSub.getChangeName() +  extSub[i]).delete();
+				
+			}
+		}
+		
+		int result = cs.insertHotelPhoto(attachList);
+		
+		if(result > 0) {
+			model.addAttribute("attachList", attachList);
+			return "redirect:/view.ro";
+		}else {
+			model.addAttribute("msg", "사진 등록실패");
+			return "common/errorPage";
+		}
+		
+	}
 }
 
 

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.Basic;
 import com.kh.hotels.common.model.vo.Cal;
 import com.kh.hotels.common.model.vo.Info;
@@ -48,6 +49,10 @@ public interface CommonDao {
 	int insertHotelRoomFare(ArrayList<RoomPrc> roomPrcList, SqlSessionTemplate sqlSession);
 
 	int insertHotelService(ArrayList<Svc> svcList, SqlSessionTemplate sqlSession);
+
+	int selectPhotoRtNo(String string, SqlSessionTemplate sqlSession);
+
+	int insertHotelPhoto(ArrayList<Attach> attachList, SqlSessionTemplate sqlSession);
 
 
 }

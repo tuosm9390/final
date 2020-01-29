@@ -55,12 +55,18 @@
 		SELECT *
 		FROM MEMBER M 
 		JOIN STAFF S ON(M.MNO = S.MNO)
+		WHERE S.STF_ID = #{userId}
 	</select>
 	
 	<select id="updateMemberPwd" parameterType="Member">
 		UPDATE STAFF
 		SET STF_PWD = #{userPwd}, PWD_STATUS = 'Y'
 		WHERE MNO = #{mno}
+	</select>
+
+	<select id="checkHotelSetting" resultType="_int">
+		SELECT COUNT(*)
+		FROM INFO
 	</select>
 </mapper>
 

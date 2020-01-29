@@ -1,9 +1,11 @@
-package com.kh.hotels.common.controller;
+package com.kh.hotels.common.model.vo;
 
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 
 public class Pagination {
+	
 	public static PageInfo getPageInfo(int currentPage, int listCount) {
+		
 		PageInfo pi = null;
 
 		int limit = 10;

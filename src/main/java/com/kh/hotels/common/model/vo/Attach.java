@@ -17,7 +17,7 @@ public class Attach {
 	private String changeName;
 	private Date uploadDate;
 	private String filePath;
-	private String fileLevel;
+	private int fileLevel;
 	private String fileState;
 	
 }

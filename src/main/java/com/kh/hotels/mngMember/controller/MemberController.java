@@ -32,18 +32,32 @@ public class MemberController {
 		Member loginUser;
 		
 		try {
+
 			loginUser = ms.loginMember(m);
 			
 			model.addAttribute("loginUser", loginUser);
-
-			if(loginUser.getPwdStatus().equals("Y")) {
+			
+			if(loginUser.getDeptNo() == 1) {
 				
-				return "hoteladmin/main/main";
+				int result = ms.checkHotelSetting();
 				
-			}else{
-
-				return "hoteladmin/main/pwdReset";
+				if(result == 0) {
+					return "hotelSetting/hotelInfoSetting";
+				}else {
+					return "redirect:/view.ro";
+				}
 				
+			}else {
+				
+				if(loginUser.getPwdStatus().equals("Y")) {
+					
+					return "redirect:/view.ro";
+					
+				}else{
+	
+					return "hoteladmin/main/pwdReset";
+					
+				}
 			}
 			
 			

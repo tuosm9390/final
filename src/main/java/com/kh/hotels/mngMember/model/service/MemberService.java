@@ -13,4 +13,6 @@ public interface MemberService {
 
 	int updateMemberPwd(Member m);
 
+	int checkHotelSetting();
+
 }

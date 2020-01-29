@@ -16,7 +16,7 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
-
+		
 		return sqlSession.selectOne("Member.selectMember", m);
 	}
 
@@ -48,6 +48,12 @@ public class MemberDaoImpl implements MemberDao {
 	public int updateMemberPwd(SqlSessionTemplate sqlSession, Member m) {
 
 		return sqlSession.update("Member.updateMemberPwd", m);
+	}
+
+	@Override
+	public int checkHotelSetting(SqlSessionTemplate sqlSession) {
+
+		return sqlSession.selectOne("Member.checkHotelSetting");
 	}
 
 }

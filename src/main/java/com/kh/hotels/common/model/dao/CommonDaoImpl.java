@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Component;
 
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.Basic;
 import com.kh.hotels.common.model.vo.Cal;
 import com.kh.hotels.common.model.vo.Info;
@@ -202,6 +203,24 @@ public class CommonDaoImpl implements CommonDao{
 			
 			result = sqlSession.insert("Common.insertHotelService", svcList.get(i));
 			
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int selectPhotoRtNo(String string, SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("Common.selectRtNo", string);
+	}
+
+	@Override
+	public int insertHotelPhoto(ArrayList<Attach> attachList, SqlSessionTemplate sqlSession) {
+		
+		int result = 0;
+		
+		for(int i = 0; i < attachList.size(); i++) {
+			result = sqlSession.insert("Common.insertHotelPhoto", attachList.get(i));
 		}
 		
 		return result;

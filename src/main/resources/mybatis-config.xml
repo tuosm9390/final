@@ -17,6 +17,7 @@
 		<typeAlias type="com.kh.hotels.common.model.vo.Rfd" alias="Svc"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.OffSeason" alias="OffSeason"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Season" alias="Season"/>
+		<typeAlias type="com.kh.hotels.common.model.vo.Attach" alias="Attach"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomInfo" alias="RoomInfo"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomType" alias="RoomType"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.Room" alias="Room"/>
@@ -34,6 +35,7 @@
 		<mapper resource="mappers/report-mapper.xml"/>
         <mapper resource="mappers/hotel-mapper.xml"/>
         <mapper resource="mappers/stock-mapper.xml"/>
+        <mapper resource="mappers/client-mapper.xml"/>
 	</mappers>
 		
 	

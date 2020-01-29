@@ -95,7 +95,10 @@
 		margin-top:10px;
 		display: flex;
 	}
-	.imageBtn{
+	.mainPhoto{
+		width:75px; 
+	}
+	.subPhoto{
 		width:75px; 
 	}
 	.nextBtn{
@@ -133,7 +136,6 @@
 		margin-right:50px;
 	}	
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>HotelsCompile</title>
 </head>
 <body>
@@ -149,7 +151,7 @@
 					<h6 class="titleContentText">객실 이미지를 등록할 수 있습니다. (대표이미지는 꼭 등록해주세요.)</h6>
 				</div>
 			</div>
-			<form action="" method="post" enctype="multipart/form-data">
+			<form action="endHotelSetting.set" method="post" enctype="multipart/form-data">
 			<c:forEach var="roomType" items="${ roomType }">
 			<div class="area" id="${ roomType.rtName }">
 				<div class="room">
@@ -160,29 +162,53 @@
 						<button type="button" class="addBtn" onclick="addImages(this);" value="${ roomType.rtName }">+ 추가</button>
 					</div>
 					<div class="roomMainPhotoArea">
-						<img alt="" src="" width="190" height="100">
+						<input type="hidden" value="${ roomType.rtName }" name="mainPhotoRoomTypeName">
+						<img alt="" src="" name="" width="190" height="100">
 						<h3>대표이미지</h3>
-						<input type="file" name="mainPhoto" class="imageBtn">
+						<input type="file" name="mainPhoto" class="mainPhoto" onchange="loadImg(this);">
 					</div>
 				</div>
 			</div>
 			</c:forEach>
 			<div align="right" class="btnGroup">
-				<button class="backBtn" onclick=""><b>이전</b></button>			
-				<button class="nextBtn" onclick="return saveHotel();"><b>완료</b></button>			
+				<button type="button" class="backBtn" onclick=""><b>이전</b></button>			
+				<button type="submit" class="nextBtn" onclick="return saveHotel();"><b>완료</b></button>			
 			</div>
 			</form>
 		</div>
 	</div>
 	<script type="text/javascript">
-		
+
+		function loadImg(obj){
+			
+			console.log("ddd");
+			/* 
+			console.log($(obj).siblings("img"));
+			
+			var reader = new FileReader();
+				
+			reader.onload = function(e){
+				$(obj).siblings("img").attr("src", e.target.result);
+			}
+			reader.readAsDataURL(e);
+			 */
+			if(obj.files && obj.files[0]) {
+				var reader = new FileReader();
+				
+				reader.onload = function(e){
+					$(obj).siblings("img").attr("src", e.target.result);
+				};
+				
+				reader.readAsDataURL(obj.files[0]);
+			}
+		}
 	
 		function addImages(obj){
 			
 			roomType = obj.value;
 			
 			
-			$("#"+roomType+" .roomMainPhotoArea:last").after("<div class='roomSubPhotoArea'><h3>객실이미지</h3><input type='file' name='subPhoto' class='imageBtn'><input type='hidden' value='${ roomType.rtName }' name='SubPhotoRoomTypeName'><button onclick='deleteArea(this);'>삭제</button>");
+			$("#"+roomType+" .roomMainPhotoArea:last").after("<div class='roomSubPhotoArea'><img alt='' src='' name='' width='190' height='100'><h3>객실이미지</h3><input type='file' name='subPhoto' class='subPhoto' onchange='loadImg(this);'><input type='hidden' value='"+roomType+"' name='subPhotoRoomTypeName'><button onclick='deleteArea(this);'>삭제</button>");
 			
 			$("#"+roomType+" .roomSubPhotoArea").each(function(){
 				if($("#"+roomType+" .roomSubPhotoArea").length >= 4){
@@ -199,20 +225,20 @@
 		}
 		function saveHotel(){
 			
-			$("#"+roomType).each(function(){
-				if($(this + " input[name='mainPhoto']").val() == ""){
-					alert("대표이미지를 등록해주세요");
-					return false;
-				}
-				if($(this + " input[name='subPhoto']").val() == ""){
-					alert("객실이미지를 등록해주세요");
-					return false;
-				}
-			});
+				$(".mainPhoto").each(function(){
+					if($(this).val() == ""){
+						alert("대표이미지를 등록해주세요");
+						return false;
+					}
+				})
+				$(".subPhoto").each(function(){
+					if($(this).val() == ""){
+						alert("객실이미지를 등록해주세요");
+						return false;
+					}
+				})
 			
-			//$("#"+roomType+" input[name='mainPhoto']")
-			
-			return false;
+			return true;
 		}
 	</script>
 </body>

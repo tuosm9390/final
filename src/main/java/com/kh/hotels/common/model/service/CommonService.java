@@ -3,6 +3,7 @@ package com.kh.hotels.common.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.Basic;
 import com.kh.hotels.common.model.vo.Cal;
 import com.kh.hotels.common.model.vo.Info;
@@ -35,6 +36,10 @@ public interface CommonService {
 	int insertHotelRoomFare(ArrayList<RoomPrc> roomPrcList);
 
 	int insertHotelService(ArrayList<Svc> svcList);
+
+	int selectPhotoRtNo(String string);
+
+	int insertHotelPhoto(ArrayList<Attach> attachList);
 
 
 }
