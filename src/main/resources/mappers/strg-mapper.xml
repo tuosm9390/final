@@ -12,10 +12,11 @@
 		<result property="strgSite" column="STRG_SITE" />
 	</resultMap>
 	
-	<resultMap type="com.kh.hotels.mngStock.model.vo.StrgArea" id="resultSetStrgArea">
-		<id property="strgNo" column="STRG_NO" />
-		<result property="areaNo" column="AREA_NO" />
+	<resultMap type="com.kh.hotels.mngStock.model.vo.WarehouseDetail" id="resultSetStrgArea">
+		<id property="ino" column="INO" />
+		<result property="amount" column="AMOUNT" />
 		<result property="areaName" column="AREA_NAME" />
+		<result property="iName" column="INAME" />
 	</resultMap>
 	
 	<insert id="insertWarehouse" parameterType="Strg">
@@ -50,7 +51,12 @@
 	
 	
 	<select id="detailList" resultMap="resultSetStrgArea">
-		SELECT * FROM STRG_AREA WHERE STRG_NO = #{strgNo}
+		SELECT I.INAME,I.INO,I.AMOUNT,A.AREA_NAME
+		FROM STRG_AREA A
+		JOIN STRG S ON (S.STRG_NO=A.STRG_NO)
+		JOIN ITEM I ON(I.AREA_NO = A.AREA_NO)
+		JOIN ITEM_TYPE T ON (I.TYPE_NO=T.TYPE_NO)
+		WHERE S.STRG_NO=#{strgNo}
 	</select>
 	
 	<update id="updateWarehouse" parameterType="Strg">

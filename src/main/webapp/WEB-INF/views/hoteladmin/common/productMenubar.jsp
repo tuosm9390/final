@@ -73,7 +73,7 @@
 <script>
 		$(function(){
 			$(".stockNow").click(function(){
-				location.href='goStockNow.st';
+				location.href='selectStock.sto';
 			});
 		});
 		

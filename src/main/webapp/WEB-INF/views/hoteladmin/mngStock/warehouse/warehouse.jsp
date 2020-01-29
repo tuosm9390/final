@@ -224,6 +224,11 @@
 				data:{strgNo:strgNo},
 				success:function(data){
 					console.log(data)
+					$("#dTbody").empty();
+					for(var i=0;i<data.detailList.length;i++){
+						console.log("테스트테스트")
+						$("#dTbody").append("<tr><td>"+(i+1)+"</td><td>"+data.detailList[i].IName+"</td><td>"+data.detailList[i].ino+"</td><td>"+data.detailList[i].amount+"</td><td>"+data.detailList[i].areaName+"</td><<tr>");
+					}
 				},
 				error:function(status){
 					console.log(status)
@@ -239,10 +244,14 @@
 			}else{
 				$("#nCheck").attr("checked","true");
 			}
-			$("#detailArea").val(strgSite);
 			
+			$("#detailArea").val(strgSite);
+			//테스트
+			$("#dTbody").empty();
+			
+			$("#dTbody").append();
+			//
 			$(".modalDetail").fadeIn();
-			console.log(bid);
 		});
 	});
 	

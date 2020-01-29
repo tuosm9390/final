@@ -64,6 +64,7 @@
 	width: 710px;
 	height: 170px;
 	border: 1px solid gray;
+	overflow-y:auto;
 	
 	}
 	#wareWrap{
@@ -85,7 +86,7 @@
 		<div id="wareWrap">
 		<div class="bodyDiv">
 		<form action="update.war" method="post" id="updateWar">
-		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px"  id="detailCode" name="strgNo" disabled="disabled"></div>  </div>
+		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px"  id="detailCode" name="strgNo" readonly="readonly"></div>  </div>
 		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:300px" id="detailName" name="strgName"></div>  </div>
 		<div>	<div class="same" id="ssam">사용여부</div>  <div class="same"><input type="radio"  value="Y" id="yCheck" name="strgStatus">사용 &nbsp;&nbsp;<input type="radio" name="strgStatus" value="N" id="nCheck">미사용</div>  </div>
 		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:300px" id="detailArea" name="strgSite" ></div>  </div>
@@ -96,20 +97,22 @@
 			<table id="botTable">
 				<tr>
 					<th>No</th>
-					<th>품목명</th>			
-					<th>품목코드</th>			
+					<th>물품명</th>			
+					<th>물품코드</th>			
 					<th>수량</th>			
 					<th style="width: 150px;">위치명</th>			
 				</tr>
+				<tbody id="dTbody">
 				<c:forEach var="i" items="${detailList}">
 					<tr>
 						<td>${i}</td>
-						<td></td>
-						<td>ass13123</td>
-						<td>13</td>
-						<td>1층 지하창고</td>
+						<td>${i.iName} }</td>
+						<td>${i.ino}</td>
+						<td>${i.amount}</td>
+						<td>${i.areaName }</td>
 					</tr>
 				</c:forEach>
+				</tbody>
 			</table>
 		
 		</div>
