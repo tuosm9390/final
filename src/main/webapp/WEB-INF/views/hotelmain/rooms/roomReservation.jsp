@@ -338,10 +338,8 @@
 							<td>100%</td>
 						</tr>
 						<tr>
-							<td colspan="6"><h4 style="font-weight: bold;">[ 기후변화 또는 천재지변, 거짓 과장 광고]</h4></td>
-						</tr>
-						<tr>
-							<td colspan="6">전액 환불</td>
+							<td colspan="3"><h4 style="font-weight: bold;">[ 기후변화 또는 천재지변, 거짓 과장 광고]</h4></td>
+							<td colspan="3">전액 환불</td>
 						</tr>
 						<tr>
 							<td colspan="6" style="color: gray; text-align: right;">※ 사업자 책임일 경우 계약금 + 배상 비율만큼 배상</td>

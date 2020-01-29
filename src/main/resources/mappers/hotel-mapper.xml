@@ -56,11 +56,27 @@
 		<result property="pwdStatus" column="pwd_Status" />
 		<result property="userName" column="Name" />
 	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngClient.model.vo.Ans" id="AnsResultSet">
+		<id property="ano" column="ano" />
+		<result property="qno" column="qno" />
+		<result property="mno" column="mno" />
+		<result property="acontent" column="acontent" />
+		<result property="adate" column="adate" />
+	</resultMap>
 
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM QUE
 		WHERE DEL_STATUS = 'N'
+		<choose>
+			<when test="searchCondition == 'qtitle'">
+				AND QTITLE LIKE '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchCondition == 'qtype'">
+				AND QTYPE = #{searchValue}
+			</when>
+		</choose>
 	</select>
 	
 	<select id="selectRoomList" resultType="Map" resultMap="RoomInfoResultSet">
@@ -130,6 +146,13 @@
 		AND EMAIL = #{email}
 	</select>
 	
+	<select id="selectQueMember" resultType="Member" resultMap="Member" parameterType="Que">
+		SELECT *
+		FROM MEMBER 
+		WHERE TYPE = 'CLIENT'
+		AND MNO = #{mno}
+	</select>
+	
 	<insert id="insertReservation" parameterType="ReservationCheck">
 		INSERT INTO RSV
 		VALUES(#{rsvNo}, 3, #{mno}, #{checkIn}, #{checkOut},
@@ -145,6 +168,26 @@
 		SELECT *
 		FROM QUE Q
 		LEFT JOIN MEMBER M ON (Q.MNO = M.MNO)
+		<where>
+			<if test="searchCondition == 'qtitle'">
+				QTITLE LIKE '%'||#{searchValue}||'%'
+			</if>
+			<if test="searchCondition == 'qtype'">
+				QTYPE = #{searchValue}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectOneQnA" resultType="Que" resultMap="QueResultSet">
+		SELECT *
+		FROM QUE
+		WHERE QNO = #{qno}
+	</select>
+	
+	<select id="selectOneAns" resultType="Ans" resultMap="AnsResultSet" parameterType="Que">
+		SELECT *
+		FROM ANS
+		WHERE QNO = #{qno}
 	</select>
 </mapper>
 

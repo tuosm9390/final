@@ -70,13 +70,15 @@ cursor: pointer;
 			<a class="btn_close">×</a>
 			
 			<div class="qna-modal_content_real" align="center">
-				<div class="check-password">
-					<h2 style="font-weight: bold;">비밀번호를 입력해주세요</h2>
-					<input type="text">
-				</div>
+				<form id="pwdCheckForm" action="qnadetail.hmain" method="post">
+					<div class="check-password">
+						<h2 style="font-weight: bold;">비밀번호를 입력해주세요</h2>
+						<input type="text" name="pwd" id="pwd">
+					</div>
+				</form>
 			</div>
 			<div class="modal-btn" align="right">
-				<button onclick="cancel()">취소</button>
+				<button onclick="cancel();">취소</button>
 				<button onclick="goQnADetail();">확인</button>
 			</div>
 		</div>
@@ -93,9 +95,10 @@ cursor: pointer;
 			$(".qna-modal").fadeOut();
 		};
 		
-		function goQnADetail(){
-			location.href='qnadetail.hmain';
-		};
+// 		function goQnADetail(){
+//			location.href='qnadetail.hmain';
+// 			location.href='qnadetail.hmain?qno=' + qno + "&type=lock";
+// 		};
 	</script>
 </body>
 </html>

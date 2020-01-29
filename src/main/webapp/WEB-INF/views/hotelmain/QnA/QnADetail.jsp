@@ -44,6 +44,10 @@
 textarea{
 	height: auto !important;
 }
+
+textarea:focus{
+	outline-style: none;
+}
 </style>
 </head>
 <body>
@@ -71,35 +75,52 @@ textarea{
 				<table class="qnaDetail-table">
 					<tr>
 						<td><li>문의유형</li></td>
-						<td><c:out value="분류"></c:out></td>
+						<td>
+						<c:if test="${ q.qtype eq 'ROOM'}">
+						객실
+						</c:if>
+						<c:if test="${ q.qtype eq 'SERVICE'}">
+						서비스
+						</c:if>
+						<c:if test="${ q.qtype eq 'RESERV'}">
+						예약
+						</c:if>
+						<c:if test="${ q.qtype eq 'ETC'}">
+						기타
+						</c:if>
+						</td>
 					</tr>
 					<tr>
 						<td><li>제목</li></td>
-						<td><c:out value="글 제목"></c:out></td>
+						<td>${ q.qtitle }</td>
 					</tr>
 					<tr>
 						<td><li>작성자명</li></td>
-						<td><c:out value="작성자명"></c:out></td>
+						<td>${ q.userName }</td>
 						<td><li>문의날짜</li></td>
-						<td><c:out value="날짜"></c:out></td>
+						<td>${ q.qdate }</td>
 					</tr>
 					<tr>
 						<td style="vertical-align: top; padding-top: 5px;"><li>문의 내용</li></td>
-						<td style="padding-top: 5px;" colspan="4"><textarea rows="6" cols="70" readonly></textarea>
+						<td style="padding-top: 5px;" colspan="4">
+						<textarea rows="6" cols="70" readonly>${ q.qcontent }</textarea></td>
 					</tr>
 				</table>
 				<!-- 내용 영역 끝 -->
 				<br>
+				<c:if test="${ q.ansStatus eq 'Y'}">
 				<div style="border: 0.5px solid black; width: 100%; height: 0;"></div>
 				<br>
 				<!-- 답변 영역 -->
 				<table class="answer-table">
 					<tr>
 						<td style="vertical-align: top; padding-top: 5px;"><li>답변 내용</li></td>
-						<td style="padding-top: 5px;"><textarea rows="5" cols="70" readonly></textarea>
+						<td style="padding-top: 5px;">
+						<textarea rows="5" cols="70" readonly>${ a.acontent }</textarea></td>
 					</tr>
 				</table>
 				<!-- 답변 영역 끝 -->
+				</c:if>
 				<br>
 				<button style="float: right; width: 100px; margin-right: 2%;" onclick="location.href='goQnA.hmain'">뒤로</button>
 			</div>

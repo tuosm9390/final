@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.hotels.hotel.model.exception.QnASelectListException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
@@ -37,5 +38,13 @@ public interface HotelDao {
 	int insertMember(SqlSessionTemplate sqlSession, Member m);
 
 	int listCount(SqlSessionTemplate sqlSession);
+
+	Que selectOneQnA(SqlSessionTemplate sqlSession, Que q);
+
+	Ans selectOneAns(SqlSessionTemplate sqlSession, Que q);
+
+	Member selectMember(SqlSessionTemplate sqlSession, Que selectQnA);
+
+	int listCount(SqlSessionTemplate sqlSession, PageInfo pi);
 
 }

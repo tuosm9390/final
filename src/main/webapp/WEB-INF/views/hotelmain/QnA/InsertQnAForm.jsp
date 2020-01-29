@@ -42,6 +42,7 @@
 
 textarea{
 	height: auto !important;
+	outline-style: none;
 }
 
 .qtype{

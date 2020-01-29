@@ -14,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.hotel.controller.Pagination;
 import com.kh.hotels.hotel.model.exception.QnASelectListException;
 import com.kh.hotels.hotel.model.service.HotelService;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.Reservation;
@@ -64,6 +66,7 @@ public class HotelMainContoller {
 	public String showHotelRoomReservation(HttpSession session, Reservation rsv, Date checkIn, Date checkOut, int adult,
 			int child) {
 
+		
 		rsv.setCheckIn(checkIn);
 		rsv.setCheckOut(checkOut);
 		rsv.setAdult(adult);
@@ -188,19 +191,36 @@ public class HotelMainContoller {
 	}
 
 	@RequestMapping("goQnA.hmain")
-	public ModelAndView showHotelQnA(ModelAndView mv, HttpServletRequest request) {
+	public ModelAndView showHotelQnA(ModelAndView mv, HttpServletRequest request,
+			@RequestParam(value="searchCondition", required = false) String searchCondition,
+			@RequestParam(value="searchValue", required = false) String searchValue) {
 		int currentPage = 1;
+		
+		System.out.println("searchCondition : " + searchCondition);
+		System.out.println("searchValue : " + searchValue);
 		
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 		
-		int listCount = hs.listCount();
+		int listCount = 0;
+		PageInfo p = new PageInfo();
+		PageInfo pi = null;
 		
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		if(searchValue == null) {
+			listCount = hs.listCount(p);
+			pi = Pagination.getPageInfo(currentPage, listCount);
+		} else {
+			p.setSearchCondition(searchCondition);
+			p.setSearchValue(searchValue);
+			listCount = hs.listCount(p);
+			System.out.println("listCount : " + listCount);
+			pi = Pagination.getPageInfo(currentPage, listCount, searchCondition, searchValue);
+		}
 		
 //		Map<String, Que> qnaList = hs.selectQnAList();
-		List<Que> qnaList;
+		List<Que> qnaList = null;
+		
 		try {
 			qnaList = hs.selectQnAList(pi);
 			mv.addObject("qnaList", qnaList);
@@ -216,9 +236,43 @@ public class HotelMainContoller {
 	}
 
 	@RequestMapping("qnadetail.hmain")
-	public String showHotelQnADetail() {
-
-		return "hotelmain/QnA/QnADetail";
+	public ModelAndView showHotelQnADetail(ModelAndView mv, Que q, @RequestParam("type") String type,
+			@RequestParam(value="pwd", required=false) String pwd) {
+		
+		Que selectQnA = hs.selectOneQnA(q);
+		System.out.println("비밀번호 : " + selectQnA.getQpwd());
+		System.out.println("입력한 비밀번호 : " + pwd);
+		
+		Member m = hs.selectMember(selectQnA);
+		selectQnA.setUserName(m.getUserName());
+		
+		// 비밀글일 경우
+		if(type.equals("lock")) {
+			// 비밀번호 일치 시
+			if(selectQnA.getQpwd().equals(pwd)) {
+				// 답변 있을 경우
+				if(selectQnA.getAnsStatus().equals("Y")) {
+					Ans ans = hs.selectOneAns(q);
+					mv.addObject("a", ans);
+				}
+				mv.addObject("q", selectQnA);
+				mv.setViewName("hotelmain/QnA/QnADetail");
+			} else {
+				mv.addObject("error", "비밀번호가 맞지 않습니다.");
+				mv.setViewName("hotelmain/common/errorPage");
+			}
+		// 비밀글 아닐 경우
+		} else {
+			// 답변 있을 경우
+			if(selectQnA.getAnsStatus().equals("Y")) {
+				Ans ans = hs.selectOneAns(q);
+				mv.addObject("a", ans);
+			}
+			mv.addObject("q", selectQnA);
+			mv.setViewName("hotelmain/QnA/QnADetail");
+		}
+		
+		return mv;
 	}
 
 	@RequestMapping("qnaInsertForm.hmain")
