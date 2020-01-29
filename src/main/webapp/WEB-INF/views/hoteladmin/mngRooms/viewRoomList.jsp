@@ -384,7 +384,7 @@ input[type=checkbox] {
 		<div class="roomSec lightgrey">
 			<c:forEach var="r" items="${ roomList }">
 				<div id="roomBox${ r.rmNo }" class="roomBox">
-					<input type="hidden" value="${ r.rmNo }">
+					<input type="hidden" name="rmNo" value="${ r.rmNo }">
 					<input type="hidden" name="floor" value="${ r.floor }">
 					<div class="statusBox lightgrey">
 						<div class="stClean"></div>
@@ -396,7 +396,7 @@ input[type=checkbox] {
 					</div>
 					<!-- 공실 detail -->
 					<div class="detailBox emptyRoom">
-						<button id="enterBtn${ r.rmNo }" class="enterBtn">재실</button>
+						<button id="enterBtn${ r.rmNo }" class="enterBtn" onclick="goRoom(${ r.rmNo });">재실</button>
 					</div>
 					<!-- 예약 detail -->
 					<div class="detailBox reservRoom">
@@ -441,7 +441,10 @@ input[type=checkbox] {
 	</section>
 		<script>
 			var roomlist;
+			var roomprice;
 			var today;
+			
+			//onload
 			$(function(){
 				$("#allFloor").css({"background-color":"#EAC064", "color":"white"});
 				$(".selectClean").hide();
@@ -449,6 +452,7 @@ input[type=checkbox] {
 				$("#changeFilterA").hide();
 				
 				roomlist = JSON.parse('${jsonList}');
+				roomprice = JSON.parse('${jsonList2}');
 				today = new Date().format("yyyy-MM-dd");
 				console.log(roomlist);
 				
@@ -460,7 +464,9 @@ input[type=checkbox] {
 				var stClean = roomlist.length;
 				var stUnclean = 0;
 				var stBroken = 0;
+				
 				for(var r = 0; r < roomlist.length; r++) {
+					
 					//객실상태 표시
 					if(roomlist[r].stayNo == 0 && roomlist[r].rsvNo == "") {
 						//공실
@@ -546,7 +552,7 @@ input[type=checkbox] {
 				$("#stUnclean").next().text(stUnclean);
 				$("#stBroken").next().text(stBroken);
 				
-				//모달 기본 내용 불러오기
+				//모달 기본 내용 불러오기 (객실타입 / 객실호수)
 				var roomTypeArr = new Array();
 				var tempCnt = 0;
 				roomTypeArr.push(roomlist[0].rtName);
@@ -569,6 +575,9 @@ input[type=checkbox] {
 				}
 				
 			});
+			//onload end
+			
+			
 			
 			//[ 정비 ] 상태 버튼
 			$("#stClean").click(function(){
@@ -587,6 +596,8 @@ input[type=checkbox] {
 				}
 			});
 			
+			
+			
 			//[ 미정비 ] 상태 버튼
 			$("#stUnclean").click(function(){
 				$(".selectUnclean").toggle();
@@ -604,6 +615,8 @@ input[type=checkbox] {
 				}
 			});
 			
+			
+			
 			//상태변경 버튼
 			$("#changeClean").click(function(){
 				$(".selectClean").hide();
@@ -611,6 +624,8 @@ input[type=checkbox] {
 			$("#changeUnclean").click(function(){
 				$(".selectUnclean").hide();
 			});
+			
+			
 			
 			//필터변경 버튼
 			$("#changeFilterF").click(function(){
@@ -630,23 +645,76 @@ input[type=checkbox] {
 				$("hr").remove("#floorHR");
 			});
 			
-			//[ 재실 ] 버튼 클릭 (공실인 경우 룸 클릭)
-			$(".enterBtn").click(function(){
-				var rmNo = $(this).parent().parent().find('input[type=hidden]').val();
+			
+			
+			//모달1 : [ 재실 ] 버튼 클릭 (= 공실)
+			function goRoom(rmNo) {
+				$("#ciCancelBtn").hide();
+				$("#rsvCancelBtn").hide();
+				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn'>");
+				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
+				$("#openMemoMD").prop("disabled", true); $("#openMemoMD").css({"background-color":"lightgrey", "border":"none"});
 				$("#checkinBtn").show();
-				//$("#checkIn").val(today);
-				//$("#checkIn").datepicker('setDate', 'today');
-				//$("#checkIn").selectDate(today);
-				//여기여기여기여기여기여기여기
+				$("#checkIn").val(today);
+				
+				//datepicker
+				date = new Date();
+				checkIn = $("#checkIn").datepicker({
+					autoClose : true,
+					minDate : new Date(),
+					onSelect : function(date) {
+						endNum = date;
+						
+						var ciDay = new Date($("#checkIn").val());
+						var coDay = new Date($("#checkOut").val());
+						var cntDay = (coDay.getTime() - ciDay.getTime()) / (1000*60*60*24);
+						$("select[name=stayDay]").val(cntDay).prop('selected', true);
+						
+						$("#checkOut").datepicker({
+							minDate : new Date(endNum),
+						});
+					}
+				}).data('datepicker');
+
+				checkOut = $("#checkOut").datepicker({
+					autoClose : true,
+					minDate : new Date(),
+					onSelect : function(date) {
+						startNum = date;
+						
+						var ciDay = new Date($("#checkIn").val());
+						var coDay = new Date($("#checkOut").val());
+						var cntDay = (coDay.getTime() - ciDay.getTime()) / (1000*60*60*24);
+						$("select[name=stayDay]").val(cntDay).prop('selected', true);
+					}
+				}).data('datepicker');
+				
+				//선택한 룸 정보로 객실정보 setup
+				var rtNo;
 				for(var i = 0; i < roomlist.length; i++) {
 					if(rmNo == roomlist[i].rmNo) {
-						console.log(rmNo);
+						rtNo = roomlist[i].rtNo;
 						$("#selRoomType").val(roomlist[i].rtName).prop("selected", true);
 						$("#selRoomNum").val(roomlist[i].rmNum + "호").prop("selected", true);
 					}
 				}
+				
+				//요금상세 부분 설정
+				var feedate = new Date().format('MM-dd');
+				var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
+				var feeday = week[new Date().getDay()];
+				for(var i = 0; i < roomprice.length; i++) {
+					if(roomprice[i].rtNo == rtNo && roomprice[i].dayType == feeday && roomprice[i].stayType == 'STAY') {
+						var dayfee = roomprice[i].price.toLocaleString();
+						$(".feeDetailSec table").append("<tr><td>" + feedate + "</td><td>" + dayfee + "</td></tr>");
+						$("#totalRoom").text(dayfee);
+					}
+				}
+
 				$(".modal").fadeIn();
-			});
+			}
+			
+			
 			
 			//층수 버튼 클릭
 			function filterFloor(num) {
@@ -661,12 +729,15 @@ input[type=checkbox] {
 				});
 			}
 			
+			
+			
 			//전체 층수 버튼 클릭
 			$("#allFloor").click(function(){
 				$(".roomBox").show();
 				$("#allFloor").css({"background-color":"#EAC064", "color":"white"});
 				$(".floorBtn").css({"background-color":"white", "color":"black"});
 			});
+			
 			
 			
 			//상태바 클릭

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hotels.mngRooms.model.dao.RoomsDao;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 
 @Service
@@ -23,6 +24,12 @@ public class RoomsServiceImpl implements RoomsService {
 	public ArrayList<RoomList> viewRoomList() throws RoomListException {
 		ArrayList<RoomList> roomList = rd.viewRoomList(sqlSession);
 		return roomList;
+	}
+
+	@Override
+	public ArrayList<Prc> viewRoomPrice() throws RoomListException {
+		ArrayList<Prc> roomPrice = rd.viewRoomPrice(sqlSession);
+		return roomPrice;
 	}
 
 }

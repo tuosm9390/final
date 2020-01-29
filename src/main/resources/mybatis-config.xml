@@ -25,6 +25,8 @@
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.Report" alias="Report"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.stock.Stock" alias="Stock"/>
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.Que" alias="Que"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomList" alias="RoomList" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.Prc" alias="RoomPrice" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
