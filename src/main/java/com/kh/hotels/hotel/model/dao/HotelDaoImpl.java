@@ -1,6 +1,5 @@
 package com.kh.hotels.hotel.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.kh.hotels.hotel.model.exception.QnASelectListException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
@@ -96,6 +96,27 @@ public class HotelDaoImpl implements HotelDao{
 	@Override
 	public int listCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("hotel.selectListCount");
+	}
+
+	@Override
+	public Que selectOneQnA(SqlSessionTemplate sqlSession, Que q) {
+		return sqlSession.selectOne("hotel.selectOneQnA", q);
+	}
+
+	@Override
+	public Ans selectOneAns(SqlSessionTemplate sqlSession, Que q) {
+		return sqlSession.selectOne("hotel.selectOneAns", q);
+	}
+
+	@Override
+	public Member selectMember(SqlSessionTemplate sqlSession, Que selectQnA) {
+		return sqlSession.selectOne("hotel.selectQueMember", selectQnA);
+	}
+
+	@Override
+	public int listCount(SqlSessionTemplate sqlSession, PageInfo pi) {
+		System.out.println("daoimpl.pi : " + pi);
+		return sqlSession.selectOne("hotel.selectListCount", pi);
 	}
 
 }

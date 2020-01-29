@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.kh.hotels.hotel.model.exception.QnASelectListException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
@@ -35,4 +36,12 @@ public interface HotelService {
 	int insertMember(Member m);
 
 	int listCount();
+
+	Que selectOneQnA(Que q);
+
+	Ans selectOneAns(Que q);
+
+	Member selectMember(Que selectQnA);
+
+	int listCount(PageInfo pi);
 }

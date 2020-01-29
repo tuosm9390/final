@@ -243,7 +243,7 @@ input[type=text] {
 							<td>
 								<select id="adult" name="adult">
 									<option value="0" selected>0</option>
-									<c:forEach var="i" begin="1" end="4">
+									<c:forEach var="i" begin="1" end="${ roomInfo.maxPer }">
 									<option value="${ i }">${ i }</option>
 									</c:forEach>
 								</select>
@@ -258,7 +258,7 @@ input[type=text] {
 							<td>
 								<select id="child" name="child">
 									<option value="0" selected>0</option>
-									<c:forEach var="i" begin="1" end="4">
+									<c:forEach var="i" begin="1" end="${ roomInfo.maxPer - 1 }">
 									<option value="${ i }">${ i }</option>
 									</c:forEach>
 								</select>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.hotels.hotel.model.dao.HotelDao;
 import com.kh.hotels.hotel.model.exception.QnASelectListException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
@@ -87,6 +88,26 @@ public class HotelServiceImpl implements HotelService{
 	@Override
 	public int listCount() {
 		return hd.listCount(sqlSession);
+	}
+
+	@Override
+	public Que selectOneQnA(Que q) {
+		return hd.selectOneQnA(sqlSession, q);
+	}
+
+	@Override
+	public Ans selectOneAns(Que q) {
+		return hd.selectOneAns(sqlSession, q);
+	}
+
+	@Override
+	public Member selectMember(Que selectQnA) {
+		return hd.selectMember(sqlSession, selectQnA);
+	}
+
+	@Override
+	public int listCount(PageInfo pi) {
+		return hd.listCount(sqlSession, pi);
 	}
 
 }
