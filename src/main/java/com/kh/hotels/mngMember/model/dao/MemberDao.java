@@ -20,4 +20,6 @@ public interface MemberDao {
 
 	int updateMemberPwd(SqlSessionTemplate sqlSession, Member m);
 
+	int checkHotelSetting(SqlSessionTemplate sqlSession);
+
 }

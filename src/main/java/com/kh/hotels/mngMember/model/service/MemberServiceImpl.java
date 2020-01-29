@@ -83,6 +83,13 @@ public class MemberServiceImpl implements MemberService {
 		
 		return md.updateMemberPwd(sqlSession, m);
 	}
+
+
+	@Override
+	public int checkHotelSetting() {
+
+		return md.checkHotelSetting(sqlSession);
+	}
 	
 	
 

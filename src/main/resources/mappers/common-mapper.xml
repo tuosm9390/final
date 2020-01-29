@@ -295,6 +295,10 @@
 		VALUES(#{svcCode}, #{svcName}, #{salesType}, #{svcPrice}, #{regDate}, 'Y')
 	</insert>
 	
+	<insert id="insertHotelPhoto" parameterType="Attach">
+		INSERT INTO ATTACH(FNO, RT_NO, ORIGIN_NAME, CHANGE_NAME, UPLOAD_DATE, FILE_PATH, FILE_LEVEL, FILE_STATE)
+		VALUES(SEQ_FNO.NEXTVAL, #{rtNo}, #{originName}, #{changeName}, SYSDATE, #{filePath}, #{fileLevel}, 'Y')	
+	</insert>
 </mapper>
 
 

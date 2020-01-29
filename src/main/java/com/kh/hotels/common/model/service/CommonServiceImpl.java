@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.hotels.common.model.dao.CommonDao;
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.Basic;
 import com.kh.hotels.common.model.vo.Cal;
 import com.kh.hotels.common.model.vo.Info;
@@ -106,6 +107,20 @@ public class CommonServiceImpl implements CommonService{
 	public int insertHotelService(ArrayList<Svc> svcList) {
 		
 		return cd.insertHotelService(svcList, sqlSession);
+	}
+
+
+	@Override
+	public int selectPhotoRtNo(String string) {
+
+		return cd.selectPhotoRtNo(string, sqlSession);
+	}
+
+
+	@Override
+	public int insertHotelPhoto(ArrayList<Attach> attachList) {
+		
+		return cd.insertHotelPhoto(attachList, sqlSession);
 	}
 
 	
