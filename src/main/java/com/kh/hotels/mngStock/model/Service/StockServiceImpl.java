@@ -10,8 +10,10 @@ import org.springframework.ui.Model;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.dao.StockDao;
 import com.kh.hotels.mngStock.model.vo.Repair;
+import com.kh.hotels.mngStock.model.vo.Stock;
+import com.kh.hotels.mngStock.model.vo.StockDetail;
 import com.kh.hotels.mngStock.model.vo.Strg;
-import com.kh.hotels.mngStock.model.vo.stock.Stock;
+
 
 @Service
 public class StockServiceImpl implements StockService{
@@ -23,7 +25,7 @@ public class StockServiceImpl implements StockService{
 	@Override
 	public ArrayList<Stock> selectStockList(PageInfo pi) {
 		// TODO Auto-generated method stub
-		return sd.selectStockList(sqlSession);
+		return sd.selectStockList(sqlSession,pi);
 	}
 
 	@Override
@@ -42,6 +44,12 @@ public class StockServiceImpl implements StockService{
 	public int getListCount() {
 		// TODO Auto-generated method stub
 		return sd.getListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<StockDetail> stockDetailList(String iname) {
+		// TODO Auto-generated method stub
+		return sd.selectStockDetailList(sqlSession,iname);
 	}
 	
 	

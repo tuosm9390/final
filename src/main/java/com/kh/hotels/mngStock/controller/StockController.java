@@ -11,14 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.common.controller.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.Service.StockService;
 import com.kh.hotels.mngStock.model.vo.Repair;
+import com.kh.hotels.mngStock.model.vo.Stock;
+import com.kh.hotels.mngStock.model.vo.StockDetail;
 import com.kh.hotels.mngStock.model.vo.Strg;
-import com.kh.hotels.mngStock.model.vo.stock.Stock;
 
 @Controller
 public class StockController {
@@ -37,8 +39,15 @@ public class StockController {
 			int listCount = ss.getListCount();
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			ArrayList<Stock> stockList = ss.selectStockList(pi);
-			
-			m.addAttribute("stocklist", stockList);
+			System.out.println("stockList : " + stockList);
+			for(int i=0;i<stockList.size();i++) {
+				if(stockList.get(i).getType().equals("EQUIP")) {
+					stockList.get(i).setType("비품");
+				}else if(stockList.get(i).getType().equals("CONS")) {
+					stockList.get(i).setType("소모품");
+				}
+			}
+			m.addAttribute("stockList", stockList);
 			m.addAttribute("pi", pi);
 			
 			return "hoteladmin/mngStock/stock/stockNow";
@@ -85,6 +94,20 @@ public class StockController {
 		m.addAttribute("repairList",repairList);
 		System.out.println(repairList);
 		return "hoteladmin/mngStock/stock/repairRequest";
+		
+	}
+	
+	@PostMapping("selectStockDetail.sto")
+	public ModelAndView selectStockDetail(String iname,ModelAndView mv) {
+		
+		System.out.println("con : " + iname);
+		
+		ArrayList<StockDetail> stockDetailList = ss.stockDetailList(iname);
+		System.out.println(stockDetailList);
+		mv.setViewName("jsonView");
+		mv.addObject("stockDetailList",stockDetailList);
+		
+		return mv;
 		
 	}
 	
