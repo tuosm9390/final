@@ -4,11 +4,98 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="Client">
+
+	<resultMap type="Que" id="clientQueResultSet">
+		<id property="qno" column="qno" />
+		<result property="mno" column="mno" />
+		<result property="userName" column="userName" />
+		<result property="qtype" column="qtype" />
+		<result property="qtitle" column="qtitle" />
+		<result property="qdate" column="qdate" />
+		<result property="qcontent" column="qcontent" />
+		<result property="ansStatus" column="ansStatus" />
+		<result property="delStatus" column="delStatus" />
+		<result property="qpwd" column="qpwd" />
+		<result property="pwdStatus" column="pwdStatus" />
+	</resultMap>
+
+	<resultMap type="Stay" id="lastVisitDateResultSet">
+		<result property="checkOut" column="CHECKOUT" />
+	</resultMap>
+
+	<resultMap type="Member" id="clientInfoResultSet">
+		<result property="mno" column="MNO" />
+		<result property="userName" column="NAME" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+	</resultMap>
+	
+	<resultMap type="Member" id="clientListResultSet">
+		<id property="mno" column="MNO" />
+		<result property="userName" column="NAME" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+		<result property="mmemo" column="MMEMO" />
+	</resultMap>
 	
 	<select id="getClientListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM MEMBER
-		WHERE TYPE = 'CLIENT'
+		WHERE TYPE = 'CLIENT' AND STATUS = 'Y'
+	</select>
+	
+	<select id="selectClientList" resultMap="clientListResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE TYPE = 'CLIENT' AND STATUS = 'Y'
+		ORDER BY MNO DESC
+	</select>
+
+	<select id="updateClientStatus" parameterType="_int">
+		UPDATE MEMBER
+		SET STATUS = 'N'
+		WHERE MNO = #{mno}
+	</select>
+	
+	<select id="selectClientInfo" parameterType="_int" resultMap="clientInfoResultSet">
+		SELECT MNO, PHONE, NAME, EMAIL
+		FROM MEMBER
+		WHERE MNO = #{clientMno}
+	</select>
+	
+	<select id="selectVisitCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM STAY
+		WHERE MNO = #{clientMno} AND STAY_STATUS = 'Y'
+	</select>
+	
+	<select id="selectTotalPrice" parameterType="_int" resultType="_int">
+		SELECT NVL(SUM(PRICE), 0)
+		FROM STAY
+		WHERE MNO = #{clientMno}
+	</select>
+	
+	<select id="selectStayDay" parameterType="_int" resultType="_int">
+		SELECT NVL(SUM(CHECKOUT - CHECKIN), 0)
+		FROM STAY
+		WHERE MNO = #{clientMno} AND STAY_STATUS = 'Y'
+	</select>
+	
+	<select id="selectLastVisit" parameterType="_int" resultMap="lastVisitDateResultSet">
+		SELECT CHECKOUT
+		FROM(
+			SELECT ROWNUM, CHECKOUT
+			FROM STAY
+			WHERE MNO = #{clientMno} AND STAY_STATUS = 'Y'
+			ORDER BY CHECKOUT DESC)
+		WHERE ROWNUM = 1
+	</select>
+	
+	<select id="selectClientQue" parameterType="_int" resultMap="clientQueResultSet">
+		SELECT *
+		FROM QUE
+		WHERE MNO = #{clientMno}
+		ORDER BY QNO ASC;
 	</select>
 	
 </mapper>
