@@ -94,8 +94,8 @@ public class HotelDaoImpl implements HotelDao{
 	}
 
 	@Override
-	public int listCount(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("hotel.selectListCount");
+	public int listCount(SqlSessionTemplate sqlSession, Map<String, Object> map) {
+		return sqlSession.selectOne("hotel.selectListCount", map);
 	}
 
 	@Override
@@ -114,9 +114,13 @@ public class HotelDaoImpl implements HotelDao{
 	}
 
 	@Override
-	public int listCount(SqlSessionTemplate sqlSession, PageInfo pi) {
-		System.out.println("daoimpl.pi : " + pi);
-		return sqlSession.selectOne("hotel.selectListCount", pi);
+	public List<RoomInfo> selectRoomNoList(SqlSessionTemplate sqlSession, int roomType) {
+		return sqlSession.selectList("hotel.selectRoomNoList", roomType);
+	}
+
+	@Override
+	public int insertBreakfast(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck) {
+		return sqlSession.insert("hotel.insertBreakfast", rsvCheck);
 	}
 
 }

@@ -224,22 +224,36 @@ cursor: pointer;
 				<br>
 				<!-- 페이징 영역 -->
 				<div class="pagingArea" align="center">
-					<button onclick="location.href='goQnA.hmain?currentPage=1'"><<</button>
+					<c:if test="${ pi.currentPage eq 1 }">
+						<button onclick="javascript: void(0);"><<</button>
+					</c:if>
 					
-					<c:if test="${ pi.currentPage <= 1 }">
+					<c:if test="${ pi.currentPage ne 1 }">
 					<button disabled><</button>
 					</c:if>
 					
 					<c:if test="${ pi.currentPage > 1 }">
-					<button onclick="location.href='goQnA.hmain?currentPage=${ pi.currentPage - 1 }'"><</button>
+					<c:url var="path" value="${ path }">
+						<c:if test="${ path.equals('goQnA.hmain') }">
+							<button onclick="location.href='${ path }'"><</button>
+						</c:if>
+						<c:param name="currentPage" value="${ pi.currentPage - 1 }"></c:param>
+						<c:param name="searchCondition" value="${ searchCondition }"></c:param>
+						<c:param name="searchValue" value="${ searchValue }"></c:param>
+					</c:url>
+					<button onclick="location.href='${ path }'"><</button>
 					</c:if>
 					
 					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-						<c:if test="${ p == pi.currentPage }">
+						<c:if test="${ p eq pi.currentPage }">
 							<button disabled>${ p }</button>
 						</c:if>
 						
-						<c:if test="${ p != pi.currentPage }">
+						<c:if test="${ p ne pi.currentPage }">
+							<c:url var="path" value="${ path }">
+								<c:if test="${ path.equals('goQnA.hmain') }"></c:if>
+								<c:param name=""></c:param>
+							</c:url>
 							<button onclick="location.href='goQnA.hmain?currentPage=${ p }'">${ p }</button>
 						</c:if>
 					</c:forEach>

@@ -3,6 +3,7 @@ package com.kh.hotels.hotel.controller;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -15,9 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.hotels.hotel.controller.Pagination;
 import com.kh.hotels.hotel.model.exception.QnASelectListException;
 import com.kh.hotels.hotel.model.service.HotelService;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
@@ -33,12 +34,14 @@ public class HotelMainContoller {
 	@Autowired
 	private HotelService hs;
 
+	// 호텔 메인 페이지 메소드
 	@RequestMapping("goMain.hmain")
 	public String showHotelMain() {
 
 		return "hotelmain/main/main";
 	}
 
+	// 객실 리스트 메소드
 	@RequestMapping("goRooms.hmain")
 	public ModelAndView showHotelRooms(ModelAndView mv) {
 
@@ -52,6 +55,7 @@ public class HotelMainContoller {
 		return mv;
 	}
 
+	// 객실 정보 조회 메소드
 	@RequestMapping("roomdetail.hmain")
 	public String showHotelRoomsDetail(int roomType, HttpSession session) {
 
@@ -62,10 +66,10 @@ public class HotelMainContoller {
 		return "hotelmain/rooms/roomDetail";
 	}
 
+	// 예약 메소드
 	@RequestMapping("reservation.hmain")
 	public String showHotelRoomReservation(HttpSession session, Reservation rsv, Date checkIn, Date checkOut, int adult,
 			int child) {
-
 		
 		rsv.setCheckIn(checkIn);
 		rsv.setCheckOut(checkOut);
@@ -77,31 +81,13 @@ public class HotelMainContoller {
 		return "hotelmain/rooms/roomReservation";
 	}
 
-//	@RequestMapping("reservationResult.hmain")
-//	public String showHotelRoomReservationResult(HttpServletRequest request,
-//			@DateTimeFormat(iso = ISO.DATE) String CheckIn,
-//			@DateTimeFormat(pattern="yyyy-MM-dd") String CheckOut,
-//			String adult, String children, String checkIntime, String reservName) {
-//
-//		request.setAttribute("CheckIn", CheckIn);
-//		request.setAttribute("CheckOut", CheckOut);
-//		request.setAttribute("adult", adult);
-//		request.setAttribute("children", children);
-//		request.setAttribute("checkIntime", checkIntime);
-//		request.setAttribute("reservName", reservName);
-//		
-//		System.out.println("CheckIn : " + CheckIn);
-//		System.out.println("adult : " + adult);
-//		System.out.println("checkIntime : " + checkIntime);
-//		
-//		return "hotelmain/rooms/roomReservationResult";
-//	}
-
-	@PostMapping("reservationResult.hmain")
-	public ModelAndView InsertReservation(ReservationCheck rsvCheck, ModelAndView mv) {
-		System.out.println("rsvCheck : " + rsvCheck);
+	// 결제 메소드
+	@PostMapping("reservationPay.hmain")
+	public String test(ReservationCheck rsvCheck, int roomType, HttpSession session) {
 		
-		// 날짜 계산
+		System.out.println("roomType : " + roomType);
+		System.out.println(session.getAttribute("rsv"));
+//		 날짜 계산
 		int nYear;
 		int nMonth;
 		int nDay;
@@ -136,6 +122,30 @@ public class HotelMainContoller {
 		System.out.println("생성된 예약번호 : " + rsvNo);
 		rsvCheck.setRsvNo(rsvNo);
 		
+		// 객실호수 지정 메소드
+		List<RoomInfo> roomNoList = hs.selectRoomNoList(roomType);
+		
+		System.out.println("roomNoList : " + roomNoList);
+		
+		// 난수 발생
+		int r = (int) (Math.random() * roomNoList.size());
+		
+		// 객실유형별 호수 갯수만큼 반복돌려서 난수와 같은 index에 있는 호수 지정
+		for(int i = 0; i < roomNoList.size(); i++) {
+			if(i == r) {
+				rsvCheck.setRmNo(roomNoList.get(r).getRm_No());
+			}
+		}
+		
+		session.setAttribute("rsvCheck", rsvCheck);
+		
+		return "hotelmain/rooms/ReservationPayPage";
+	}
+	
+	// 예약 및 결제 결과 메소드
+	@PostMapping("reservationResult.hmain")
+	public ModelAndView InsertReservation(ReservationCheck rsvCheck, ModelAndView mv, SessionStatus session) {
+		
 		// 예약자 회원번호 호출 메소드
 		Member selectMember;
 		selectMember = hs.selectMember(rsvCheck);
@@ -158,8 +168,16 @@ public class HotelMainContoller {
 		}
 		
 		// 예약정보 등록
+		java.util.Date date = new java.util.Date();
+		rsvCheck.setRsvDate(date);
 		System.out.println("rsvCheck : " + rsvCheck);
 		int result = hs.insertReservation(rsvCheck);
+		
+		if(rsvCheck.getRsvOption().equals("Y")) {
+			int insertBreakfast = hs.insertBreakfast(rsvCheck);
+		}
+		
+		session.setComplete();
 		
 		if (result > 0) {
 			mv.addObject("rsvCheck", rsvCheck);
@@ -172,6 +190,7 @@ public class HotelMainContoller {
 		return mv;
 	}
 
+	// 예약 확인 메소드
 	@RequestMapping("ReservationCheck.hmain")
 	public ModelAndView showHotelReservationCheck(ModelAndView mv, String rsvNo, String phone, String userName) {
 
@@ -190,39 +209,63 @@ public class HotelMainContoller {
 		return mv;
 	}
 
+	// 문의 리스트 메소드
 	@RequestMapping("goQnA.hmain")
-	public ModelAndView showHotelQnA(ModelAndView mv, HttpServletRequest request,
-			@RequestParam(value="searchCondition", required = false) String searchCondition,
-			@RequestParam(value="searchValue", required = false) String searchValue) {
+	public ModelAndView showHotelQnA(ModelAndView mv, HttpServletRequest request) {
 		int currentPage = 1;
 		
-		System.out.println("searchCondition : " + searchCondition);
-		System.out.println("searchValue : " + searchValue);
+		Map<String, Object> map = new HashMap<String, Object>();
 		
-		if(request.getParameter("currentPage") != null) {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		}
+		int listCount = hs.listCount(map);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		int listCount = 0;
-		PageInfo p = new PageInfo();
-		PageInfo pi = null;
-		
-		if(searchValue == null) {
-			listCount = hs.listCount(p);
-			pi = Pagination.getPageInfo(currentPage, listCount);
-		} else {
-			p.setSearchCondition(searchCondition);
-			p.setSearchValue(searchValue);
-			listCount = hs.listCount(p);
-			System.out.println("listCount : " + listCount);
-			pi = Pagination.getPageInfo(currentPage, listCount, searchCondition, searchValue);
-		}
-		
-//		Map<String, Que> qnaList = hs.selectQnAList();
 		List<Que> qnaList = null;
 		
 		try {
 			qnaList = hs.selectQnAList(pi);
+			mv.addObject("qnaList", qnaList);
+			mv.addObject("path", "goQnA.hmain");
+			mv.addObject("pi", pi);
+			mv.setViewName("hotelmain/QnA/QnAList");
+		} catch (QnASelectListException e) {
+			mv.addObject("error", "게시물 조회 실패");
+			mv.setViewName("hotelmain/common/errorPage");
+			
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping("searchQnA.hmain")
+	public ModelAndView searchQnA(ModelAndView mv, HttpServletRequest request,
+			@RequestParam(value="searchCondition", required = false) String searchCondition,
+			@RequestParam(value = "searchValue", required = false) String searchValue) {
+		int currentPage = 1;
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (searchCondition != null && searchValue != null) {
+			map.put("searchCondition", searchCondition);
+			map.put("searchValue", searchValue);
+		}
+
+		System.out.println("searchCondition : " + searchCondition);
+		System.out.println("searchValue : " + searchValue);
+
+		if (request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+
+		int listCount = hs.listCount(map);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+
+		List<Que> qnaList = null;
+
+		try {
+			qnaList = hs.selectQnAList(pi);
+			mv.addObject("searchCondition", searchCondition);
+			mv.addObject("searchValue", searchValue);
+			mv.addObject("path", "searchQnA.hmain");
 			mv.addObject("qnaList", qnaList);
 			mv.addObject("pi", pi);
 			mv.setViewName("hotelmain/QnA/QnAList");
@@ -235,6 +278,7 @@ public class HotelMainContoller {
 		return mv;
 	}
 
+	// 문의 상세 페이지 메소드
 	@RequestMapping("qnadetail.hmain")
 	public ModelAndView showHotelQnADetail(ModelAndView mv, Que q, @RequestParam("type") String type,
 			@RequestParam(value="pwd", required=false) String pwd) {
@@ -275,12 +319,14 @@ public class HotelMainContoller {
 		return mv;
 	}
 
+	// 문의 등록 페이지 메소드
 	@RequestMapping("qnaInsertForm.hmain")
 	public String showHotelQnAInsert() {
 
 		return "hotelmain/QnA/InsertQnAForm";
 	}
 	
+	// 문의 등록 메소드
 	@RequestMapping("goQnAInsert.hmain")
 	public ModelAndView insertQnA(ModelAndView mv, Que q, Member m) {
 		
