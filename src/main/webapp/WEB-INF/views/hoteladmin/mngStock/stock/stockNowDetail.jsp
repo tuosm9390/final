@@ -91,17 +91,15 @@
 			<table id="stockTbb">  
 				<tr>  
 					<th><input type="checkbox"></th>
-					<th style="color: #005B9E">대분류</th>
-					<th style="color: #005B9E">중분류</th>
-					<th style="color: #005B9E; width: 200px;">소분류</th>
-					<th style="color: #005B9E">제품번호</th>
-					<th style="color: #005B9E">공급가액</th>
-					<th style="color: #005B9E">부가세</th>
-					<th style="color: #005B9E">단가</th>
-					<th style="color: #005B9E">제조사</th>
-					<th style="color: #005B9E">매입처</th>
-					<th style="color: #005B9E">창고명</th>
-					<th style="color: #005B9E">위치</th>
+					<th>물품코드</th>
+					<th>물품명</th>
+					<th>공급가액</th>
+					<th>부가세</th>
+					<th>단가</th>
+					<th>제조사</th>
+					<th>매입처</th>
+					<th>창고명</th>
+					<th>위치</th>
 				</tr>
 				<tbody id="detailBody">
 				<c:forEach var="i" begin="1" end="19">
@@ -121,6 +119,9 @@
 						
 					</tr>
 				</c:forEach>
+				</tbody>
+				<tbody id="detailBody2">
+				
 				</tbody>
 			</table>
 				
