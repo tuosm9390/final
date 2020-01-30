@@ -223,24 +223,15 @@ width:1000px;
 			<table style="border-collapse: collapse; width: 100%;">  
 				<tr>  
 					<th><input type="checkbox"></th>
-				
 					<th width="250px;">품목명</th>
-					<th>소분류</th>
 					<th>재고수량</th>
-					<th>공급가액</th>
-					<th>제조사</th>
-					<th>매입처</th>
 					<th>품목구분</th>
 				</tr>
 				<c:forEach var="i" items="${stockList }">
 					<tr>
 						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="${i.iname}"/></td>
-						<td><c:out value="${i.scategory} "/></td>
+						<td style="color: #005B9E"><c:out value="${i.sCategory}"/></td>
 						<td><c:out value="${i.cnt }"/></td>
-						<td><c:out value="${i.vos }"/></td>
-						<td><c:out value="${i.mfg }"/></td>
-						<td><c:out value="${i.cnname }"/></td>
 						<td><c:out value="${i.type }"/></td>
 					</tr>
 				</c:forEach>
@@ -312,17 +303,42 @@ width:1000px;
 				$(this).parent("tr").css({"background":"white"});
 			}).click(function(){
 				
-				var iname = $(this).parent().children("td").eq(1).text();
-				
+				var sCategory = $(this).parent().children("td").eq(1).text();
+				console.log(sCategory);
 				$.ajax({
 					url:"selectStockDetail.sto",
 					type:"post",
-					data:{iname:iname},
+					data:{sCategory:sCategory},
 					success:function(data){
 						console.log(data)
-						$("#detailBody").empty();
+						$("#stockTbb").empty();
+						$("#stockTbb").append("<tbody id='detailBody'></tbody>")
+						if(data.stockDetailList[0].type=="EQUIP"){
+							$("#detailBody").append("<tr><th><input type='checkbox'></th><th>물품코드</th><th>물품명</th>"+
+						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th></tr>")
+						}else{
+							$("#detailBody").append("<tr><th><input type='checkbox'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
+						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>객실번호</th></tr>")
+						}
 						for(var i=0;i<data.stockDetailList.length;i++){
-							$("detailBody").append();
+							if(data.stockDetailList[0].type=="EQUIP"){
+							$("#detailBody").append(
+									"<tr><td><input type='checkbox'></td><td>"+
+									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
+									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
+									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
+									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
+									data.stockDetailList[i].areaName+"</td></tr>");
+							}else{
+								$("#detailBody").append(
+									"<tr><td><input type='checkbox'></td><td>"+
+									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
+									data.stockDetailList[i].cnt+"</td><td>"+
+									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
+									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
+									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
+							}
+						
 						}
 					
 					},error:function(status){

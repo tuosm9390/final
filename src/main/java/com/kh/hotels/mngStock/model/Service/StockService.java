@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.Stock;
-import com.kh.hotels.mngStock.model.vo.StockDetail;
 import com.kh.hotels.mngStock.model.vo.Strg;
 
 
@@ -22,6 +21,8 @@ public interface StockService {
 
 	int getListCount();
 
-	ArrayList<StockDetail> stockDetailList(String iname);
+	ArrayList<Stock> stockDetailList(String sCategory);
+
+	
 
 }

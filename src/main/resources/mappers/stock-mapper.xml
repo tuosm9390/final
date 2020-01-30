@@ -6,79 +6,69 @@
 <mapper namespace="Stock">
 	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.Stock" id="resultSetStock">
-	
-		<id property="iname" column="INAME" />
-		<result property="scategory" column="SCATEGORY" />
+		<id property="ino" column="INO" />
+		<result property="iName" column="INAME" /> 
 		<result property="amount" column="AMOUNT" />
+		<result property="up" column="UP" />
+		<result property="vat" column="VAT" />
 		<result property="vos" column="VOS" />
 		<result property="mfg" column="MFG" />
-		<result property="cnname" column="CN_NAME" />
+		<result property="cnName" column="CN_NAME" />
 		<result property="type" column="TYPE" />
 		<result property="cnt" column="CNT" />
-		
+		<result property="areaName" column="AREA_NAME" />
+		<result property="strgName" column="STRG_NAME" />
+		<result property="rmNo" column="RM_NO" />
+		<result property="lCategory" column="LCATEGORY" />
+		<result property="mCategory" column="MCATEGORY" />
+		<result property="sCategory" column="SCATEGORY" />
 	</resultMap>
 	
-	<resultMap type="com.kh.hotels.mngStock.model.vo.StockDetail" id="resultSetStockDetail">
-	<id property="ino" column="INO" />
-		<result property="lcategory" column="LCATEGORY" />
-		<result property="mcategory" column="MCATEGORY" />
-		<result property="scategory" column="SCATEGORY" />
-		<result property="vos" column="VOS" />
-		<result property="vat" column="VAT" />
-		<result property="up" column="UP" />
-		<result property="mfg" column="MFG" />
-		<result property="cnname" column="CN_NAME" />
-		<result property="strgname" column="STRG_NAME" />
-		<result property="areaname" column="AREA_NAME" />
-	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.Repair" id="resultSetRepair">
-		<result property="rptNo" column="RPT_NO" />
+		<id property="rptNo" column="RPT_NO" />
 		<result property="rptTitle" column="RPT_TITLE" />
 		<result property="rptStatus" column="RPT_STATUS" />
 	</resultMap>
 	
 	
-	
-	
 	<!-- 리스트카운트 -->
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*) FROM(
-		SELECT DISTINCT I.INAME,T.SCATEGORY,I.AMOUNT,I.VOS,I.MFG,C.CN_NAME,T.TYPE, N.CNT
+		SELECT DISTINCT T.SCATEGORY,N.CNT,T.TYPE
 		FROM ITEM I
 		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
-		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
-		JOIN STRG_AREA A ON (A.AREA_NO = I.AREA_NO)
-		JOIN STRG S ON (A.STRG_NO = S.STRG_NO)
-		JOIN (SELECT INAME, COUNT(*) AS CNT
-		FROM ITEM
-		GROUP BY INAME) N ON (I.INAME = N.INAME))
+		JOIN (SELECT SCATEGORY, COUNT(*) AS CNT
+		FROM ITEM 
+		JOIN ITEM_TYPE USING(TYPE_NO)
+		GROUP BY SCATEGORY) N ON (T.SCATEGORY = N.SCATEGORY)
+		ORDER BY T.SCATEGORY ASC)
 	</select>
 	
 	<select id="selectStockList" resultMap="resultSetStock">
-		SELECT DISTINCT I.INAME,T.SCATEGORY,I.AMOUNT,I.VOS,I.MFG,C.CN_NAME,T.TYPE, N.CNT
+		SELECT DISTINCT T.SCATEGORY,N.CNT,T.TYPE
 		FROM ITEM I
 		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
-		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
-		JOIN STRG_AREA A ON (A.AREA_NO = I.AREA_NO)
-		JOIN STRG S ON (A.STRG_NO = S.STRG_NO)
-		JOIN (SELECT INAME, COUNT(*) AS CNT
-		FROM ITEM
-		GROUP BY INAME) N ON (I.INAME = N.INAME)
+		JOIN (SELECT SCATEGORY, COUNT(*) AS CNT
+		FROM ITEM 
+		JOIN ITEM_TYPE USING(TYPE_NO)
+		GROUP BY SCATEGORY) N ON (T.SCATEGORY = N.SCATEGORY)
+		ORDER BY T.SCATEGORY ASC
 	</select>
 	
 	
 	
 	<!-- 물품 디테일 -->
 	
-	<select id="selectStockDetailList" resultMap="resultSetStockDetail">
-		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME
-		FROM STRG_AREA A
-		JOIN STRG S ON (S.STRG_NO=A.STRG_NO)
-		JOIN ITEM I ON (I.AREA_NO=A.AREA_NO)
-		JOIN ITEM_TYPE T ON (I.TYPE_NO=T.TYPE_NO)
+	<select id="selectStockDetailList" resultMap="resultSetStock">
+		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.AMOUNT*I.UNIT AS CNT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM AS RM_NO,T.TYPE
+		FROM ITEM I
+		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
 		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
-		WHERE I.INAME=#{iname}
+        LEFT JOIN ROOM R ON (I.RM_NO=R.RM_NO)  
+		LEFT JOIN STRG_AREA A ON (A.AREA_NO = I.AREA_NO)
+		LEFT JOIN STRG S ON (A.STRG_NO = S.STRG_NO)
+        WHERE SCATEGORY =#{sCategory}
 	</select>
 	
 
