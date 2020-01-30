@@ -156,7 +156,7 @@
 				<fmt:parseNumber var="startDate_N" value="${startDate_D.time/(1000*60*60*24)}" integerOnly="true"/>
 				<fmt:parseNumber var="endDate_N" value="${endDate_D.time/(1000*60*60*24)}" integerOnly="true"/>
 				
-				<form action="reservationResult.hmain" method="post" id="reservationInfo">
+				<form action="reservationPay.hmain?roomType=${ sessionScope.roomInfo.rt_No }" method="post" id="reservationInfo">
 					<table class="reservation-table" width="90%">
 						<tr>
 							<td colspan="4"><li>숙박 일정</li></td>
@@ -213,8 +213,8 @@
 						</tr>
 						<tr>
 							<td><li>투숙 인원</li></td>
-							<td colspan="5">성인 <input type="hidden" id="adult" name="adult" value="${ sessionScope.rsv.adult }">${ sessionScope.rsv.adult }명 &emsp;
-							소인 <input type="hidden" id="child" name="child" value="${ sessionScope.rsv.child }">${ sessionScope.rsv.child }명</td>
+							<td colspan="5">대인 ${ sessionScope.rsv.adult }명 &emsp;
+							소인 ${ sessionScope.rsv.child }명</td>
 						</tr>
 						<tr>
 							<td><li>예약자명</li></td>
@@ -239,36 +239,21 @@
 							</td>
 							<td rowspan="2" style="line-height: 30px;">
 								<ul class="option">
-									<li><label>금연객실</label></li>
-									<li><label>반려동물 동반</label></li>
 									<li><label>조식선택</label></li>
-									<li><label>침대유형</label></li>
 								</ul>
 							</td>
 							<td colspan="2" rowspan="2" style="line-height: 30px; width: 50%;">
 								<ul class="option-radio">
 									<li>
-										<label id="non-smoke-y"><input type="radio" name="non-smoke" value="Y" checked>Y</label>&emsp;
-										<label id="non-smoke-n"><input type="radio" name="non-smoke" value="N">N</label>
-									</li>
-									<li>
-										<label id="animal-y"><input type="radio" name="animal" value="Y">Y</label>&emsp;
-										<label id="animal-n"><input type="radio" name="animal" value="N"checked>N</label>
-									</li>
-									<li>
-										<label id="breakfast-y"><input type="radio" name="breakfast" value="Y" checked>Y</label>&emsp;
-										<label id="breakfast-n"><input type="radio" name="breakfast" value="N">N</label>
-									</li>
-									<li>
-										<label id="bed-twin"><input type="radio" name="bed" value="" checked>트윈</label>
-										<label id="bed-double"><input type="radio" name="bed" value="">더블</label>
+										<label><input type="radio" id="breakfast-y" name="rsvOption" value="Y" checked>Y</label>&emsp;
+										<label><input type="radio" id="breakfast-n" name="rsvOption" value="N">N</label>
 									</li>
 								</ul>
 							</td>
 						</tr>
 						<tr>
 							<td style="vertical-align: text-top;"><li>요청사항</li></td>
-							<td colspan="3"><textarea rows="3" cols="30" style="resize: none; height: auto;"></textarea>
+							<td colspan="3"><textarea name="rsvReq" rows="3" cols="30" style="resize: none; height: auto;"></textarea>
 						</tr>
 					</table>
 				</form>
@@ -382,7 +367,16 @@
 						return false;
 					} else {
 						if($("#agreement").prop("checked") == true){
-// 							location.href='reservationResult.hmain';
+
+							// 옵션 선택사항 값 전달
+							if($("#breakfast-y").prop("checked") == true){
+								$(this).attr("disabled", false);
+								$("#breakfast-n").attr("disabled", true);
+							} else if($("#breakfast-n").prop("checked") == true){
+								$(this).attr("disabled", false);
+								$("#breakfast-y").attr("disabled", true);
+							};
+							
 							$("#reservationInfo").submit();
 						} else {
 							alert("환불 규정을 확인해주세요.");

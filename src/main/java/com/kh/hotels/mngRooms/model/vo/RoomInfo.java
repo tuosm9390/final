@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomInfo {
+	private int rm_No;
 	private int std_Per;
 	private String rm_Option;
 	private int rt_No;

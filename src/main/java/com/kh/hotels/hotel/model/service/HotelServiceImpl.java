@@ -86,8 +86,8 @@ public class HotelServiceImpl implements HotelService{
 	}
 
 	@Override
-	public int listCount() {
-		return hd.listCount(sqlSession);
+	public int listCount(Map<String, Object> map) {
+		return hd.listCount(sqlSession, map);
 	}
 
 	@Override
@@ -106,8 +106,13 @@ public class HotelServiceImpl implements HotelService{
 	}
 
 	@Override
-	public int listCount(PageInfo pi) {
-		return hd.listCount(sqlSession, pi);
+	public List<RoomInfo> selectRoomNoList(int roomType) {
+		return hd.selectRoomNoList(sqlSession, roomType);
+	}
+
+	@Override
+	public int insertBreakfast(ReservationCheck rsvCheck) {
+		return hd.insertBreakfast(sqlSession, rsvCheck);
 	}
 
 }

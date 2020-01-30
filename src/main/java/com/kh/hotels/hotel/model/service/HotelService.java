@@ -35,7 +35,7 @@ public interface HotelService {
 
 	int insertMember(Member m);
 
-	int listCount();
+	int listCount(Map<String, Object> map);
 
 	Que selectOneQnA(Que q);
 
@@ -43,5 +43,7 @@ public interface HotelService {
 
 	Member selectMember(Que selectQnA);
 
-	int listCount(PageInfo pi);
+	List<RoomInfo> selectRoomNoList(int roomType);
+
+	int insertBreakfast(ReservationCheck rsvCheck);
 }
