@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.kh.hotels.mngApproval.model.dao.ApprovalDao;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PurVos;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -165,6 +166,18 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return list;
 	}
 
+
+	@Override
+	public int selectVosEquip(PurVos pv) {
+		
+		
+		int price = ad.selectVosPrice(sqlSession, pv);
+		return price;
+	}
+
+
+
+	
 
 	
 
