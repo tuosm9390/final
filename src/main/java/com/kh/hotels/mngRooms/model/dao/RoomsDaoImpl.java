@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
+import com.kh.hotels.mngRooms.model.vo.ServiceList;
 
 @Repository
 public class RoomsDaoImpl implements RoomsDao {
@@ -28,6 +29,15 @@ public class RoomsDaoImpl implements RoomsDao {
 			throw new RoomListException("Error : View RoomPrice Failed");
 		}
 		return roomPrice;
+	}
+
+	@Override
+	public ArrayList<ServiceList> viewServiceList(SqlSessionTemplate sqlSession) throws RoomListException {
+		ArrayList<ServiceList> svcList = (ArrayList) sqlSession.selectList("Rooms.viewServiceList");
+		if(svcList == null) {
+			throw new RoomListException("Error : View ServiceList Failed");
+		}
+		return svcList;
 	}
 
 }
