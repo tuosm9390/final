@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PurVos;
 
 @Repository
 public class ApprovalDaoImpl implements ApprovalDao{
@@ -135,6 +136,16 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		
 		return (List)sqlSession.selectList("Report.selectMadeComName", value);
 	}
+
+	@Override
+	public int selectVosPrice(SqlSessionTemplate sqlSession, PurVos pv) {
+		
+		
+		
+		return (int)sqlSession.selectOne("Report.selectVosPrice", pv);
+	}
+
+	
 
 
 	/*

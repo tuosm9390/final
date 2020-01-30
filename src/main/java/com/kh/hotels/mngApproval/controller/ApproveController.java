@@ -1,5 +1,6 @@
 package com.kh.hotels.mngApproval.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.hotels.common.controller.Pagination;
+import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.service.ApprovalService;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
+import com.kh.hotels.mngApproval.model.vo.PurVos;
 import com.kh.hotels.mngApproval.model.vo.Report;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
@@ -395,16 +397,18 @@ public class ApproveController {
       
       return null;
    }
-   @GetMapping("showVos.ap")
-   public ModelAndView showVos(HttpServletRequest request, ModelAndView mv, String iName) {
-      
-      int vos = as.selectVos(iName);
-      
-      
-      return null;
-   }
+
+	/*
+	 * @GetMapping("showVos.ap") public ModelAndView showVos(HttpServletRequest
+	 * request, ModelAndView mv, String iName) {
+	 * 
+	 * int vos = as.selectVos(iName);
+	 * 
+	 * 
+	 * return null; }
+	 */
    @GetMapping("itemType.ap")
-   public ModelAndView itemType(HttpServletRequest requestm, ModelAndView mv, String value) {
+   public ModelAndView itemType(HttpServletRequest request, ModelAndView mv, String value) {
       
       try {
          
@@ -426,7 +430,7 @@ public class ApproveController {
       
    }
    @GetMapping("itemName.ap")
-   public ModelAndView itemName(HttpServletRequest requestm, ModelAndView mv, String value) {
+   public ModelAndView itemName(HttpServletRequest request, ModelAndView mv, String value) {
       
       List<String> list;
 	try {
@@ -452,7 +456,7 @@ public class ApproveController {
    }
    //제조사 찾기
    @GetMapping("madeComName.ap")
-   public ModelAndView madeComName(HttpServletRequest requestm, ModelAndView mv, String value) {
+   public ModelAndView madeComName(HttpServletRequest request, ModelAndView mv, String value) {
       
       List<String> list;
 	try {
@@ -461,6 +465,8 @@ public class ApproveController {
 		 mv.addObject("list", list);
 	      mv.setViewName("jsonView");
 	      System.out.println("list : " + list);
+	      
+	      System.out.println("cnName : " + list);
 	      
 	      return mv;
 		
@@ -475,6 +481,32 @@ public class ApproveController {
       
      
       
+   }
+   @GetMapping("selectVos.ap")
+   public ModelAndView selectVos(HttpServletRequest request, ModelAndView mv, String type, String cnName, String iname, String madeComName) {
+	   
+	  System.out.println("type : " + type);
+	  System.out.println("type : " + cnName);
+	  System.out.println("type : " + iname);
+	  System.out.println("type : " + madeComName);
+	   
+	   PurVos pv = new PurVos();
+	   pv.setCnName(cnName);
+	   pv.setIname(iname);
+	   pv.setMadeComName(madeComName);
+	   pv.setType(type);
+	   
+	   
+	   
+	   int vos = as.selectVosEquip(pv);
+	   mv.addObject("vos", vos);
+	   mv.setViewName("jsonView");
+	   
+	   System.out.println("vos : "+ vos);
+	   
+	   
+	   
+	   return mv;
    }
    
    
