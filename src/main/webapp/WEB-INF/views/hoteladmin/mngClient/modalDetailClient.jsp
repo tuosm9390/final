@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>MODAL</title>
 <style>
-.modalplus {
+.modalDetail {
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -17,7 +17,7 @@
 	z-index: 5;
 }
 
-.modal_content {
+.modal_content2 {
 	position: absolute;
 	left: 47%;
 	top: 50%;
@@ -28,13 +28,13 @@
 	background-color: white;
 }
 
-.modal_content_real {
+.modal_content_real2 {
 	margin-top: 10px;
 	width: 740px;
 	height: 440px;
 }
 
-.btn_close_plus {
+.btn_close_plus2 {
 	position: absolute;
 	top: -1%;
 	left: 95.5%;
@@ -43,50 +43,50 @@
 	color: white;
 }
 
-.btn_close_plus:hover {
+.btn_close_plus2:hover {
 	cursor: pointer;
 }
 
-.titleBarplus {
+.titleBarplus2 {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	color: white;
 	background-color: royalblue;
 }
 
-.titleBarplus h2 {
+.titleBarplus2 h2 {
 	margin-top: 0;
 	margin-bottom: 0;
 	margin-left: 10px;
 }
 
-.clientInfoPlus {
+.clientInfoPlus2 {
 	width: 700px;
 	height: 60px; 
 	margin-bottom: 10px;
 	margin-left: 20px;
 }
 
-.clientInfoPlus td:nth-child(2n-1), .clientSttPlus td:nth-child(2n-1) {
+.clientInfoPlus2 td:nth-child(2n-1), .clientSttPlus td:nth-child(2n-1) {
 	width: 20%;
 	text-align: right;
 }
 
-.clientInfoPlus td:nth-child(2n), .clientSttPlus td:nth-child(2n) {
+.clientInfoPlus2 td:nth-child(2n), .clientSttPlus td:nth-child(2n) {
 	width: 30%;
 }
 
-.clientInfoPlus input, .clientSttPlus input {
+.clientInfoPlus2 input, .clientSttPlus input {
 	width: 170px;
 	margin-left: 10px;
 }
 
-.modalplus input[readonly] {
+.modalDetail2 input[readonly] {
 	background-color: #E4E2E2;
 	border: 1px solid darkgray;
 }
 
-.clientHisPlus {
+.clientHisPlus2 {
 	width: 700px;
 	margin-left: 20px;
 	height: 240px;
@@ -96,27 +96,27 @@
 	border-bottom: 1px solid darkgray;
 }
 
-.stayHisSec th {
+.stayHisSec2 th {
 	background-color: #f7f7f7;
   	color: #005B9E;
 }
 
-.stayHisSec th, .stayHisSec td {
+.stayHisSec2 th, .stayHisSec2 td {
 	text-align: center;
 	border: 1px solid lightgrey;
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
 
-.stayHisSec th:nth-child(1), .stayHisSec td:nth-child(1) {
+.stayHisSec2 th:nth-child(1), .stayHisSec2 td:nth-child(1) {
 	border-left: none;
 }
 
-.stayHisSec th:last-child, .stayHisSec td:last-child {
+.stayHisSec2 th:last-child, .stayHisSec2 td:last-child {
 	border-right: none;
 }
 
-.changecontent {
+.changecontent2 {
 	margin-left: 20px;
 	margin-right: 20px;
 	padding-top: 10px;
@@ -124,11 +124,11 @@
 	border-bottom: 1px solid lightgrey;
 }
 
-.changecontent span {
+.changecontent2 span {
 	font-weight: bold;
 }
 
-.clientSttPlus {
+.clientSttPlus2 {
 	width: 700px;
 	height: 60px; 
 	margin-bottom: 10px;
@@ -136,13 +136,13 @@
 	margin-left: 20px;
 }
 
-.btnSecPlus {
+.btnSecPlus2 {
 	width: 740px;
 	height: 46px;
 	display: inline-flex;
 }
 
-#stayHisPlus, #changeHisPlus {
+#stayHisPlus2, #changeHisPlus2 {
 	width: 246px;
 	height: 46px;
 	margin-right: 1px;
@@ -152,7 +152,7 @@
 	border: none;
 }
 
-#saveBtnPlus {
+#saveBtnPlus2 {
 	border: none;
 	width: 246px;
 	height: 46px;
@@ -161,36 +161,39 @@
 	color: white;
 	font-weight: bold;
 }
+.clientSttPlus2bottom input{
+	text-align:center;
+}
 </style>
 </head>
 <body>
-	<div class="modalplus">
-		<div class="modal_content">
-			<div class="titleBarplus">
-				<h2>고객등록</h2>
-				<a class="btn_close_plus">×</a>
+	<div class="modalDetail">
+		<div class="modal_content2">
+			<div class="titleBarplus2">
+				<h2>고객관리</h2>
+				<a class="btn_close_plus2">×</a>
 			</div>
 			
-			<div class="modal_content_real">
-				<div class="clientInfoPlus">
+			<div class="modal_content_real2">
+				<div class="clientInfoPlus2">
 					<table>
 						<tr>
 							<td>고객번호</td>
-							<td><input type="text" value="20292030" readonly></td>
+							<td><input type="text" value="20292030" class="clientDetailMno" readonly></td>
 							<td>전화</td>
-							<td><input type="tel"></td>
+							<td><input type="tel" class="clientDetailPhone"></td>
 						</tr>
 						<tr>
 							<td>* 고객명</td>
-							<td><input type="text"></td>
+							<td><input type="text" class="clientDetailName"></td>
 							<td>이메일</td>
-							<td><input type="email"></td>
+							<td><input type="email" class="clientDetailEmail"></td>
 						</tr>
 					</table>
 				</div>
 				
-				<div class="clientHisPlus">
-					<div class="stayHisSec">
+				<div class="clientHisPlus2">
+					<div class="stayHisSec2">
 						<table align="center" style="border-collapse: collapse; margin:0; width:700px;">
 							<tr>
 								<th width="6%">번호</th>
@@ -215,8 +218,8 @@
 						</table>
 					</div>
 					
-					<div class="changeHisSec">
-						<div class="changecontent">
+					<div class="changeHisSec2">
+						<div class="changecontent2">
 							<table>
 								<tr><td colspan="2" style="font-weight: bold">2020-01-01 01:23:32</td></tr>
 								<tr>
@@ -240,27 +243,27 @@
 					</div>
 				</div>
 				
-				<div class="clientSttPlus">
-					<table>
+				<div class="clientSttPlus2">
+					<table align="center" class="clientSttPlus2bottom">
 						<tr>
 							<td>방문횟수</td>
-							<td><input type="text" readonly></td>
+							<td><input type="text" class="clientDetailVisitCount" readonly></td>
 							<td>매출</td>
-							<td><input type="text" readonly></td>
+							<td><input type="text" class="clientDetailTotalPrice" readonly></td>
 						</tr>
 						<tr>
 							<td>투숙박수</td>
-							<td><input type="text" readonly></td>
+							<td><input type="text" class="clientDetailStayDay"  readonly></td>
 							<td>최종방문일자</td>
-							<td><input type="text" readonly></td>
+							<td><input type="text" class="clientDetailLastVisit" readonly></td>
 						</tr>
 					</table>
 				</div>
 			
-				<div class="btnSecPlus">
-					<button id="stayHisPlus">투숙이력</button>
-					<button id="changeHisPlus">문의이력</button>
-					<button id="saveBtnPlus">저장</button>
+				<div class="btnSecPlus2">
+					<button id="stayHisPlus2">투숙이력</button>
+					<button id="changeHisPlus2">문의이력</button>
+					<button id="saveBtnPlus2">저장</button>
 				</div>
 			</div>
 		</div>
@@ -268,21 +271,21 @@
 
 	<script>
 		$(document).ready(function() {
-			$(".stayHisSec").hide();
-			$(".changeHisSec").hide();
+			$(".stayHisSec2").hide();
+			$(".changeHisSec2").hide();
 			
-			$(".btn_close_plus").click(function() {
-				$(".modalplus").fadeOut();
+			$(".btn_close_plus2").click(function() {
+				$(".modalDetail").fadeOut();
 			});
 		});
 		
-		$("#stayHisPlus").click(function(){
-			$(".stayHisSec").show();
-			$(".changeHisSec").hide();
+		$("#stayHisPlus2").click(function(){
+			$(".stayHisSec2").show();
+			$(".changeHisSec2").hide();
 		});
-		$("#changeHisPlus").click(function(){
-			$(".stayHisSec").hide();
-			$(".changeHisSec").show();
+		$("#changeHisPlus2").click(function(){
+			$(".stayHisSec2").hide();
+			$(".changeHisSec2").show();
 		});
 	</script>
 </body>

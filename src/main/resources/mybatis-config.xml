@@ -18,6 +18,8 @@
 		<typeAlias type="com.kh.hotels.common.model.vo.OffSeason" alias="OffSeason"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Season" alias="Season"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Attach" alias="Attach"/>
+		<typeAlias type="com.kh.hotels.mngStay.model.vo.Stay" alias="Stay"/>
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.Que" alias="Que"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomInfo" alias="RoomInfo"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomType" alias="RoomType"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.Room" alias="Room"/>
