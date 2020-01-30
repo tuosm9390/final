@@ -47,10 +47,12 @@ public class StockServiceImpl implements StockService{
 	}
 
 	@Override
-	public ArrayList<StockDetail> stockDetailList(String iname) {
+	public ArrayList<Stock> stockDetailList(String sCategory) {
 		// TODO Auto-generated method stub
-		return sd.selectStockDetailList(sqlSession,iname);
+		return sd.selectStockDetailList(sqlSession,sCategory);
 	}
+
+
 	
 	
 	

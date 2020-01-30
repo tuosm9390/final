@@ -442,6 +442,7 @@ input[type=checkbox] {
 		<script>
 			var roomlist;
 			var roomprice;
+			var svclist;
 			var today;
 			
 			//onload
@@ -453,6 +454,7 @@ input[type=checkbox] {
 				
 				roomlist = JSON.parse('${jsonList}');
 				roomprice = JSON.parse('${jsonList2}');
+				svclist = JSON.parse('${jsonList3}');
 				today = new Date().format("yyyy-MM-dd");
 				console.log(roomlist);
 				
@@ -573,7 +575,6 @@ input[type=checkbox] {
 				for(var i = 0; i < roomTypeArr.length; i++) {
 					$("#selRoomType").append("<option>" + roomTypeArr[i] + "</option>")
 				}
-				
 			});
 			//onload end
 			
@@ -655,10 +656,12 @@ input[type=checkbox] {
 				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
 				$("#openMemoMD").prop("disabled", true); $("#openMemoMD").css({"background-color":"lightgrey", "border":"none"});
 				$("#checkinBtn").show();
-				$("#checkIn").val(today);
 				
 				//datepicker
 				date = new Date();
+				$("#checkIn").val(today);
+				var sttfeeday = new Date();
+				var endfeeday = 0;
 				checkIn = $("#checkIn").datepicker({
 					autoClose : true,
 					minDate : new Date(),
@@ -669,6 +672,9 @@ input[type=checkbox] {
 						var coDay = new Date($("#checkOut").val());
 						var cntDay = (coDay.getTime() - ciDay.getTime()) / (1000*60*60*24);
 						$("select[name=stayDay]").val(cntDay).prop('selected', true);
+						
+						sttfeeday = new Date(date.substring(0,4), date.substring(5,7), date.substring(8,10));
+						changeModalFee(sttfeeday, endfeeday);
 						
 						$("#checkOut").datepicker({
 							minDate : new Date(endNum),
@@ -686,33 +692,86 @@ input[type=checkbox] {
 						var coDay = new Date($("#checkOut").val());
 						var cntDay = (coDay.getTime() - ciDay.getTime()) / (1000*60*60*24);
 						$("select[name=stayDay]").val(cntDay).prop('selected', true);
+						if(cntDay != 0) {
+							$("#rentYN").prop("checked", false);
+						}
+						
+						endfeeday = new Date(date.substring(0,4), date.substring(5,7), date.substring(8,10));
+						changeModalFee(sttfeeday, endfeeday);
 					}
 				}).data('datepicker');
 				
-				//선택한 룸 정보로 객실정보 setup
+				$("#rentYN").change(function(){
+					changeModalFee(sttfeeday, endfeeday);
+				});
+				
+				$("select[name=stayDay]").change(function(){
+					if(endfeeday == 0) {
+						endfeeday = $("#checkOut").val();
+						console.log(endfeeday);
+					}
+					changeModalFee(sttfeeday, endfeeday);
+				});
+				
+				//선택한 룸 정보로 객실정보(+인원수 제한) setup
 				var rtNo;
+				var stdPer;
+				var maxPer;
 				for(var i = 0; i < roomlist.length; i++) {
 					if(rmNo == roomlist[i].rmNo) {
 						rtNo = roomlist[i].rtNo;
+						stdPer = roomlist[i].stdPer;
+						maxPer = roomlist[i].maxPer;
 						$("#selRoomType").val(roomlist[i].rtName).prop("selected", true);
 						$("#selRoomNum").val(roomlist[i].rmNum + "호").prop("selected", true);
 					}
 				}
 				
-				//요금상세 부분 설정
-				var feedate = new Date().format('MM-dd');
-				var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
-				var feeday = week[new Date().getDay()];
-				for(var i = 0; i < roomprice.length; i++) {
-					if(roomprice[i].rtNo == rtNo && roomprice[i].dayType == feeday && roomprice[i].stayType == 'STAY') {
-						var dayfee = roomprice[i].price.toLocaleString();
-						$(".feeDetailSec table").append("<tr><td>" + feedate + "</td><td>" + dayfee + "</td></tr>");
-						$("#totalRoom").text(dayfee);
-					}
+				//여기여기여기
+				for(var i = 1; i <= stdPer; i++) {
+					$("select[name=adultSu]:last-child").append("<option>" + i + "</option>");
+					$("select[name=childSu]:last-child").append("<option>" + i + "</option>");
 				}
-
+				
+				//요금상세 부분 설정 함수
+				function detailModalFee(feedate, data, totalFee) {
+					var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
+					var feedateD = new Date(feedate.substring(0,4), feedate.substring(5,7), feedate.substring(8,10));
+					var feeday = week[feedateD.getDay()];
+					for(var i = 0; i < roomprice.length; i++) {
+						if(roomprice[i].rtNo == rtNo && roomprice[i].dayType == feeday && roomprice[i].stayType == data) {
+							var dayfee = roomprice[i].price.toLocaleString();
+							totalFee += roomprice[i].price;
+							$(".feeDetailSec table").append("<tr><td>" + feedate.substring(5) + "</td><td>" + dayfee + "</td></tr>");
+						}
+					}
+					$("#totalRoom").text(totalFee.toLocaleString());
+					return totalFee;
+				}
+				
+				//요금상세 부분 설정
+				detailModalFee(new Date().format('yyyy-MM-dd'), 'LENT', 0);
+				
+				//요금상세 동적 변화
+				function changeModalFee(sttfeeday, endfeeday) {
+					if(endfeeday == 0 || $("#rentYN").prop('checked')) {
+						$(".feeDetailSec tr").remove();
+						detailModalFee(new Date().format('yyyy-MM-dd'), 'LENT', 0);
+					} else {
+						$(".feeDetailSec tr").remove();
+						var feedayscnt = $("select[name=stayDay]").val() * 1;
+						var totalFee = 0;
+						for(var i = 0; i < feedayscnt; i++) {
+							var tempday = new Date(sttfeeday.getFullYear(), sttfeeday.getMonth(), sttfeeday.getDate() + i);
+							var feeday = tempday.format('yyyy-MM-dd');
+							totalFee += detailModalFee(feeday, 'STAY', totalFee);
+						}
+					}	
+				}
+				
 				$(".modal").fadeIn();
 			}
+			
 			
 			
 			

@@ -255,7 +255,7 @@
 	<script>
 		$(function(){
 			$(".materiel").click(function(){
-				location.href='goMateriel.hadmin';
+				location.href='selectStock.sto';
 			})
 		});
 		

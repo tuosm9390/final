@@ -37,7 +37,7 @@ public interface HotelDao {
 
 	int insertMember(SqlSessionTemplate sqlSession, Member m);
 
-	int listCount(SqlSessionTemplate sqlSession);
+	int listCount(SqlSessionTemplate sqlSession, Map<String, Object> map);
 
 	Que selectOneQnA(SqlSessionTemplate sqlSession, Que q);
 
@@ -45,6 +45,8 @@ public interface HotelDao {
 
 	Member selectMember(SqlSessionTemplate sqlSession, Que selectQnA);
 
-	int listCount(SqlSessionTemplate sqlSession, PageInfo pi);
+	List<RoomInfo> selectRoomNoList(SqlSessionTemplate sqlSession, int roomType);
+
+	int insertBreakfast(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
 
 }

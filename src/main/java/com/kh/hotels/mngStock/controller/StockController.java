@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.hotels.common.controller.Pagination;
+import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.Service.StockService;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.Stock;
-import com.kh.hotels.mngStock.model.vo.StockDetail;
 import com.kh.hotels.mngStock.model.vo.Strg;
 
 @Controller
@@ -98,12 +97,15 @@ public class StockController {
 	}
 	
 	@PostMapping("selectStockDetail.sto")
-	public ModelAndView selectStockDetail(String iname,ModelAndView mv) {
+	public ModelAndView selectStockDetail(String sCategory,ModelAndView mv) {
 		
-		System.out.println("con : " + iname);
+		System.out.println("con : " + sCategory);
 		
-		ArrayList<StockDetail> stockDetailList = ss.stockDetailList(iname);
-		System.out.println(stockDetailList);
+		
+		ArrayList<Stock> stockDetailList = ss.stockDetailList(sCategory);
+		
+		System.out.println("stockDetailList : " + stockDetailList);
+		
 		mv.setViewName("jsonView");
 		mv.addObject("stockDetailList",stockDetailList);
 		

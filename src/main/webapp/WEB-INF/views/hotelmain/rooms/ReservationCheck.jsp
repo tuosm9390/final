@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -122,7 +123,7 @@
 						</tr>
 						<tr>
 							<td><li>결제금액</li></td>
-							<td><label>${ ReservationCheck.stayPrice }</label></td>
+							<td><label>${ ReservationCheck.stayPrice } 원</label></td>
 						</tr>
 						<tr>
 							<td><li>체크인일자</li></td>
@@ -145,23 +146,21 @@
 					</tr>
 					<tr>
 						<td><li>객실 인원</li></td>
-						<td><label>성인</label>&emsp;<label>${ ReservationCheck.adult }명</label></td>
+						<td><label>대인</label>&emsp;<label>${ ReservationCheck.adult }명</label></td>
 						<td><label>소인</label>&emsp;<label>${ ReservationCheck.child }명</label></td>
 					</tr>
 					<tr>
 						<td><li>옵션</li></td>
 						<td colspan="4">
 							<div style="width: 350px;" class="reservation-option">
-								<label>더블베드</label>
-								<label>비흡연</label>
-								<label>반려동물 동반</label>
-								<label>조식포함</label>
+								<label>조식 <c:if test="${ ReservationCheck.rsvOption eq 'Y'}">포함</c:if>
+								<c:if test="${ ReservationCheck.rsvOption eq 'N'}">불포함</c:if></label>
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td><li>요청사항</li></td>
-						<td colspan="4"><label>요청사항</label></td>
+						<td colspan="4"><label>${ ReservationCheck.rsvReq }</label></td>
 					</tr>
 				</table>
 				<br>

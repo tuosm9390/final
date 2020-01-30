@@ -45,9 +45,11 @@ public class StockDaoImpl implements StockDao{
 	}
 
 	@Override
-	public ArrayList<StockDetail> selectStockDetailList(SqlSessionTemplate sqlSession, String iname) {
+	public ArrayList<Stock> selectStockDetailList(SqlSessionTemplate sqlSession, String sCategory) {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("Stock.selectStockDetailList",iname);
+		return (ArrayList)sqlSession.selectList("Stock.selectStockDetailList", sCategory);
 	}
+
+
 
 }

@@ -34,6 +34,8 @@
 		<result property="brkEnd" column="BRK_END" />
 		<result property="brkRsn" column="BRK_RSN" />
 		<result property="realCI" column="REAL_CI" />
+		<result property="stdPer" column="STD_PER" />
+		<result property="maxPer" column="MAXPER" />
 	</resultMap>
 	
 	<resultMap type="RoomPrice" id="roomPriceSet">
@@ -46,12 +48,21 @@
 		<result property="regDate" column="REG_DATE" />
 	</resultMap>
 	
+	<resultMap type="ServiceList" id="serviceSet">
+		<id property="svcCode" column="SVC_CODE" />
+		<result property="svcName" column="SVC_NAME" />
+		<result property="salesType" column="SALES_TYPE" />
+		<result property="svcPrice" column="SVC_PRICE" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="svcStatus" column="SVC_STATUS" />
+	</resultMap>
+	
 	<select id="viewRoomList" resultMap="roomListSet">
 		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
 		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
 		       V.RSV_NO, TO_CHAR(V.CHECKIN, 'yyyy-MM-dd') AS "R_CHECKIN", TO_CHAR(V.CHECKOUT, 'yyyy-MM-dd') AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
 		       M1.MNO AS "RMNO", M1.NAME AS "RNAME", M2.MNO AS "SMNO", M2.NAME AS "SNAME", TO_CHAR(B.BRK_BEGIN, 'yyyy-MM-dd') AS "BRK_BEGIN", TO_CHAR(B.BRK_END, 'yyyy-MM-dd') AS "BRK_END",
-		       BRK_RSN
+		       BRK_RSN, R.STD_PER, T.MAXPER
 		FROM ROOM R
 		LEFT JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
 		LEFT JOIN ROOM_STT N ON (R.RM_NO = N.RM_NO)
@@ -81,7 +92,11 @@
 		                  WHEN EXTRACT(MONTH FROM SYSDATE) IN (1, 2, 7, 8, 12) THEN 'SEASON'
 		                  ELSE 'OFFSEASON'
 		                  END
-		AND RPNO <![CDATA[ < ]]> 100
 	</select>
 
+	<select id="viewServiceList" resultMap="serviceSet">
+		SELECT *
+		FROM SVC
+		WHERE SVC_STATUS = 'Y'
+	</select>
 </mapper>

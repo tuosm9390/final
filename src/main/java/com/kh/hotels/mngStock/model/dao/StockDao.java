@@ -22,7 +22,9 @@ public interface StockDao {
 
 	int getListCount(SqlSessionTemplate sqlSession);
 
-	ArrayList<StockDetail> selectStockDetailList(SqlSessionTemplate sqlSession, String iname);
+	ArrayList<Stock> selectStockDetailList(SqlSessionTemplate sqlSession, String sCategory);
+
+
 
 
 
