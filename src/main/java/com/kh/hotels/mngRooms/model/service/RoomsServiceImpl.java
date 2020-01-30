@@ -10,6 +10,7 @@ import com.kh.hotels.mngRooms.model.dao.RoomsDao;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
+import com.kh.hotels.mngRooms.model.vo.ServiceList;
 
 @Service
 public class RoomsServiceImpl implements RoomsService {
@@ -30,6 +31,12 @@ public class RoomsServiceImpl implements RoomsService {
 	public ArrayList<Prc> viewRoomPrice() throws RoomListException {
 		ArrayList<Prc> roomPrice = rd.viewRoomPrice(sqlSession);
 		return roomPrice;
+	}
+
+	@Override
+	public ArrayList<ServiceList> viewServiceList() throws RoomListException {
+		ArrayList<ServiceList> svcList = rd.viewServiceList(sqlSession);
+		return svcList;
 	}
 
 }

@@ -224,9 +224,9 @@ select[name=selRoomType], select[name=selRoomNum] {
 	margin-right: 20px;
 }
 
-.feeDetailBar {
-	margin-top: 27px;
-	display: inline-flex;
+.feeDetailBar table {
+	margin-top: 22px;
+	width: 400px;
 }
 
 .feeDetailSec {
@@ -253,9 +253,9 @@ select[name=selRoomType], select[name=selRoomNum] {
 	text-align: right;
 }
 
-.svcDetailBar {
-	margin-top: 20px;
-	display: inline-flex;
+.svcDetailBar table {
+	margin-top: 22px;
+	width: 400px;
 }
 
 #svcAddBtn {
@@ -318,9 +318,9 @@ input[name=svcFee], input[name=svcTot] {
 	font-weight: bold;
 }
 
-.totalDetailBar {
-	margin-top: 27px;
-	display: inline-flex;
+.totalDetailBar table {
+	margin-top: 22px;
+	width: 400px;
 }
 
 .totalDetailSec {
@@ -524,13 +524,9 @@ input[name=svcFee], input[name=svcTot] {
 						<td><div class="Mred"></div></td>
 						<td>성인/소인</td>
 						<td>성인 : <select name="adultSu">
-							<c:forEach var="i" begin="1" end="10">
-								<option>${ i }</option>
-							</c:forEach>
+							<option>0</option>
 						</select> / 소인 : <select name="childSu">
-							<c:forEach var="i" begin="1" end="10">
-								<option>${ i }</option>
-							</c:forEach>
+							<option>0</option>
 						</select>
 						</td>
 					</tr>
@@ -572,8 +568,12 @@ input[name=svcFee], input[name=svcTot] {
 			<div class="chargeBar"><h1 style="margin-left: 20px;">요금상세</h1><button id="printRecipt">영수증 출력</button></div>
 			<div class="charge">
 				<div class="feeDetailBar">
-					<h4>객실료</h4>
-					<h4 style="margin-left: 285px;" id="totalRoom"></h4>
+					<table>
+						<tr>
+							<td width="20%"><h4>객실료</h4></td>
+							<td style="text-align:right;" width="80%"><h4 id="totalRoom"></h4></td>
+						</tr>
+					</table>
 				</div>
 				<div class="feeDetailSec">
 					<table style="border-collapse: collapse;">
@@ -581,30 +581,39 @@ input[name=svcFee], input[name=svcTot] {
 				</div>
 
 				<div class="svcDetailBar">
-					<h4>서비스</h4>
-					<button id="svcAddBtn">+</button>
-					<h4 style="margin-left: 255px;">100,000</h4>
+					<table>
+						<tr>
+							<td width="15%"><h4>서비스</h4></td>
+							<td width="5%"><button id="svcAddBtn" style="margin-left:0;">+</button></td>
+							<td style="text-align:right;" width="80%"><h4 id="totalSvc">0</h4></td>
+						</tr>
+					</table>
 				</div>
 				<div class="svcDetailSec">
 					<table style="border-collapse: collapse;">
-						<tr>
-							<td width="20%">01-11</td>
-							<td width="30%"><select name="selSvc">
-									<option>1시간추가</option>
-									<option>2시간추가</option>
-									<option>3시간추가</option>
+						<tr class="svcTR">
+							<td width="20%"></td>
+							<td width="30%"><select name="selSvc" onchange="selSvcName(this.id, this.value);">
+								<option selected hidden>서비스 선택</option>
+								<c:forEach var="s" items="${ svcList }">
+									<option value="${ s.svcCode }">${ s.svcName }</option>
+								</c:forEach>
 							</select></td>
-							<td width="10%"><input type="number" name="svcCnt" min="0"></td>
-							<td width="15%"><input type="number" name="svcFee" min="0"></td>
-							<td width="15%"><input type="number" name="svcTot" min="0"></td>
-							<td width="8%"><button id="svcDelBtn">×</button></td>
+							<td width="10%"><input type="number" name="svcCnt" min="0" placeholder="수량" onchange="selSvcCnt(this.id)"></td>
+							<td width="15%"><input type="number" name="svcFee" min="0" placeholder="가격"></td>
+							<td width="15%"><input type="number" name="svcTot" min="0" placeholder="합계"></td>
+							<td width="8%"><button id="svcDelBtn" onclick="svcDelBtn(this)">×</button></td>
 						</tr>
 					</table>
 				</div>
 
 				<div class="totalDetailBar">
-					<h4>총금액</h4>
-					<h4 style="margin-left: 285px;">123,456</h4>
+					<table>
+						<tr>
+							<td width="20%"><h4>총금액</h4></td>
+							<td style="text-align:right;" width="80%"><h4 id="totalPrc">0</h4></td>
+						</tr>
+					</table>
 				</div>
 				<div class="totalDetailSec">
 					<table>
@@ -691,8 +700,9 @@ input[name=svcFee], input[name=svcTot] {
 				$("input").val('');
 				$("#checkIn").remove();
 				$("#checkOut").remove();
-				$(".modal").fadeOut();
 				$(".feeDetailSec tr").remove();
+				$(".svcDetailSec tr:not(:first)").remove();
+				$(".modal").fadeOut();
 			});
 			
 			$("#insertClient").click(function(){
@@ -707,6 +717,7 @@ input[name=svcFee], input[name=svcTot] {
 			$("#checkinBtn").hide();
 			$(".infoBtnSec").hide();
 			$("#printRecipt").hide();
+			$(".svcTR").css('display', 'none');
 			
 			
 			$(".btn_close_sub").click(function() {
@@ -732,6 +743,40 @@ input[name=svcFee], input[name=svcTot] {
 			var coDay = new Date(today); coDay.setDate(coDay.getDate() + plusDay); coDay = coDay.format("yyyy-MM-dd");
 			$("#checkOut").val(coDay);
 		});
+
+		var tempsvccnt = 0;
+		$("#svcAddBtn").click(function(){
+			var cloneSvc = $(".svcTR").clone();
+			cloneSvc.attr('class', 'svcTRc').css({'display':'table-row', 'width':'100%'});
+			cloneSvc.find('select').attr('id', 'selSvc' + tempsvccnt);
+			cloneSvc.find('input[type=number]').eq(0).attr('id', 'svcCnt' + tempsvccnt);
+			$(".svcDetailSec table").append(cloneSvc);
+			$(".svcDetailSec tr:last-child").children().eq(0).text(new Date().format('MM-dd'));
+			tempsvccnt++;
+		});
+		
+		function svcDelBtn(data) {
+			$(data).parent().parent().remove();
+		}
+		
+		function selSvcName(thisEl, svcCode){
+			for(var i = 0; i < svclist.length; i++) {
+				if(svclist[i].svcCode == svcCode) {
+					var svcPrc = svclist[i].svcPrice;
+				}
+			}
+			var thisElparent = $("#" + thisEl).parent().parent();
+			thisElparent.children().eq(2).children().val('1');
+			thisElparent.children().eq(3).children().val(svcPrc);
+			thisElparent.children().eq(4).children().val(svcPrc);
+		}
+		
+		function selSvcCnt(thisEl) {
+			var thisElparent = $("#" + thisEl).parent().parent();
+			var cnt = $("#" + thisEl).val();
+			var prc = thisElparent.children().eq(3).children().val();
+			thisElparent.children().eq(4).children().val(cnt * prc);
+		}
 		
 	</script>
 </body>

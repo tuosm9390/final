@@ -14,10 +14,12 @@ public class RoomList {
 	private String rmNum;			//객실 호실수
 	private int floor;				//객실 층수
 	private String rmStatus;		//객실 사용여부
+	private int stdPer;				//기준인원
 	
 	//객실유형 (ROOM_TYPE)
 	private int rtNo;				//객실유형 고유번호
 	private String rtName;			//객실유형명 고유번호
+	private int maxPer;				//최대수용인원
 
 	//객실현황 (ROOM_STT)
 	private String cleanStatus;		//객실 정비 상태
