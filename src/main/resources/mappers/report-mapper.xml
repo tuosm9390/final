@@ -4,6 +4,25 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Report">
+	<resultMap id="purRequestResultSet" type="PurRequest">
+		<result property="rptNo" column="RPT_NO"></result>
+		<result property="ino" column="INO"></result>
+		<result property="cnCode" column="CN_CODE"></result>
+		<result property="amount" column="AMOUNT"></result>
+		<result property="totPrice" column="TOT_PRICE"></result>
+		<result property="purRsn" column="PUR_RSN"></result>
+		<result property="deptNo" column="DEPT_NO"></result>
+		<result property="mName" column="NAME"></result>
+		<result property="rptDate" column="RPT_DATE"></result>
+		<result property="sName" column="NAME"></result>
+		<result property="title" column="RPT_TITLE"></result>
+		<result property="type" column="TYPE"></result>
+		<result property="cname" column="CN_NAME"></result>
+		<result property="iname" column="INAME"></result>
+		<result property="mfg" column="MFG"></result>
+		<result property="vos" column="VOS"></result>
+	</resultMap>
+	
 	<resultMap type="com.kh.hotels.mngApproval.model.vo.Report"
 		id="resultSetReport">
 
@@ -94,10 +113,10 @@
 		"AMOUNT",IT.LCATEGORY AS "LCATEGORY",
 		I.VOS AS "VOS", PE.TOT_PRICE AS
 		"TPRICE", PE.PUR_RSN AS "PRSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
-		"UP", IT.TYPE AS "ITYPE"
+		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG"
 		FROM REPORT R, PUR_REQ PE, MEMBER M, ITEM I,
 		DEPT D, STAFF ST,
-		ITEM_TYPE IT, (SELECT
+		ITEM_TYPE IT, CONN C, (SELECT
 		MNO, NAME
 		FROM MEMBER
 		WHERE MNO IN
@@ -110,6 +129,7 @@
 		R.RECEIVER = S.MNO
 		AND
 		M.MNO = ST.MNO
+        AND I.CN_CODE = C.CN_CODE
 		AND ST.DEPT_NO = D.DEPT_NO
 		AND
 		R.RPT_NO = PE.RPT_NO
@@ -229,20 +249,34 @@
 		WHERE
 		IT.TYPE = #{value}
 	</select>
-	<select id="selectItemName" parameterType="String"
-		resultType="java.util.HashMap">
-		SELECT DISTINCT INAME
-		FROM CONN C
-		JOIN ITEM I ON(C.CN_CODE =
-		I.CN_CODE)
-		WHERE C.CN_NAME = #{value}
+	<select id="selectItemName" parameterType="PurRequest"
+		resultMap="purRequestResultSet">
+		SELECT INAME, INO
+		FROM (SELECT INAME, MAX(INO) AS "INO"
+      	FROM CONN C
+     	 JOIN ITEM I ON(C.CN_CODE = I.CN_CODE)
+      	WHERE MFG = #{mfg}
+      	AND CN_NAME = #{cname}
+      	GROUP BY INAME)
 	</select>
 	<select id="selectMadeComName" parameterType="String"
 		resultType="java.util.HashMap">
 		SELECT DISTINCT MFG
-		FROM ITEM
-		WHERE INAME = #{value}
+		FROM ITEM I
+        JOIN CONN C ON(I.CN_CODE = C.CN_CODE)
+		WHERE  C.CN_NAME = #{value} 
 	</select>
+	<select id="selectVosPrice" resultType="_int"
+		parameterType="PurVos">
+		SELECT DISTINCT VOS
+		FROM ITEM I 
+		JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
+		JOIN CONN C ON (I.CN_CODE = C.CN_CODE)
+		WHERE INAME = #{iname}
+		AND TYPE = #{type}
+		AND CN_NAME = #{cnName}
+		AND MFG =  #{madeComName} 
+		</select>
 
 
 </mapper>

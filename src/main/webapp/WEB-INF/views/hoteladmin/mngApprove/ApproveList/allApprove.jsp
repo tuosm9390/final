@@ -351,7 +351,7 @@ solid
            			    $("#tbl_modal_order tr:first-child").children().eq(1).text(list.DOCNO);
            			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(list.MNAME);
            			 	if(list.RSTATUS == "APPR") {
-           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(list.MNAME);
+           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(list.SNAME);
            			 	}
            			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
            			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(list.DNAME);
@@ -541,28 +541,31 @@ solid
              		 	    	 
              		 	    	 console.log(data.list.length);
              		 	    	  if(i == 0) {
-         		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].RNUM);
-         		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].ITYPE);
+         		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].ITYPE);
+         		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].CNAME);
          		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
-         		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].AMOUNT);
+         		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].MFG);
          		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
-         		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+         		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].AMOUNT);
+         		    		 	    	$("#tbl_modal #repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
          		    		 	    	$("#tbl_modal #repeat").append("</tr>");
          		    		 	    	totalPrice += ctr * amount;
              		 	    	  }else {
          		    		 	    	var $sunTr = $("</tr><tr>");
-         						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
-         						 		var $ctr2 = "<td>" + data.list[i].LCATEGORY + "</td>";
+         						 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
+         						 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
          						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
-         						 		var $ctr4 = "<td>" + data.list[i].AMOUNT + "</td>";
+         						 		var $ctr4 = "<td>" + data.list[i].MFG + "</td>";
          						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
-         						 		var $ctr6 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
+         						 		var $ctr6 = "<td>" + data.list[i].AMOUNT + "</td>";
+         						 		var $ctr7 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
          						 		$sunTr.append($ctr1);
          						 		$sunTr.append($ctr2);
          						 		$sunTr.append($ctr3);
          						 		$sunTr.append($ctr4);
          						 		$sunTr.append($ctr5);
          						 		$sunTr.append($ctr6);
+         						 		$sunTr.append($ctr7);
          						 		$("#tbl_modal #repeat").after($sunTr); 
          						 		totalPrice += ctr * amount;
              		 	    	  } 
@@ -941,51 +944,55 @@ solid
         		 	    	 
         		 	    	 
         		 	    	 console.log(data.list.length);
-        		 	    	  if(i == 0) {
-    		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].RNUM);
-    		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].ITYPE);
-    		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
-    		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].AMOUNT);
-    		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
-    		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
-    		    		 	    	$("#tbl_modal #repeat").append("</tr>");
-    		    		 	    	totalPrice += ctr * amount;
-        		 	    	  }else {
-    		    		 	    	var $sunTr = $("</tr><tr>");
-    						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
-    						 		var $ctr2 = "<td>" + data.list[i].LCATEGORY + "</td>";
-    						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
-    						 		var $ctr4 = "<td>" + data.list[i].AMOUNT + "</td>";
-    						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
-    						 		var $ctr6 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
-    						 		$sunTr.append($ctr1);
-    						 		$sunTr.append($ctr2);
-    						 		$sunTr.append($ctr3);
-    						 		$sunTr.append($ctr4);
-    						 		$sunTr.append($ctr5);
-    						 		$sunTr.append($ctr6);
-    						 		$("#tbl_modal #repeat").after($sunTr); 
-    						 		totalPrice += ctr * amount;
-        		 	    	  } 
-        		 	    	
-        		 	    	  
-        		 	    	
-        		 	    
-        		   }
-        		 	     $("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
-        		 	     console.log(list.PRSN)
-        		 	    $("#tbl_modal #content").children().children().text(list.PRSN);
-        		 	     
-        		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
-    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
-    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
-    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
-    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
-    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
-        			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
-        			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
-        			   $(".modal").fadeIn();
-    		   },
+        		 	    	if(i == 0) {
+ 		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].ITYPE);
+ 		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].CNAME);
+ 		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
+ 		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].MFG);
+ 		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
+ 		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].AMOUNT);
+ 		    		 	    	$("#tbl_modal #repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+ 		    		 	    	$("#tbl_modal #repeat").append("</tr>");
+ 		    		 	    	totalPrice += ctr * amount;
+     		 	    	  }else {
+ 		    		 	    	var $sunTr = $("</tr><tr id='repeat'>");
+ 						 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
+ 						 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
+ 						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
+ 						 		var $ctr4 = "<td>" + data.list[i].MFG + "</td>";
+ 						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
+ 						 		var $ctr6 = "<td>" + data.list[i].AMOUNT + "</td>";
+ 						 		var $ctr7 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
+ 						 		$sunTr.append($ctr1);
+ 						 		$sunTr.append($ctr2);
+ 						 		$sunTr.append($ctr3);
+ 						 		$sunTr.append($ctr4);
+ 						 		$sunTr.append($ctr5);
+ 						 		$sunTr.append($ctr6);
+ 						 		$sunTr.append($ctr7);
+ 						 		$("#tbl_modal #repeat").after($sunTr); 
+ 						 		totalPrice += ctr * amount;
+     		 	    	  } 
+     		 	    	
+     		 	    	  
+     		 	    	
+     		 	    
+     		   }
+     		 	     $("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
+     		 	     console.log(list.PRSN)
+     		 	    $("#tbl_modal #content").children().children().text(list.PRSN);
+     		 	     
+     		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
+     			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
+     			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
+     			   $(".modal").fadeIn();
+     	
+ 		   },
     		   error:function(data) {
     			   alert("에러요");
     			   
@@ -1366,51 +1373,55 @@ solid
 				        		 	    	 
 				        		 	    	 
 				        		 	    	 console.log(data.list.length);
-				        		 	    	  if(i == 0) {
-				    		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].RNUM);
-				    		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].LCATEGORY);
-				    		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
-				    		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].AMOUNT);
-				    		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
-				    		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
-				    		    		 	    	$("#tbl_modal #repeat").append("</tr>");
-				    		    		 	    	totalPrice += ctr * amount;
-				        		 	    	  }else {
-				    		    		 	    	var $sunTr = $("</tr><tr>");
-				    						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
-				    						 		var $ctr2 = "<td>" + data.list[i].LCATEGORY + "</td>";
-				    						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
-				    						 		var $ctr4 = "<td>" + data.list[i].AMOUNT + "</td>";
-				    						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
-				    						 		var $ctr6 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
-				    						 		$sunTr.append($ctr1);
-				    						 		$sunTr.append($ctr2);
-				    						 		$sunTr.append($ctr3);
-				    						 		$sunTr.append($ctr4);
-				    						 		$sunTr.append($ctr5);
-				    						 		$sunTr.append($ctr6);
-				    						 		$("#tbl_modal #repeat").after($sunTr); 
-				    						 		totalPrice += ctr * amount;
-				        		 	    	  } 
-				        		 	    	
-				        		 	    	  
-				        		 	    	
-				        		 	    
-				        		   }
-				        		 	     $("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
-				        		 	     console.log(list.PRSN)
-				        		 	    $("#tbl_modal #content").children().children().text(list.PRSN);
-				        		 	     
-				        		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
-				    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
-				    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
-				    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
-				    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
-				    	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
-				        			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
-				        			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
-				        			   $(".modal").fadeIn();
-				    		   },
+				        		 	    	if(i == 0) {
+		         		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].ITYPE);
+		         		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].CNAME);
+		         		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
+		         		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].MFG);
+		         		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
+		         		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].AMOUNT);
+		         		    		 	    	$("#tbl_modal #repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+		         		    		 	    	$("#tbl_modal #repeat").append("</tr>");
+		         		    		 	    	totalPrice += ctr * amount;
+		             		 	    	  }else {
+		         		    		 	    	var $sunTr = $("</tr><tr>");
+		         						 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
+		         						 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
+		         						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
+		         						 		var $ctr4 = "<td>" + data.list[i].MFG + "</td>";
+		         						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
+		         						 		var $ctr6 = "<td>" + data.list[i].AMOUNT + "</td>";
+		         						 		var $ctr7 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
+		         						 		$sunTr.append($ctr1);
+		         						 		$sunTr.append($ctr2);
+		         						 		$sunTr.append($ctr3);
+		         						 		$sunTr.append($ctr4);
+		         						 		$sunTr.append($ctr5);
+		         						 		$sunTr.append($ctr6);
+		         						 		$sunTr.append($ctr7);
+		         						 		$("#tbl_modal #repeat").after($sunTr); 
+		         						 		totalPrice += ctr * amount;
+		             		 	    	  } 
+		             		 	    	
+		             		 	    	  
+		             		 	    	
+		             		 	    
+		             		   }
+		             		 	     $("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
+		             		 	     console.log(list.PRSN)
+		             		 	    $("#tbl_modal #content").children().children().text(list.PRSN);
+		             		 	     
+		             		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
+		         	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
+		         	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
+		         	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
+		         	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
+		         	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
+		             			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
+		             			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
+		             			   $(".modal").fadeIn();
+		             	
+		         		   },
 				    		   error:function(data) {
 				    			   alert("에러요");
 				    			   
