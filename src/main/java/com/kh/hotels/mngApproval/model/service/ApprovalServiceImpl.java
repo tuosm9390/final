@@ -1,6 +1,5 @@
 package com.kh.hotels.mngApproval.model.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.hotels.mngApproval.model.dao.ApprovalDao;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 
 @Service
@@ -141,18 +141,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 
-	@Override
-	public List<String> selectItemName(String value) throws ReportException {
-		
-		List<String> list = ad.selectItemName(sqlSession, value);
-		
-		if(list == null) {
-			throw new ReportException("에러발생~~");
-		}
-		
-		
-		return list;
-	}
+	
 
 
 	@Override
@@ -173,6 +162,32 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		int price = ad.selectVosPrice(sqlSession, pv);
 		return price;
+	}
+
+
+	@Override
+	public List<String> selectItemName(PurRequest pRequest) throws ReportException {
+	
+		
+		List<String> list = ad.selectItemName(sqlSession, pRequest);
+		
+		if(list == null) {
+			throw new ReportException("에러발생~~");
+		}
+		
+		
+		return list;
+	}
+
+
+	@Override
+	public int insertList(PurRequest purRequest) {
+		
+		int result = ad.insertPurchase(sqlSession,purRequest);
+		
+		
+		
+		return result;
 	}
 
 

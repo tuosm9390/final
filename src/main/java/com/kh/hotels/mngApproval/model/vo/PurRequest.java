@@ -13,7 +13,22 @@ public class PurRequest {
 	private int ino;
 	private String cnCode;
 	private int amount;
-	private int totPrice;
+	private String totPrice;
 	private String purRsn;
-	
+	private String deptNo;
+	private String mname;
+	private String rptDate;
+	private String sname;
+	private String title;
+	private String content;
+	private String type;
+	private String cname;
+	private String iname;
+	private String mfg;
+	private int vos;
+	private int price;
+	private int docno;
+	private String deptname;
+	private String sinfo;
+	private int smno;
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 import com.kh.hotels.mngApproval.model.vo.Report;
 
@@ -36,12 +37,15 @@ public interface ApprovalService {
 
 	List<String> selectConnName(String value) throws ReportException;
 
-	List<String> selectItemName(String value) throws ReportException;
 
 	List<String> selectMadeComName(String value) throws ReportException;
 
 
 	int selectVosEquip(PurVos pv);
+
+	List<String> selectItemName(PurRequest pRequest) throws ReportException;
+
+	int insertList(PurRequest purRequest);
 
 	
 	

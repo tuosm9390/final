@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 import com.kh.hotels.mngApproval.model.vo.Report;
 
@@ -34,10 +35,13 @@ public interface ApprovalDao {
 	List<String> selectConnName(SqlSessionTemplate sqlSession, String value);
 
 
-	List<String> selectItemName(SqlSessionTemplate sqlSession, String value);
 
 	List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value);
 
 	int selectVosPrice(SqlSessionTemplate sqlSession, PurVos pv);
+
+	List<String> selectItemName(SqlSessionTemplate sqlSession, PurRequest pRequest);
+
+	int insertPurchase(SqlSessionTemplate sqlSession, PurRequest purRequest);
 
 }

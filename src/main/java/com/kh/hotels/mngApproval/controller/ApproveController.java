@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.hotels.common.model.vo.Pagination;
+import com.kh.hotels.hotel.controller.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.service.ApprovalService;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
@@ -249,7 +249,7 @@ public class ApproveController {
             mv.setViewName("jsonView");
             
             
-            
+            System.out.println("list : " + list);
             
             return mv;
             
@@ -332,68 +332,20 @@ public class ApproveController {
       
    }
    @RequestMapping("insertPurchase.ap")
-   public ModelAndView insertPurchase(HttpServletRequest request, Model m, int sMno, int mMno, String title,
-                        String content, int tblDocuNum, String rptDate, String tblTeam, String[] tdArr) {
+   public ModelAndView insertPurchase(HttpServletRequest request, Model m, PurRequest pRequest) {
+      
+      System.out.println("pRequest : " + pRequest);
+      
+      PurRequest purRequest = new PurRequest();
+      
+      int result = as.insertList(purRequest);
       
       
-        System.out.println("sMno : " + sMno); System.out.println("title : " + title);
-        System.out.println("content : " + content);
-        System.out.println("tblDocuNum : " + tblDocuNum);
-        System.out.println("rptDate : " + rptDate); System.out.println("tblTeam : " +
-        tblTeam);
+      
+      
+      
+      
        
-      
-      //int mMno = 
-      
-      HashMap<String, Object> hmap = new HashMap<>();
-      
-      
-      
-      Report report = new Report();
-      PurRequest pRequest = new PurRequest();
-      
-      report.setDocNo(tblDocuNum);
-      report.setMno(mMno);
-      report.setReceiver(sMno);
-      report.setRptDate(rptDate);
-      report.setRptTitle(title);
-      pRequest.setPurRsn(content);
-      //pRequest.setAmount(amount);
-      
-      System.out.println(tdArr.length);
-      
-      //ITEM, ITEM_TYPE, 끝
-      Item item = new Item();
-      ItemType itemType = new ItemType();
-      
-      
-      
-      
-      int count = tdArr.length / 6;
-      
-      
-      
-      /*
-       * for(int i = 0; i < tdArr.length; i++) { System.out.println(tdArr[i]);
-       * //System.out.println("count : " + tdArr.length); List<HashMap<String,
-       * Object>> list = as.selectInsertInfoList(tdArr[3], );
-       * 
-       * 
-       * if(tdArr.count)
-       * 
-       * 
-       * 
-       * }
-       */
-      System.out.println("totalcount : " + count);
-      
-      
-      
-      
-      
-      //List<HashMap<String, Object>> list = 
-      
-      
       
       return null;
    }
@@ -415,7 +367,7 @@ public class ApproveController {
          List<String> connName = as.selectConnName(value);
          mv.addObject("value", connName);
          mv.setViewName("jsonView");
-         System.out.println("connName : " + connName);
+         
          
          return mv;
       } catch (ReportException e) {
@@ -430,30 +382,38 @@ public class ApproveController {
       
    }
    @GetMapping("itemName.ap")
-   public ModelAndView itemName(HttpServletRequest request, ModelAndView mv, String value) {
+   public ModelAndView itemName(HttpServletRequest request, ModelAndView mv, String mfg, String cname) {
       
-      List<String> list;
-	try {
-		list = as.selectItemName(value);
+      List<String> list = new ArrayList();
+      PurRequest pRequest = new PurRequest();
+      pRequest.setCname(cname);
+      pRequest.setMfg(mfg);
+	
+      System.out.println("value : " + mfg);
+      System.out.println("notax : " + cname);
+      
+		try {
+			list = as.selectItemName(pRequest);
+			
+			 mv.addObject("list", list);
+		      mv.setViewName("jsonView");
+		      System.out.println("씨발 여기 안들어오니? : " + list);
+		      
+		      return mv;
+			
+			
+		} catch (ReportException e) {
+			  return mv;
+		}
 		
-		 mv.addObject("list", list);
-	      mv.setViewName("jsonView");
-	      System.out.println("list : " + list);
-	      
-	      return mv;
 		
-	} catch (ReportException e) {
-		mv.addObject("msg", e.getMessage()); 
-        mv.setViewName("jsonView");
-        
+
         
        
-       return mv;
 	}
       
      
       
-   }
    //제조사 찾기
    @GetMapping("madeComName.ap")
    public ModelAndView madeComName(HttpServletRequest request, ModelAndView mv, String value) {
@@ -489,6 +449,11 @@ public class ApproveController {
 	  System.out.println("type : " + cnName);
 	  System.out.println("type : " + iname);
 	  System.out.println("type : " + madeComName);
+	  
+		/*
+		 * if(type.equals("비품")) { type = ""; type = "EQUIP"; }else { type = ""; type =
+		 * "CONS"; }
+		 */
 	   
 	   PurVos pv = new PurVos();
 	   pv.setCnName(cnName);

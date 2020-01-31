@@ -98,6 +98,13 @@ textarea {
 	border:1px solid lightgray;
 	width:110px;
 }
+#vos, #totalPrice {
+	border-radius:3px;
+	height:22px;
+	border:1px solid lightgray;
+	width:110px;
+	text-align:center;
+}
 .anoTxt_cate {
 	border-radius:3px;
 	height:22px;
@@ -151,6 +158,18 @@ textarea {
 	border:1px solid lightgray;
 	background:white;
 }
+#btn {
+	width:60px;
+	height:35px;
+	border-radius:2px;
+	border:1px solid lightgray;
+}
+#docuNo {
+	border-radius:2px;
+	height:30px;
+	text-align:center;
+	border:1px solid lightgray;
+}
 
 
 
@@ -167,7 +186,7 @@ textarea {
 	<div class="tbl_wrap purchase">
 		<div class="inArea">
 		
-		<form action="insertPurchase.ap" method="get">
+		<form action="insertPurchase.ap" method="get" >
 		
 			<div class="resultBtnPur">
 				<button id="pre" onclick="preWatch();">미리보기</button>
@@ -190,13 +209,13 @@ textarea {
 				</tr>
 				<tr class="tbl_tit">
 					<td>문서번호</td>
-					<td colspan="3" id="txt_docu" style="text-align:center;"></td>
+					<td colspan="3"style="text-align:center;"><input type="text" name="docno" id="docuNo"></td>
 					
 					
 				</tr>
 				<tr class="tbl_tit">
 					<td>기안부서</td>
-					<td>구매팀</td>
+					<td >구매팀</td>
 					<td>기안자</td>
 					<td><c:out value="${sessionScope.loginUser.userName }"/><input type="hidden" value="${sessionScope.loginUser.mno }"></td>
 					
@@ -204,30 +223,30 @@ textarea {
 				
 				<tr class="tbl_tit">
 					<td>기안일</td>
-					<td><input type="text" id="txt" placeholder="SYSDATE"></td>
+					<td><input type="text" id="txt" placeholder="SYSDATE" name="rptDate" style="text-align:center;"></td>
 					<td >수신자</td>
 					<td colspan="">
 					
-						<select id="receiver">
+						<select id="receiver" name="sname">
 							<option selected disabled hidden>수신자를 선택하세요</option>
 							<c:forEach var="b" items="${list }">
-							<option><c:out value="${b. NAME}"/>(<c:out value="${b.DNAME }"/>)</option>
+							<option><c:out value="${b. NAME}"/></option>
 							</c:forEach>
 						</select>
 						<c:forEach var="c" items="${list }">
-						<input type="hidden" value="${c.SMNO }">
+						<input type="hidden" value="${c.SMNO }" name="smno">
 						</c:forEach>
 					</td>
 					
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3"><input type="text" id="txtLong"></td>
+					<td colspan="3"><input type="text" id="txtLong" name="title"></td>
 				</tr>
 				<tr>
 					<td>내용</td>
 					<td colspan="3">
-						<textarea style="resize:none;" id="content"></textarea>
+						<textarea style="resize:none;" id="content" name="content"></textarea>
 					</td>
 				</tr>
 				
@@ -248,44 +267,44 @@ textarea {
 				<tr>
 					<th>구분</th>
 					<th>매입처</th>
-					<th>품목명</th>
 					<th>제조사</th>
+					<th>믈픔명</th>
 					<th>공급가액</th>
 					<th>수량</th>
 					<th>금액</th>
 				</tr>
 				<tr class="insertArea">
 					<td><!-- <input type="text" id="anoTxt_cate" placeholder="항목"> -->
-						<select class="anoTxt_cate">
+						<select class="anoTxt_cate" name="type">
 							<option selected disabled hidden>선택해주세요</option>
 							<option value="EQUIP">비품</option>
 							<option value="CONS">소모품</option>
 						</select>
 					</td>
 					<td><!-- <input type="text" id="noTxt" placeholder="매입처"> -->
-						<select class="noTxt">
+						<select class="noTxt" name="cname">
 							<option selected disabled hidden>선택해주세요</option>
 							
 						</select>
 					</td>
 					<td><!-- <input type="text" id="anoTxt_name" placeholder="품목명"> -->
-						<select class="anoTxt_name">
+						<select class="anoTxt_name" name="iname">
 							<option selected disabled hidden>선택해주세요</option>
 							
 						</select>
 					
 					</td>
 					<td><!-- <input type="text" id="anoTxt_amount" placeholder="수량"> -->
-						<select class="anoTxt_amount">
+						<select class="anoTxt_amount" name="mfg">
 							<option selected disabled hidden>선택해주세요</option>
 							
 						</select>
 					</td>
-					<td>
-						
+					<td class="vos">
+					<input type="text" name="vos" id="vos" name="vos">
 					</td>
-					<td><input type="text" class="anoTxt_price" placeholder="금액"></td>
-					<td></td>
+					<td><input type="text" class="anoTxt_price" placeholder="금액" name="amount"></td>
+					<td class="totalPrice"><input type="text" name="price" id="totalPrice"></td>
 				</tr>
 				
 			</table>
@@ -301,7 +320,8 @@ textarea {
 				</colgroup>
 				<tr>
 					<td colspan="2" id="total">총금액</td>
-					<td colspan="4"><input type="text" id="txtLong_price"></td>
+					<td colspan="3" style="text-align:center;"><input type="text" id="txtLong_price" style="text-align:center;" name="totPrice"></td>
+					<td><button type="button" id="btn">보기</button></td>
 				</tr>
 			</table>
 			
@@ -317,6 +337,7 @@ textarea {
 	
 	
 	var cntTable = "";
+	
 	$(document).ready(function(){
 		//var docuNum = 
 		var now = new Date();
@@ -332,50 +353,129 @@ textarea {
 		var docuNum = today.concat(random);
 		console.log(random);
 		//var docuNum = 
-	
-		$(".txt_docu").text(docuNum);
+		
+		
+		
+		//$(".tbl tr").children().find(".txt_docu").val(docuNum);
+		//$(".txt_docu").text(docuNum);
 				
 		startDate();
-		
+		console.log("startdate : " + docuNum);
+		$(".tbl tr:nth-child(2)").children().eq(1).find("#docuNo").val(docuNum);
 		//$(this).itemPur(cntTable);
 		
 		console.log("purchase")
 		var plus = 1;
-	
+		
+		$("#btn").click(function(){
+			var tblCount = $(".payTbl.purchase tr").length;
+			var lprice = (tblCount-1);
+			console.log("총금액 : " + lprice);
+			
+			var totalCount = "";
+			var totalPrice = "";
+			for(var i = 0; i < lprice; i++) {
+				if(i == 0) {
+					totalPrice = $(".payTbl.purchase tr").eq(i+1).children().find('#totalPrice').val()*1;
+				}else {
+					totalPrice += $(".payTbl.purchase tr").eq(i+1).children().find('#totalPrice').val()*1;
+				}
+				
+			}
+				
+			$(".payTbl.Area tr").children().find("#txtLong_price").val(totalPrice);
+			
+			
+			
+			
+			
 		
 		
+		}) 
+			
 			$("#plusBtn2").click(function() {
 				
 				cntTable = $(".payTbl.purchase tr").length;
 						
+				console.log("cntTable : " + cntTable);
+						
+				var plusType = "";
+				if(type == "EQUIP") {
+					plusType = "비품";
+					
+				}
+				var tblVal = $(".payTbl.purchase tr:nth-child(2)").children().eq(0).find('select').val();
+				
+				console.log("박상준 : " + tblVal);
+				
+					if(tblVal == null) {
 						var plusTable = "<tr class='insertArea'>";
-						plusTable += "<td> <select class='anoTxt_cate'><option selected disabled hidden>선택해주세요</option></select></td>"
-						plusTable += "<td> <select class='noTxt'><option selected disabled hidden>선택해주세요</option></select></td>"
+						plusTable += "<td></td>"
+						plusTable += "<td> <select class='noTxt' name='cName'><option selected disabled hidden>선택해주세요</option></select></td>"
+						plusTable += "<td> <select class='anoTxt_name' name='iName'><option selected disabled hidden>선택해주세요</option></select></td>"
+						plusTable += "<td><select class='anoTxt_amount' name='mfg'><option selected disabled hidden>선택해주세요</option></select></td>"
+						
+						plusTable += "<td><input type='text' name='vos' id='vos'></td>"
+						plusTable += "<td><input type='text' class='anoTxt_price' placeholder='금액'></td>"
+						plusTable += "<td><input type='text' name='totalPrice' id='totalPrice'></td>"
+						plusTable += "</tr>"
+						var n = $(".payTbl.purchase");
+						
+						n.append(plusTable);
+					}else {
+						/* console.log("option1 : " + option1);
+						console.log("이거다진짜 : " + (cntTable-1));
+						var plusTable = "<tr class='insertArea'>";
+						plusTable += "<td> <select class='anoTxt_cate'><option selected disabled value="+ plusType +">" + plusType + "</td>"
+						plusTable += option2;
 						plusTable += "<td> <select class='anoTxt_name'><option selected disabled hidden>선택해주세요</option></select></td>"
 						plusTable += "<td><select class='anoTxt_amount'><option selected disabled hidden>선택해주세요</option></select></td>"
-						
 						plusTable += "<td></td>"
 						plusTable += "<td><input type='text' class='anoTxt_price' placeholder='금액'></td>"
 						plusTable += "<td></td>"
 						plusTable += "</tr>"
 						var n = $(".payTbl.purchase");
+						n.append(plusTable); */
+						//anoTxt_price, vos, totalPrice
+						var tblVal2 = "";
+						if(tblVal == "EQUIP") {
+							tblVal2 = "비품";
+						}else {
+							tblVal2 = "소모품";
+						}
 						
-						n.append(plusTable);
+						var tblClone =  $(".payTbl.purchase tr:nth-child(2)").clone();
+						console.log("박상준짱개 : " + tblVal);
 						
-						//selectType2();
-						//selectCName();
-						//$(this).stopPropagation();
+						//tblClone.children().eq(0).find('.anoTxt_cate').text(tblVal2);
+						tblClone.children().eq(0).find('select').replaceWith(tblVal2);
+						//tblClone.children().eq(0).find('select').
+						tblClone.children().eq(0).css({'text-align':'center','font-weight':'nomal', 'font-size':'13px'})
+						tblClone.children().eq(5).find('input').val("");
+						tblClone.children().eq(6).find('input').val("");
+						tblClone.children().eq(4).find('input').val("");
+						$(".payTbl.purchase").append(tblClone);
 						
-						//$(this).itemPur(cntTable);
+						
+					}
+				
+				
+						
 					})
 		
 				
 		function preWatch() {
 			
 		}
+			
+
+			
 		
 	})
 	//onload끝	
+	
+				
+	
 	
 	
 	/* 1 */
@@ -383,25 +483,56 @@ textarea {
 	var type = "";
 	var iname = "";
 	var madeComName = "";
+	var option1 = "<td><select>";
+	var option2 = "";
+	
 	$(document).on("change", ".anoTxt_cate", function() {
 		console.log("11")
 		var value = $(this).val();
 		type = value;
+		
+		
+		
 		var idx1 = $(this).parent("td").parent("tr").index();
 		var cntTable = $(".payTbl.purchase").children().length;
 		
 		
 		//select박스 변경시 전체 리셋
 		
-		$(".noTxt").find("option:not(:first-child)").remove();
+		/* $(".noTxt").find("option:not(:first-child)").remove();
 		$(".noTxt").append($("<option selected disalbed hidden>선택 해주세요</option>")); 
-		//$(".anoTxt_name").find("option:not(:first-child)").remove();
-		//$(".anoTxt_name").append($("<option selected disalbed hidden>선택 해주세요</option>"));
-		//$(".anoTxt_amount").find("option:not(:first-child)").remove();
-		//$(".anoTxt_amount").append($("<option selected disalbed hidden>선택 해주세요</option>"));
-		/* $(".payTbl.purchase").children().find('.noTxt').find("option:not(:first-child)").remove();
+		$(".anoTxt_name").find("option:not(:first-child)").remove();
+		$(".anoTxt_name").append($("<option selected disalbed hidden>선택 해주세요</option>"));
+		$(".anoTxt_amount").find("option:not(:first-child)").remove();
+		$(".anoTxt_amount").append($("<option selected disalbed hidden>선택 해주세요</option>")); */
+		
+		 $(".payTbl.purchase").children().find('.noTxt').find("option:not(:first-child)").remove();
+		 $(".payTbl.purchase").children().find('.noTxt').append($("<option selected disalbed hidden>선택 해주세요</option>"));
 		$(".payTbl.purchase").children().find('.anoTxt_name').find("option:not(:first-child)").remove();
-		$(".payTbl.purchase").children().find('.anoTxt_amount').find("option:not(:first-child)").remove(); */
+		 $(".payTbl.purchase").children().find('.anoTxt_name').append($("<option selected disalbed hidden>선택 해주세요</option>"));
+		$(".payTbl.purchase").children().find('.anoTxt_amount').find("option:not(:first-child)").remove(); 
+		 $(".payTbl.purchase").children().find('.anoTxt_amount').append($("<option selected disalbed hidden>선택 해주세요</option>"));
+		/*  */
+		var tblVal = $(".payTbl.purchase tr:nth-child(2)").children().eq(0).find('select').val();
+		 $( ".payTbl.purchase tr:nth-child(n+3)").remove();
+		
+		/* 여기부터 */
+		/* console.log("tblVal : " + tblVal);
+		if(tblVal == null) {
+			console.log("null입니다");
+		}else {
+			
+		}
+		
+		
+		
+		 /* $(".payTbl.purchase tr:not(:first-child)").children().eq(4).text(""); 
+		$(".payTbl.purchase tr:not(:first-child)").children().eq(5).find('.anoTxt_price').val("");
+		$(".payTbl.purchase tr:not(:first-child)").children().eq(6).text(""); 
+		$(".payTbl.purchase tr").children().find('.vos').text("");  */ 
+		
+		
+		
 		$.ajax({
 			url:"itemType.ap",
 			type:"get",
@@ -414,14 +545,26 @@ textarea {
 				
 				
 				//$("#anoTxt_cate")
-				
+				var option = "";
 				for(var i = 0; i < data.value.length; i++) {
-					var option = $("<option>" + data.value[i].CN_NAME + "</option>");
+					if(i == (data.value.length-1)) {
+						var option = $("<option>" + data.value[i].CN_NAME + "</option></select>");
+						//option2 =$("<option>" + data.value[i].CN_NAME + "</option>")
+						//option1 = option1.append(option);
+					}else {
+						var option = $("<option>" + data.value[i].CN_NAME + "</option>");
+						//option2 =$("<option>" + data.value[i].CN_NAME + "</option>")
+						//option1 = option1.append(option);
+					}
+					
+					console.log("여기option은 : " + option2);
 					
 					
 					//$(".noTxt").append(option);
 					for(var j = 0; j < idx1; j++) {
 						$(".payTbl.purchase").children().eq(j+1).find('.noTxt').append(option);
+						
+						//console.log("여기요 : " + option1);
 					}
 					//$(".payTbl.purchase").children().eq(idx1).find('.noTxt').append(option);
 					//$(".payTbl.purchase").find("tr").eq(idx1).find(".anoTxt_name").append(option);
@@ -436,38 +579,75 @@ textarea {
 		})
 	})
 	/* 2 */
+	var notax = "";
 	$(document).on("change", ".noTxt", function() {
+		var value = $(this).val();
+		notax = value;
+		var idx4 = $(this).parent("td").parent("tr").index();
+		console.log("value : " + value);
+		console.log("idx4 : " + idx4)
+		 $(".payTbl.purchase tr").eq(idx4).children().find("option:not(:first-child)").find("option").remove();
+		 $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_amount').append($("<option selected disabled hidden>선택 해주세요</option>"));
+		console.log("12314")
+		$.ajax({
+			url:"madeComName.ap",
+			type:"get",
+			data:{
+				value:value
+			},
+			success:function(data){
+				console.log("cnNamedata : " + data);
+				for(var i = 0; i < data.list.length; i++) {
+					var option = $("<option>" + data.list[i].MFG + "</option>");
+					madeComName = data.list[i].MFG;
+					console.log("cnName : " + data.list[i].MFG);
+					
+					//$(".anoTxt_amount").append(option);
+					//$(".payTbl.purchase").find("tr").eq(idx).find(".anoTxt_amount").append(option);
+					
+					$(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').append(option);
+					
+				}
+			},
+			error:function(data) {
+				
+			}
+		})
+	})
+	/* 3 */
+	$(document).on("change", ".anoTxt_name", function() {
 		console.log("11")
 		var value = $(this).val();
 			console.log("vlae:"   +value)
-			cnName = value;
 			
-			//var idx2 = $(this).parent("td").parent("tr").length;
+			
 			var idx2 = $(this).closest('tr').prevAll().length;
 			var tr2 = $(this).closest('tr').prevAll();
-			//console.log("idx " + idx2);
-			//console.log("tr2 " + tr2);
-			//console.log($(".payTbl.purchase").children().eq(idx2).find('.anoTxt_name').text());
-			$(".anoTxt_name").find("option:not(:first-child)").remove();
-			$(".anoTxt_name").append($("<option selected disalbed hidden>선택 해주세요</option>"));
-			//$(".anoTxt_amount").find("option:not(:first-child)").remove();
-			//$(".anoTxt_amount").append($("<option selected disalbed hidden>선택 해주세요</option>")); 
-			
+			//$(".anoTxt_name").find("option:not(:first-child)").remove();
+			//$(".anoTxt_name").append($("<option selected disalbed hidden>선택 해주세요</option>"));
+
 			//송기준 여기!!!!
-			//$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_name').find("option").remove();
-			//$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').find("option").remove();
+			$(".payTbl.purchase tr").eq(idx2).children().find('option:not(:first-child)').find("option").remove();
+			$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').find("option").remove();
+			$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append($("<option selected disabled hidden>선택 해주세요</option>"));
+			//$(".noTxt").append($("<option selected disalbed hidden>선택 해주세요</option>")); 
 			
+			//$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_name').find("option").remove();
+			//$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_name').append($("<option selected disabled hidden>선택 해주세요</option>"));
 			//select박스 변경시 전체 리셋
 			$.ajax({
 				url:"itemName.ap",
 				type:"get",
 				data:{
-					value:value
+					mfg:value,
+					cname:notax
 				},
 				success:function(data) {
 					for(var i = 0; i < data.list.length; i++) {
-						var option = $("<option>" + data.list[i].INAME + "</option>");
+						var option = $("<option>" + data.list[i].iname + "</option>");
+						var option2 = $("<input type='hidden' name='ino' value='" + data.list[i].ino + "'>")
 						
+						console.log(data.list)
 						
 						//console.log(data.value[i].CN_NAME);
 						
@@ -475,7 +655,8 @@ textarea {
 						//$(".payTbl.purchase").children().eq(idx2).children().find('.anoTxt_name').append(option);
 						//$(".payTbl.purchase").find("tr").eq(idx2).find(".anoTxt_name").append(option);
 						//$(".payTbl.purchase").children().eq(idx2).find('.anoTxt_name').append(option);
-						$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_name').append(option);
+						$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append(option);
+						$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append(option2);
 					}
 				},
 				error:function(data) {
@@ -483,55 +664,13 @@ textarea {
 				}
 				
 			})
-	})
-	/* 3 */
-	$(document).on("change", ".anoTxt_name", function() {
-			var value = $(this).val();
-			iname = value;
-			var idx = $(this).parent("td").parent("tr").index();
-			console.log("value : " + value);
-			console.log("idx : " + idx)
-			$(".anoTxt_amount").find("option:not(:first-child)").remove();
-			$(".anoTxt_amount").append($("<option selected disalbed hidden>선택 해주세요</option>"));
-			
-			/* $(".payTbl.purchase").children().eq(idx).find('.anoTxt_amount').find("option:not(:first-child)").remove();
-			$(".payTbl.purchase").children().eq(idx).find('.anoTxt_amount').find("option:not(:first-child)").remove(); */
-			
-			//$(".payTbl.purchase tr").eq(idx).children().find('.anoTxt_amount').find("option").remove();
-			//$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').find("option:not(:first-child)").remove();
-			console.log("12314")
-			$.ajax({
-				url:"madeComName.ap",
-				type:"get",
-				data:{
-					value:value
-				},
-				success:function(data){
-					console.log("cnNamedata : " + data);
-					for(var i = 0; i < data.list.length; i++) {
-						var option = $("<option>" + data.list[i].MFG + "</option>");
-						madeComName = data.list[i].MFG;
-						
-						console.log("cnName : " + data.list[i].MFG);
-						
-						//$(".anoTxt_amount").append(option);
-						//$(".payTbl.purchase").find("tr").eq(idx).find(".anoTxt_amount").append(option);
-						
-						$(".payTbl.purchase tr").eq(idx).children().find('.anoTxt_amount').append(option);
-						
-					}
-				},
-				error:function(data) {
-					
-				}
-			})
 		});
 		
 		
 		
 	/* 4 */
 	$(document).on("change", ".anoTxt_amount", function() {
-		iname = $(this).val();
+		var iname = $(this).val();
 		var con = $(this).parent().eq(4).text();
 		var idx = $(this).parent("td").parent("tr").index();
 		console.log("1 : " + type);
@@ -545,14 +684,14 @@ textarea {
 			type:"get",
 			data:{
 				type:type,
-				cnName:cnName,
+				cnName:notax,
 				iname:iname,
 				madeComName:madeComName
 			},
 			success:function(data) {
 				console.log(data);
 				
-				$(".payTbl.purchase tr").eq(idx).children().eq(4).text(data.vos);
+				$(".payTbl.purchase tr").eq(idx).children().eq(4).find('#vos').val(data.vos);
 			},
 			error:function(data) {
 				
@@ -560,7 +699,20 @@ textarea {
 		})
 	
 	});
+	
+	
+	$(document).on("keyup", ".anoTxt_price" , function(){
+		var idx = $(this).parents("tr").index();
+		console.log("마지막idx : " + idx);
+		//var count = $(this).val();
+		//var vos = $(".anoTxt_amount").parents("tr").find("td:nth-child(5)").text();
+		var count = $(".payTbl.purchase").find("tr").eq(idx).find(".anoTxt_price").val();
+		var vos = $(".payTbl.purchase").find("tr").eq(idx).find("#vos").val();
 		
+		$(".payTbl.purchase tr").eq(idx).find("td:nth-child(7)").find("#totalPrice").val((count * vos));
+		
+	})
+	
 	
 	
 	//서큐일시 구하기
@@ -589,10 +741,15 @@ textarea {
 	
 	
 	
-		
+		/* insert하기 */
 		function insertPur() {
-			clearInterval(startDate());
+			 clearInterval(startDate());
 			console.log("멈춘시간 : " + dateString);
+			
+			$(".tbl tr:nth-child(4)").children().eq(1).find("#txt").val(dateString);
+			
+			
+			$("#submit").attr("type","submit");
 			
 			var cnt = $(".payTbl.purchase tr:not(:first)").length;
 			if($("#txtLong").val() == "" || $("#content").val() == "" || $("#noTxt").val() == "" ||
@@ -601,71 +758,14 @@ textarea {
 				alert("내용을 채워주세요!");
 			}
 			var p = $(".payTbl.purchase tr:not(:first)").find('input').val();
-			//console.log(p);
-			
-			console.log("??");
-			var str = "";
-			var tdArr = new Array();  //배열 선언
-			var tr = new Array();
-			var tr1 = $(".payTbl.purchase tr:not(:first)");
-			//현재 클릭된 Row(<tr>)
-			tdArr[0] = tr1.children().eq(0).find('input').val() + ", ";
-			tdArr[0] += tr1.children().eq(1).find('input').val() + ", ";
-			tdArr[0] += tr1.children().eq(2).find('input').val() + ", ";
-			tdArr[0] += tr1.children().eq(3).find('input').val() + ", ";
-			tdArr[0] += tr1.children().eq(4).find('input').val() + ", ";
-			tdArr[0] += tr1.children().eq(5).find('input').val();
-			//console.log("tdArr[0] : " + tdArr[0]);
-			//console.log(cnt);
-				for(var i = 1; i < cnt; i++) {
-					
-					//cnt : 행의 갯수
-					if(cnt >= 2) {
-						
-						//find 추가하기
-						tdArr[i] = $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(0).find('input').val() + ", ";
-						tdArr[i] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(1).find('input').val() + ", ";
-						tdArr[i] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(2).find('input').val() + ", ";
-						tdArr[i] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(3).find('input').val() + ", ";
-						tdArr[i] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(4).find('input').val() + ", ";
-						tdArr[i] += $(".payTbl.purchase tr:nth-child(" + (i+2) + ")").children().eq(5).find('input').val();
-						
-						
-					}
-					
-					
-				}
-				 /* console.log("길이 : " + tdArr.length);
-				for(var i = 0; i < cnt; i++) {
-					
-					console.log(tdArr[i]);
-				} */
-				 
-				var info = new Array();
-				 
-				var sName = $("#receiver option:selected").text();
-				var sMno = $(".tbl tr:nth-child(4)").children().eq(3).find('input').val();
-				/* var mMno = $(".tbl tr:nth-child(3)").find('input').val(); */
-				var mMno = ${loginUser.mno};
-				var title = $("#txtLong").val();
-				var content = $("#content").val();
-				var tblDocuNum = $("#txt_docu").text();
-				var rptDate = dateString;
-				var tblTeam = "구매팀";
-				console.log("smno : " + sMno);
-				console.log("mMno : " + mMno);
-				location.href="insertPurchase.ap?&sMno=" + sMno + "&title="
-								+ title + "&content=" + content + "&tblDocuNum=" + tblDocuNum + 
-								"&rptDate=" + rptDate + "&mMno="+ mMno + "&tblTeam=" + tblTeam + "&tdArr=" + tdArr;
-				
-				
-				
-
+		
+		
 				 
 				 
 				 
 			
 		}
+		
 		
 	
 	
@@ -678,20 +778,7 @@ textarea {
 			
 		
 		
-		function selectPrice() {
-			//금액 띄우기
-			$(".anoTxt_price").keyup(function(){
-				var idx = $(this).parent("td").parent("tr").index();
-				//var count = $(this).val();
-				//var vos = $(".anoTxt_amount").parents("tr").find("td:nth-child(5)").text();
-				var count = $(".payTbl.purchase").find("tr").eq(idx).find(".anoTxt_price").val();
-				var vos = $(".payTbl.purchase").find("tr").eq(idx).find("td:nth-child(5)").text();
-				
-				$(this).parents("tr").find("td:nth-child(7)").text((count * vos));
-				
-				
-			});
-		}
+		
 </script>
 
 

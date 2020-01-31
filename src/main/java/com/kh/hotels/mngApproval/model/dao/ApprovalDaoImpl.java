@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 
 @Repository
@@ -123,12 +124,6 @@ public class ApprovalDaoImpl implements ApprovalDao{
 
 	
 
-	@Override
-	public List<String> selectItemName(SqlSessionTemplate sqlSession, String value) {
-		
-		
-		return (List)sqlSession.selectList("Report.selectItemName", value);
-	}
 
 	@Override
 	public List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value) {
@@ -140,21 +135,26 @@ public class ApprovalDaoImpl implements ApprovalDao{
 	@Override
 	public int selectVosPrice(SqlSessionTemplate sqlSession, PurVos pv) {
 		
-		
+		System.out.println("pv : " + pv);
 		
 		return (int)sqlSession.selectOne("Report.selectVosPrice", pv);
 	}
 
+	@Override
+	public List<String> selectItemName(SqlSessionTemplate sqlSession, PurRequest pRequest) {
+
+		
+		return (ArrayList)sqlSession.selectList("Report.selectItemName", pRequest);
+	}
+
+	@Override
+	public int insertPurchase(SqlSessionTemplate sqlSession, PurRequest purRequest) {
+		
+		
+		return (int)sqlSession.insert("Report.insertPurchase", purRequest);
+		
+	}
+
 	
-
-
-	/*
-	 * @Override public List<String> selectItemName(SqlSessionTemplate sqlSession,
-	 * String value) {
-	 * 
-	 * 
-	 * 
-	 * return return (List)sql; }
-	 */
 
 }
