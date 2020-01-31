@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
-import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.Service.StockService;
+import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.Strg;
@@ -34,9 +35,9 @@ public class StockController {
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
+		int listCount = ss.getListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		try {
-			int listCount = ss.getListCount();
-			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			ArrayList<Stock> stockList = ss.selectStockList(pi);
 			System.out.println("stockList : " + stockList);
 			for(int i=0;i<stockList.size();i++) {
@@ -60,15 +61,16 @@ public class StockController {
 	@PostMapping("insertStock.sto")
 	public String insertStock(Model m, Stock st) {
 		
-		System.out.println(st);
+		System.out.println("con st : "+ st);
+		System.out.println("con m : "+ m);
 		
-		int result = ss.insertStock(m,st);
+		/* int result = ss.insertStock(m,st); */
+		return null;
 		
-		if(result > 0) {
-			return "redirect:select.war";
-		}else {
-			return "common/errorPage";
-		}
+		/*
+		 * if(result > 0) { return "redirect:select.war"; }else { return
+		 * "common/errorPage"; }
+		 */
 	}
 	//////
 	@RequestMapping("selectRepair.sto")
@@ -97,12 +99,12 @@ public class StockController {
 	}
 	
 	@PostMapping("selectStockDetail.sto")
-	public ModelAndView selectStockDetail(String sCategory,ModelAndView mv) {
+	public ModelAndView selectStockDetail(String iName,ModelAndView mv) {
 		
-		System.out.println("con : " + sCategory);
+		System.out.println("con : " + iName);
 		
 		
-		ArrayList<Stock> stockDetailList = ss.stockDetailList(sCategory);
+		ArrayList<Stock> stockDetailList = ss.stockDetailList(iName);
 		
 		System.out.println("stockDetailList : " + stockDetailList);
 		
@@ -111,6 +113,22 @@ public class StockController {
 		
 		return mv;
 		
+	}
+	
+	@RequestMapping("insertCategory.sto")
+	public ModelAndView insertCategory(ItemType it,ModelAndView mv) {
+		
+		System.out.println(it.getLcategory());
+		System.out.println(it.getMcategory());
+		System.out.println(it.getScategory());
+		
+		ArrayList<ItemType> categoryList = ss.categoryList(it);
+		
+		mv.setViewName("jsonView");
+		mv.addObject("categoryList",categoryList);
+		
+		return mv;
+	
 	}
 	
 	

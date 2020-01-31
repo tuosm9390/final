@@ -21,12 +21,13 @@ public class Stock implements java.io.Serializable{
 	private String areaName;//위치
 	private String strgName;//창고
 	private int rmNo;//객실
+	private int unit;
 	
 	public Stock() {}
 
 	public Stock(int ino, String iName, String lCategory, String mCategory, String sCategory, int amount, int up,
 			int vat, int vos, String mfg, String cnName, String type, int cnt, String areaName, String strgName,
-			int rmNo) {
+			int rmNo, int unit) {
 		super();
 		this.ino = ino;
 		this.iName = iName;
@@ -44,6 +45,7 @@ public class Stock implements java.io.Serializable{
 		this.areaName = areaName;
 		this.strgName = strgName;
 		this.rmNo = rmNo;
+		this.unit = unit;
 	}
 
 	public int getIno() {
@@ -174,13 +176,22 @@ public class Stock implements java.io.Serializable{
 		this.rmNo = rmNo;
 	}
 
+	public int getUnit() {
+		return unit;
+	}
+
+	public void setUnit(int unit) {
+		this.unit = unit;
+	}
+
 	@Override
 	public String toString() {
 		return "Stock [ino=" + ino + ", iName=" + iName + ", lCategory=" + lCategory + ", mCategory=" + mCategory
 				+ ", sCategory=" + sCategory + ", amount=" + amount + ", up=" + up + ", vat=" + vat + ", vos=" + vos
 				+ ", mfg=" + mfg + ", cnName=" + cnName + ", type=" + type + ", cnt=" + cnt + ", areaName=" + areaName
-				+ ", strgName=" + strgName + ", rmNo=" + rmNo + "]";
+				+ ", strgName=" + strgName + ", rmNo=" + rmNo + ", unit=" + unit + "]";
 	}
+
 	
 	
 	

@@ -22,6 +22,7 @@
 		<result property="lCategory" column="LCATEGORY" />
 		<result property="mCategory" column="MCATEGORY" />
 		<result property="sCategory" column="SCATEGORY" />
+		<result property="unit" column="UNIT"/>
 	</resultMap>
 	
 	
@@ -31,29 +32,35 @@
 		<result property="rptStatus" column="RPT_STATUS" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngStock.model.vo.ItemType" id="resultSetType">
+		<result property="typeNo" column="TYPE_NO" />
+		<result property="type" column="TYPE" />
+		<result property="lcategory" column="LCATEGORY" />
+		<result property="mcategory" column="MCATEGORY" />
+		<result property="scategory" column="SCATEGORY" />
+	</resultMap>
+	
 	
 	<!-- 리스트카운트 -->
 	<select id="selectListCount" resultType="_int">
-		SELECT COUNT(*) FROM(
-		SELECT DISTINCT T.SCATEGORY,N.CNT,T.TYPE
-		FROM ITEM I
-		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
-		JOIN (SELECT SCATEGORY, COUNT(*) AS CNT
-		FROM ITEM 
-		JOIN ITEM_TYPE USING(TYPE_NO)
-		GROUP BY SCATEGORY) N ON (T.SCATEGORY = N.SCATEGORY)
-		ORDER BY T.SCATEGORY ASC)
+	SELECT COUNT(*) FROM
+		(SELECT I.INAME, T.TYPE, SUM(I.AMOUNT) AS CNT
+		FROM (SELECT *
+      FROM ITEM
+      WHERE ITEM_STATUS = 'N') I
+		JOIN ITEM_TYPE T USING(TYPE_NO)
+		GROUP BY I.INAME, T.TYPE
+		ORDER BY INAME)
 	</select>
 	
 	<select id="selectStockList" resultMap="resultSetStock">
-		SELECT DISTINCT T.SCATEGORY,N.CNT,T.TYPE
-		FROM ITEM I
-		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
-		JOIN (SELECT SCATEGORY, COUNT(*) AS CNT
-		FROM ITEM 
-		JOIN ITEM_TYPE USING(TYPE_NO)
-		GROUP BY SCATEGORY) N ON (T.SCATEGORY = N.SCATEGORY)
-		ORDER BY T.SCATEGORY ASC
+		SELECT I.INAME, T.TYPE, SUM(I.AMOUNT) AS CNT
+		FROM (SELECT *
+     	 FROM ITEM
+     	 WHERE ITEM_STATUS = 'N') I
+		JOIN ITEM_TYPE T USING(TYPE_NO)
+		GROUP BY I.INAME, T.TYPE
+		ORDER BY INAME
 	</select>
 	
 	
@@ -61,14 +68,14 @@
 	<!-- 물품 디테일 -->
 	
 	<select id="selectStockDetailList" resultMap="resultSetStock">
-		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.AMOUNT*I.UNIT AS CNT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM AS RM_NO,T.TYPE
+		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.UNIT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM AS RM_NO,T.TYPE
 		FROM ITEM I
 		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
 		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
         LEFT JOIN ROOM R ON (I.RM_NO=R.RM_NO)  
 		LEFT JOIN STRG_AREA A ON (A.AREA_NO = I.AREA_NO)
 		LEFT JOIN STRG S ON (A.STRG_NO = S.STRG_NO)
-        WHERE SCATEGORY =#{sCategory}
+        WHERE I.INAME =#{iName}
 	</select>
 	
 
@@ -81,6 +88,11 @@
 		JOIN REPORT USING(RPT_NO)
 	</select>	
 	
+	<!-- 분류 리스트 -->
+	<select id="selectCategoryList" resultMap="resultSetType">
+		SELECT LCATEGORY
+		FROM ITEM_TYPE
+	</select>
 </mapper>
 
  

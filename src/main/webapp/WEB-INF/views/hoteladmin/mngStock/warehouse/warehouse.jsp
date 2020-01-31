@@ -227,7 +227,7 @@
 					$("#dTbody").empty();
 					for(var i=0;i<data.detailList.length;i++){
 						console.log("테스트테스트")
-						$("#dTbody").append("<tr><td>"+(i+1)+"</td><td>"+data.detailList[i].IName+"</td><td>"+data.detailList[i].ino+"</td><td>"+data.detailList[i].amount+"</td><td>"+data.detailList[i].areaName+"</td><<tr>");
+						$("#dTbody").append("<tr><td>"+data.detailList[i].ino+"</td><td>"+data.detailList[i].IName+"</td><td>"+data.detailList[i].amount+"</td><td>"+data.detailList[i].areaName+"</td><<tr>");
 					}
 				},
 				error:function(status){
