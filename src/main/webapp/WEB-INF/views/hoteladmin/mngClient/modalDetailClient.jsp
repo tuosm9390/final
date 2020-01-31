@@ -176,68 +176,42 @@
 			
 			<div class="modal_content_real2">
 				<div class="clientInfoPlus2">
+				<form action="clientInfoUpdate.cl" method="post" class="clientInfoForm">
 					<table>
 						<tr>
 							<td>고객번호</td>
-							<td><input type="text" value="20292030" class="clientDetailMno" readonly></td>
+							<td><input type="text" class="clientDetailMno" name="clientDetailMno" id="clientDetailMno" readonly></td>
 							<td>전화</td>
-							<td><input type="tel" class="clientDetailPhone"></td>
+							<td><input type="tel" class="clientDetailPhone" name="clientDetailPhone" id="clientDetailPhone"></td>
 						</tr>
 						<tr>
 							<td>* 고객명</td>
-							<td><input type="text" class="clientDetailName"></td>
+							<td><input type="text" class="clientDetailName" name="clientDetailName" id="clientDetailName"></td>
 							<td>이메일</td>
-							<td><input type="email" class="clientDetailEmail"></td>
+							<td><input type="email" class="clientDetailEmail" name="clientDetailEmail" id="clientDetailEmail"></td>
 						</tr>
 					</table>
+				</form>
 				</div>
 				
 				<div class="clientHisPlus2">
 					<div class="stayHisSec2">
-						<table align="center" style="border-collapse: collapse; margin:0; width:700px;">
+						<table align="center" style="border-collapse: collapse; margin:0; width:700px;" class="stayAndRsvTabel">
 							<tr>
-								<th width="6%">번호</th>
 								<th width="14%">입실일자</th>
 								<th width="14%">퇴실일자</th>
 								<th width="6%">박수</th>
 								<th width="11%">객실번호</th>
-								<th width="24%">비용 (객실요금)</th>
+								<th width="20%">비용 (객실요금)</th>
 								<th width="14%">예약일자</th>
-								<th width="12%">상태</th>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>2020-01-01</td>
-								<td>2020-01-02</td>
-								<td>1</td>
-								<td>209</td>
-								<td>1,000,000 (1,000,000)</td>
-								<td>2019-12-13</td>
-								<td>체크아웃</td>
+								<th width="16%">상태</th>
 							</tr>
 						</table>
 					</div>
 					
 					<div class="changeHisSec2">
 						<div class="changecontent2">
-							<table>
-								<tr><td colspan="2" style="font-weight: bold">2020-01-01 01:23:32</td></tr>
-								<tr>
-									<td style="font-weight: bold">문의제목</td>
-									<td>다음 날 조식신청 가능할까요?</td>
-								</tr>
-								<tr>
-									<td style="font-weight: bold">문의유형</td>
-									<td>서비스</td>
-								</tr>
-								<tr>
-									<td style="font-weight: bold">문의내용</td>
-									<td>다음 날 조식 신청하고 싶습니다. 가능할까요?</td>
-								</tr>
-								<tr>
-									<td style="font-weight: bold">대응내용</td>
-									<td>조식 신청 가능하십니다 고객님 ^^ 유선 문의 부탁드립니다~</td>
-								</tr>
+							<table class="clientDetailQueTable">
 							</table>
 						</div>
 					</div>
@@ -261,23 +235,44 @@
 				</div>
 			
 				<div class="btnSecPlus2">
-					<button id="stayHisPlus2">투숙이력</button>
+					<button id="stayHisPlus2">예약 및 투숙이력</button>
 					<button id="changeHisPlus2">문의이력</button>
-					<button id="saveBtnPlus2">저장</button>
+					<button id="saveBtnPlus2" onclick="return clientUpdate();">저장</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script>
+		var clientMno;
+		var clientName;
+		var clientPhone;
+		var clientEmail;
+	
+		$(function(){
+			clientMno = $("#clientDetailMno").val();
+			clientName = $("#clientDetailName").val();
+			clientPhone = $("#clientDetailPhone").val();
+			clientEmail = $("#clientDetailEmail").val();
+		});
 		$(document).ready(function() {
+			
+			clientMno = $("#clientDetailMno").val();
+			clientName = $("#clientDetailName").val();
+			clientPhone = $("#clientDetailPhone").val();
+			clientEmail = $("#clientDetailEmail").val();
+		
+			
 			$(".stayHisSec2").hide();
 			$(".changeHisSec2").hide();
 			
 			$(".btn_close_plus2").click(function() {
+				$(".clientDetailQueTable").children().remove();
+				$(".stayAndRsvTabel tr:not(th)").siblings("tr").remove();
 				$(".modalDetail").fadeOut();
 			});
 		});
+		
 		
 		$("#stayHisPlus2").click(function(){
 			$(".stayHisSec2").show();
@@ -287,6 +282,29 @@
 			$(".stayHisSec2").hide();
 			$(".changeHisSec2").show();
 		});
+		function clientUpdate(){
+			
+			console.log($("#clientDetailMno").val());
+			console.log(clientName);
+			console.log(clientPhone);
+			console.log(clientEmail);
+			
+			if($(".clientDetailName").val() == ""){
+				alert("이름을 확인 해주세요.");
+				return false;
+			}	
+			if($(".clientDetailPhone").val() == ""){
+				alert("번호를 확인 해주세요.");
+				return false;
+			}	
+			if($(".clientDetailEmail").val() == ""){
+				alert("이메일을 확인 해주세요.");
+				return false;
+			}	
+			
+			//$(".clientInfoForm").submit();
+			return false;
+		}
 	</script>
 </body>
 </html>

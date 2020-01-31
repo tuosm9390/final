@@ -1,6 +1,7 @@
 package com.kh.hotels.mngClient.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngClient.model.dao.ClientDao;
+import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
+import com.kh.hotels.mngReserv.model.vo.Reservation;
 import com.kh.hotels.mngStay.model.vo.Stay;
 
 @Service
@@ -74,6 +77,32 @@ public class ClientServiceImpl implements ClientService{
 
 		return cd.selectClientQue(clientMno, sqlSession);
 	}
+
+	@Override
+	public ArrayList<Reservation> selectRsvList(int clientMno) {
+
+		return cd.selectRsvList(clientMno, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Stay> selectStayList(int clientMno) {
+		
+		return cd.selectStayList(clientMno, sqlSession);
+	}
+
+	@Override
+	public int getSearchClientListCount(ClientSearchCondition csc) {
+
+		return cd.getSearchClientListCount(csc, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Member> selectSearchClientList(ClientSearchCondition csc, PageInfo pi) {
+
+		return cd.selectSearchClientList(sqlSession, csc, pi);
+	}
+
+
 	
 
 }

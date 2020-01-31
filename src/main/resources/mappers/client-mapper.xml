@@ -5,18 +5,37 @@
   
 <mapper namespace="Client">
 
+	<resultMap type="Reservation" id="rsvListResultSet">
+		<result property="checkIn" column="CHECKIN" />
+		<result property="checkOut" column="CHECKOUT" />
+		<result property="rmNo" column="RM_NO" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="stayPrice" column="STAY_PRICE" />
+		<result property="rsvDate" column="RSV_DATE" />
+		<result property="rsvStatus" column="RSV_STATUS" />
+	</resultMap>
+	
+	<resultMap type="Stay" id="stayListResultSet">
+		<result property="checkIn" column="CHECKIN" />
+		<result property="checkOut" column="CHECKOUT" />
+		<result property="rmNo" column="RM_NO" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="price" column="PRICE" />
+		<result property="rsvDate" column="RSV_DATE" />
+		<result property="stayStatus" column="STAY_STATUS" />
+	</resultMap>
+
 	<resultMap type="Que" id="clientQueResultSet">
-		<id property="qno" column="qno" />
-		<result property="mno" column="mno" />
-		<result property="userName" column="userName" />
-		<result property="qtype" column="qtype" />
-		<result property="qtitle" column="qtitle" />
-		<result property="qdate" column="qdate" />
-		<result property="qcontent" column="qcontent" />
-		<result property="ansStatus" column="ansStatus" />
-		<result property="delStatus" column="delStatus" />
-		<result property="qpwd" column="qpwd" />
-		<result property="pwdStatus" column="pwdStatus" />
+		<id property="qno" column="QNO" />
+		<result property="mno" column="MNO" />
+		<result property="qtype" column="QTYPE" />
+		<result property="qtitle" column="QTITLE" />
+		<result property="qdate" column="QDATE" />
+		<result property="qcontent" column="QCONTENT" />
+		<result property="ansStatus" column="ANS_STATUS" />
+		<result property="delStatus" column="DEL_STATUS" />
+		<result property="qpwd" column="QPWD" />
+		<result property="pwdStatus" column="PWD_STATUS" />
 	</resultMap>
 
 	<resultMap type="Stay" id="lastVisitDateResultSet">
@@ -95,7 +114,56 @@
 		SELECT *
 		FROM QUE
 		WHERE MNO = #{clientMno}
-		ORDER BY QNO ASC;
+		ORDER BY QNO ASC
+	</select>
+
+	<select id="selectRsvList" parameterType="_int" resultMap="rsvListResultSet">
+		SELECT R.CHECKIN, R.CHECKOUT, R.RM_NO, RM_NUM, STAY_PRICE, RSV_DATE, RSV_STATUS
+		FROM RSV R
+		LEFT JOIN STAY S ON(S.RSV_NO = R.RSV_NO)
+		JOIN ROOM ROM ON(R.RM_NO = ROM.RM_NO)
+		WHERE R.MNO = #{clientMno}
+		ORDER BY CHECKIN DESC
+	</select>
+	
+	<select id="selectStayList" parameterType="_int" resultMap="stayListResultSet">
+		SELECT S.CHECKIN, S.CHECKOUT, S.RM_NO, RM_NUM, PRICE, RV.RSV_DATE, STAY_STATUS
+		FROM STAY S
+		LEFT JOIN RSV RV ON(S.RSV_NO = RV.RSV_NO)
+		JOIN ROOM R ON(S.RM_NO = R.RM_NO)
+		WHERE S.MNO = #{clientMno}
+		ORDER BY CHECKIN DESC
+	</select>
+	
+	<select id="getSearchClientListCount" parameterType="ClientSearchCondition" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE TYPE = 'CLIENT' AND STATUS = 'Y'
+		<if test="clientName != null">
+			AND NAME = #{clientName}
+		</if>
+		<if test="clientPhone != null">
+			AND PHONE LIKE '%' || #{clientPhone} || '%'
+		</if>
+		<if test="clientEmail != null">
+			AND BCONTENT LIKE '%' || #{clientEmail} || '%'
+		</if>
+	</select>
+	
+	<select id="selectSearchClientList" parameterType="ClientSearchCondition" resultMap="clientListResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE TYPE = 'CLIENT' AND STATUS = 'Y'
+		<if test="clientName != null">
+			AND NAME = #{clientName}
+		</if>
+		<if test="clientPhone != null">
+			AND PHONE LIKE '%' || #{clientPhone} || '%'
+		</if>
+		<if test="clientEmail != null">
+			AND BCONTENT LIKE '%' || #{clientEmail} || '%'
+		</if>
+		ORDER BY MNO DESC
 	</select>
 	
 </mapper>

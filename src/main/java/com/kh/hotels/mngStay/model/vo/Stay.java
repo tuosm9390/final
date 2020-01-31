@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class Stay {
 
 	private int stayNo;
+	private String rmNum; // 객실호실
 	private int rmNo;
 	private int mno;
 	private Date checkIn;
@@ -22,5 +23,6 @@ public class Stay {
 	private int payment;
 	private String modDate;
 	private String rsvNo;
+	private String rsvDate;
 	
 }
