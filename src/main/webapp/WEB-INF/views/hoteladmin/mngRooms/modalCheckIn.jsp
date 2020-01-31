@@ -129,6 +129,30 @@ input[name=clientName], input[name=checkinTime], input[name=checkoutTime]
 	width: 120px;
 }
 
+.findClientList {
+	width: 234px;
+	height: 85px;
+	position: fixed;
+	background-color: #E4E2E2;
+	margin-top: 23px;
+	max-height: 85px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.findClientPer {
+	font-size: 14px;
+	margin-left: 10px;
+	width: 220px;
+	overflow-x: hidden;
+	background-color: none;
+}
+
+.findClientPer:hover {
+	cursor: pointer;
+	background-color: darkgray;
+}
+
 #insertClient {
 	width: 100px;
 	height: 23px;
@@ -143,8 +167,13 @@ input[name=clientPhone], input[name=clientEmail] {
 	width: 230px;
 }
 
-select[name=stayDay], select[name=adultSu], select[name=childSu] {
+select[name=stayDay] {
 	width: 50px;
+	height: 23px;
+}
+
+select[name=personCnt] {
+	width: 120px;
 	height: 23px;
 }
 
@@ -348,7 +377,7 @@ input[name=svcFee], input[name=svcTot] {
 	display: inline-flex;
 	width: 440px;
 	height: 50px;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 
 .totalPrice h1 {
@@ -467,6 +496,14 @@ input[name=svcFee], input[name=svcTot] {
 .hiscontent td:nth-child(1) {
 	font-weight: bold;
 }
+
+input[type=number]:disabled {
+	background-color: white;
+}
+
+.totalPrice table {
+	width: 430px;
+}
 </style>
 </head>
 <body>
@@ -491,18 +528,19 @@ input[name=svcFee], input[name=svcTot] {
 					<tr>
 						<td><div class="Mred"></div></td>
 						<td>고객명</td>
-						<td style="display:inline-flex;"><input type="text" name="clientName">
-						<button id="insertClient">추가</button></td>
+						<td style="display:inline-flex;"><input type="text" name="clientName" id="clientName">
+						<div class="findClientList"></div>
+						<button id="insertClient" type="button">추가</button></td>
 					</tr>
 					<tr>
 						<td><div class="Mgrey"></div></td>
 						<td>전화번호</td>
-						<td><input type="tel" name="clientPhone"></td>
+						<td><input type="tel" name="clientPhone" id="clientPhone"></td>
 					</tr>
 					<tr>
 						<td><div class="Mgrey"></div></td>
 						<td>이메일</td>
-						<td><input type="email" name="clientEmail"></td>
+						<td><input type="email" name="clientEmail" id="clientEmail"></td>
 					</tr>
 					<tr>
 						<td><div class="Mred"></div></td>
@@ -522,13 +560,8 @@ input[name=svcFee], input[name=svcTot] {
 					</tr>
 					<tr>
 						<td><div class="Mred"></div></td>
-						<td>성인/소인</td>
-						<td>성인 : <select name="adultSu">
-							<option>0</option>
-						</select> / 소인 : <select name="childSu">
-							<option>0</option>
-						</select>
-						</td>
+						<td>투숙인원</td>
+						<td><select name="personCnt" id="personCnt"></select><span> 명</span></td>
 					</tr>
 					<tr>
 						<td><div class="Mred"></div></td>
@@ -600,8 +633,8 @@ input[name=svcFee], input[name=svcTot] {
 								</c:forEach>
 							</select></td>
 							<td width="10%"><input type="number" name="svcCnt" min="0" placeholder="수량" onchange="selSvcCnt(this.id)"></td>
-							<td width="15%"><input type="number" name="svcFee" min="0" placeholder="가격"></td>
-							<td width="15%"><input type="number" name="svcTot" min="0" placeholder="합계"></td>
+							<td width="15%"><input type="number" name="svcFee" placeholder="가격" disabled></td>
+							<td width="15%"><input type="number" name="svcTot" placeholder="합계" disabled></td>
 							<td width="8%"><button id="svcDelBtn" onclick="svcDelBtn(this)">×</button></td>
 						</tr>
 					</table>
@@ -619,29 +652,36 @@ input[name=svcFee], input[name=svcTot] {
 					<table>
 						<tr>
 							<td>신용카드</td>
-							<td><input type="number" name="creditCard" min="0"></td>
+							<td><input type="number" name="creditCard" id="payCard" min="0" onchange="payMoney()"></td>
 						</tr>
 						<tr>
 							<td>현금</td>
-							<td><input type="number" name="cash" min="0"></td>
+							<td><input type="number" name="cash" min="0" id="payCash" onchange="payMoney()"></td>
 						</tr>
 						<tr>
 							<td>계좌이체</td>
-							<td><input type="number" name="account" min="0"></td>
+							<td><input type="number" name="account" min="0" id="payAcc" onchange="payMoney()"></td>
 						</tr>
 						<tr>
 							<td>환불</td>
-							<td><input type="number" name="refund" min="0"></td>
+							<td><input type="number" name="refund" min="0" id="payRfd" onchange="payMoney()"></td>
 						</tr>
 						<tr>
-							<td colspan="2">최종결제일 :</td>
+							<td colspan="2">최종결제일 : <span id="lastPayDay"></span></td>
 						</tr>
 					</table>
 				</div>
 			</div>
+
 			<div class="totalPrice mediumseagreen">
-				<h1 style="margin-left:20px;">잔액</h1>
-				<h1 style="margin-left:270px; color:red;">100,000</h1>
+				<table>
+					<tr>
+						<td width="20%"><h1 style="margin-left:20px;">잔액</h1></td>
+						<td style="text-align:right;" width="80%"><h1 style="color:red;" id="chargePrc">0</h1></td>
+					</tr>
+				</table>
+				
+				
 			</div>
 		</div>
 		<!-- 요금정보 모델 end -->
@@ -695,6 +735,26 @@ input[name=svcFee], input[name=svcTot] {
 	</div>
 
 	<script>
+		//총금액 변경 함수
+		function changeTotalPrcTxt() {
+			var prc1 = parseInt($("#totalRoom").text().replace(/,/g , ''));
+			var prc2 = parseInt($("#totalSvc").text().replace(/,/g , ''));
+			var sum = prc1 + prc2;
+			$("#totalPrc").text(sum.toLocaleString());
+			changeChargePrcTxt();
+		}
+		
+		//잔액 변경 함수
+		function changeChargePrcTxt() {
+			var totPrc = parseInt($("#totalPrc").text().replace(/,/g , ''));
+			var card = $("#payCard").val();
+			var cash = $("#payCash").val();
+			var acc = $("#payAcc").val();
+			var refundPrc = $("#payRfd").val() * 1;
+			var charge = totPrc - card - cash - acc + refundPrc;
+			$("#chargePrc").text(charge.toLocaleString());
+		}
+		
 		$(document).ready(function() {
 			$(".btn_close").click(function() {
 				$("input").val('');
@@ -702,6 +762,7 @@ input[name=svcFee], input[name=svcTot] {
 				$("#checkOut").remove();
 				$(".feeDetailSec tr").remove();
 				$(".svcDetailSec tr:not(:first)").remove();
+				$("#personCnt option").remove();
 				$(".modal").fadeOut();
 			});
 			
@@ -718,6 +779,7 @@ input[name=svcFee], input[name=svcTot] {
 			$(".infoBtnSec").hide();
 			$("#printRecipt").hide();
 			$(".svcTR").css('display', 'none');
+			$(".findClientList").hide();
 			
 			
 			$(".btn_close_sub").click(function() {
@@ -755,11 +817,17 @@ input[name=svcFee], input[name=svcTot] {
 			tempsvccnt++;
 		});
 		
+		var svctotprc = 0;
 		function svcDelBtn(data) {
+			svctotprc -= $(data).parent().parent().children().eq(4).children().val();
 			$(data).parent().parent().remove();
+			$("#totalSvc").text(svctotprc.toLocaleString());
+			changeTotalPrcTxt();
 		}
 		
 		function selSvcName(thisEl, svcCode){
+			svctotprc -= $("#" + thisEl).parent().parent().children().eq(4).children().val();
+				
 			for(var i = 0; i < svclist.length; i++) {
 				if(svclist[i].svcCode == svcCode) {
 					var svcPrc = svclist[i].svcPrice;
@@ -769,14 +837,80 @@ input[name=svcFee], input[name=svcTot] {
 			thisElparent.children().eq(2).children().val('1');
 			thisElparent.children().eq(3).children().val(svcPrc);
 			thisElparent.children().eq(4).children().val(svcPrc);
+			
+			svctotprc += svcPrc;
+			$("#totalSvc").text(svctotprc.toLocaleString());
+			changeTotalPrcTxt();
 		}
 		
 		function selSvcCnt(thisEl) {
 			var thisElparent = $("#" + thisEl).parent().parent();
+			
+			svctotprc -= thisElparent.children().eq(4).children().val();
+			
 			var cnt = $("#" + thisEl).val();
 			var prc = thisElparent.children().eq(3).children().val();
 			thisElparent.children().eq(4).children().val(cnt * prc);
+			
+			svctotprc += cnt * prc;
+			$("#totalSvc").text(svctotprc.toLocaleString());
+			changeTotalPrcTxt();
 		}
+		
+		function payMoney() {
+			$("#lastPayDay").text(new Date().format('yyyy-MM-dd HH:mm:ss'));
+			changeChargePrcTxt();
+		}
+		
+		var clientList;
+		$("#clientName").keyup(function(){
+			var searchName = $(this).val();
+			$.ajax({
+				url:"ajxFindClient.ro",
+				data:{searchName:searchName},
+				type:"post",
+				success:function(data){
+					clientList = data.clientList;
+					if(clientList.length == 0) {
+						$(".findClientList").hide();
+						$(".findClientList div").remove();
+					} else {
+						$(".findClientList div").remove();
+						for(var i = 0; i < clientList.length; i++) {
+							$infoClient = "<div class='findClientPer' id='per" + clientList[i].mno + "' onclick='findClientClk(this.id)'>" + clientList[i].userName + " | " + clientList[i].phone + "</div>";
+							$(".findClientList").append($infoClient);
+						}
+						$(".findClientList").show();
+					}
+				},
+				error:function(error, status){
+					alert("SYSTEM ERROR!");
+				}
+			});
+
+		}).keydown(function(){
+			$(".findClientList").hide();
+			$(".findClientList div").remove();
+		});
+		
+		function findClientClk(thisEl) {
+			$(".findClientList").hide();
+			var mno = thisEl.substring(3);
+			for(var i = 0; i < clientList.length; i++) {
+				if(clientList[i].mno == mno) {
+					$("#clientName").val(clientList[i].userName);
+					$("#clientPhone").val(clientList[i].phone);
+					$("#clientEmail").val(clientList[i].email);
+				}
+			}
+		}
+		
+		//여기여기여기여기여기여기여기여ㅣ여기여기
+		$("#selRoomType").change(function(){
+			var rmType = $(this).val();
+			console.log(rmType);
+			console.log(roomlist);
+		});
 		
 	</script>
 </body>
