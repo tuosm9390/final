@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceList implements java.io.Serializable{
+public class ServiceList implements java.io.Serializable {
 
 	private String svcCode;		//서비스 코드
 	private String svcName;		//서비스명

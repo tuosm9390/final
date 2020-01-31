@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.dao.RoomsDao;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
+import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
@@ -44,6 +45,13 @@ public class RoomsServiceImpl implements RoomsService {
 	public ArrayList<Member> ajxFindClient(String searchName) {
 		ArrayList<Member> clientList = rd.ajxFindClient(sqlSession, searchName);
 		return clientList;
+	}
+
+	@Override
+	public void insertCheckIn(CheckIn checkIn) {
+		int result1 = rd.insertCIstay(sqlSession, checkIn);
+		int result2 = rd.insertCIpayment(sqlSession, checkIn);
+		int result3 = rd.insertCIsvcuse(sqlSession, checkIn);
 	}
 
 }

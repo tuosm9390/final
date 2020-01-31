@@ -504,21 +504,25 @@ input[type=number]:disabled {
 .totalPrice table {
 	width: 430px;
 }
+
+.redText{display: block; color: red; font-size: 12px;}
+.greenText{display: block; color: green; font-size: 12px;}
+
 </style>
 </head>
 <body>
 	<jsp:include page="modalInsertClient.jsp"></jsp:include>
 	<div class="modal">
 		<a class="btn_close">×</a>
-
+		
+		<form id="checkinModal" method="post">
 		<!-- 고객정보 모달 -->
 		<div class="modal_content1">
-		<form>
 			<div class="statusNo">
 				<div class="statusColor mediumseagreen"></div>
 				<h1>　입실</h1>&nbsp;<h1 class="staycode"></h1>
-				<button id="ciCancelBtn">× 입실취소</button>
-				<button id="rsvCancelBtn">× 예약취소</button>
+				<button type="button" id="ciCancelBtn">× 입실취소</button>
+				<button type="button" id="rsvCancelBtn">× 예약취소</button>
 			</div>
 			<!-- 예약정보 section -->
 			<div class="info">
@@ -529,18 +533,19 @@ input[type=number]:disabled {
 						<td><div class="Mred"></div></td>
 						<td>고객명</td>
 						<td style="display:inline-flex;"><input type="text" name="clientName" id="clientName">
+						<input type="hidden" name="clientNo" value="0" id="clientNo">
 						<div class="findClientList"></div>
 						<button id="insertClient" type="button">추가</button></td>
 					</tr>
 					<tr>
 						<td><div class="Mgrey"></div></td>
 						<td>전화번호</td>
-						<td><input type="tel" name="clientPhone" id="clientPhone"></td>
+						<td><input type="tel" name="clientPhone" id="clientPhone" maxlength="11" placeholder=" '-'를 제외하고 입력"></td>
 					</tr>
 					<tr>
 						<td><div class="Mgrey"></div></td>
 						<td>이메일</td>
-						<td><input type="email" name="clientEmail" id="clientEmail"></td>
+						<td><input type="email" name="clientEmail" id="clientEmail"><span id="emailSpan"></span></td>
 					</tr>
 					<tr>
 						<td><div class="Mred"></div></td>
@@ -576,21 +581,20 @@ input[type=number]:disabled {
 						</select></td>
 					</tr>
 				</table>
-			</form>
 			</div>
 			<!-- 예약정보 section end -->
 			<!-- 기타정보 section -->
 			<hr style="margin-left: 20px; margin-right: 20px;">
 			<div class="infoETC">
 				<h4>기타정보</h4>
-				<button id="openMemoMD">메모</button>
+				<button id="openMemoMD" type="button">메모</button>
 			</div>
 			<br>
-			<button id="checkinBtn">입실</button>
+			<button id="checkinBtn" onclick="doCheckIn()" type="button">입실</button>
 			<div class="infoBtnSec">
-				<button id="checkoutBtn">퇴실</button>
-				<button id="openHisMD">변경내역</button>
-				<button id="mdSaveBtn">저장</button>
+				<button id="checkoutBtn" type="button">퇴실</button>
+				<button id="openHisMD" type="button">변경내역</button>
+				<button id="mdSaveBtn" type="button">저장</button>
 			</div>
 			<!-- 기타정보 section end -->
 		</div>
@@ -598,13 +602,14 @@ input[type=number]:disabled {
 
 		<!-- 요금정보 모달 -->
 		<div class="modal_content2">
-			<div class="chargeBar"><h1 style="margin-left: 20px;">요금상세</h1><button id="printRecipt">영수증 출력</button></div>
+			<div class="chargeBar"><h1 style="margin-left: 20px;">요금상세</h1><button id="printRecipt" type="button">영수증 출력</button></div>
 			<div class="charge">
 				<div class="feeDetailBar">
 					<table>
 						<tr>
 							<td width="20%"><h4>객실료</h4></td>
 							<td style="text-align:right;" width="80%"><h4 id="totalRoom"></h4></td>
+							<input type="hidden" name="totalRoom" id="iptTotalRoom" value="0">
 						</tr>
 					</table>
 				</div>
@@ -617,8 +622,9 @@ input[type=number]:disabled {
 					<table>
 						<tr>
 							<td width="15%"><h4>서비스</h4></td>
-							<td width="5%"><button id="svcAddBtn" style="margin-left:0;">+</button></td>
+							<td width="5%"><button id="svcAddBtn" style="margin-left:0;" type="button">+</button></td>
 							<td style="text-align:right;" width="80%"><h4 id="totalSvc">0</h4></td>
+							<input type="hidden" id="iptTotalSvc" name="totalSvc" value="0">
 						</tr>
 					</table>
 				</div>
@@ -635,7 +641,7 @@ input[type=number]:disabled {
 							<td width="10%"><input type="number" name="svcCnt" min="0" placeholder="수량" onchange="selSvcCnt(this.id)"></td>
 							<td width="15%"><input type="number" name="svcFee" placeholder="가격" disabled></td>
 							<td width="15%"><input type="number" name="svcTot" placeholder="합계" disabled></td>
-							<td width="8%"><button id="svcDelBtn" onclick="svcDelBtn(this)">×</button></td>
+							<td width="8%"><button id="svcDelBtn" onclick="svcDelBtn(this)" type="button">×</button></td>
 						</tr>
 					</table>
 				</div>
@@ -645,6 +651,7 @@ input[type=number]:disabled {
 						<tr>
 							<td width="20%"><h4>총금액</h4></td>
 							<td style="text-align:right;" width="80%"><h4 id="totalPrc">0</h4></td>
+							<input type="hidden" name="totalPrc" id="iptTotalPrc" value="0">
 						</tr>
 					</table>
 				</div>
@@ -668,6 +675,7 @@ input[type=number]:disabled {
 						</tr>
 						<tr>
 							<td colspan="2">최종결제일 : <span id="lastPayDay"></span></td>
+							<input type="hidden" name="lastPayDay" value="0" id="iptLastPayDay">
 						</tr>
 					</table>
 				</div>
@@ -692,7 +700,7 @@ input[type=number]:disabled {
 				<div class="memoDetailBar"><h3>메모</h3><a class="btn_close_sub">×</a></div>
 				<div class="memoDetailSec">
 					<textarea class="memoInsert" placeholder=" 메모를 입력하세요."></textarea>
-					<button id="memoInsertBtn">+　추가</button>
+					<button id="memoInsertBtn" type="button">+　추가</button>
 					<hr>
 					<div class="memolist">
 						<div class="memocontent">
@@ -700,7 +708,7 @@ input[type=number]:disabled {
 								<span>관리자 2020-01-11 22:35:17</span>
 								<p>메모내용내용내용</p>
 							</div>
-							<button id="memoDelBtn">×</button>
+							<button id="memoDelBtn" type="button">×</button>
 						</div>
 					</div>
 				</div>
@@ -733,15 +741,24 @@ input[type=number]:disabled {
 		</div>
 		<!-- 사이드모달(메모/변경이력) end -->
 	</div>
+	</form>
 
 	<script>
 		//총금액 변경 함수
 		function changeTotalPrcTxt() {
-			var prc1 = parseInt($("#totalRoom").text().replace(/,/g , ''));
-			var prc2 = parseInt($("#totalSvc").text().replace(/,/g , ''));
+			var prc1 = parseInt($("#totalRoom").text().replace(/,/g , '')); 
+			var prc2 = parseInt($("#totalSvc").text().replace(/,/g , '')); 
 			var sum = prc1 + prc2;
-			$("#totalPrc").text(sum.toLocaleString());
+			$("#totalPrc").text(sum.toLocaleString()); 
 			changeChargePrcTxt();
+			changePrcIH();
+		}
+		
+		//input hidden 값 변경 함수
+		function changePrcIH() {
+			$("#iptTotalRoom").val(parseInt($("#totalRoom").text().replace(/,/g , '')));
+			$("#iptTotalSvc").val(parseInt($("#totalSvc").text().replace(/,/g , '')));
+			$("#iptTotalPrc").val(parseInt($("#totalPrc").text().replace(/,/g , '')));
 		}
 		
 		//잔액 변경 함수
@@ -827,7 +844,6 @@ input[type=number]:disabled {
 		
 		function selSvcName(thisEl, svcCode){
 			svctotprc -= $("#" + thisEl).parent().parent().children().eq(4).children().val();
-				
 			for(var i = 0; i < svclist.length; i++) {
 				if(svclist[i].svcCode == svcCode) {
 					var svcPrc = svclist[i].svcPrice;
@@ -859,6 +875,7 @@ input[type=number]:disabled {
 		
 		function payMoney() {
 			$("#lastPayDay").text(new Date().format('yyyy-MM-dd HH:mm:ss'));
+			$("#iptLastPayDay").val($("#lastPayDay").text());
 			changeChargePrcTxt();
 		}
 		
@@ -901,17 +918,49 @@ input[type=number]:disabled {
 					$("#clientName").val(clientList[i].userName);
 					$("#clientPhone").val(clientList[i].phone);
 					$("#clientEmail").val(clientList[i].email);
+					$("#clientNo").val(mno);
 				}
 			}
 		}
 		
-		//여기여기여기여기여기여기여기여ㅣ여기여기
 		$("#selRoomType").change(function(){
 			var rmType = $(this).val();
-			console.log(rmType);
-			console.log(roomlist);
+			var cnt = 0;
+			for(var i = 0; i < roomlist.length; i++) {
+				if(roomlist[i].rtName != rmType) {
+					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
+				} else {
+					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+					if($("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop('disabled')) {
+					} else {
+						cnt++;
+					}
+				}
+				
+				if(cnt == 1) {
+					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop("selected", true);
+					cnt++;
+				}
+			}
 		});
 		
+		$("#clientEmail").keyup(function(event){
+			var email = $("#clientEmail").val();
+			var check = /(\w{4,})@(\w{1,})\.(\w{1,3})/ig;
+			if(check.test(email)){
+				$("#emailSpan").removeClass('redText').addClass('greenText');
+				$("#emailSpan").text("");
+			} else {
+				$("#emailSpan").removeClass('greenText').addClass('redText');
+				$("#emailSpan").text("부적합한 Email 입니다. 다시 입력해 주세요!");
+			}
+		});
+
+		//체크인 등록 함수
+		function doCheckIn() {
+			$("#checkinModal").attr("action", "insertCI.ro");
+			$("#checkinModal").submit();
+		}
 	</script>
 </body>
 </html>

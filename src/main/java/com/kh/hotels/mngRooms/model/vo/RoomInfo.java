@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomInfo {
+public class RoomInfo implements java.io.Serializable {
 	private int rm_No;
 	private int std_Per;
 	private String rm_Option;

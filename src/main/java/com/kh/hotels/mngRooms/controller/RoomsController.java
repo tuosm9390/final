@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.service.RoomsService;
+import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
@@ -63,6 +65,19 @@ public class RoomsController {
 		}
 		mv.addObject("clientList", clientList);
 		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@PostMapping("insertCI.ro")
+	public ModelAndView insertCheckIn(ModelAndView mv, CheckIn checkIn) {
+		
+		//여기여기여기여기여기
+		if(checkIn.isRentYN()) {
+			checkIn.setLentYN("LENT");
+		} else {
+			checkIn.setLentYN("STAY");
+		}
+		rs.insertCheckIn(checkIn);
 		return mv;
 	}
 

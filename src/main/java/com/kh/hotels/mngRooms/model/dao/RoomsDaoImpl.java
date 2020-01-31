@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
+import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
@@ -45,6 +46,21 @@ public class RoomsDaoImpl implements RoomsDao {
 	public ArrayList<Member> ajxFindClient(SqlSessionTemplate sqlSession, String searchName) {
 		ArrayList<Member> clientList = (ArrayList) sqlSession.selectList("Rooms.ajxFindClient", searchName);
 		return clientList;
+	}
+
+	@Override
+	public int insertCIstay(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		return sqlSession.insert("Rooms.insertCIstay", checkIn);
+	}
+
+	@Override
+	public int insertCIpayment(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		return sqlSession.insert("Rooms.insertCIpayment", checkIn);
+	}
+
+	@Override
+	public int insertCIsvcuse(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		return sqlSession.insert("Rooms.insertCIsvcuse", checkIn);
 	}
 
 }
