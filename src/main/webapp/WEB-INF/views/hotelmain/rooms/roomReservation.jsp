@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -130,18 +131,11 @@
 		<div class="site-outer-box">
 			<!-- 좌측 이미지 -->
 			<div class="reservation-img">
-				<div class="reservation-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
-				<div class="reservation-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
-				<div class="reservation-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
-				<div class="reservation-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
+				<c:forEach var="filePath" items="${ sessionScope.filePathList }" varStatus="st">
+					<div class="reservation-img-item">
+						<img src="${ contextPath }${ filePath }" style="width: 100%; height: 100%;">
+					</div>
+				</c:forEach>
 			</div>
 			<!-- 좌측 이미지 끝 -->
 			

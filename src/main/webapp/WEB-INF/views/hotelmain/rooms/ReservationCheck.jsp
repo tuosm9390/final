@@ -81,18 +81,11 @@
 		<div class="site-outer-box">
 			<!-- 좌측 이미지 -->
 			<div class="reservation-img">
-				<div class="reservation-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
-				<div class="reservation-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
-				<div class="reservation-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
-				<div class="reservation-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 100%;">
-				</div>
+				<c:forEach var="filePath" items="${ filePathList }" varStatus="st">
+					<div class="reservation-img-item">
+						<img src="${ contextPath }${ filePath }" style="width: 100%; height: 100%;">
+					</div>
+				</c:forEach>
 			</div>
 			<!-- 좌측 이미지 끝 -->
 			

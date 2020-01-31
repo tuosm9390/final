@@ -17,4 +17,6 @@ public class RoomInfo {
 	private int minPer;
 	private int maxPer;
 	private int limitPrc;
+	private String filePath;
+	private int fileLevel;
 }

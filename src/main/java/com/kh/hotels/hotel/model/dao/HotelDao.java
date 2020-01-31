@@ -1,5 +1,6 @@
 package com.kh.hotels.hotel.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +16,9 @@ import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 public interface HotelDao {
 
-	Map<String, RoomInfo> selectRoomList(SqlSessionTemplate sqlSession);
+	ArrayList<RoomInfo> selectRoomList(SqlSessionTemplate sqlSession);
 
-	RoomInfo selectRoom(SqlSessionTemplate sqlSession, int roomType);
+	ArrayList<RoomInfo> selectRoom(SqlSessionTemplate sqlSession, int roomType);
 
 	ReservationCheck reservationCheck(SqlSessionTemplate sqlSession, ReservationCheck rsv);
 
@@ -29,7 +30,7 @@ public interface HotelDao {
 
 	Member selectMember(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
 
-	List<Que> selectQnAList(SqlSessionTemplate sqlSession, PageInfo pi) throws QnASelectListException;
+	List<Que> selectQnAList(SqlSessionTemplate sqlSession, Map<String, Object> map) throws QnASelectListException;
 
 	int insertQnA(SqlSessionTemplate sqlSession, Que q);
 
@@ -48,5 +49,7 @@ public interface HotelDao {
 	List<RoomInfo> selectRoomNoList(SqlSessionTemplate sqlSession, int roomType);
 
 	int insertBreakfast(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
+
+	int selectRoomType(SqlSessionTemplate sqlSession, String rsvNo);
 
 }

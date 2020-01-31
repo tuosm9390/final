@@ -1,5 +1,6 @@
 package com.kh.hotels.hotel.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,15 +21,15 @@ import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 public class HotelDaoImpl implements HotelDao{
 
 	@Override
-	public Map<String, RoomInfo> selectRoomList(SqlSessionTemplate sqlSession) {
+	public ArrayList<RoomInfo> selectRoomList(SqlSessionTemplate sqlSession) {
 		
-		return sqlSession.selectMap("hotel.selectRoomList", "rt_No");
+		return (ArrayList)sqlSession.selectList("hotel.selectRoomList");
 	}
 
 	@Override
-	public RoomInfo selectRoom(SqlSessionTemplate sqlSession, int roomType) {
+	public ArrayList<RoomInfo> selectRoom(SqlSessionTemplate sqlSession, int roomType) {
 		
-		return sqlSession.selectOne("hotel.selectRoom", roomType);
+		return (ArrayList)sqlSession.selectList("hotel.selectRoom", roomType);
 	}
 
 	@Override
@@ -62,14 +63,16 @@ public class HotelDaoImpl implements HotelDao{
 	}
 
 	@Override
-	public List<Que> selectQnAList(SqlSessionTemplate sqlSession, PageInfo pi) throws QnASelectListException {
+	public List<Que> selectQnAList(SqlSessionTemplate sqlSession, Map<String, Object> map) throws QnASelectListException {
 		List<Que> list = null;
 		
-		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		int offset = (((PageInfo)(map.get("pi"))).getCurrentPage() - 1) * ((PageInfo)(map.get("pi"))).getLimit();
 		
-		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		RowBounds rowBounds = new RowBounds(offset, ((PageInfo)(map.get("pi"))).getLimit());
 		
-		list = (List) sqlSession.selectList("hotel.selectQnAList", null, rowBounds);
+		System.out.println("dao pi : " + ((PageInfo)(map.get("pi"))));
+		
+		list = (List) sqlSession.selectList("hotel.selectQnAList", map, rowBounds);
 		
 		if(list == null) {
 			throw new QnASelectListException("게시물 조회 실패!");
@@ -121,6 +124,11 @@ public class HotelDaoImpl implements HotelDao{
 	@Override
 	public int insertBreakfast(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck) {
 		return sqlSession.insert("hotel.insertBreakfast", rsvCheck);
+	}
+
+	@Override
+	public int selectRoomType(SqlSessionTemplate sqlSession, String rsvNo) {
+		return sqlSession.selectOne("hotel.selectRoomType", rsvNo);
 	}
 
 }
