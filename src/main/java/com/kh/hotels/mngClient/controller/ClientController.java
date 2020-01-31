@@ -13,15 +13,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngClient.model.service.ClientService;
+import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
+import com.kh.hotels.mngClient.model.vo.QueModal;
+import com.kh.hotels.mngClient.model.vo.StayAndRsv;
 import com.kh.hotels.mngMember.model.vo.Member;
+import com.kh.hotels.mngReserv.model.vo.Reservation;
 import com.kh.hotels.mngStay.model.vo.Stay;
 
+@SessionAttributes({"searchContent","searchOption"})
 @Controller
 public class ClientController {
 	
@@ -100,12 +106,74 @@ public class ClientController {
 		
 		ArrayList<Que> queList = cs.selectClientQue(clientMno);
 		
+		ArrayList<QueModal> queModalList = new ArrayList<>();
+		QueModal queModal;
+		
+		String qdateStr;
+		
+		for(int i = 0; i < queList.size(); i++) {
+			queModal = new QueModal();
+			queModal.setQno(queList.get(i).getQno());
+			queModal.setMno(queList.get(i).getMno());
+			queModal.setQtype(queList.get(i).getQtype());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			qdateStr = sdf.format(queList.get(i).getQdate());
+			queModal.setQdate(qdateStr);
+			queModal.setQtitle(queList.get(i).getQtitle());
+			queModal.setQcontent(queList.get(i).getQcontent());
+			queModal.setAnsStatus(queList.get(i).getAnsStatus());
+			queModal.setDelStatus(queList.get(i).getDelStatus());
+			queModal.setQpwd(queList.get(i).getQpwd());
+			queModal.setPwdStatus(queList.get(i).getPwdStatus());
+			
+			queModalList.add(queModal);
+		}
+		
+		ArrayList<Reservation> rsvList = cs.selectRsvList(clientMno);
+		ArrayList<Stay> stayList = cs.selectStayList(clientMno);
+		
+		System.out.println("rsvList : " + rsvList);
+		System.out.println("stayList : "  + stayList);
+		
+		int listSize = rsvList.size() + stayList.size();
+		
+		ArrayList<StayAndRsv> sarList = new ArrayList<>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		StayAndRsv stayAndRsv;
+		for(int i = 0; i < rsvList.size(); i ++) {
+			stayAndRsv = new StayAndRsv();
+			stayAndRsv.setCheckIn(sdf.format(rsvList.get(i).getCheckIn()));
+			stayAndRsv.setCheckOut(sdf.format(rsvList.get(i).getCheckOut()));
+			stayAndRsv.setPrice(rsvList.get(i).getStayPrice());
+			stayAndRsv.setRmNo(rsvList.get(i).getRmNo());
+			stayAndRsv.setRmNum(rsvList.get(i).getRmNum());
+			stayAndRsv.setRsvDate(rsvList.get(i).getRsvDate());
+			stayAndRsv.setStatus(rsvList.get(i).getRsvStatus());
+			sarList.add(stayAndRsv);
+		}
+		
+		for(int i = 0; i < stayList.size(); i++) {
+			stayAndRsv = new StayAndRsv();
+			stayAndRsv.setCheckIn(sdf.format(stayList.get(i).getCheckIn()));
+			stayAndRsv.setCheckOut(sdf.format(stayList.get(i).getCheckOut()));
+			stayAndRsv.setPrice(stayList.get(i).getPrice());
+			stayAndRsv.setRmNo(stayList.get(i).getRmNo());
+			stayAndRsv.setRmNum(stayList.get(i).getRmNum());
+			stayAndRsv.setRsvDate(stayList.get(i).getRsvDate());
+			stayAndRsv.setStatus(stayList.get(i).getStayStatus());
+			sarList.add(stayAndRsv);
+		}
 		
 		hmap.put("visitCount",visitCount);
 		hmap.put("clientInfo", clientInfo);
 		hmap.put("price", price);
 		hmap.put("stayDay", stayDay);
 		hmap.put("lastVisit",enddate);
+		hmap.put("queModalList",queModalList);
+		hmap.put("sarList",sarList);
+		
 
 		mv.addObject("hmap", hmap);
 		mv.setViewName("jsonView");
@@ -113,6 +181,42 @@ public class ClientController {
 		return mv;
 	}
 
+	@RequestMapping("searchClient.cl")
+	public String selectSearchClient(String searchOption, String searchContent, HttpServletRequest request, Model model) {
+		
+		ClientSearchCondition csc = new ClientSearchCondition();
+		
+		if(searchOption.equals("clientName")) {
+			csc.setClientName(searchContent);
+		}else if(searchOption.equals("clientPhone")){
+			csc.setClientPhone(searchContent);
+		}else if(searchOption.equals("clientEmail")) {
+			csc.setClientEmail(searchContent);
+		}
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int clientCount = cs.getSearchClientListCount(csc);
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, clientCount);
+		
+		ArrayList<Member> searchClientList = cs.selectSearchClientList(csc, pi);
+		
+		model.addAttribute("check", "ok");
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("searchContent", searchContent);
+		model.addAttribute("clientCount", clientCount);
+		model.addAttribute("clientList", searchClientList);
+		model.addAttribute("pi", pi);
+		
+		return "viewClientList";
+		
+	}
+	
 	@GetMapping("viewBlackList.cl")
 	public String goBlackList() {
 		return "blackList";
