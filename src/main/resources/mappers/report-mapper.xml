@@ -266,9 +266,11 @@
         JOIN CONN C ON(I.CN_CODE = C.CN_CODE)
 		WHERE  C.CN_NAME = #{value} 
 	</select>
-	<select id="selectVosPrice" resultType="_int"
-		parameterType="PurVos">
-		SELECT DISTINCT VOS
+	<select id="selectVosPrice" resultType="java.util.HashMap"
+		parameterType="String">
+		
+		SELECT VOS, INO        
+		FROM (SELECT  VOS, MAX(INO) AS "INO"
 		FROM ITEM I 
 		JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
 		JOIN CONN C ON (I.CN_CODE = C.CN_CODE)
@@ -276,6 +278,8 @@
 		AND TYPE = #{type}
 		AND CN_NAME = #{cnName}
 		AND MFG =  #{madeComName} 
+        GROUP BY VOS)
+        
 		</select>
 
 

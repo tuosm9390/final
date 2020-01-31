@@ -98,7 +98,7 @@ textarea {
 	border:1px solid lightgray;
 	width:110px;
 }
-#vos, #totalPrice {
+.vos, .totalPrice {
 	border-radius:3px;
 	height:22px;
 	border:1px solid lightgray;
@@ -217,7 +217,8 @@ textarea {
 					<td>기안부서</td>
 					<td >구매팀</td>
 					<td>기안자</td>
-					<td><c:out value="${sessionScope.loginUser.userName }"/><input type="hidden" value="${sessionScope.loginUser.mno }"></td>
+					<td><c:out value="${sessionScope.loginUser.userName }"/><input type="hidden" value="${sessionScope.loginUser.mno }" name="mname">
+					</td>
 					
 				</tr>
 				
@@ -301,10 +302,10 @@ textarea {
 						</select>
 					</td>
 					<td class="vos">
-					<input type="text" name="vos" id="vos" name="vos">
+					<input type="text" class="vos" name="vosPrice">
 					</td>
 					<td><input type="text" class="anoTxt_price" placeholder="금액" name="amount"></td>
-					<td class="totalPrice"><input type="text" name="price" id="totalPrice"></td>
+					<td><input type="text" name="price" class="totalPrice"></td>
 				</tr>
 				
 			</table>
@@ -376,9 +377,9 @@ textarea {
 			var totalPrice = "";
 			for(var i = 0; i < lprice; i++) {
 				if(i == 0) {
-					totalPrice = $(".payTbl.purchase tr").eq(i+1).children().find('#totalPrice').val()*1;
+					totalPrice = $(".payTbl.purchase tr").eq(i+1).children().find('.totalPrice').val()*1;
 				}else {
-					totalPrice += $(".payTbl.purchase tr").eq(i+1).children().find('#totalPrice').val()*1;
+					totalPrice += $(".payTbl.purchase tr").eq(i+1).children().find('.totalPrice').val()*1;
 				}
 				
 			}
@@ -415,9 +416,9 @@ textarea {
 						plusTable += "<td> <select class='anoTxt_name' name='iName'><option selected disabled hidden>선택해주세요</option></select></td>"
 						plusTable += "<td><select class='anoTxt_amount' name='mfg'><option selected disabled hidden>선택해주세요</option></select></td>"
 						
-						plusTable += "<td><input type='text' name='vos' id='vos'></td>"
+						plusTable += "<td><input type='text' name='vosPrice' class='vos'></td>"
 						plusTable += "<td><input type='text' class='anoTxt_price' placeholder='금액'></td>"
-						plusTable += "<td><input type='text' name='totalPrice' id='totalPrice'></td>"
+						plusTable += "<td><input type='text' name='totalPrice' class='totalPrice'></td>"
 						plusTable += "</tr>"
 						var n = $(".payTbl.purchase");
 						
@@ -586,9 +587,13 @@ textarea {
 		var idx4 = $(this).parent("td").parent("tr").index();
 		console.log("value : " + value);
 		console.log("idx4 : " + idx4)
-		 $(".payTbl.purchase tr").eq(idx4).children().find("option:not(:first-child)").find("option").remove();
+		 $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').find("option:not(:first-child)").find("option").remove();
+		 $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').append($("<option selected disabled hidden>선택 해주세요</option>"));
+		 $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').find("option:not(:first-child)").find("option").remove();
 		 $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_amount').append($("<option selected disabled hidden>선택 해주세요</option>"));
-		console.log("12314")
+		
+		 
+		 console.log("12314")
 		$.ajax({
 			url:"madeComName.ap",
 			type:"get",
@@ -643,10 +648,9 @@ textarea {
 					cname:notax
 				},
 				success:function(data) {
+					
 					for(var i = 0; i < data.list.length; i++) {
 						var option = $("<option>" + data.list[i].iname + "</option>");
-						var option2 = $("<input type='hidden' name='ino' value='" + data.list[i].ino + "'>")
-						
 						console.log(data.list)
 						
 						//console.log(data.value[i].CN_NAME);
@@ -656,7 +660,6 @@ textarea {
 						//$(".payTbl.purchase").find("tr").eq(idx2).find(".anoTxt_name").append(option);
 						//$(".payTbl.purchase").children().eq(idx2).find('.anoTxt_name').append(option);
 						$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append(option);
-						$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append(option2);
 					}
 				},
 				error:function(data) {
@@ -690,8 +693,19 @@ textarea {
 			},
 			success:function(data) {
 				console.log(data);
+					
+				for(var i = 0; i < data.list.length; i++) {
+					console.log(data);
+					console.log(data.list[i].VOS.toString());
+					var test = data.list[i].VOS.toString();
+					console.log(typeof test);
+					$(".payTbl.purchase tr").eq(idx).children().eq(4).find('.vos').val(test);
+					
+					var option2 = $("<input type='hidden' name='ino' value='" + data.list[i].INO + "'>")
 				
-				$(".payTbl.purchase tr").eq(idx).children().eq(4).find('#vos').val(data.vos);
+					$(".payTbl.purchase tr").eq(idx).children().eq(4).find('.vos').append(option2);
+				}
+				
 			},
 			error:function(data) {
 				
@@ -706,10 +720,15 @@ textarea {
 		console.log("마지막idx : " + idx);
 		//var count = $(this).val();
 		//var vos = $(".anoTxt_amount").parents("tr").find("td:nth-child(5)").text();
-		var count = $(".payTbl.purchase").find("tr").eq(idx).find(".anoTxt_price").val();
-		var vos = $(".payTbl.purchase").find("tr").eq(idx).find("#vos").val();
+		var count = $(".payTbl.purchase").find("tr").eq(idx).children().find(".anoTxt_price").val();
+		var vos = $(".payTbl.purchase").find("tr").eq(idx).children().find(".vos").val();
 		
-		$(".payTbl.purchase tr").eq(idx).find("td:nth-child(7)").find("#totalPrice").val((count * vos));
+		console.log(count);
+		console.log(vos);
+		
+		console.log((count * vos));
+		
+		$(".payTbl.purchase tr").eq(idx).find("td:nth-child(7)").find(".totalPrice").val((count * vos));
 		
 	})
 	

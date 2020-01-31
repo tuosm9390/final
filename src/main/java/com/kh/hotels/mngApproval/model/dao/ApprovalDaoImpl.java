@@ -133,11 +133,11 @@ public class ApprovalDaoImpl implements ApprovalDao{
 	}
 
 	@Override
-	public int selectVosPrice(SqlSessionTemplate sqlSession, PurVos pv) {
+	public List<Integer> selectVosPrice(SqlSessionTemplate sqlSession, PurVos pv) {
 		
 		System.out.println("pv : " + pv);
 		
-		return (int)sqlSession.selectOne("Report.selectVosPrice", pv);
+		return (List)sqlSession.selectList("Report.selectVosPrice", pv);
 	}
 
 	@Override
