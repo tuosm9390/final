@@ -31,6 +31,7 @@
 .list-table{
 	text-align: center;
 	border-collapse: collapse;
+	position: relative;
 }
 
 .list-table td, th{
@@ -48,16 +49,26 @@
 	text-align: left;
 }
 
-.list-table tr td:nth-child(6){
+.list-table tr td:nth-child(6), .list-table tbody th:nth-child(6){
 	text-align: right;
+}
+
+.list-table th:nth-child(7){
+	width: 200px;
 }
 
 .list-table td:not(:last-child), .list-table th:not(:last-child){
 	border-right: 1px solid #D9D9D9;
 }
 
-.list-table tr:last-child{
-	background: #DBDBDB;
+.list-table thead th{
+	position: sticky;
+	top: 0;
+}
+
+.list-table tbody th{
+	position: sticky;
+	bottom: 0;
 }
 
 .analysMenubar div {
@@ -108,6 +119,20 @@ input[type=text], select{
 	border-radius: 3px;
 	height:23px;
 }
+
+.anlys-btn{
+	width:80px;
+	height:25px;
+	border-radius:5px;
+	border:0;
+	background-color: #3498DB;
+   	color: white;
+   	cursor:pointer;
+}
+
+.anlys-btn:focus{
+	outline: none;
+}
 </style>
 </head>
 <body>
@@ -116,8 +141,7 @@ input[type=text], select{
 		<jsp:include page="../common/menubar.jsp"/>
 	</header>
 	<section>
-		<c:set var="price" value="300000"></c:set>
-		<c:set var="sum" value="0"></c:set>
+		<c:set var="sum" value="0"/>
 		<div class="site-outer">
 			<div class="analysMenubarArea">
 				<div class="analysMenubar">
@@ -136,54 +160,63 @@ input[type=text], select{
 			<!-- 매출 상세 -->
 			<c:if test="${ Condition eq 'sales' }">
 			<!-- 검색 영역 -->
-			<div class="searchArea" align="right">
-				<select class="searchCondition">
-					<option value="sales">매출일자</option>
-					<option value="checkIn">입실일자</option>
-					<option value="checkOut">퇴실일자</option>
-				</select>
-				
-				<input type="text" class="date" id="datepicker" readonly> - 
-				<input type="text" class="date" id="datepicker2" readonly>
-			</div>
+<!-- 			<form id="searchForm" action="searchDetail.an" method="post"> -->
+				<div class="searchArea" align="right">
+					<select class="searchCondition" name="searchCondition">
+						<option value="sales">매출일자</option>
+						<option value="checkIn">입실일자</option>
+						<option value="checkOut">퇴실일자</option>
+					</select>
+					
+					<input type="text" name="startDate" class="date" id="datepicker" readonly> - 
+					<input type="text" name="endDate" class="date" id="datepicker2" readonly>
+					<button type="button" class="anlys-btn">검색</button>
+				</div>
+<!-- 			</form> -->
 			<!-- 검색 영역 끝 -->
 			<br>
 			<!-- 테이블 영역 -->
-			<table class="list-table" style="width: 100%;">
-				<tr>
-					<th>객실번호</th>
-					<th>예약번호</th>
-					<th>고객명</th>
-					<th>입실일자</th>
-					<th>퇴실일자</th>
-					<th>매출 금액</th>
-					<th>매출 일자</th>
-					<th>비고</th>
-				</tr>
-				<c:forEach var="i" begin="1" end="10" step="1">
-				<tr>
-					<td>0701</td>
-					<td>20200118</td>
-					<td>남윤진</td>
-					<td>2020-01-19</td>
-					<td>2020-01-12</td>
-					<td>${ price }</td>
-					<td>2020-01-10</td>
-					<td></td>
-				</tr>
-				<c:set var="sum" value="${ sum + price }"></c:set>
-				</c:forEach>
-				<tr>
-					<td>합계</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>${ sum }</td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
+			<div style="max-height: 480px; overflow: auto;">
+				<table class="list-table" style="width: 100%;">
+					<thead>
+						<tr>
+							<th>객실번호</th>
+							<th>예약번호</th>
+							<th>고객명</th>
+							<th>입실일자</th>
+							<th>퇴실일자</th>
+							<th>매출 금액</th>
+							<th>매출 일자</th>
+							<th>비고</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="list" items="${ sdList }" varStatus="st">
+						<tr>
+							<td>${ list.rmNum }</td>
+							<td>${ list.rsvNo }</td>
+							<td>${ list.name }</td>
+							<td>${ list.checkIn }</td>
+							<td>${ list.checkOut }</td>
+							<td>${ list.stayPrice } 원</td>
+							<td>${ list.rsvDate }</td>
+							<td></td>
+						</tr>
+						<c:set var="sum" value="${ sum + list.stayPrice }"></c:set>
+						</c:forEach>
+						<tr>
+							<th>합계</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th>${ sum } 원</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 			<!-- 테이블 영역 끝 -->
 			</c:if>
 			<!-- 지불 상세 -->
@@ -215,21 +248,21 @@ input[type=text], select{
 					<td>남윤진</td>
 					<td>계좌이체</td>	
 					<td>2020-01-09</td>
-					<td>${ price }</td>
+					<td>${ price } 원</td>
 					<td>송기준</td>
 					<td>예약번호 : 2001806</td>
 				</tr>
 				<c:set var="sum" value="${ sum + price }"></c:set>
 				</c:forEach>
 				<tr>
-					<td>합계</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>${ sum }</td>
-					<td></td>
-					<td></td>
+					<th>합계</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th>${ sum } 원</th>
+					<th></th>
+					<th></th>
 				</tr>
 			</table>
 			<!-- 테이블 영역 끝 -->
@@ -239,11 +272,33 @@ input[type=text], select{
 	<footer>
 	</footer>
 	<script>
-		$("#datepicker").datepicker({
-			autoClose : true,
-		});
-		$("#datepicker2").datepicker({
-			autoClose : true,
+		
+		$(function() {
+			date = new Date();
+
+			datepicker = $("#datepicker").datepicker({
+				autoClose : true,
+				//선택한 날짜를 가져옴
+				onSelect : function(date) {
+					//종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
+					startNum = date;
+					$("#datepicker2").datepicker({
+						minDate : new Date(startNum),
+					});
+				}
+			}).data('datepicker');
+
+			datepicker2 = $("#datepicker2").datepicker({
+				autoClose : true,
+				//선택한 날짜를 가져옴
+				onSelect : function(date) {
+					endNum = date;
+					$('#datepicker').datepicker({
+						//시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+						maxDate : new Date(endNum),
+					});
+				}
+			}).data('datepicker');
 		});
 		
 		$(function(){
@@ -252,7 +307,7 @@ input[type=text], select{
 		
 		$(".analys-item").click(function(){
 			var Condition = $(this).attr('id');
-			location.href='viewDetailList.hadmin?Condition=' + Condition;
+			location.href='viewDetailList.an?Condition=' + Condition;
 		});
 		
 		$(".excel-btn").click(function(){

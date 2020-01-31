@@ -106,7 +106,7 @@ textarea{
 						</tr>
 						<tr>
 							<td><li>비밀번호</li></td>
-							<td><input type="text" id="qpwd" name="qpwd" class="qpwd" style="display: none;"></td>
+							<td><input type="password" id="qpwd" name="qpwd" class="qpwd" style="display: none;"></td>
 						</tr>
 						<tr>
 							<td style="vertical-align: top; padding-top: 5px;"><li>문의 내용</li></td>
