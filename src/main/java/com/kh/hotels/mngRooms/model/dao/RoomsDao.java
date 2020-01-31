@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
@@ -16,5 +17,7 @@ public interface RoomsDao {
 	ArrayList<Prc> viewRoomPrice(SqlSessionTemplate sqlSession) throws RoomListException;
 
 	ArrayList<ServiceList> viewServiceList(SqlSessionTemplate sqlSession) throws RoomListException;
+
+	ArrayList<Member> ajxFindClient(SqlSessionTemplate sqlSession, String searchName);
 
 }

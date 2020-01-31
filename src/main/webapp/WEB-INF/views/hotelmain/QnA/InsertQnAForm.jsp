@@ -79,8 +79,8 @@ textarea{
 							<td>
 								<select name="qtype" class="qtype">
 									<option value="ROOM">객실</option>
-									<option value="SERVICE">환불</option>
-									<option value="RESERV">예약</option>
+									<option value="SERVICE">서비스</option>
+									<option value="RESERVE">예약</option>
 									<option value="ETC">기타</option>
 								</select>
 							</td>
@@ -130,9 +130,9 @@ textarea{
 			if($(this).prop("checked") == true){
 				$("#pwdStatus").val("Y");
 				$(".qpwd").css("display", "block");
-			} else { 
+			} else {
 				$("#pwdStatus").val("N");
-				$(".qpwd").css("display", "none").val("");
+				$(".qpwd").css("display", "none").val('');
 			};
 		});
 		

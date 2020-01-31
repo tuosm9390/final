@@ -650,6 +650,7 @@ input[type=checkbox] {
 			
 			//모달1 : [ 재실 ] 버튼 클릭 (= 공실)
 			function goRoom(rmNo) {
+				var totalPrc;
 				$("#ciCancelBtn").hide();
 				$("#rsvCancelBtn").hide();
 				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn'>");
@@ -673,7 +674,7 @@ input[type=checkbox] {
 						var cntDay = (coDay.getTime() - ciDay.getTime()) / (1000*60*60*24);
 						$("select[name=stayDay]").val(cntDay).prop('selected', true);
 						
-						sttfeeday = new Date(date.substring(0,4), date.substring(5,7), date.substring(8,10));
+						sttfeeday = new Date(date.substring(0,4), (date.substring(5,7) * 1 - 1), date.substring(8,10));
 						changeModalFee(sttfeeday, endfeeday);
 						
 						$("#checkOut").datepicker({
@@ -696,7 +697,7 @@ input[type=checkbox] {
 							$("#rentYN").prop("checked", false);
 						}
 						
-						endfeeday = new Date(date.substring(0,4), date.substring(5,7), date.substring(8,10));
+						endfeeday = new Date(date.substring(0,4), (date.substring(5,7) * 1 - 1), date.substring(8,10));
 						changeModalFee(sttfeeday, endfeeday);
 					}
 				}).data('datepicker');
@@ -709,6 +710,11 @@ input[type=checkbox] {
 					if(endfeeday == 0) {
 						endfeeday = $("#checkOut").val();
 						console.log(endfeeday);
+					}
+					if($(this).val() != 0) {
+						$("#rentYN").prop("checked", false);
+					} else {
+						$("#rentYN").prop("checked", true);
 					}
 					changeModalFee(sttfeeday, endfeeday);
 				});
@@ -726,17 +732,14 @@ input[type=checkbox] {
 						$("#selRoomNum").val(roomlist[i].rmNum + "호").prop("selected", true);
 					}
 				}
-				
-				//여기여기여기
 				for(var i = 1; i <= stdPer; i++) {
-					$("select[name=adultSu]:last-child").append("<option>" + i + "</option>");
-					$("select[name=childSu]:last-child").append("<option>" + i + "</option>");
+					$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
 				}
 				
 				//요금상세 부분 설정 함수
 				function detailModalFee(feedate, data, totalFee) {
 					var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
-					var feedateD = new Date(feedate.substring(0,4), feedate.substring(5,7), feedate.substring(8,10));
+					var feedateD = new Date(feedate.substring(0,4), (feedate.substring(5,7) * 1 - 1), feedate.substring(8,10));
 					var feeday = week[feedateD.getDay()];
 					for(var i = 0; i < roomprice.length; i++) {
 						if(roomprice[i].rtNo == rtNo && roomprice[i].dayType == feeday && roomprice[i].stayType == data) {
@@ -746,13 +749,15 @@ input[type=checkbox] {
 						}
 					}
 					$("#totalRoom").text(totalFee.toLocaleString());
+					changeTotalPrcTxt();
+					
 					return totalFee;
 				}
 				
 				//요금상세 부분 설정
 				detailModalFee(new Date().format('yyyy-MM-dd'), 'LENT', 0);
 				
-				//요금상세 동적 변화
+				//객실요금상세 동적 변화
 				function changeModalFee(sttfeeday, endfeeday) {
 					if(endfeeday == 0 || $("#rentYN").prop('checked')) {
 						$(".feeDetailSec tr").remove();
@@ -764,7 +769,7 @@ input[type=checkbox] {
 						for(var i = 0; i < feedayscnt; i++) {
 							var tempday = new Date(sttfeeday.getFullYear(), sttfeeday.getMonth(), sttfeeday.getDate() + i);
 							var feeday = tempday.format('yyyy-MM-dd');
-							totalFee += detailModalFee(feeday, 'STAY', totalFee);
+							totalFee = detailModalFee(feeday, 'STAY', totalFee);
 						}
 					}	
 				}

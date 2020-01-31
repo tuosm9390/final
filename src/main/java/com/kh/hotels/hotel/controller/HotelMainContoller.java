@@ -1,6 +1,7 @@
 package com.kh.hotels.hotel.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -36,19 +37,29 @@ public class HotelMainContoller {
 
 	// 호텔 메인 페이지 메소드
 	@RequestMapping("goMain.hmain")
-	public String showHotelMain() {
+	public String showHotelMain(SessionStatus session) {
+		session.setComplete();
 
 		return "hotelmain/main/main";
 	}
 
 	// 객실 리스트 메소드
 	@RequestMapping("goRooms.hmain")
-	public ModelAndView showHotelRooms(ModelAndView mv) {
-
-		Map<String, RoomInfo> roomList = hs.selectRoomList();
-
+	public ModelAndView showHotelRooms(ModelAndView mv, SessionStatus session) {
+		session.setComplete();
+		
+		ArrayList<RoomInfo> roomList = hs.selectRoomList();
+		
 		System.out.println("roomList : " + roomList);
-
+		
+		String[] filePathList = new String[roomList.size()];
+		
+		for(int i = 0; i < roomList.size(); i++) {
+			filePathList[i] = roomList.get(i).getFilePath().substring(47).replace('\\', '/');
+			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
+		}
+		
+		mv.addObject("filePathList", filePathList);
 		mv.addObject("roomList", roomList);
 		mv.setViewName("hotelmain/rooms/roomList");
 
@@ -59,8 +70,18 @@ public class HotelMainContoller {
 	@RequestMapping("roomdetail.hmain")
 	public String showHotelRoomsDetail(int roomType, HttpSession session) {
 
-		RoomInfo roomInfo = hs.selectRoom(roomType);
-		session.setAttribute("roomInfo", roomInfo);
+		ArrayList<RoomInfo> roomInfo = hs.selectRoom(roomType);
+		
+		String[] filePathList = new String[roomInfo.size()];
+		
+		for(int i = 0; i < roomInfo.size(); i++) {
+			filePathList[i] = roomInfo.get(i).getFilePath().substring(47).replace('\\', '/');
+			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
+		}
+		
+		session.setAttribute("listsize", filePathList.length);
+		session.setAttribute("filePathList", filePathList);
+		session.setAttribute("roomInfo", roomInfo.get(0));
 		System.out.println("roomInfo : " + roomInfo);
 
 		return "hotelmain/rooms/roomDetail";
@@ -177,9 +198,19 @@ public class HotelMainContoller {
 			int insertBreakfast = hs.insertBreakfast(rsvCheck);
 		}
 		
-		session.setComplete();
+		int roomType = hs.selectRoomType(rsvCheck.getRsvNo());
+		
+		ArrayList<RoomInfo> roomInfo = hs.selectRoom(roomType);
+		
+		String[] filePathList = new String[roomInfo.size()];
+		
+		for(int i = 0; i < roomInfo.size(); i++) {
+			filePathList[i] = roomInfo.get(i).getFilePath().substring(47).replace('\\', '/');
+			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
+		}
 		
 		if (result > 0) {
+			mv.addObject("filePathList", filePathList);
 			mv.addObject("rsvCheck", rsvCheck);
 			mv.setViewName("hotelmain/rooms/roomReservationResult");
 		} else {
@@ -187,6 +218,8 @@ public class HotelMainContoller {
 			mv.setViewName("hotelmain/common/errorPage");
 		}
 
+		session.setComplete();
+		
 		return mv;
 	}
 
@@ -202,7 +235,20 @@ public class HotelMainContoller {
 		rsv.setUserName(userName);
 
 		ReservationCheck rsvCheck = hs.reservationCheck(rsv);
+		
+		int roomType = hs.selectRoomType(rsvNo);
+		
+		ArrayList<RoomInfo> roomInfo = hs.selectRoom(roomType);
+		
+		String[] filePathList = new String[roomInfo.size()];
+		
+		for(int i = 0; i < roomInfo.size(); i++) {
+			filePathList[i] = roomInfo.get(i).getFilePath().substring(47).replace('\\', '/');
+			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
+		}
+		
 		System.out.println("rsvCheck : " + rsvCheck);
+		mv.addObject("filePathList", filePathList);
 		mv.addObject("ReservationCheck", rsvCheck);
 		mv.setViewName("hotelmain/rooms/ReservationCheck");
 
@@ -216,13 +262,18 @@ public class HotelMainContoller {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
+		if (request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
 		int listCount = hs.listCount(map);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
+		map.put("pi", pi);
 		List<Que> qnaList = null;
 		
 		try {
-			qnaList = hs.selectQnAList(pi);
+			qnaList = hs.selectQnAList(map);
+			System.out.println("qnaList : " + qnaList);
 			mv.addObject("qnaList", qnaList);
 			mv.addObject("path", "goQnA.hmain");
 			mv.addObject("pi", pi);
@@ -236,6 +287,7 @@ public class HotelMainContoller {
 		return mv;
 	}
 	
+	// 문의 검색 메소드
 	@RequestMapping("searchQnA.hmain")
 	public ModelAndView searchQnA(ModelAndView mv, HttpServletRequest request,
 			@RequestParam(value="searchCondition", required = false) String searchCondition,
@@ -258,11 +310,15 @@ public class HotelMainContoller {
 
 		int listCount = hs.listCount(map);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-
+		map.put("pi", pi);
+		map.put("searchCondition", searchCondition);
+		map.put("searchValue", searchValue);
+		System.out.println("map : " + map);
 		List<Que> qnaList = null;
 
 		try {
-			qnaList = hs.selectQnAList(pi);
+			qnaList = hs.selectQnAList(map);
+			System.out.println("searchQnaList : " + qnaList);
 			mv.addObject("searchCondition", searchCondition);
 			mv.addObject("searchValue", searchValue);
 			mv.addObject("path", "searchQnA.hmain");

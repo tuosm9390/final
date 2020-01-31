@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
@@ -38,6 +39,12 @@ public class RoomsDaoImpl implements RoomsDao {
 			throw new RoomListException("Error : View ServiceList Failed");
 		}
 		return svcList;
+	}
+
+	@Override
+	public ArrayList<Member> ajxFindClient(SqlSessionTemplate sqlSession, String searchName) {
+		ArrayList<Member> clientList = (ArrayList) sqlSession.selectList("Rooms.ajxFindClient", searchName);
+		return clientList;
 	}
 
 }

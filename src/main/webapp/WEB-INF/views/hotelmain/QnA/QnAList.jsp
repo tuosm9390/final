@@ -158,7 +158,7 @@ cursor: pointer;
 				<br><br>
 				<!-- 검색 영역 -->
 				<div class="searchArea">
-					<form action="goQnA.hmain" method="post">
+					<form id="searchQnAForm" action="searchQnA.hmain" method="post">
 					<div style="width: 50%; display: inline-flex;">
 					<select class="searchCondition" name="searchCondition">
 						<option value="qtitle">제목</option>
@@ -169,7 +169,7 @@ cursor: pointer;
 					<select name="searchValue" class="qtype" disabled>
 						<option value="ROOM">객실</option>
 						<option value="SERVICE">환불</option>
-						<option value="RESERV">예약</option>
+						<option value="RESERVE">예약</option>
 						<option value="ETC">기타</option>
 					</select>
 					
@@ -224,48 +224,100 @@ cursor: pointer;
 				<br>
 				<!-- 페이징 영역 -->
 				<div class="pagingArea" align="center">
-					<c:if test="${ pi.currentPage eq 1 }">
-						<button onclick="javascript: void(0);"><<</button>
-					</c:if>
-					
-					<c:if test="${ pi.currentPage ne 1 }">
-					<button disabled><</button>
-					</c:if>
-					
-					<c:if test="${ pi.currentPage > 1 }">
-					<c:url var="path" value="${ path }">
-						<c:if test="${ path.equals('goQnA.hmain') }">
-							<button onclick="location.href='${ path }'"><</button>
+				
+					<c:if test="${ !empty qnaList }">
+						<c:if test="${ pi.currentPage eq 1 }">
+							<button onclick="javascript: void(0);"><<</button>
+							<button disabled><</button>
 						</c:if>
-						<c:param name="currentPage" value="${ pi.currentPage - 1 }"></c:param>
-						<c:param name="searchCondition" value="${ searchCondition }"></c:param>
-						<c:param name="searchValue" value="${ searchValue }"></c:param>
-					</c:url>
-					<button onclick="location.href='${ path }'"><</button>
-					</c:if>
-					
-					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-						<c:if test="${ p eq pi.currentPage }">
-							<button disabled>${ p }</button>
+											
+						<c:if test="${ pi.currentPage ne 1 }">
+							<c:url var="firstpath" value="${ path }">
+								<c:if test="${ path.equals('goQnA.hmain') }">
+									<c:param name="currentPage" value="1"/>
+								</c:if>
+								<c:if test="${ path.equals('searchQnA.hmain') }">
+									<c:param name="currentPage" value="1"/>
+									<c:param name="searchCondition" value="${ searchCondition }"/>
+									<c:param name="searchValue" value="${ searchValue }"/>
+								</c:if>
+							</c:url>
+							<button onclick="location.href='${ firstpath }'"><<</button>
+						</c:if>
+						<c:if test="${ pi.currentPage ne 1 }">
+							<c:url var="prevPath" value="${ path }">
+								<c:if test="${ path.equals('goQnA.hmain') }">
+									<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
+								</c:if>
+								<c:if test="${ path.equals('searchQnA.hmain') }">
+									<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
+									<c:param name="searchCondition" value="${ searchCondition }"/>
+									<c:param name="searchValue" value="${ searchValue }"/>
+								</c:if>
+							</c:url>
+							<button onclick="location.href='${ prevPath }'"><</button>
 						</c:if>
 						
-						<c:if test="${ p ne pi.currentPage }">
-							<c:url var="path" value="${ path }">
-								<c:if test="${ path.equals('goQnA.hmain') }"></c:if>
-								<c:param name=""></c:param>
+						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+							<c:if test="${ p eq pi.currentPage }">
+								<button disabled>${ p }</button>
+							</c:if>
+							
+							<c:if test="${ p ne pi.currentPage }">
+								<c:url var="movePath" value="${ path }">
+									<c:if test="${ path.equals('goQnA.hmain') }">
+										<c:param name="currentPage" value="${ p }"/>
+									</c:if>
+									<c:if test="${ path.equals('searchQnA.hmain') }">
+										<c:param name="currentPage" value="${ p }"/>
+										<c:param name="searchCondition" value="${ searchCondition }"/>
+										<c:param name="searchValue" value="${ searchValue }"/>
+									</c:if>
+								</c:url>
+								<button onclick="location.href='${ movePath }'">${ p }</button>
+							</c:if>
+						</c:forEach>
+						
+						<c:if test="${ pi.currentPage < pi.maxPage }">
+							<c:url var="nextPath" value="${ path }">
+								<c:if test="${ path.equals('goQnA.hmain') }">
+									<c:param name="currentPage" value="${ pi.currentPage + 1}"/>
+								</c:if>
+								<c:if test="${ path.equals('searchQnA.hmain') }">
+									<c:param name="currentPage" value="${ pi.currentPage + 1}"/>
+									<c:param name="searchCondition" value="${ searchCondition }"/>
+									<c:param name="searchValue" value="${ searchValue }"/>
+								</c:if>
 							</c:url>
-							<button onclick="location.href='goQnA.hmain?currentPage=${ p }'">${ p }</button>
+						<button onclick="location.href='${ nextPath }'">></button>
 						</c:if>
-					</c:forEach>
-					
-					<c:if test="${ pi.currentPage >= pi.maxPage }">
-						<button disabled>></button>
+						<c:if test="${ pi.currentPage ne pi.maxPage }">
+							<c:url var="lastPath" value="${ path }">
+								<c:if test="${ path.equals('goQnA.hmain') }">
+									<c:param name="currentPage" value="${ pi.maxPage }"/>
+								</c:if>
+								<c:if test="${ path.equals('searchQnA.hmain') }">
+									<c:param name="currentPage" value="${ pi.maxPage }"/>
+									<c:param name="searchCondition" value="${ searchCondition }"/>
+									<c:param name="searchValue" value="${ searchValue }"/>
+								</c:if>
+							</c:url>
+							<button onclick="location.href='${ lastPath }'">>></button>
+						</c:if>
+						
+						<c:if test="${ pi.currentPage eq pi.maxPage }">
+							<c:url var="lastPath" value="${ path }">
+								<c:if test="${ path.equals('goQnA.hmain') }">
+								</c:if>
+								<c:if test="${ path.equals('searchQnA.hmain') }">
+									<c:param name="searchCondition" value="${ searchCondition }"/>
+									<c:param name="searchValue" value="${ searchValue }"/>
+								</c:if>
+							</c:url>
+							<button disabled>></button>
+							<button disabled>>></button>
+						</c:if>
 					</c:if>
-					
-					<c:if test="${ pi.currentPage < pi.maxPage }">
-					<button onclick="location.href='goQnA.hmain?currentPage=${ pi.currentPage + 1}'">></button>
-					</c:if>
-					<button onclick="location.href='goQnA.hmain?currentPage=${ pi.maxPage }'">>></button>
 				</div>
 				<!-- 페이징 영역 끝 -->
 			</div>
@@ -302,15 +354,19 @@ cursor: pointer;
 				$(".qna-modal").fadeOut();
 			});
 			pwdCheckForm = $("#pwdCheckForm");
+			searchCondition = $(".searchCondition").val();
+			searchValue = null;
 		});
 		
 		$(document).on("change", ".searchCondition", function() {
 			if($(this).val() == 'qtype'){
 				$(".searchValue").attr("disabled", true).css("display", "none");
 				$(".qtype").attr("disabled", false).css("display", "block");
+				searchValue = $(".qtype").val();
 			} else {
 				$(".searchValue").attr("disabled", false).css("display", "block");
 				$(".qtype").attr("disabled", true).css("display", "none");
+				searchValue = $(".searchValue").val();
 			};
 		});
 		
@@ -331,6 +387,11 @@ cursor: pointer;
 				location.href='qnadetail.hmain?qno=' + qno + "&type=unlock";
 			}
 		});
+		
+// 		$(".search-btn").click(function(){
+// 			$("#searchQnAForm").attr("action", "searchQnA.hmain");
+// 			$("#searchQnAForm").submit();
+// 		});
 		
 		function goQnADetail(){
 			console.log(qno);

@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.service.RoomsService;
 import com.kh.hotels.mngRooms.model.vo.Prc;
@@ -49,6 +52,18 @@ public class RoomsController {
 			model.addAttribute("msg", e.getMessage());
 			return "common/errorPage.jsp";
 		}
+	}
+	
+	@RequestMapping("ajxFindClient.ro")
+	public ModelAndView ajxFindClient(ModelAndView mv, String searchName) {
+		ArrayList<Member> clientList = rs.ajxFindClient(searchName);
+		if(clientList == null) {
+			Member noOne = new Member();
+			clientList.add(noOne);
+		}
+		mv.addObject("clientList", clientList);
+		mv.setViewName("jsonView");
+		return mv;
 	}
 
 }

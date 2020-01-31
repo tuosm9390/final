@@ -48,6 +48,14 @@
 		<result property="regDate" column="REG_DATE" />
 	</resultMap>
 	
+	<resultMap type="Member" id="memberSet">
+		<id property="mno" column="MNO" />
+		<result property="userName" column="NAME" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+	
 	<resultMap type="ServiceList" id="serviceSet">
 		<id property="svcCode" column="SVC_CODE" />
 		<result property="svcName" column="SVC_NAME" />
@@ -98,5 +106,13 @@
 		SELECT *
 		FROM SVC
 		WHERE SVC_STATUS = 'Y'
+	</select>
+	
+	<select id="ajxFindClient" resultMap="memberSet" parameterType="java.lang.String">
+		SELECT MNO, NAME, PHONE, EMAIL, STATUS
+		FROM MEMBER
+		WHERE STATUS = 'Y'
+		AND TYPE = 'CLIENT'
+		AND NAME LIKE '%'||#{ searchName }||'%'
 	</select>
 </mapper>
