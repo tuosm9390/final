@@ -26,6 +26,8 @@ public interface StockService {
 
 	ArrayList<ItemType> categoryList(ItemType it);
 
+	int insertCategory(ItemType it);
+
 	
 
 }

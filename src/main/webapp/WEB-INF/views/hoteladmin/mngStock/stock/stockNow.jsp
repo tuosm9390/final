@@ -390,7 +390,54 @@ width:1000px;
 		
 		$("#addCategory").click(function(){
 			$(".modalDetailAdd").fadeIn();
-		})
+			$("#mselect").attr('disabled',true);
+			$("#sselect").attr('disabled',true);
+			console.log($("#lselect").val());
+			//
+			category();
+			
+		});
+		
+		////카테고리조회 ajax
+		function category(){
+			
+			$.ajax({
+				url:"selectCategory.sto",
+				type:"post",
+				data:{
+					mcategory:$("#mselect").val(),
+					lcategory:$("#lselect").val()
+					},
+				success:function(data){
+					console.log(data)
+					
+					//대분류값이 없으면
+					if(data.categoryList[0].lCategory==""){
+					}else{
+						for(var i=0;i<data.categoryList.length;i++){
+							$("#lselect").append("<option value='"+data.categoryList[i].lCategory+"'>"+data.categoryList[i].lCategory+"</option>")
+						}
+					}
+					
+					//대분류값이 없으면
+					if(data.categoryList[0].mCategory==""){
+					}else{
+						$("#mselect").empty();
+						$("#mselect").append("<option hidden='hidden'>중분류</option><option value='select'>직접입력</option>")
+						for(var i=0;i<data.categoryList.length;i++){
+							$("#mselect").append("<option value='"+data.categoryList[i].mCategory+"'>"+data.categoryList[i].mCategory+"</option>")
+						}
+					}
+					
+				
+					
+				},error:function(status){
+					console.log(status)
+				}
+				
+			});
+		}
+		
 		
 		
 	</script>

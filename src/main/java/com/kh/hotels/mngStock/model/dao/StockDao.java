@@ -27,6 +27,8 @@ public interface StockDao {
 
 	ArrayList<ItemType> selectCategoryList(SqlSessionTemplate sqlSession, ItemType it);
 
+	int insertCategory(SqlSessionTemplate sqlSession, ItemType it);
+
 
 
 

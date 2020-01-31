@@ -64,13 +64,13 @@ public class StockController {
 		System.out.println("con st : "+ st);
 		System.out.println("con m : "+ m);
 		
-		/* int result = ss.insertStock(m,st); */
-		return null;
+		int result = ss.insertStock(m, st);
 		
-		/*
-		 * if(result > 0) { return "redirect:select.war"; }else { return
-		 * "common/errorPage"; }
-		 */
+		if(result>0) {
+			return "redirect:selectStock.sto";
+		}else {
+			return "common/errorPage";
+		}
 	}
 	//////
 	@RequestMapping("selectRepair.sto")
@@ -115,12 +115,11 @@ public class StockController {
 		
 	}
 	
-	@RequestMapping("insertCategory.sto")
-	public ModelAndView insertCategory(ItemType it,ModelAndView mv) {
-		
-		System.out.println(it.getLcategory());
-		System.out.println(it.getMcategory());
-		System.out.println(it.getScategory());
+	@RequestMapping("selectCategory.sto")
+	public ModelAndView selectCategory(String mcategory,String lcategory,ModelAndView mv) {
+		ItemType it = new ItemType();
+		it.setlCategory(lcategory);
+		it.setmCategory(mcategory);
 		
 		ArrayList<ItemType> categoryList = ss.categoryList(it);
 		
@@ -128,8 +127,24 @@ public class StockController {
 		mv.addObject("categoryList",categoryList);
 		
 		return mv;
-	
 	}
 	
-	
+	@PostMapping("insertCategory.sto")
+	public String insertCategory(String lcategory,String mcategory,String scategory,String type) {
+		ItemType it = new ItemType();
+		
+		it.setlCategory(lcategory);
+		it.setmCategory(mcategory);
+		it.setsCategory(scategory);
+		it.setType(type);
+		
+		int result = ss.insertCategory(it);
+		
+		if(result>0) {
+			return "redirect:/selectStock.sto";
+		}else {
+			return "common/errorPage";
+		}
+		
+	}
 }

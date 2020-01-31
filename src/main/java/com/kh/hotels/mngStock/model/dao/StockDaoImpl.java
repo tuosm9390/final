@@ -30,7 +30,7 @@ public class StockDaoImpl implements StockDao{
 	@Override
 	public int insertStock(SqlSessionTemplate sqlSession, Model m, Stock st) {
 		// TODO Auto-generated method stub
-		return sqlSession.insert("Stock.insertStock");
+		return sqlSession.insert("Stock.insertStock",st);
 	}
 
 	@Override
@@ -55,6 +55,12 @@ public class StockDaoImpl implements StockDao{
 	public ArrayList<ItemType> selectCategoryList(SqlSessionTemplate sqlSession, ItemType it) {
 		// TODO Auto-generated method stub
 		return (ArrayList)sqlSession.selectList("Stock.selectCategoryList",it);
+	}
+
+	@Override
+	public int insertCategory(SqlSessionTemplate sqlSession, ItemType it) {
+		System.out.println(it);
+		return sqlSession.insert("Stock.insertCategory",it);
 	}
 
 

@@ -29,9 +29,9 @@ margin-left: 50px;
 		<div class="category" id="lcategory">
 			<label style="margin-left: 50px;">대분류   :   </label>
 			<select style="height: 27px; width:150px; margin-left: 50px;" id="lselect" name="lselect">
-				<option value="default" hidden="hidden">대분류</option>
+				<option hidden="hidden">대분류</option>
 				<option value="select">직접입력</option>
-				<option value="전자제품">전자제품</option>
+				
 			</select>
 			<input type="text" class="categoryText" style="margin-left: 50px; height: 20px;" id="lcategoryText">
 		</div>
@@ -40,23 +40,18 @@ margin-left: 50px;
 			<select style="height: 27px; width:150px; margin-left: 50px;" id="mselect" name="mselect">
 				<option value="default" hidden="hidden">중분류</option>
 				<option value="select">직접입력</option>
-				<option value="tv">tv</option>
 			</select>
 			<input type="text" class="categoryText" style="margin-left: 50px; height: 20px;" id="mcategoryText">
 		</div>
 		<div class="category" id="scategory">
 			<label style="margin-left: 50px;">소분류   :   </label>
-			<select style="height: 27px; width:150px; margin-left: 50px;" id="sselect" name="sselect">
-				<option value="default" hidden="hidden">소분류</option>
-				<option value="select">직접입력</option>
-				<option value="36인치tv">36인치tv</option>
-			</select>
-			<input type="text" class="categoryText" style="margin-left: 50px; height: 20px;" id="scategoryText">
+		
+			<input type="text" class="categoryText" style="margin-left: 50px; height: 20px; width: 146px;" id="scategoryText">
 		</div>
 		<div class="category" id="categoryType">
 		<label style="margin-left: 65px;">구분     :   </label>
-							<label style="margin-left: 55px;">비품</label><input type="radio" name="type" value="equip">
-							<label style="margin-left: 20px;">소모품</label><input type="radio" name="type" value="cons">
+							<label for="EQUIP" style="margin-left: 55px;">비품</label><input id="EQUIP" type="radio" name="type" value="EQUIP" onclick="textChange(this.id)">
+							<label for="CONS" style="margin-left: 20px;">소모품</label><input id="CONS" type="radio" name="type" value="CONS"  onclick="textChange(this.id)">
 				
 		</div>
 		</form>
@@ -65,53 +60,101 @@ margin-left: 50px;
 		<button id="insertCategoryBtn" style="float: right; margin-top: 20px;">저장</button>
 	</div>
 <script>
+
+
+
 	$(function(){
-		
 		$("#lcategoryText").hide();
-		$("#mcategoryText").hide();
-		$("#scategoryText").hide();
+ 		$("#mcategoryText").hide();
 	})
 	
 	$("#lselect").change(function(){
 		if($(this).val()=="select"){
 			$("#mselect").attr('disabled',true);
-			$("#sselect").attr('disabled',true);
 			$("#lcategoryText").show();
 			$("#mcategoryText").show();
-			$("#scategoryText").show();
 		}else{
 			$("#lcategoryText").hide();
+			$("#lcategoryText").val("");
 			$("#mcategoryText").hide();
-			$("#scategoryText").hide();
+			$("#mcategoryText").val("");
 			$("#mselect").attr('disabled',false);
-			$("#sselect").attr('disabled',false);
+			category();
 		}	
 	})
 	
 	$("#mselect").change(function(){
 		if($(this).val()=="select"){
-			$("#sselect").attr('disabled',true);
 			$("#mcategoryText").show();
-		
 			$("#scategoryText").show();
 		}else{
 			$("#mcategoryText").hide();
-			$("#scategoryText").hide();
-			$("#sselect").attr('disabled',false);
+			$("#mcategoryText").val("");
 		}	
 	})
 	
-	$("#sselect").change(function(){
-		if($(this).val()=="select"){
-			$("#scategoryText").show();
-		}else{
-			$("#scategoryText").hide();
-		}	
-	})
+		var type;
+		function textChange(thisEl) {
+			console.log(thisEl);
+			type = thisEl;
+			console.log("type : " + type)
+		}
 	
+	//물품등록 ajax
 	$("#insertCategoryBtn").click(function(){
-		$("#insertCategory").submit();
+		
+		
+		var lcategory ="";
+		var mcategory ="";
+		var scategory =$("#scategoryText").val();
+		
+		
+		//대분류에서 직접입력일떄
+		if($("#lselect").val()=="select"){
+			lcategory = $("#lcategoryText").val();
+			mcategory = $("#mcategoryText").val();
+		}else{
+			lcategory = $("#lselect").val();
+			mcategory = $("#mselect").val();
+		}
+		
+		//중분류에서 직접입력일때
+		if($("#mselect").val()=="select"){
+			lcategory = $("#lselect").val();
+			mcategory = $("#mcategoryText").val();
+		}else{
+			lcategory = $("#lselect").val();
+			mcategory = $("#mselect").val();
+		}
+		var typee = type;
+		console.log("out : " + type);
+		
+	
+		
+		$.ajax({
+			url:"insertCategory.sto",
+			type:"post",
+			data:{lcategory:lcategory,
+				mcategory:mcategory,
+				scategory:scategory,
+				type:typee
+			},
+			success:function(data){
+				console.log(data);
+				alert("성공");
+			},error:function(status){
+				console.log(status);
+				alert("ㅅㅂ");
+			}
+		});
+		
+		
+		
+		
+		
 	})
+	
+	
 	
 </script>
 </body>
