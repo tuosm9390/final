@@ -41,7 +41,7 @@ public interface ApprovalService {
 	List<String> selectMadeComName(String value) throws ReportException;
 
 
-	int selectVosEquip(PurVos pv);
+	List<Integer> selectVosEquip(PurVos pv);
 
 	List<String> selectItemName(PurRequest pRequest) throws ReportException;
 

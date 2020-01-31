@@ -38,7 +38,7 @@ public interface ApprovalDao {
 
 	List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value);
 
-	int selectVosPrice(SqlSessionTemplate sqlSession, PurVos pv);
+	List<Integer> selectVosPrice(SqlSessionTemplate sqlSession, PurVos pv);
 
 	List<String> selectItemName(SqlSessionTemplate sqlSession, PurRequest pRequest);
 

@@ -157,11 +157,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 
 	@Override
-	public int selectVosEquip(PurVos pv) {
+	public List<Integer> selectVosEquip(PurVos pv) {
 		
-		
-		int price = ad.selectVosPrice(sqlSession, pv);
-		return price;
+		List<Integer> list = ad.selectVosPrice(sqlSession, pv);
+		return list;
 	}
 
 
