@@ -59,7 +59,7 @@
 	    margin-top: 10px;
     float: right;
     margin-right: 298px; 
- 	
+ 	display: inline-block;
 
 	}
 	.tabClass{
@@ -169,6 +169,9 @@ width:1000px;
 	padding: 10px 0;
 	text-align: center;
 	color: #171f57;
+	font-size:5px; 
+	font-weight:none;
+	
 }
 
 #pager_wrap .pager_num.on a {
@@ -186,6 +189,7 @@ width:1000px;
 		
 		<jsp:include page="../modal/mStockNowDetail.jsp"/>
 		<jsp:include page="../modal/mStockNowEnroll.jsp"/>
+		<jsp:include page="../modal/mStockNowAdd.jsp"/>
 		
 	</header>
 	<section>
@@ -230,7 +234,7 @@ width:1000px;
 				<c:forEach var="i" items="${stockList }">
 					<tr>
 						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="${i.sCategory}"/></td>
+						<td style="color: #005B9E"><c:out value="${i.iName}"/></td>
 						<td><c:out value="${i.cnt }"/></td>
 						<td><c:out value="${i.type }"/></td>
 					</tr>
@@ -243,6 +247,7 @@ width:1000px;
 			<button id="excel">Excel</button>
 			<button id="new">신규</button>&nbsp;
 			</div>
+		<div class="btns"><button id="addCategory">품목추가</button></div>
 	
 	<!-- ddddddddddddddddddddddddddd  -->
 	<!-- 페이저 시작 -->
@@ -303,24 +308,36 @@ width:1000px;
 				$(this).parent("tr").css({"background":"white"});
 			}).click(function(){
 				
-				var sCategory = $(this).parent().children("td").eq(1).text();
-				console.log(sCategory);
+				var iName = $(this).parent().children("td").eq(1).text();
+				
 				$.ajax({
 					url:"selectStockDetail.sto",
 					type:"post",
-					data:{sCategory:sCategory},
+					data:{iName:iName},
 					success:function(data){
 						console.log(data)
 						$("#stockTbb").empty();
 						$("#stockTbb").append("<tbody id='detailBody'></tbody>")
 						if(data.stockDetailList[0].type=="EQUIP"){
 							$("#detailBody").append("<tr><th><input type='checkbox'></th><th>물품코드</th><th>물품명</th>"+
-						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th></tr>")
+						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
 						}else{
 							$("#detailBody").append("<tr><th><input type='checkbox'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
-						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>객실번호</th></tr>")
+						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
 						}
 						for(var i=0;i<data.stockDetailList.length;i++){
+							console.log(data.stockDetailList[i].rmNo);
+									if(data.stockDetailList[i].rmNo=='0'){
+										data.stockDetailList[i].rmNo='-';
+									}
+									if(data.stockDetailList[i].strgName==""){
+										data.stockDetailList[i].strgName="-";
+									}
+									if(data.stockDetailList[i].areaName==""){
+										data.stockDetailList[i].areaName="-";
+									}
+									
+									
 							if(data.stockDetailList[0].type=="EQUIP"){
 							$("#detailBody").append(
 									"<tr><td><input type='checkbox'></td><td>"+
@@ -328,15 +345,16 @@ width:1000px;
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
 									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
 									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
-									data.stockDetailList[i].areaName+"</td></tr>");
+									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
 							}else{
 								$("#detailBody").append(
 									"<tr><td><input type='checkbox'></td><td>"+
 									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
-									data.stockDetailList[i].cnt+"</td><td>"+
+									data.stockDetailList[i].unit+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
 									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
-									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
+									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
+									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
 							}
 						
 						}
@@ -368,7 +386,11 @@ width:1000px;
 			$(".modalEnroll").fadeIn();
 		});
 		
+		//품목추가
 		
+		$("#addCategory").click(function(){
+			$(".modalDetailAdd").fadeIn();
+		})
 		
 		
 	</script>

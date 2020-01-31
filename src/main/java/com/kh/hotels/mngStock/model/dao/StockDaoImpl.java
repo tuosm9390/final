@@ -7,7 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 
-import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.StockDetail;
@@ -45,9 +46,15 @@ public class StockDaoImpl implements StockDao{
 	}
 
 	@Override
-	public ArrayList<Stock> selectStockDetailList(SqlSessionTemplate sqlSession, String sCategory) {
+	public ArrayList<Stock> selectStockDetailList(SqlSessionTemplate sqlSession, String iName) {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("Stock.selectStockDetailList", sCategory);
+		return (ArrayList)sqlSession.selectList("Stock.selectStockDetailList", iName);
+	}
+
+	@Override
+	public ArrayList<ItemType> selectCategoryList(SqlSessionTemplate sqlSession, ItemType it) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("Stock.selectCategoryList",it);
 	}
 
 

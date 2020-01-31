@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Account">
+	<resultMap type="com.kh.hotels.mngStock.model.vo.Conn" id="resultSetConn">
+		<result property="cnCode" column="CN_CODE" />
+		<result property="cnName" column="CN_NAME" />
+		<result property="ownerName" column="OWNER_NAME" />
+		<result property="cnPhone" column="CN_PHONE" />
+		<result property="cnEmail" column="CN_EMAIL" />
+		<result property="cnItem" column="CN_ITEM" />
+		<result property="cnStatus" column="CN_STATUS" />
+		<result property="cnAdd" column="CN_ADD" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="bankCode" column="BANK_CODE" />
+		<result property="bankName" column="BANK_NAME" />
+		<result property="account" column="ACCOUNT" />
+		<result property="accName" column="ACC_NAME" />
+		<result property="accMemo" column="ACC_MEMO" />
+	</resultMap>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM
+		(SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD FROM CONN)
+	</select>
+	
+	<select id="selectAccountList" resultMap="resultSetConn">
+		SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD FROM CONN
+	</select>
+</mapper>
+
+ 
