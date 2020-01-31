@@ -244,17 +244,7 @@
 	</div>
 
 	<script>
-		var clientMno;
-		var clientName;
-		var clientPhone;
-		var clientEmail;
 	
-		$(function(){
-			clientMno = $("#clientDetailMno").val();
-			clientName = $("#clientDetailName").val();
-			clientPhone = $("#clientDetailPhone").val();
-			clientEmail = $("#clientDetailEmail").val();
-		});
 		$(document).ready(function() {
 			
 			clientMno = $("#clientDetailMno").val();
@@ -282,29 +272,7 @@
 			$(".stayHisSec2").hide();
 			$(".changeHisSec2").show();
 		});
-		function clientUpdate(){
-			
-			console.log($("#clientDetailMno").val());
-			console.log(clientName);
-			console.log(clientPhone);
-			console.log(clientEmail);
-			
-			if($(".clientDetailName").val() == ""){
-				alert("이름을 확인 해주세요.");
-				return false;
-			}	
-			if($(".clientDetailPhone").val() == ""){
-				alert("번호를 확인 해주세요.");
-				return false;
-			}	
-			if($(".clientDetailEmail").val() == ""){
-				alert("이메일을 확인 해주세요.");
-				return false;
-			}	
-			
-			//$(".clientInfoForm").submit();
-			return false;
-		}
+		
 	</script>
 </body>
 </html>

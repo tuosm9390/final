@@ -2,6 +2,7 @@ package com.kh.hotels.mngClient.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngClient.model.service.ClientService;
+import com.kh.hotels.mngClient.model.vo.BlackList;
 import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngClient.model.vo.QueModal;
@@ -216,12 +218,115 @@ public class ClientController {
 		return "viewClientList";
 		
 	}
+	@PostMapping("clientInfoUpdate.cl")
+	public String updateClientInfo(String clientDetailMno, String clientDetailName, String clientDetailPhone, String clientDetailEmail, Model model) {
+		
+		Member client = new Member();
+		client.setMno(Integer.parseInt(clientDetailMno));
+		client.setUserName(clientDetailName);
+		client.setEmail(clientDetailEmail);
+		client.setPhone(clientDetailPhone);
+		
+		int result = cs.updateClientInfo(client);
+		
+		if(result > 0) {
+			model.addAttribute("changeClient", client.getMno());
+			return "redirect:/viewList.cl";
+		}else {
+			model.addAttribute("msg", "고객정보수정실패");
+			return "common/errorPage";
+		}
+	}
 	
 	@GetMapping("viewBlackList.cl")
-	public String goBlackList() {
+	public String goBlackList(HttpServletRequest request, Model model) {
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int blackListCount = cs.getBlackListCount();
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, blackListCount);
+		
+		ArrayList<Member> blackLists = cs.selectBlackLists(pi);
+		
+		model.addAttribute("blackListCount", blackListCount);
+		model.addAttribute("blackLists", blackLists);
+		model.addAttribute("pi", pi);
+		
 		return "blackList";
 	}
 
+	@PostMapping("addBlackList.cl")
+	public String insertBlackList(String blackListMno,String blackListContent,String blackListRes,Model model) {
+		
+		BlackList blackList = new BlackList();
+		blackList.setMno(Integer.parseInt(blackListMno));
+		blackList.setRegRsn(blackListContent);
+		blackList.setResponse(blackListRes);
+		
+		int result = cs.insertBlackList(blackList);
+		
+		if(result > 0) {
+			return "redirect:/viewBlackList.cl";
+		}else {
+			model.addAttribute("msg", "블랙리스트 등록 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
+	@PostMapping("blackListDetail.cl")
+	public ModelAndView blackListDetail(ModelAndView mv, String mno) {
+		
+		int blackListMno = Integer.parseInt(mno);
+		
+		HashMap<String, Object> hmap = new HashMap<>();
+		
+		// 고객 정보
+		Member blackListInfo = cs.selectClientInfo(blackListMno);
+		// 방문 횟수
+		int visitCount = cs.selectVisitCount(blackListMno);
+		// 매출
+		int price = cs.selectTotalPrice(blackListMno);
+		// 숙박일수
+		int stayDay = cs.selectStayDay(blackListMno);
+		// 최종방문일자
+		Stay lastVisit = cs.selectLastVisit(blackListMno);
+		String enddate;
+		if(lastVisit != null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			enddate = sdf.format(lastVisit.getCheckOut());
+		}else {
+			enddate = "기록없음";
+		}
+		
+		ArrayList<BlackList> blackListContent = cs.selectBlackListContent(blackListMno);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String to;
+		for(int i = 0; i < blackListContent.size(); i++) {
+			to = sdf.format(blackListContent.get(i).getRegDate());
+			blackListContent.get(i).setRegDate(null);
+			blackListContent.get(i).setRegDate2(to);
+		}
+		
+		
+		hmap.put("visitCount",visitCount);
+		hmap.put("blackListInfo", blackListInfo);
+		hmap.put("price", price);
+		hmap.put("stayDay", stayDay);
+		hmap.put("lastVisit",enddate);
+		hmap.put("blackListContent",blackListContent);
+
+		mv.addObject("hmap", hmap);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
 	@GetMapping("question.cl")
 	public String goQuestion() {
 		return "viewQuestion";

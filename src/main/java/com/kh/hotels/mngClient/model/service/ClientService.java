@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngClient.model.vo.BlackList;
 import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
@@ -37,6 +38,16 @@ public interface ClientService {
 	int getSearchClientListCount(ClientSearchCondition csc);
 
 	ArrayList<Member> selectSearchClientList(ClientSearchCondition csc, PageInfo pi);
+
+	int updateClientInfo(Member client);
+
+	int getBlackListCount();
+
+	ArrayList<Member> selectBlackLists(PageInfo pi);
+
+	int insertBlackList(BlackList blackList);
+
+	ArrayList<BlackList> selectBlackListContent(int blackListMno);
 
 
 }

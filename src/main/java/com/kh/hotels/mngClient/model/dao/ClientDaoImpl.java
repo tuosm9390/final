@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngClient.model.vo.BlackList;
 import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
@@ -129,6 +130,48 @@ public class ClientDaoImpl implements ClientDao {
 		
 		return searchClientList;
 		
+	}
+
+	@Override
+	public int updateClientInfo(Member client, SqlSessionTemplate sqlSession) {
+
+		return sqlSession.update("Client.updateClientInfo", client);
+	}
+
+	@Override
+	public int getBlackListCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("Client.getBlackListCount");
+	}
+
+	@Override
+	public ArrayList<Member> selectBlackLists(PageInfo pi, SqlSessionTemplate sqlSession) {
+		
+		ArrayList<Member> blackLists = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		blackLists = (ArrayList) sqlSession.selectList("Client.selectBlackLists", null, rowBounds);
+		
+		return blackLists;
+	}
+
+	@Override
+	public int insertBlackList(BlackList blackList, SqlSessionTemplate sqlSession) {
+
+		return sqlSession.insert("Client.insertBlackList", blackList);
+	}
+
+	@Override
+	public ArrayList<BlackList> selectBlackListContent(int blackListMno, SqlSessionTemplate sqlSession) {
+		
+		ArrayList<BlackList> blackListContent = null;
+		
+		blackListContent = (ArrayList)sqlSession.selectList("Client.selectBlackListContent", blackListMno);
+		
+		return blackListContent;
 	}
 
 
