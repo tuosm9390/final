@@ -1,5 +1,6 @@
 package com.kh.hotels.hotel.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +14,9 @@ import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 public interface HotelService {
 
-	Map<String, RoomInfo> selectRoomList();
+	ArrayList<RoomInfo> selectRoomList();
 
-	RoomInfo selectRoom(int roomType);
+	ArrayList<RoomInfo> selectRoom(int roomType);
 
 	ReservationCheck reservationCheck(ReservationCheck rsv);
 
@@ -26,8 +27,6 @@ public interface HotelService {
 	int insertMember(ReservationCheck rsvCheck);
 
 	Member selectMember(ReservationCheck rsvCheck);
-
-	List<Que> selectQnAList(PageInfo pi) throws QnASelectListException;
 
 	int insertQnA(Que q);
 
@@ -46,4 +45,8 @@ public interface HotelService {
 	List<RoomInfo> selectRoomNoList(int roomType);
 
 	int insertBreakfast(ReservationCheck rsvCheck);
+
+	List<Que> selectQnAList(Map<String, Object> map) throws QnASelectListException;
+
+	int selectRoomType(String rsvNo);
 }

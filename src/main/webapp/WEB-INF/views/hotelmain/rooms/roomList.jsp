@@ -37,11 +37,11 @@
 	</header>
 	<section>
 		<div class="room-img-box" style="background: black; border: 6px solid black; padding: 6px;">
-			<!-- Map으로 받아와 key값으로 유형별 이미지 출력 -->
-			<c:forEach var="list" items="${ roomList }" varStatus="st">
+			<!-- List로 받아와 유형별 이미지 출력 -->
+			<c:forEach var="filePath" items="${ filePathList }" varStatus="st">
 				<div class="room-img">
-					<a href="roomdetail.hmain?roomType=${ list.key }">
-						<img src="${ contextPath }/resources/images/room${ list.key }.png">
+					<a href="roomdetail.hmain?roomType=${ roomList[st.index].rt_No }">
+						<img src="${ contextPath }${ filePath }">
 					</a>
 				</div>
 			</c:forEach>
@@ -55,7 +55,6 @@
 // 		}).mouseout(function(){
 // 			$(".box").css("display", "none");
 // 		});
-		
 	</script>
 </body>
 </html>

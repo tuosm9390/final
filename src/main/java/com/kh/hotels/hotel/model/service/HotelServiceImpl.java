@@ -1,5 +1,6 @@
 package com.kh.hotels.hotel.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,13 +25,13 @@ public class HotelServiceImpl implements HotelService{
 	private HotelDao hd;
 	
 	@Override
-	public Map<String, RoomInfo> selectRoomList() {
+	public ArrayList<RoomInfo> selectRoomList() {
 		
 		return hd.selectRoomList(sqlSession);
 	}
 
 	@Override
-	public RoomInfo selectRoom(int roomType) {
+	public ArrayList<RoomInfo> selectRoom(int roomType) {
 		
 		return hd.selectRoom(sqlSession, roomType);
 	}
@@ -65,9 +66,9 @@ public class HotelServiceImpl implements HotelService{
 	}
 
 	@Override
-	public List<Que> selectQnAList(PageInfo pi) throws QnASelectListException {
+	public List<Que> selectQnAList(Map<String, Object> map) throws QnASelectListException {
 		
-		return hd.selectQnAList(sqlSession, pi);
+		return hd.selectQnAList(sqlSession, map);
 	}
 
 	@Override
@@ -113,6 +114,11 @@ public class HotelServiceImpl implements HotelService{
 	@Override
 	public int insertBreakfast(ReservationCheck rsvCheck) {
 		return hd.insertBreakfast(sqlSession, rsvCheck);
+	}
+
+	@Override
+	public int selectRoomType(String rsvNo) {
+		return hd.selectRoomType(sqlSession, rsvNo);
 	}
 
 }

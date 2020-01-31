@@ -159,34 +159,18 @@ input[type=text] {
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 		    <!-- Indicators -->
 		    <ol class="carousel-indicators">
-		      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-		      <li data-target="#myCarousel" data-slide-to="1"></li>
-		      <li data-target="#myCarousel" data-slide-to="2"></li>
-		      <li data-target="#myCarousel" data-slide-to="3"></li>
-		      <li data-target="#myCarousel" data-slide-to="4"></li>
+		    	<c:forEach var="i" begin="0" end="${ sessionScope.listsize - 1 }" >
+			      <li data-target="#myCarousel" data-slide-to="${ i }"></li>
+		    	</c:forEach>
 		    </ol>
 		
 		    <!-- Wrapper for slides -->
 		    <div class="carousel-inner" role="listbox">
-		      <div class="item active">
-		        <img src="${ contextPath }/resources/images/room${ roomInfo.rt_No }.png" style="width: 100%; height: 480px;">
-		      </div>
-		
-		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 480px;">
-		      </div>
-		    
-		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 480px;">
-		      </div>
-		      
-		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 480px;">
-		      </div>
-		      
-		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 480px;">
-		      </div>
+		    	<c:forEach var="filePath" items="${ sessionScope.filePathList }" varStatus="st">
+					<div class="item">
+			        	<img src="${ contextPath }${ filePath }" style="width: 100%; height: 480px;">
+					</div>
+		    	</c:forEach>
 		    </div>
 		
 		    <!-- Left and right controls -->
@@ -243,7 +227,7 @@ input[type=text] {
 							<td>
 								<select id="adult" name="adult">
 									<option value="0" selected>0</option>
-									<c:forEach var="i" begin="1" end="${ roomInfo.maxPer }">
+									<c:forEach var="i" begin="1" end="${ sessionScope.roomInfo.maxPer }">
 									<option value="${ i }">${ i }</option>
 									</c:forEach>
 								</select>
@@ -258,7 +242,7 @@ input[type=text] {
 							<td>
 								<select id="child" name="child">
 									<option value="0" selected>0</option>
-									<c:forEach var="i" begin="1" end="${ roomInfo.maxPer - 1 }">
+									<c:forEach var="i" begin="1" end="${ sessionScope.roomInfo.maxPer - 1 }">
 									<option value="${ i }">${ i }</option>
 									</c:forEach>
 								</select>
@@ -278,25 +262,18 @@ input[type=text] {
 		<div class="roomDetailIntroduce" >
 			<!-- 좌측 이미지 -->
 			<div class="detail-img">
-				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/room${roomInfo.rt_No}.png" style="width: 100%; height: 200px;">
-				</div>
-				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 200px;">
-				</div>
-				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 200px;">
-				</div>
-				<div class="detail-img-item">
-					<img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 200px;">
-				</div>
+				<c:forEach var="filePath" items="${ sessionScope.filePathList }" varStatus="st">
+					<div class="detail-img-item">
+						<img src="${ contextPath }${ filePath }" style="width: 100%; height: 200px;">
+					</div>
+				</c:forEach>
 			</div>
 			<!-- 좌측 이미지 끝 -->
 			
 			<!-- 우측 내용 -->
 			<div class="detail-text">
 				<p
-					style="font-style: normal; font-weight: bold; font-size: 36px; line-height: 42px; text-decoration-line: underline;">${roomInfo.rt_Name}</p>
+					style="font-style: normal; font-weight: bold; font-size: 36px; line-height: 42px; text-decoration-line: underline;">${sessionScope.roomInfo.rt_Name}</p>
 				<div style="border: 1px solid black; width: 100%; height: 0;"></div>
 				
 				<br>
@@ -304,7 +281,7 @@ input[type=text] {
 					모던 스타일 객실과 별도의 작은 정원 테라스</p>
 
 				<ul class="room-item">
-				<c:forTokens items="${ roomInfo.rm_Option }" var="option" delims=",">
+				<c:forTokens items="${ sessionScope.roomInfo.rm_Option }" var="option" delims=",">
 					<li>${ option }</li>
 				</c:forTokens>
 				</ul>
@@ -358,6 +335,11 @@ input[type=text] {
 			} else {
 				alert("체크인 체크아웃날짜를 선택해주세요");
 			};
+		});
+		
+		$(function(){
+			$(".carousel-indicators").children().eq(0).addClass('active');
+			$(".carousel-inner").children().eq(0).addClass('active');
 		});
 	</script>
 </body>

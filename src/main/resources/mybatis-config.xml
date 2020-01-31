@@ -35,6 +35,7 @@
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.Prc" alias="RoomPrice" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurVos" alias="PurVos"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.ServiceList" alias="ServiceList" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PageInfo" alias="PageInfo"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
