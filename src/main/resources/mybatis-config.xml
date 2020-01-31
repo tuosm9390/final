@@ -7,6 +7,7 @@
 	<typeAliases>
 		<typeAlias type="com.kh.hotels.mngMember.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Strg" alias="Strg"/>
+		<typeAlias type="com.kh.hotels.mngReserv.model.vo.Reservation" alias="Reservation"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Info" alias="Info"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Rule" alias="Rule"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Law" alias="Law"/>
@@ -31,11 +32,13 @@
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.WarehouseDetail" alias="WarehouseDetail"/>
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.Que" alias="Que"/>
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.Ans" alias="Ans"/>
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.ClientSearchCondition" alias="ClientSearchCondition"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomList" alias="RoomList" />
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.Prc" alias="RoomPrice" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurVos" alias="PurVos"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.ServiceList" alias="ServiceList" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurRequest" alias="PurRequest"/>
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PageInfo" alias="PageInfo"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>

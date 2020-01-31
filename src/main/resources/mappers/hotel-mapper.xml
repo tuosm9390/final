@@ -16,6 +16,8 @@
 		<result property="minPer" column="MINPER" />
 		<result property="maxPer" column="MAXPER" />
 		<result property="limitPrc" column="LIMITPRC" />
+		<result property="filePath" column="FILE_PATH" />
+		<result property="fileLevel" column="FILE_LEVEL" />
 	</resultMap>
 
 	<resultMap
@@ -83,28 +85,50 @@
 				AND QTITLE LIKE '%'||#{searchValue}||'%'
 			</when>
 			<when test="searchCondition == 'qtype'">
-				AND QTYPE = #{searchValue}
+				AND QTYPE LIKE '%'||#{searchValue}||'%'
 			</when>
 		</choose>
+		ORDER BY QNO
+	</select>
+	
+	<!-- 문의 리스트 조회 쿼리 -->
+	<select id="selectQnAList" resultType="Que" resultMap="QueResultSet" parameterType="java.util.HashMap">
+		SELECT *
+		FROM QUE Q
+		LEFT JOIN MEMBER M ON (Q.MNO = M.MNO)
+		<choose>
+			<when test="searchCondition == 'qtitle'">
+				WHERE QTITLE LIKE '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchCondition == 'qtype'">
+				WHERE QTYPE LIKE '%'||#{searchValue}||'%'
+			</when>
+		</choose>
+		ORDER BY QNO
 	</select>
 	
 	<!-- 객실 유형 갯수 조회 쿼리 -->
-	<select id="selectRoomList" resultType="Map" resultMap="RoomInfoResultSet">
-		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER,	LIMITPRC
+	<select id="selectRoomList" resultType="java.util.ArrayList" resultMap="RoomInfoResultSet">
+		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER, LIMITPRC, A.FILE_PATH, A.FILE_LEVEL
 		FROM ROOM R
 		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
-		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS, RT_NAME, 
-		MINPER, MAXPER, LIMITPRC
+		FULL JOIN ATTACH A ON(R.RT_NO = A.RT_NO)
+		WHERE A.FILE_LEVEL = 1
+		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS, RT_NAME,
+		MINPER, MAXPER, LIMITPRC, A.FILE_PATH, A.FILE_LEVEL
+		ORDER BY RT_NO
 	</select>
 
 	<!-- 객실 정보 조회용 쿼리 -->
-	<select id="selectRoom" resultType="RoomInfo" resultMap="RoomInfoResultSet">
-		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS,RT_NAME, MINPER, MAXPER, LIMITPRC
+	<select id="selectRoom" resultType="java.util.ArrayList" resultMap="RoomInfoResultSet">
+		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER, LIMITPRC, A.FILE_PATH, A.FILE_LEVEL
 		FROM ROOM R
 		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
+		LEFT JOIN ATTACH A ON(R.RT_NO = A.RT_NO)
 		WHERE R.RT_NO = #{roomType}
-		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS,
-		RT_NAME,MINPER, MAXPER, LIMITPRC
+		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS, RT_NAME,
+		MINPER, MAXPER, LIMITPRC, A.FILE_PATH, A.FILE_LEVEL
+		ORDER BY A.FILE_LEVEL ASC
 	</select>
 	
 	<!-- 객실 유형별 객실 번호 조회용 쿼리 -->
@@ -118,6 +142,14 @@
 		LEFT JOIN ROOM ON (RSV.RM_NO = ROOM.RM_NO)
 		WHERE RT_NO = #{roomType}
 		AND CHECKOUT > SYSDATE
+	</select>
+	
+	<select id="selectRoomType" resultType="_int">
+		SELECT RT_NO
+		FROM ROOM
+		WHERE RM_NO = (SELECT RM_NO
+		               FROM RSV
+		               WHERE RSV_NO = #{rsvNo})
 	</select>
 	
 	<!-- 예약 정보 조회용 쿼리 -->
@@ -155,7 +187,7 @@
 	<insert id="insertBreakfast" parameterType="ReservationCheck">
 		INSERT INTO
 		SVC_USE (SVC_CODE, USE_CNT, USE_STATUS, REG_DATE, SVC_NO, RSV_NO)
-		VALUES('BREAKFAST', ${adult} + ${child}, 'Y', TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), SEQ_SVC_NO.NEXTVAL, #{rsvNo})
+		VALUES('BREAKFAST', TO_NUMBER(#{adult}) + TO_NUMBER(#{child}), 'Y', TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), SEQ_SVC_NO.NEXTVAL, #{rsvNo})
 	</insert>
 	
 	<!-- 예약정보 확인 / 예약 멤버 조회 쿼리 -->
@@ -201,20 +233,6 @@
 		INSERT INTO QUE
 		VALUES (SEQ_QNO.NEXTVAL, #{mno}, #{qtype}, #{qtitle}, SYSDATE, #{qcontent}, 'N', 'N', #{qpwd}, #{pwdStatus})
 	</insert>
-	
-	<select id="selectQnAList" resultType="Que" resultMap="QueResultSet">
-		SELECT *
-		FROM QUE Q
-		LEFT JOIN MEMBER M ON (Q.MNO = M.MNO)
-		<where>
-			<if test="searchCondition == 'qtitle'">
-				QTITLE LIKE '%'||#{searchValue}||'%'
-			</if>
-			<if test="searchCondition == 'qtype'">
-				QTYPE = #{searchValue}
-			</if>
-		</where>
-	</select>
 	
 	<select id="selectOneQnA" resultType="Que" resultMap="QueResultSet">
 		SELECT *
