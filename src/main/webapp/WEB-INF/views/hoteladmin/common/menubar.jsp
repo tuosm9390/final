@@ -191,8 +191,8 @@
 				<img alt="" src="${ contextPath }/resources/images/iconFinance.png"  class="tabimg"><br>
 				<label>판매분석</label>
 				<div class="subnav-analys">
-					<a href="viewTrendList.hadmin">영업트렌드</a><br>
-					<a href="viewDetailList.hadmin?Condition=sales">매출 및 지불 상세</a>
+					<a href="viewTrendList.an">영업트렌드</a><br>
+					<a href="viewDetailList.an?Condition=sales">매출 및 지불 상세</a>
 				</div>
 		</li>
 		<li class="menu tab t6 contract">

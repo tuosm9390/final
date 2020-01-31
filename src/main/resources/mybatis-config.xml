@@ -42,6 +42,7 @@
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurRequest" alias="PurRequest"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.ItemType" alias="ItemType" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PageInfo" alias="PageInfo"/>
+		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.SalesDetail" alias="SalesDetail"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
@@ -53,6 +54,7 @@
         <mapper resource="mappers/stock-mapper.xml"/>
         <mapper resource="mappers/client-mapper.xml"/>
         <mapper resource="mappers/account-mapper.xml"/>
+        <mapper resource="mappers/analys-mapper.xml"/>
 	</mappers>
 		
 	

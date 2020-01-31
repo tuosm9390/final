@@ -254,7 +254,7 @@ public class HotelMainContoller {
 
 		return mv;
 	}
-
+	
 	// 문의 리스트 메소드
 	@RequestMapping("goQnA.hmain")
 	public ModelAndView showHotelQnA(ModelAndView mv, HttpServletRequest request) {
@@ -281,7 +281,6 @@ public class HotelMainContoller {
 		} catch (QnASelectListException e) {
 			mv.addObject("error", "게시물 조회 실패");
 			mv.setViewName("hotelmain/common/errorPage");
-			
 		}
 		
 		return mv;

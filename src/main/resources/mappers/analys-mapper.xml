@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Analys">
+	<resultMap type="com.kh.hotels.mngAnalys.model.vo.SalesDetail" id="SalesDetailResultSet">
+		<id property="rsvNo" column="rsv_No" />
+		<result property="rmNo" column="rm_No" />
+		<result property="rmNum" column="rm_Num" />
+		<result property="mno" column="mno" />
+		<result property="name" column="name" />
+		<result property="checkIn" column="checkIn" />
+		<result property="checkOut" column="checkOut" />
+		<result property="stayPrice" column="stay_Price" />
+		<result property="rsvDate" column="rsv_Date" />
+	</resultMap>
+
+	<select id="selectSalesDetailList" resultType="java.util.ArrayList" resultMap="SalesDetailResultSet">
+		SELECT RM.RM_NUM, RSV_NO, R.MNO, M.NAME, CHECKIN, CHECKOUT, STAY_PRICE, RSV_DATE
+		FROM RSV R
+		LEFT JOIN MEMBER M ON (R.MNO = M.MNO)
+		LEFT JOIN ROOM RM ON (RM.RM_NO = R.RM_NO)
+<!-- 		<choose> -->
+<!-- 			<when test="searchCondition == 'sales'"> -->
+<!-- 				WHERE RSV_DATE LIKE '%'||#{startDate}||'%' -->
+<!-- 			</when> -->
+<!-- 			<when test="searchCondition == 'checkIn'"> -->
+<!-- 				WHERE QTYPE LIKE '%'||#{searchValue}||'%' -->
+<!-- 			</when> -->
+<!-- 			<when test="searchCondition == 'checkOut'"> -->
+<!-- 				WHERE QTYPE LIKE '%'||#{searchValue}||'%' -->
+<!-- 			</when> -->
+<!-- 		</choose> -->
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
+
+ 

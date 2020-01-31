@@ -73,7 +73,7 @@ cursor: pointer;
 				<form id="pwdCheckForm" action="qnadetail.hmain" method="post">
 					<div class="check-password">
 						<h2 style="font-weight: bold;">비밀번호를 입력해주세요</h2>
-						<input type="text" name="pwd" id="pwd">
+						<input type="password" name="pwd" id="pwd">
 					</div>
 				</form>
 			</div>

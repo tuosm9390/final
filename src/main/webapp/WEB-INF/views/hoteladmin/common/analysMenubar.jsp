@@ -113,7 +113,7 @@
 		
 		$(".analys-item").click(function(){
 			var Condition = $(this).attr('id');
-			location.href='viewDetailList.hadmin?Condition=' + Condition;
+			location.href='viewDetailList.an?Condition=' + Condition;
 		});
 	</script>
 </body>
