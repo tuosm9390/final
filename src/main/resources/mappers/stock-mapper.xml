@@ -33,7 +33,7 @@
 	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.ItemType" id="resultSetType">
-		<result property="typeNo" column="TYPE_NO" />
+		<id property="typeNo" column="TYPE_NO" />
 		<result property="type" column="TYPE" />
 		<result property="lcategory" column="LCATEGORY" />
 		<result property="mcategory" column="MCATEGORY" />
@@ -63,6 +63,9 @@
 		ORDER BY INAME
 	</select>
 	
+	<insert id="insertStock" parameterType="_int">
+		
+	</insert>
 	
 	
 	<!-- 물품 디테일 -->
@@ -90,9 +93,25 @@
 	
 	<!-- 분류 리스트 -->
 	<select id="selectCategoryList" resultMap="resultSetType">
-		SELECT LCATEGORY
-		FROM ITEM_TYPE
+		<choose>
+			<when test="lcategory =='대분류'">
+				SELECT LCATEGORY
+				FROM ITEM_TYPE
+				GROUP BY LCATEGORY
+			</when>
+			<when test="lcategory !='대분류'">
+				SELECT MCATEGORY
+				FROM ITEM_TYPE
+				WHERE LCATEGORY = #{lCategory}
+				GROUP BY MCATEGORY
+			</when>
+		</choose>
 	</select>
+	
+	<insert id="insertCategory" parameterType="ItemType">
+		INSERT INTO ITEM_TYPE(TYPE_NO,TYPE,LCATEGORY,MCATEGORY,SCATEGORY)
+		VALUES(SEQ_TYPE_NO.NEXTVAL,#{type},#{lCategory},#{mCategory},#{sCategory})
+	</insert>
 </mapper>
 
  
