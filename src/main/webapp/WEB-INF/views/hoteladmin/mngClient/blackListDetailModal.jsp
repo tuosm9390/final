@@ -7,7 +7,7 @@
 <title>MODAL</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
-	.modalBlackListAdd {
+	.blackListDetailModal {
 		display: none;
 		position: fixed;
 		width: 100%;
@@ -92,7 +92,7 @@
 </style>
 </head>
 <body>
-	<div class="modalBlackListAdd">
+	<div class="blackListDetailModal">
 		<div class="modal_content">
 			<h3 style="margin:0 auto; background:#060E33; color:white;">블랙리스트 등록</h3>
 			<a class="btn_close">×</a>

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngClient.model.vo.BlackList;
 import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
@@ -39,5 +40,15 @@ public interface ClientDao {
 	int getSearchClientListCount(ClientSearchCondition csc, SqlSessionTemplate sqlSession);
 
 	ArrayList<Member> selectSearchClientList(SqlSessionTemplate sqlSession, ClientSearchCondition csc, PageInfo pi);
+
+	int updateClientInfo(Member client, SqlSessionTemplate sqlSession);
+
+	int getBlackListCount(SqlSessionTemplate sqlSession);
+
+	ArrayList<Member> selectBlackLists(PageInfo pi, SqlSessionTemplate sqlSession);
+
+	int insertBlackList(BlackList blackList, SqlSessionTemplate sqlSession);
+
+	ArrayList<BlackList> selectBlackListContent(int blackListMno, SqlSessionTemplate sqlSession);
 
 }

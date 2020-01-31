@@ -123,6 +123,29 @@
 	padding: 10px;
 	font-weight: bold;
 }
+.findClientList {
+	width: 234px;
+	height: 85px;
+	position: fixed;
+	background-color: #E4E2E2;
+	margin-top: 3px;
+	max-height: 85px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	text-align:left;
+}
+.findClientPer {
+	font-size: 14px;
+	margin-left: 10px;
+	width: 220px;
+	overflow-x: hidden;
+	background-color: none;
+}
+
+.findClientPer:hover {
+	cursor: pointer;
+	background-color: darkgray;
+}
 </style>
 </head>
 <body>
@@ -132,7 +155,7 @@
 				<h2>블랙리스트 등록</h2>
 				<a class="btn_close">×</a>
 			</div>
-			
+			<form action="addBlackList.cl" method="post">
 			<div class="modal_content_real">
 			<div class="blackListModalTableArea">
 				<table>
@@ -142,17 +165,17 @@
 								<table class="blackListInfo">
 									<tr>
 										<td>고객명</td>
-										<td><input type="text" style="width:210px;"></td> 
-										<td>연락처</td>
-										<td><input type="text" style="width:210px;"></td> 
+										<td><input autocomplete="off" type="text" style="width:210px;" class="blackListName" name="blackListName"><div class="findClientList"></div></td> 
+										<td>연락처<input type="hidden" value="" class="blackListMno" name="blackListMno"></td>
+										<td><input type="text" style="width:210px;" class="blackListPhone" name="blackListPhone"></td> 
 									</tr>
 									<tr>
 										<td>사유</td>
-										<td colspan="3"><textarea rows="8" cols="70" style="resize: none;"></textarea></td>
+										<td colspan="3"><textarea rows="8" cols="70" style="resize: none;" class="blackListContent" name="blackListContent"></textarea></td>
 									</tr>
 									<tr>
 										<td>대응내용</td>
-										<td colspan="3"><textarea rows="8" cols="70" style="resize: none;"></textarea></td>
+										<td colspan="3"><textarea rows="8" cols="70" style="resize: none;" class="blackListRes" name="blackListRes"></textarea></td>
 									</tr>
 								</table>
 							</div>
@@ -161,18 +184,75 @@
 				</table>
 			</div>
 				<div align="center" class="blackBtnGroup">
-					<button id="cancelBtn">취소</button>
-					<button id="okBtn">등록</button>
+					<button type="reset" id="cancelBtn" onclick="closeBtn();">취소</button>
+					<button id="okBtn" onclick="return appendblackList();">등록</button>
 				</div>
 			</div>
+			</form>
 		</div>
 	</div>
 	<script>
-		$(document).ready(function() {
-			$(".btn_close").click(function() {
-				$(".modalBlackListAdd").fadeOut();
-			});
+	function closeBtn(){
+		$(".modalBlackListAdd").fadeOut();
+	}
+	$(function(){
+		$(".btn_close").click(function() {
+			$(".modalBlackListAdd").fadeOut();
 		});
+			
+		$(".findClientList").hide();
+			
+		$(".blackListName").keyup(function(){
+				
+			var searchName = $(this).val();
+				
+			$.ajax({
+				url:"ajxFindClient.ro",
+				data:{searchName:searchName},
+				type:"post",
+				success:function(data){
+					clientList = data.clientList;
+					if(clientList.length == 0) {
+						$(".findClientList").hide();
+						$(".findClientList div").remove();
+					} else {
+						for(var i = 0; i < clientList.length; i++) {
+							$infoClient = "<div class='findClientPer' id='per" + clientList[i].mno + "' onclick='findClientClk(this.id);' value='"+clientList[i].mno+"'><input type='hidden' value='"+clientList[i].mno+"' class='mno'>" + clientList[i].userName + " | " + clientList[i].phone + "</div>";
+							$(".findClientList").append($infoClient);
+							
+						}
+						$(".findClientList").show();
+					}
+				},
+				error:function(error, status){
+					alert("SYSTEM ERROR!");
+				}
+			});
+		}).keydown(function(){
+			$(".findClientList").hide();
+			$(".findClientList div").remove();
+		});;
+	});
+	function appendblackList(){
+		console.log($(".blackListMno").val());
+		if($(".blackListName").val() == ""){
+			alert("고객을 선택해주세요");
+			return false;
+		}
+		if($(".blackListContent").val() == ""){
+			alert("사유를 입력해주세요.");
+			return false;
+		}
+		if($(".blackListRes").val() == ""){
+			alert("대응내용을 입력해주세요.");
+			return false;
+		}
+		if($(".blackListMno").val() == ""){
+			return false;
+		}
+			
+		return true;
+	}
 	</script>
 </body>
 </html>

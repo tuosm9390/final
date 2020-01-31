@@ -232,8 +232,13 @@
 	</c:if>
 	<script>
 		var searchCheck = ""; 
+		var clientMno;
+		var clientName;
+		var clientPhone;
+		var clientEmail;
 		
 		$(function(){
+			
 			$("#openClientMD").click(function(){
 				$(".modalplus").fadeIn();
 			});
@@ -290,20 +295,17 @@
 						case "N" : tempStatus = "체크인";break;
 						case "OK" : tempStatus = "예약완료";break;
 						}
-						console.log(checkInDate);
-						console.log(checkOutDate);
 						
 							$('.stayAndRsvTabel tbody:last').after("<tr><td>"+sarList.checkIn+"</td><td>"+sarList.checkOut+"</td><td>"+
 									(checkOutDate-checkInDate)/(24 * 60 * 60 * 1000)
 									+"</td><td>"+sarList.rmNum+"</td><td>"+sarList.price+"</td><td>"+sarList.rsvDate.substr(0,10)+"</td><td>"+tempStatus+"</td></tr>");
 						});
 						
-						console.log(data.hmap.queModalList);
-						//queList.qdate
-						//queList.qtitle
-						//queList.qtype
-						//queList.qcontent
-						//$(".clientDetailQueTable").val(data.hmap.lastVisit);
+						clientMno = $("#clientDetailMno").val();
+						clientName = $("#clientDetailName").val();
+						clientPhone = $("#clientDetailPhone").val();
+						clientEmail = $("#clientDetailEmail").val();
+						
 						$(".modalDetail").fadeIn();
 					},
 					error:function(data){
@@ -357,6 +359,36 @@
 			
 			searchCheck = "ok";
 			return true;
+		}
+		function clientUpdate(){
+			
+			console.log(clientMno);
+			console.log(clientName);
+			console.log(clientPhone);
+			console.log(clientEmail);
+			
+			if($(".clientDetailName").val() == ""){
+				alert("이름을 확인 해주세요.");
+				return false;
+			}	
+			if($(".clientDetailPhone").val() == ""){
+				alert("번호를 확인 해주세요.");
+				return false;
+			}	
+			if($(".clientDetailEmail").val() == ""){
+				alert("이메일을 확인 해주세요.");
+				return false;
+			}	
+			
+			if(clientName == $(".clientDetailName").val() && clientPhone == $(".clientDetailPhone").val() && clientEmail == $(".clientDetailEmail").val() ){
+				alert("변경사항이 존재하지않습니다.");
+				return false;
+			}
+			
+			if(confirm( clientName +" 님의 정보를 변경하시겠습니까 ? ")){
+				$(".clientInfoForm").submit();
+				return true;
+			}
 		}
 	</script>
 </body>

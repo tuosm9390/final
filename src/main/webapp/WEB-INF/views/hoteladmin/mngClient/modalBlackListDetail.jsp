@@ -142,15 +142,15 @@
 					<table>
 						<tr>
 							<td>고객번호</td>
-							<td><input type="text" value="20292030" readonly></td>
+							<td><input type="text" class="blackListDetailMno" name="blackListDetailMno" id="blackListDetailMno"  readonly></td>
 							<td>전화</td>
-							<td><input type="tel"></td>
+							<td><input type="tel" class="blackListDetailPhone" name="blackListDetailPhone" id="blackListDetailPhone"  readonly></td>
 						</tr>
 						<tr>
 							<td>* 고객명</td>
-							<td><input type="text"></td>
+							<td><input type="text" class="blackListDetailName" name="blackListDetailName" id="blackListDetailName"  readonly></td>
 							<td>이메일</td>
-							<td><input type="email"></td>
+							<td><input type="email" class="blackListDetailEmail" name="blackListDetailEmail" id="blackListDetailEmail"  readonly></td>
 						</tr>
 					</table>
 				</div>
@@ -158,37 +158,26 @@
 				<div class="clientHisPlus">
 					<div class="changeHisSec">
 						<div class="changecontent">
-							<table>
-								<tr>
-									<td colspan="2" style="font-weight: bold">2020-01-01 01:23:32
-									<button id="deleteCBtn">×</button></td>
-								</tr>
-								<tr>
-									<td style="font-weight: bold">등록사유</td>
-									<td>왜 조식에 나오는 우유가 두유가 아니냐고 물었음</td>
-								</tr>
-								<tr>
-									<td style="font-weight: bold">직원대응</td>
-									<td>두유 사다 줬음 넌 다신 오지 마라 이 녀석아,,,</td>
-								</tr>
+							<table class="blackListContentTable">
+	
 							</table>
 						</div>
 					</div>
 				</div>
 				
-				<div class="clientSttPlus">
-					<table>
+				<div class="blackListContentArea">
+					<table align="center">
 						<tr>
 							<td>방문횟수</td>
-							<td><input type="text" readonly></td>
+							<td><input type="text" class="blackListDetailVisitCount" readonly></td>
 							<td>매출</td>
-							<td><input type="text" readonly></td>
+							<td><input type="text" class="blackListDetailTotalPrice" readonly></td>
 						</tr>
 						<tr>
 							<td>투숙박수</td>
-							<td><input type="text" readonly></td>
+							<td><input type="text" class="blackListDetailStayDay" readonly></td>
 							<td>최종방문일자</td>
-							<td><input type="text" readonly></td>
+							<td><input type="text" class="blackListDetailLastVisit" readonly></td>
 						</tr>
 					</table>
 				</div>
@@ -199,9 +188,11 @@
 	<script>
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
+				$(".blackListContentTable tr").remove();
 				$(".modalplus").fadeOut();
 			});
 		});
+		
 	</script>
 </body>
 </html>

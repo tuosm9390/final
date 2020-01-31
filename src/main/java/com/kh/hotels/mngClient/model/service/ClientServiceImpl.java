@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngClient.model.dao.ClientDao;
+import com.kh.hotels.mngClient.model.vo.BlackList;
 import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
@@ -100,6 +101,36 @@ public class ClientServiceImpl implements ClientService{
 	public ArrayList<Member> selectSearchClientList(ClientSearchCondition csc, PageInfo pi) {
 
 		return cd.selectSearchClientList(sqlSession, csc, pi);
+	}
+
+	@Override
+	public int updateClientInfo(Member client) {
+
+		return cd.updateClientInfo(client, sqlSession);
+	}
+
+	@Override
+	public int getBlackListCount() {
+
+		return cd.getBlackListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Member> selectBlackLists(PageInfo pi) {
+		
+		return cd.selectBlackLists(pi, sqlSession);
+	}
+
+	@Override
+	public int insertBlackList(BlackList blackList) {
+		
+		return cd.insertBlackList(blackList, sqlSession);
+	}
+
+	@Override
+	public ArrayList<BlackList> selectBlackListContent(int blackListMno) {
+
+		return cd.selectBlackListContent(blackListMno, sqlSession);
 	}
 
 
