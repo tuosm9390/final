@@ -115,4 +115,13 @@
 		AND TYPE = 'CLIENT'
 		AND NAME LIKE '%'||#{ searchName }||'%'
 	</select>
+	
+	<insert id="insertCIstay" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+	</insert>
+	
+	<insert id="insertCIpayment" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+	</insert>
+	
+	<insert id="insertCIsvcuse" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+	</insert>
 </mapper>

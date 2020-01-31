@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomList {
+public class RoomList implements java.io.Serializable {
 	
 	//객실정보 (ROOM)
 	private int rmNo;				//객실 고유번호

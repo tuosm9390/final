@@ -570,7 +570,12 @@ input[type=checkbox] {
 					}
 					tempCnt = 0;
 					
-					$("#selRoomNum").append("<option>" + roomlist[i].rmNum + "호</option>")
+					
+					if(roomlist[i].stayNo == 0 && roomlist[i].rsvNo == "") {
+						$("#selRoomNum").append("<option value='" + roomlist[i].rmNo + "'>" + roomlist[i].rmNum + "호</option>")
+					} else {
+						$("#selRoomNum").append("<option value='" + roomlist[i].rmNo + "' disabled>" + roomlist[i].rmNum + "호</option>")
+					}
 				}
 				for(var i = 0; i < roomTypeArr.length; i++) {
 					$("#selRoomType").append("<option>" + roomTypeArr[i] + "</option>")
@@ -657,6 +662,7 @@ input[type=checkbox] {
 				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
 				$("#openMemoMD").prop("disabled", true); $("#openMemoMD").css({"background-color":"lightgrey", "border":"none"});
 				$("#checkinBtn").show();
+				$("#payRfd").prop("disabled", true).css("background-color", "#E4E2E2");
 				
 				//datepicker
 				date = new Date();
@@ -729,7 +735,18 @@ input[type=checkbox] {
 						stdPer = roomlist[i].stdPer;
 						maxPer = roomlist[i].maxPer;
 						$("#selRoomType").val(roomlist[i].rtName).prop("selected", true);
-						$("#selRoomNum").val(roomlist[i].rmNum + "호").prop("selected", true);
+						$("#selRoomNum").val(roomlist[i].rmNo).prop("selected", true);
+						
+						var rmType = roomlist[i].rtName;
+						var cnt = 0;
+						for(var i = 0; i < roomlist.length; i++) {
+							if(roomlist[i].rtName != rmType) {
+								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
+							} else {
+								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+								cnt++;
+							}
+						}
 					}
 				}
 				for(var i = 1; i <= stdPer; i++) {
