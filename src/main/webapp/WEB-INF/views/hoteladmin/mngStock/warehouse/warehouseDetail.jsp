@@ -43,6 +43,7 @@
 	.btn{
 	margin-top: 10px;
 	border-radius: 3px; 
+	width: 926px;
 	}
 	.imgDiv{
 	font-size: 20px;
@@ -96,18 +97,18 @@
 	
 			<table id="botTable">
 				<tr>
-					<th>No</th>
-					<th>물품명</th>			
+					
 					<th>물품코드</th>			
-					<th>수량</th>			
+					<th>물품명</th>			
+					<th>개별수량</th>			
 					<th style="width: 150px;">위치명</th>			
 				</tr>
 				<tbody id="dTbody">
 				<c:forEach var="i" items="${detailList}">
 					<tr>
-						<td>${i}</td>
-						<td>${i.iName} }</td>
+						
 						<td>${i.ino}</td>
+						<td>${i.iName}</td>
 						<td>${i.amount}</td>
 						<td>${i.areaName }</td>
 					</tr>
@@ -118,7 +119,7 @@
 		</div>
 	  
 		<div class="btn">
-		<button id="resetBtn">사용중단/재사용</button>
+	
 		<button id="reBtn2">다시작성</button>
 		<button id="enrollBtn">저장</button>
 		</div> 

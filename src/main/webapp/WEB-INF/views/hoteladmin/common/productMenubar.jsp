@@ -91,7 +91,7 @@
 		
 		$(function(){
 			$(".account").click(function(){
-				location.href='goAccount.st';
+				location.href='selectAccount.ac';
 			});
 		});
 		

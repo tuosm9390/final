@@ -67,18 +67,27 @@
 	<header>
 	</header>
 		<div id="wrap">
+		<form action="insertStock.sto" method="post" id="insertStock">
 		<div class="bodyDiv">
-		<div>	<div class="same" id="ssam">품목코드</div>  <div class="same"><input type="text" class="space" style="width:600px"  id="sam"></div>  </div>
-		<div>	<div class="same" id="ssam">품목명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-		<div>	<div class="same" id="ssam">품목그룹</div>  <div class="same"><button>검색</button>&nbsp;<input type="text" class="space" style="width:550px" id="sam"></div>  </div>
-		<div>	<div class="same" id="ssam">매입처</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-		 <div>	<div class="same" id="ssam">제조사</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-		 <div>	<div class="same" id="ssam">단가</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-		 <div>	<div class="same" id="ssam">부가세</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-		 <div>	<div class="same" id="ssam">공급가액</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-		 <div>	<div class="same" id="ssam">품목구분</div>  <div class="same"><input type="radio">비품&nbsp;&nbsp;&nbsp;<input type="radio">소모품</div>  </div>
+		
+		<div>	<div class="same" id="ssam">품목명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="iName"></div>  </div>
+		<div>	<div class="same" id="ssam">품목그룹</div>  <div class="same"><button>검색</button>&nbsp;<input type="text" class="space" style="width:550px" id="sam" name="sCategory"></div>  </div>
+		<div>	<div class="same" id="ssam">매입처</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnName"></div>  </div>
+		 <div>	<div class="same" id="ssam">제조사</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="mfg"></div>  </div>
+		 <div>	<div class="same" id="ssam">단가</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="up"></div>  </div>
+		 <div>	<div class="same" id="ssam">부가세</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="vat"></div>  </div>
+		 <div>	<div class="same" id="ssam">공급가액</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="vos"></div>  </div>
+		 <div>	<div class="same" id="ssam">품목구분</div>  <div class="same"><input type="radio" name="type" value="EQUIP">비품&nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="CONS">소모품</div>  </div>
 		</div><!-- end -->
+		</form>
 		<div class="btnsc"><button id="enrollBtn">저장</button></div> 
 		</div>
 </body>
+<script>
+$(function(){
+	$("#enrollBtn").click(function(){
+		$("#insertStock").submit();
+	})
+})
+</script>
 </html>

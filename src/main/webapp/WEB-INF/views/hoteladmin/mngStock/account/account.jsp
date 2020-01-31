@@ -90,6 +90,35 @@
 		width: 120px;
 		border-bottom: 1px solid black;
 	}
+	#pager_wrap {
+width:1000px;
+	padding: 60px 0;
+	text-align: center;
+}
+
+#pager_wrap .pager_com {
+	display: inline-block;
+	width: 40px;
+	margin: 0 2px;
+	background-color: #f1f1f1;
+}
+
+#pager_wrap .pager_num.on {
+	background-color: #171f57;
+}
+
+#pager_wrap .pager_com a {
+	padding: 10px 0;
+	text-align: center;
+	color: #171f57;
+	font-size:5px; 
+	font-weight:none;
+	
+}
+
+#pager_wrap .pager_num.on a {
+	color: #fff;
+}
 </style>
 </head>
 <body>
@@ -132,17 +161,17 @@
 				<th style="width:80px;">이체정보</th> 
 				<th style="width:300px;">주소</th>
 			</tr>
-			<c:forEach var="i" begin="1" end="10">
+			<c:forEach var="i" items="${accountList}">
 			<tr>
-				<td><c:out value="${i}"/></td>
-				<td><c:out value="1239123" /></td>
-				<td><c:out value="김상찬거래처" /></td>
-				<td><c:out value="김상찬" /></td>
-				<td><c:out value="010-1234-5678" /></td>
-				<td><c:out value="전자제품(tv)asdasdasd" /></td>
-				<td><c:out value="YES" /></td>
-				<td><c:out value="확인" /></td>
-				<td><c:out value="경기도 의정부시 민락동 어디이이이인" /></td>
+				<td><c:out value=""/></td>
+				<td><c:out value="${i.cnCode }"/></td>
+				<td><c:out value="${i.cnName }"/></td>
+				<td><c:out value="${i.ownerName }"/></td>
+				<td><c:out value="${i.cnPhone }" /></td>
+				<td><c:out value="${i.cnItem }" /></td>
+				<td><c:out value="${i.cnStatus }" /></td>
+				<td><c:out value="확인"/></td>
+				<td><c:out value="${i.cnAdd }" /></td>
 			</tr>  
 			</c:forEach>
 		</table>
@@ -150,6 +179,51 @@
 	</div><!-- purDivv end -->
 	<div class="btns"><button id="excel" style="width: 125px;font-weight: bold;">사용중단/재사용</button>&nbsp;<button id="print">신규</button></div>
 
+<!-- 페이저 시작 -->
+			<!-- 페이징 영역 시작 -->
+			<div id="pager_wrap" align="center">
+				<ul class="pager_cnt clearfix add">
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="pager_com pager_arr prev on"><a
+							href="javascirpt: void(0);">&#x003C;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="blistBack" value="selectStock.sto">
+							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
+							<c:param name="scurrentPage" value=""/>
+						</c:url>
+						<li class="pager_com pager_arr prev "><a href="${blistBack }">&#x003C;</a></li>
+					</c:if>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<li class="pager_com pager_num on"><a
+								href="javascript: void(0);">${p }</a></li>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+
+							<c:url var="blistCheck" value="selectStock.sto">
+								<c:param name="currentPage" value="${p }" />
+							</c:url>
+							<li class="pager_com pager_num"><a href="${blistCheck }">${p }</a></li>
+						</c:if>
+					</c:forEach>
+
+
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="pager_com pager_arr next on"><a
+							href="javascript: void(0);">&#x003E;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="blistEnd" value="selectStock.sto">
+							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
+						</c:url>
+						<li class="pager_com pager_arr next"><a href="${blistEnd }">&#x003E;</a></li>
+					</c:if>
+				</ul>
+			</div>
+
+			<!-- 페이징 영역 종료 -->
 	</section>
 	
 	
