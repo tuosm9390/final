@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.dao.RoomsDao;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.vo.Prc;
@@ -37,6 +38,12 @@ public class RoomsServiceImpl implements RoomsService {
 	public ArrayList<ServiceList> viewServiceList() throws RoomListException {
 		ArrayList<ServiceList> svcList = rd.viewServiceList(sqlSession);
 		return svcList;
+	}
+
+	@Override
+	public ArrayList<Member> ajxFindClient(String searchName) {
+		ArrayList<Member> clientList = rd.ajxFindClient(sqlSession, searchName);
+		return clientList;
 	}
 
 }
