@@ -22,7 +22,7 @@
 		<result property="mfg" column="MFG"></result>
 		<result property="vos" column="VOS"></result>
 	</resultMap>
-	
+
 	<resultMap type="com.kh.hotels.mngApproval.model.vo.Report"
 		id="resultSetReport">
 
@@ -114,9 +114,11 @@
 		I.VOS AS "VOS", PE.TOT_PRICE AS
 		"TPRICE", PE.PUR_RSN AS "PRSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
 		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG"
-		FROM REPORT R, PUR_REQ PE, MEMBER M, ITEM I,
+		FROM
+		REPORT R, PUR_REQ PE, MEMBER M, ITEM I,
 		DEPT D, STAFF ST,
-		ITEM_TYPE IT, CONN C, (SELECT
+		ITEM_TYPE IT,
+		CONN C, (SELECT
 		MNO, NAME
 		FROM MEMBER
 		WHERE MNO IN
@@ -129,15 +131,17 @@
 		R.RECEIVER = S.MNO
 		AND
 		M.MNO = ST.MNO
-        AND I.CN_CODE = C.CN_CODE
+		AND I.CN_CODE = C.CN_CODE
 		AND ST.DEPT_NO = D.DEPT_NO
 		AND
-		R.RPT_NO = PE.RPT_NO
+		R.RPT_NO =
+		PE.RPT_NO
 		AND
 		PE.INO = I.INO
 		AND I.TYPE_NO = IT.TYPE_NO
 		AND
-		PE.RPT_NO = #{rptNo}
+		PE.RPT_NO =
+		#{rptNo}
 
 	</select>
 	<select id="selectApproveRepairDetail" parameterType="_int"
@@ -193,25 +197,30 @@
 		I.VOS AS "VOS", ORQ.TOT_PRICE AS
 		"TPRICE", ORQ.ORDER_RSN AS "ORSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
 		"UP",
-		CON.CN_NAME AS "CNAME",IT.TYPE AS "ITYPE"
-		FROM REPORT R, ORDER_REQ
+		CON.CN_NAME AS "CNAME",IT.TYPE AS "ITYPE", I.MFG AS "MFG"
+		FROM
+		REPORT R, ORDER_REQ
 		ORQ, MEMBER M,
-		ITEM I, DEPT D, STAFF ST, ITEM_TYPE IT, CONN CON,
+		ITEM I, DEPT D, STAFF ST, ITEM_TYPE
+		IT, CONN CON,
 		(SELECT
 		MNO, NAME
 		FROM MEMBER
-		WHERE MNO IN (SELECT DISTINCT RECEIVER
+		WHERE MNO IN (SELECT DISTINCT
+		RECEIVER
 		FROM
 		REPORT)
 		) S
 		WHERE
 		R.MNO = M.MNO
 		AND R.RECEIVER = S.MNO
-		AND M.MNO = ST.MNO
+		AND
+		M.MNO = ST.MNO
 		AND ST.DEPT_NO =
 		D.DEPT_NO
 		AND R.RPT_NO = ORQ.RPT_NO
-		AND ORQ.INO = I.INO
+		AND
+		ORQ.INO = I.INO
 		AND I.TYPE_NO =
 		IT.TYPE_NO
 		AND ORQ.CN_CODE = CON.CN_CODE
@@ -253,35 +262,62 @@
 		resultMap="purRequestResultSet">
 		SELECT INAME, INO
 		FROM (SELECT INAME, MAX(INO) AS "INO"
-      	FROM CONN C
-     	 JOIN ITEM I ON(C.CN_CODE = I.CN_CODE)
-      	WHERE MFG = #{mfg}
-      	AND CN_NAME = #{cname}
-      	GROUP BY INAME)
+		FROM CONN C
+		JOIN ITEM I ON(C.CN_CODE = I.CN_CODE)
+		WHERE MFG = #{mfg}
+		AND CN_NAME = #{cname}
+		GROUP BY INAME)
 	</select>
 	<select id="selectMadeComName" parameterType="String"
 		resultType="java.util.HashMap">
 		SELECT DISTINCT MFG
 		FROM ITEM I
-        JOIN CONN C ON(I.CN_CODE = C.CN_CODE)
-		WHERE  C.CN_NAME = #{value} 
+		JOIN CONN C ON(I.CN_CODE = C.CN_CODE)
+		WHERE C.CN_NAME = #{value}
 	</select>
 	<select id="selectVosPrice" resultType="java.util.HashMap"
 		parameterType="String">
-		
-		SELECT VOS, INO        
-		FROM (SELECT  VOS, MAX(INO) AS "INO"
-		FROM ITEM I 
+
+		SELECT VOS, INO
+		FROM (SELECT VOS, MAX(INO) AS "INO"
+		FROM ITEM I
 		JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
-		JOIN CONN C ON (I.CN_CODE = C.CN_CODE)
+		JOIN CONN C ON (I.CN_CODE =
+		C.CN_CODE)
 		WHERE INAME = #{iname}
 		AND TYPE = #{type}
-		AND CN_NAME = #{cnName}
-		AND MFG =  #{madeComName} 
-        GROUP BY VOS)
-        
-		</select>
+		AND CN_NAME =
+		#{cnName}
+		AND MFG = #{madeComName}
+		GROUP BY VOS)
 
+	</select>
+
+	<!-- 구매요청서 입력 쿼리문 -->
+	<select id="insertPurchaseApproveList"
+		parameterType="PurRequest">
+		INSERT INTO REPORT (RPT_NO, MNO, RPT_DATE, RECEIVER, RPT_TITLE, RPT_STATUS,
+		APPR_DATE, DOC_NO, RPT_TYPE)
+		VALUES(SEQ_RPT_NO.NEXTVAL, #{mmno}, #{rptDate}, #{smno}, #{title}, DEFAULT, DEFAULT, #{docno},
+		'PURCHASE')
+	</select>
+	<!-- rptno가져오기 -->
+	<select id="selectRptNo" parameterType="_int" resultType="_int">
+		SELECT RPT_NO
+		FROM REPORT
+		WHERE DOC_NO = #{docNo}
+	</select>
+	<!-- 구매요청서 값 insert -->
+	<select id="insertPurRequest" parameterType="PurRequest">
+		INSERT INTO PUR_REQ(INO, AMOUNT, TOT_PRICE, PUR_RSN, RPT_NO)
+		VALUES(#{ino}, #{amount}, #{totPrice}, #{content}, #{rptNo})
+	</select>
+	<select id="selectRepairIname" parameterType="_int"
+		resultType="String">
+		SELECT INAME
+		FROM ITEM
+		WHERE INO = #{ino}
+	</select>
 
 </mapper>
   

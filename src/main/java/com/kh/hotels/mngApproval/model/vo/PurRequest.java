@@ -25,7 +25,7 @@ public class PurRequest {
 	private String cname;
 	private String iname;
 	private String mfg;
-	private int vosPrice;
+	private int vosprice;
 	private int price;
 	private int docno;
 	private String deptname;

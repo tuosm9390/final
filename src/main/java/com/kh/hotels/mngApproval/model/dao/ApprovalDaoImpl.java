@@ -147,12 +147,48 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		return (ArrayList)sqlSession.selectList("Report.selectItemName", pRequest);
 	}
 
+
 	@Override
-	public int insertPurchase(SqlSessionTemplate sqlSession, PurRequest purRequest) {
+	public int insertPurchase(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList) {
+		
+		int result = 0;
 		
 		
-		return (int)sqlSession.insert("Report.insertPurchase", purRequest);
+		 result = sqlSession.insert("Report.insertPurchaseApproveList",pRequestList.get(0)); 
+		 
+		 return result;
+	}
+
+	@Override
+	public int selectRptNo(SqlSessionTemplate sqlSession, int docNo) {
+		int result = 0;
 		
+			result = sqlSession.selectOne("Report.selectRptNo", docNo);
+		
+		return result;
+	}
+
+	@Override
+	public int insertPurRequest(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList) {
+		int result = 0;
+		
+		System.out.println("DaopRequestList : " + pRequestList);
+		
+		for(int i = 0; i < pRequestList.size(); i++) {
+			result = sqlSession.insert("Report.insertPurRequest", pRequestList.get(i));
+		}
+		
+		
+		
+		return result;
+	}
+
+	@Override
+	public String selectIname(SqlSessionTemplate sqlSession, int ino) {
+		
+		
+		
+		return sqlSession.selectOne("Report.selectRepairIname", ino);
 	}
 
 	

@@ -260,9 +260,14 @@ solid
 							<td><c:out value="${b.RPTITLE }" /></td>
 							<td><c:out value="${b.RPTYPE }" /></td>
 							<td><c:out value="${b.MNAME }" /></td>
-							<td><c:out value="${b.RNAME }" /></td>
+							<c:set var="status" value="승인"/>
+							<c:if test="${b.RPSTATUS eq status }">
+ 								<td><c:out value="${b.SNAME }" /></td>
+							 </c:if>
+							 <c:if test="${b.RPSTATUS ne status }">
+							 	<td></td>
+							 </c:if> 
 							<td><c:out value="${b.RPSTATUS }" /></td>
-
 							<td><a>보기</a></td>
 						</tr>
 					</c:forEach>
@@ -341,79 +346,88 @@ solid
        			   rptNo:rptNo,
        			   type:type
        		   },
-       		   success:function(data) {
-       			   console.log("data : " + data.list[0].RDATE);
-       				   var list = data.list[0];
-           			   var totalPrice = 0;
-           			   //$(".modal").fadeIn();
-           			   console.log(data.list.length);
-           			   //console.log(data.list.DOCNO);
-           			    $("#tbl_modal_order tr:first-child").children().eq(1).text(list.DOCNO);
-           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(list.MNAME);
-           			 	if(list.RSTATUS == "APPR") {
-           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(list.SNAME);
-           			 	}
-           			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-           			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(list.DNAME);
-           			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(list.MNAME);
-           			   $("#tbl_modal_order tr:nth-child(4)").children().eq(1).text(list.RDATE);
-           			   $("#tbl_modal_order tr:nth-child(5)").children().eq(1).text(list.SNAME);
-           			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-           		 	      for(var i = 0; i < data.list.length ; i++) {
-           		 	    	  var ctr = data.list[i].VOS;
-           		 	    	 var amount = data.list[i].AMOUNT;
-           		 	    	 
-           		 	    	 
-           		 	    	 console.log(data.list.length);
-           		 	    	  if(i == 0) {
-       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(0).text(data.list[i].RNUM);
-       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].ITYPE);
-       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(2).text(data.list[i].INAME);
-       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(3).text(data.list[i].AMOUNT);
-       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(4).text(data.list[i].VOS + "원");
-       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(5).text(data.list[i].CNAME);
-       		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(6).text(ctr * amount + "원");
-       		    		 	    	$("#tbl_modal_order #repeatOrder").append("</tr>");
-       		    		 	    	totalPrice += ctr * amount;
-           		 	    	  }else {
-       		    		 	    	var $sunTr = $("</tr><tr>");
-       						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
-       						 		var $ctr2 = "<td>" + data.list[i].LCATEGORY + "</td>";
-       						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
-       						 		var $ctr4 = "<td>" + data.list[i].AMOUNT + "</td>";
-       						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
-       						 		var $ctr6 = "<td>" + data.list[i].CNAME +"</td>";
-       						 		var $ctr7 = "<td>" + ctr * amount + "원" + "</td></tr>";
-       						 		$sunTr.append($ctr1);
-       						 		$sunTr.append($ctr2);
-       						 		$sunTr.append($ctr3);
-       						 		$sunTr.append($ctr4);
-       						 		$sunTr.append($ctr5);
-       						 		$sunTr.append($ctr6);
-       						 		$sunTr.append($ctr7);
-       						 		$("#tbl_modal_order #repeat").after($sunTr); 
-       						 		totalPrice += ctr * amount;
-           		 	    	  } 
-           		 	    	
-           		 	    	  
-           		 	    	
-           		 	    
-           		   }
-           		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(totalPrice + "원");
-           		 	     console.log(list.PRSN)
-           		 	    $("#tbl_modal_order #content_order").children().children().text(list.ORSN);
-           		 	     
-           		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
-       	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
-       	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
-       	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
-       	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
-       	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
-           			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
-           			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
-           			   $(".modal_order").fadeIn();
-           	
-       		   },
+       		 success:function(data) {
+   			   var totalPrice = 0;
+   			   
+   			  $.each(data.list, function(index, list) {
+                    $('#tbl_modal_order .tempOrder').after("<tr class='repeatOrder'><td>"+list.ITYPE+"</td><td>" + list.CNAME + "</td><td>"+list.INAME+"</td><td>" + list.MFG +"</td><td>"+list.VOS + "</td><td>" + list.AMOUNT + "</td><td>"+list.VOS * list.AMOUNT+"</td></tr>");
+                	
+                    
+   			  });
+   			   
+   			   
+   			   
+   			    $("#tbl_modal_order tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+   			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+   			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
+
+   			    }else {
+   			    }
+   			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
+   			 	
+   			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+   			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+   			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+   			   $("#tbl_modal_order tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+   			   $("#tbl_modal_order tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+   			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+   		 	     /*  for(var i = 0; i < data.list.length ; i++) {
+   		 	    	  var ctr = data.list[i].VOS;
+   		 	    	 var amount = data.list[i].AMOUNT;
+   		 	    	 
+   		 	    	 
+   		 	    	 console.log(data.list.length);
+   		 	    	 console.log("????");
+   		 	    	  if(i == 0) {
+		    		 	    	$("#tbl_modal .repeat").children().eq(0).text(data.list[i].ITYPE);
+		    		 	    	$("#tbl_modal .repeat").children().eq(1).text(data.list[i].CNAME);
+		    		 	    	$("#tbl_modal .repeat").children().eq(2).text(data.list[i].INAME);
+		    		 	    	$("#tbl_modal .repeat").children().eq(3).text(data.list[i].MFG);
+		    		 	    	$("#tbl_modal .repeat").children().eq(4).text(data.list[i].VOS + "원");
+		    		 	    	$("#tbl_modal .repeat").children().eq(5).text(data.list[i].AMOUNT);
+		    		 	    	$("#tbl_modal .repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+		    		 	    	/* $("#tbl_modal .repeat").append("</tr>");
+		    		 	    	$("#tbl_modal .repeat").after($sunTr);  */
+		    		 	    	//totalPrice += ctr * amount;
+   		 	    	 /*  }else {
+		    		 	    	var $sunTr = $("</tr><tr class='repeat'>");
+						 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
+						 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
+						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
+						 		var $ctr4 = "<td>" + data.list[i].MFG + "</td>";
+						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
+						 		var $ctr6 = "<td>" + data.list[i].AMOUNT + "</td>";
+						 		var $ctr7 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
+						 		$sunTr.append($ctr1);
+						 		$sunTr.append($ctr2);
+						 		$sunTr.append($ctr3);
+						 		$sunTr.append($ctr4);
+						 		$sunTr.append($ctr5);
+						 		$sunTr.append($ctr6);
+						 		$sunTr.append($ctr7);
+						 		$("#tbl_modal .repeat").after($sunTr); 
+						 		totalPrice += ctr * amount;
+   		 	    	  } 
+   		 	    	
+   		 	    	  
+   		 	    	
+   		 	    
+   		   }  */
+   		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(data.list[0].TPRICE + "원");
+   		 	    // console.log(list.PRSN)
+   		 	    $("#tbl_modal_order_order #content").children().children().text(data.list[0].ORSN);
+   		 	     
+   		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
+   			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
+   			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
+   			   $(".modal_order").fadeIn();
+   	
+		   },
        		 error:function(data) {
   			   alert("에러요");
   			   
@@ -429,40 +443,49 @@ solid
           			   type:type
           		   },
           		   success:function(data) {
-          			   console.log("data : " + data.list[0].RDATE);
-          				   var list = data.list[0];
+          			  
               			   var totalPrice = 0;
               			   //$(".modal").fadeIn();
-              			   console.log(data.list.length);
+              			   //console.log(data.list.length);
               			   //console.log(data.list.DOCNO);
-              			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(list.DOCNO);
-              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(list.MNAME);
-              			 	if(list.RSTATUS == "APPR") {
-              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(list.SNAME);
+              			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
+              			 	
+              			 	if(data.list.RSTATUS == "APPR") {
+              			 		$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
               			 	}
+              			 	
               			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-              			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(list.DNAME);
-              			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(list.MNAME);
-              			   $("#tbl_modal_repair tr:nth-child(4)").children().eq(1).text(list.RDATE);
-              			   $("#tbl_modal_repair tr:nth-child(5)").children().eq(1).text(list.SNAME);
-              			   $("#tbl_modal_repair tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-              		 	      for(var i = 0; i < data.list.length ; i++) {
+              			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+              			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+              			   $("#tbl_modal_repair tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+              			   $("#tbl_modal_repair tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+              			   $("#tbl_modal_repair tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+              		 	      
+              			 $.each(data.list, function(index, list) {
+                             $('#tbl_modal_repair .repeatRepair').after("<tr class='repairTr'><td>"+list.RNUM+"</td><td>" + list.INO + "</td><td>"+list.INAME+"</td><td>" + list.CNAME +"</td><td>"+list.RPRICE + "</td><td>" + list.RSN + "</td></tr>");
+                         	
+                             
+            			  });
+              			   
+              			   
+              			   /* for(var i = 0; i < data.list.length ; i++) {
               		 	    	  var ctr = data.list[i].VOS;
               		 	    	 var amount = data.list[i].AMOUNT;
               		 	    	 
               		 	    	 
               		 	    	 console.log(data.list.length);
               		 	    	  if(i == 0) {
-          		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(0).text(data.list[i].RNUM);
-          		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(1).text(data.list[i].INO);
-          		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(2).text(data.list[i].INAME);
-          		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(3).text(data.list[i].CNAME);
-          		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(4).text(data.list[i].RPRICE + "원");
-          		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(5).text(data.list[i].RSN);
-          		    		 	    	$("#tbl_modal_repair #repeatRepair").append("</tr>");
+          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(0).text(data.list[i].RNUM);
+          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(1).text(data.list[i].INO);
+          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(2).text(data.list[i].INAME);
+          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(3).text(data.list[i].CNAME);
+          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(4).text(data.list[i].RPRICE + "원");
+          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(5).text(data.list[i].RSN);
+          		    		 	    	$("#tbl_modal_repair .repeatRepair").append("</tr>");
           		    		 	    	totalPrice += data.list[i].RPRICE;
               		 	    	  }else {
-          		    		 	    	var $sunTr = $("</tr><tr>");
+          		    		 	    	var $sunTr = $("</tr><tr class='repeatRepair'>");
           						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
           						 		var $ctr2 = "<td>" + data.list[i].INO + "</td>";
           						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
@@ -475,18 +498,18 @@ solid
           						 		$sunTr.append($ctr4);
           						 		$sunTr.append($ctr5);
           						 		$sunTr.append($ctr6);
-          						 		$sunTr.append($ctr7);
-          						 		$("#tbl_modal_repair #repeatRepair").after($sunTr); 
+          						 		//$sunTr.append($ctr7);
+          						 		$("#tbl_modal_repair .repeatRepair").after($sunTr); 
           						 		totalPrice += data.list[i].RPRICE;
               		 	    	  } 
               		 	    	
               		 	    	  
               		 	    	
               		 	    
-              		   }
-              		 	     $("#tbl_modal_repair #totalPrice").text(totalPrice + "원");
-              		 	     console.log(list.PRSN)
-              		 	    $("#tbl_modal_repair #content_repair").children().children().text(list.RSN);
+              		   } */
+              		 	     $("#tbl_modal_repair #totalPrice").text(data.list[0].TPRICE + "원");
+              		 	     //console.log(list.PRSN)
+              		 	    $("#tbl_modal_repair #content_repair").children().children().text(data.list[0].RSN);
               		 	     
               		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
           	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
@@ -513,45 +536,51 @@ solid
          			   type:type
          		   },
          		   success:function(data) {
-         			   console.log("data : " + data.list[0].RDATE);
-         				   var list = data.list[0];
              			   var totalPrice = 0;
-             			   //$(".modal").fadeIn();
-             			   console.log(data.list.length);
-             			   console.log(list.RSSTATUS)
-             			   //console.log(data.list.DOCNO);
-             			    $("#tbl_modal tr:first-child").children().eq(1).text(list.DOCNO);
-             			    if(list.RSTATUS == 'WAIT' || list.RSTATUS == 'REJECT') {
+             			   console.log(data.list[0].RSTATUS)
+             			   
+             			  $.each(data.list, function(index, list) {
+                              $('#tbl_modal .temp').after("<tr class='repeat'><td>"+list.ITYPE+"</td><td>" + list.CNAME + "</td><td>"+list.INAME+"</td><td>" + list.MFG +"</td><td>"+list.VOS + "</td><td>" + list.AMOUNT + "</td><td>"+list.VOS * list.AMOUNT+"</td></tr>");
+                          	
+                              
+             			  });
+             			   
+             			   
+             			   
+             			    $("#tbl_modal tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+             			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
              			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
 
              			    }else {
-             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(data.list[0].SNAME);
              			    }
              			 	
              			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-             			   $("#tbl_modal tr:nth-child(2)").children().eq(1).text(list.DNAME);
-             			   $("#tbl_modal tr:nth-child(3)").children().eq(1).text(list.MNAME);
-             			   $("#tbl_modal tr:nth-child(4)").children().eq(1).text(list.RDATE);
-             			   $("#tbl_modal tr:nth-child(5)").children().eq(1).text(list.SNAME);
-             			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-             		 	      for(var i = 0; i < data.list.length ; i++) {
+             			   $("#tbl_modal tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+             			   $("#tbl_modal tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+             			   $("#tbl_modal tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+             			   $("#tbl_modal tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+             			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+             		 	     /*  for(var i = 0; i < data.list.length ; i++) {
              		 	    	  var ctr = data.list[i].VOS;
              		 	    	 var amount = data.list[i].AMOUNT;
              		 	    	 
              		 	    	 
              		 	    	 console.log(data.list.length);
+             		 	    	 console.log("????");
              		 	    	  if(i == 0) {
-         		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].ITYPE);
-         		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].CNAME);
-         		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
-         		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].MFG);
-         		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
-         		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].AMOUNT);
-         		    		 	    	$("#tbl_modal #repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
-         		    		 	    	$("#tbl_modal #repeat").append("</tr>");
-         		    		 	    	totalPrice += ctr * amount;
-             		 	    	  }else {
-         		    		 	    	var $sunTr = $("</tr><tr>");
+         		    		 	    	$("#tbl_modal .repeat").children().eq(0).text(data.list[i].ITYPE);
+         		    		 	    	$("#tbl_modal .repeat").children().eq(1).text(data.list[i].CNAME);
+         		    		 	    	$("#tbl_modal .repeat").children().eq(2).text(data.list[i].INAME);
+         		    		 	    	$("#tbl_modal .repeat").children().eq(3).text(data.list[i].MFG);
+         		    		 	    	$("#tbl_modal .repeat").children().eq(4).text(data.list[i].VOS + "원");
+         		    		 	    	$("#tbl_modal .repeat").children().eq(5).text(data.list[i].AMOUNT);
+         		    		 	    	$("#tbl_modal .repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+         		    		 	    	/* $("#tbl_modal .repeat").append("</tr>");
+         		    		 	    	$("#tbl_modal .repeat").after($sunTr);  */
+         		    		 	    	//totalPrice += ctr * amount;
+             		 	    	 /*  }else {
+         		    		 	    	var $sunTr = $("</tr><tr class='repeat'>");
          						 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
          						 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
          						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
@@ -566,17 +595,17 @@ solid
          						 		$sunTr.append($ctr5);
          						 		$sunTr.append($ctr6);
          						 		$sunTr.append($ctr7);
-         						 		$("#tbl_modal #repeat").after($sunTr); 
+         						 		$("#tbl_modal .repeat").after($sunTr); 
          						 		totalPrice += ctr * amount;
              		 	    	  } 
              		 	    	
              		 	    	  
              		 	    	
              		 	    
-             		   }
-             		 	     $("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
-             		 	     console.log(list.PRSN)
-             		 	    $("#tbl_modal #content").children().children().text(list.PRSN);
+             		   }  */
+             		 	     $("#tbl_modal tr").children("#totalPrice").text(data.list[0].TPRICE + "원");
+             		 	    // console.log(list.PRSN)
+             		 	    $("#tbl_modal #content").children().children().text(data.list[0].PRSN);
              		 	     
              		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
          	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
@@ -622,6 +651,7 @@ solid
    		   },
    		   success:function(data) {
    			   var reportList = data.reportList;
+   			   console.log(data.reportList);
    			   
    			   $tableBody = $(".tbl");
    			   $pagingArea = $("#pager_wrap").html('');
@@ -656,7 +686,11 @@ solid
 				 		var $ctr4 = "<td>" + reportList[i].RPTITLE + "</td>";
 				 		var $ctr5 = "<td>" + reportList[i].RPTYPE + "</td>";
 				 		var $ctr6 = "<td>" + reportList[i].MNAME + "</td>";
-				 		var $ctr7 = "<td>" + reportList[i].RNAME + "</td>";
+				 		if(reportList[i].RPSTATUS == "승인") {
+				 			var $ctr7 = "<td>" + reportList[i].RNAME + "</td>";
+				 		}else {
+				 			var $ctr7 = "<td></td>";
+				 		}
 				 		var $ctr8 = "<td>" + reportList[i].RPSTATUS + "</td>";
 				 		var $ctr9 = "<td>  보기  </td></tr>";
 				 		
@@ -747,78 +781,88 @@ solid
   			   rptNo:rptNo,
   			   type:type
   		   },
-  		   success:function(data) {
-  			   console.log("data : " + data.list[0].RDATE);
-  				   var list = data.list[0];
-      			   var totalPrice = 0;
-      			   //$(".modal").fadeIn();
-      			   console.log(data.list.length);
-      			   //console.log(data.list.DOCNO);
-      			    $("#tbl_modal_order tr:first-child").children().eq(1).text(list.DOCNO);
-      			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(list.MNAME);
-      			 	if(list.RSTATUS == "APPR") {
-           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(list.MNAME);
-           			 	}
-      			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(list.DNAME);
-      			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(list.MNAME);
-      			   $("#tbl_modal_order tr:nth-child(4)").children().eq(1).text(list.RDATE);
-      			   $("#tbl_modal_order tr:nth-child(5)").children().eq(1).text(list.SNAME);
-      			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-      		 	      for(var i = 0; i < data.list.length ; i++) {
-      		 	    	  var ctr = data.list[i].VOS;
-      		 	    	 var amount = data.list[i].AMOUNT;
-      		 	    	 
-      		 	    	 
-      		 	    	 console.log(data.list.length);
-      		 	    	  if(i == 0) {
-  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(0).text(data.list[i].RNUM);
-  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].ITYPE);
-  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(2).text(data.list[i].INAME);
-  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(3).text(data.list[i].AMOUNT);
-  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(4).text(data.list[i].VOS + "원");
-  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(5).text(data.list[i].CNAME);
-  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(6).text(ctr * amount + "원");
-  		    		 	    	$("#tbl_modal_order #repeatOrder").append("</tr>");
-  		    		 	    	totalPrice += ctr * amount;
-      		 	    	  }else {
-  		    		 	    	var $sunTr = $("</tr><tr>");
-  						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
-  						 		var $ctr2 = "<td>" + data.list[i].LCATEGORY + "</td>";
-  						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
-  						 		var $ctr4 = "<td>" + data.list[i].AMOUNT + "</td>";
-  						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
-  						 		var $ctr6 = "<td>" + data.list[i].CNAME +"</td>";
-  						 		var $ctr7 = "<td>" + ctr * amount + "원" + "</td></tr>";
-  						 		$sunTr.append($ctr1);
-  						 		$sunTr.append($ctr2);
-  						 		$sunTr.append($ctr3);
-  						 		$sunTr.append($ctr4);
-  						 		$sunTr.append($ctr5);
-  						 		$sunTr.append($ctr6);
-  						 		$sunTr.append($ctr7);
-  						 		$("#tbl_modal_order #repeat").after($sunTr); 
-  						 		totalPrice += ctr * amount;
-      		 	    	  } 
-      		 	    	
-      		 	    	  
-      		 	    	
-      		 	    
-      		   }
-      		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(totalPrice + "원");
-      		 	     console.log(list.PRSN)
-      		 	    $("#tbl_modal_order #content_order").children().children().text(list.ORSN);
-      		 	     
-      		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
-  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
-  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
-  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
-  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
-  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
-      			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
-      			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
-      			   $(".modal_order").fadeIn();
-      	
-  		   },
+  		 success:function(data) {
+ 			   var totalPrice = 0;
+ 			   
+ 			  $.each(data.list, function(index, list) {
+                  $('#tbl_modal_order .tempOrder').after("<tr class='repeatOrder'><td>"+list.ITYPE+"</td><td>" + list.CNAME + "</td><td>"+list.INAME+"</td><td>" + list.MFG +"</td><td>"+list.VOS + "</td><td>" + list.AMOUNT + "</td><td>"+list.VOS * list.AMOUNT+"</td></tr>");
+              	
+                  
+ 			  });
+ 			   
+ 			   
+ 			   
+ 			    $("#tbl_modal_order tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+ 			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+ 			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
+
+ 			    }else {
+ 			    }
+ 			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
+ 			 	
+ 			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+ 			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+ 			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+ 			   $("#tbl_modal_order tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+ 			   $("#tbl_modal_order tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+ 			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+ 		 	     /*  for(var i = 0; i < data.list.length ; i++) {
+ 		 	    	  var ctr = data.list[i].VOS;
+ 		 	    	 var amount = data.list[i].AMOUNT;
+ 		 	    	 
+ 		 	    	 
+ 		 	    	 console.log(data.list.length);
+ 		 	    	 console.log("????");
+ 		 	    	  if(i == 0) {
+		    		 	    	$("#tbl_modal .repeat").children().eq(0).text(data.list[i].ITYPE);
+		    		 	    	$("#tbl_modal .repeat").children().eq(1).text(data.list[i].CNAME);
+		    		 	    	$("#tbl_modal .repeat").children().eq(2).text(data.list[i].INAME);
+		    		 	    	$("#tbl_modal .repeat").children().eq(3).text(data.list[i].MFG);
+		    		 	    	$("#tbl_modal .repeat").children().eq(4).text(data.list[i].VOS + "원");
+		    		 	    	$("#tbl_modal .repeat").children().eq(5).text(data.list[i].AMOUNT);
+		    		 	    	$("#tbl_modal .repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+		    		 	    	/* $("#tbl_modal .repeat").append("</tr>");
+		    		 	    	$("#tbl_modal .repeat").after($sunTr);  */
+		    		 	    	//totalPrice += ctr * amount;
+ 		 	    	 /*  }else {
+		    		 	    	var $sunTr = $("</tr><tr class='repeat'>");
+						 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
+						 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
+						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
+						 		var $ctr4 = "<td>" + data.list[i].MFG + "</td>";
+						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
+						 		var $ctr6 = "<td>" + data.list[i].AMOUNT + "</td>";
+						 		var $ctr7 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
+						 		$sunTr.append($ctr1);
+						 		$sunTr.append($ctr2);
+						 		$sunTr.append($ctr3);
+						 		$sunTr.append($ctr4);
+						 		$sunTr.append($ctr5);
+						 		$sunTr.append($ctr6);
+						 		$sunTr.append($ctr7);
+						 		$("#tbl_modal .repeat").after($sunTr); 
+						 		totalPrice += ctr * amount;
+ 		 	    	  } 
+ 		 	    	
+ 		 	    	  
+ 		 	    	
+ 		 	    
+ 		   }  */
+ 		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(data.list[0].TPRICE + "원");
+ 		 	    // console.log(list.PRSN)
+ 		 	    $("#tbl_modal_order_order #content").children().children().text(data.list[0].ORSN);
+ 		 	     
+ 		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
+	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
+ 			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
+ 			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
+ 			   $(".modal_order").fadeIn();
+ 	
+		   },
   		 error:function(data) {
 			   alert("에러요");
 			   
@@ -833,76 +877,84 @@ solid
      			   rptNo:rptNo,
      			   type:type
      		   },
-     		   success:function(data) {
-     			   console.log("data : " + data.list[0].RDATE);
-     				   var list = data.list[0];
-         			   var totalPrice = 0;
-         			   //$(".modal").fadeIn();
-         			   console.log(data.list.length);
-         			   //console.log(data.list.DOCNO);
-         			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(list.DOCNO);
-         			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(list.MNAME);
-         			 	if(list.RSTATUS == "APPR") {
-              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(list.SNAME);
-              			 	}         			   
-         			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(list.DNAME);
-         			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(list.MNAME);
-         			   $("#tbl_modal_repair tr:nth-child(4)").children().eq(1).text(list.RDATE);
-         			   $("#tbl_modal_repair tr:nth-child(5)").children().eq(1).text(list.SNAME);
-         			   $("#tbl_modal_repair tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-         		 	      for(var i = 0; i < data.list.length ; i++) {
-         		 	    	  var ctr = data.list[i].VOS;
-         		 	    	 var amount = data.list[i].AMOUNT;
-         		 	    	 
-         		 	    	 
-         		 	    	 console.log(data.list.length);
-         		 	    	  if(i == 0) {
-     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(0).text(data.list[i].RNUM);
-     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(1).text(data.list[i].INO);
-     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(2).text(data.list[i].INAME);
-     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(3).text(data.list[i].CNAME);
-     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(4).text(data.list[i].RPRICE + "원");
-     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(5).text(data.list[i].RSN);
-     		    		 	    	$("#tbl_modal_repair #repeatRepair").append("</tr>");
-     		    		 	    	totalPrice += data.list[i].RPRICE;
-         		 	    	  }else {
-     		    		 	    	var $sunTr = $("</tr><tr>");
-     						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
-     						 		var $ctr2 = "<td>" + data.list[i].INO + "</td>";
-     						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
-     						 		var $ctr4 = "<td>" + data.list[i].CNAME + "</td>";
-     						 		var $ctr5 = "<td>" + data.list[i].RPRICE + "원" + "</td>";
-     						 		var $ctr6 = "<td>" + data.list[i].RSN +"</td>";
-     						 		$sunTr.append($ctr1);
-     						 		$sunTr.append($ctr2);
-     						 		$sunTr.append($ctr3);
-     						 		$sunTr.append($ctr4);
-     						 		$sunTr.append($ctr5);
-     						 		$sunTr.append($ctr6);
-     						 		$sunTr.append($ctr7);
-     						 		$("#tbl_modal_repair #repeatRepair").after($sunTr); 
-     						 		totalPrice += data.list[i].RPRICE;
-         		 	    	  } 
-         		 	    	
-         		 	    	  
-         		 	    	
-         		 	    
-         		   }
-         		 	     $("#tbl_modal_repair #totalPrice").text(totalPrice + "원");
-         		 	     console.log(list.PRSN)
-         		 	    $("#tbl_modal_repair #content_repair").children().children().text(list.RSN);
-         		 	     
-         		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
-     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
-     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
-     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
-     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
-     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
-         			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
-         			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
-         			   $(".modal_repair").fadeIn();
-         	
-     		   },
+     		  success:function(data) {
+      			  
+     			   var totalPrice = 0;
+     			   //$(".modal").fadeIn();
+     			   //console.log(data.list.length);
+     			   //console.log(data.list.DOCNO);
+     			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+     			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
+     			 	if(data.list.RSTATUS == "APPR") {
+     			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
+     			 	}
+     			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+     			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+     			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+     			   $("#tbl_modal_repair tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+     			   $("#tbl_modal_repair tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+     			   $("#tbl_modal_repair tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+     		 	      
+     			 $.each(data.list, function(index, list) {
+                    $('#tbl_modal_repair .repeatRepair').after("<tr class='repairTr'><td>"+list.RNUM+"</td><td>" + list.INO + "</td><td>"+list.INAME+"</td><td>" + list.CNAME +"</td><td>"+list.RPRICE + "</td><td>" + list.RSN + "</td></tr>");
+                	
+                    
+   			  });
+     			   
+     			   
+     			   /* for(var i = 0; i < data.list.length ; i++) {
+     		 	    	  var ctr = data.list[i].VOS;
+     		 	    	 var amount = data.list[i].AMOUNT;
+     		 	    	 
+     		 	    	 
+     		 	    	 console.log(data.list.length);
+     		 	    	  if(i == 0) {
+ 		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(0).text(data.list[i].RNUM);
+ 		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(1).text(data.list[i].INO);
+ 		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(2).text(data.list[i].INAME);
+ 		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(3).text(data.list[i].CNAME);
+ 		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(4).text(data.list[i].RPRICE + "원");
+ 		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(5).text(data.list[i].RSN);
+ 		    		 	    	$("#tbl_modal_repair .repeatRepair").append("</tr>");
+ 		    		 	    	totalPrice += data.list[i].RPRICE;
+     		 	    	  }else {
+ 		    		 	    	var $sunTr = $("</tr><tr class='repeatRepair'>");
+ 						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
+ 						 		var $ctr2 = "<td>" + data.list[i].INO + "</td>";
+ 						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
+ 						 		var $ctr4 = "<td>" + data.list[i].CNAME + "</td>";
+ 						 		var $ctr5 = "<td>" + data.list[i].RPRICE + "원" + "</td>";
+ 						 		var $ctr6 = "<td>" + data.list[i].RSN +"</td>";
+ 						 		$sunTr.append($ctr1);
+ 						 		$sunTr.append($ctr2);
+ 						 		$sunTr.append($ctr3);
+ 						 		$sunTr.append($ctr4);
+ 						 		$sunTr.append($ctr5);
+ 						 		$sunTr.append($ctr6);
+ 						 		//$sunTr.append($ctr7);
+ 						 		$("#tbl_modal_repair .repeatRepair").after($sunTr); 
+ 						 		totalPrice += data.list[i].RPRICE;
+     		 	    	  } 
+     		 	    	
+     		 	    	  
+     		 	    	
+     		 	    
+     		   } */
+     		 	     $("#tbl_modal_repair #totalPrice").text(data.list[0].TPRICE + "원");
+     		 	     //console.log(list.PRSN)
+     		 	    $("#tbl_modal_repair #content_repair").children().children().text(data.list[0].RSN);
+     		 	     
+     		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
+ 	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
+     			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
+     			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
+     			   $(".modal_repair").fadeIn();
+     	
+ 		   },
      		 error:function(data) {
 			   alert("에러요");
 			   
@@ -917,45 +969,50 @@ solid
     			   type:type
     		   },
     		   success:function(data) {
-    			   console.log("data : " + data.list[0].RDATE);
-    				   var list = data.list[0];
-        			   var totalPrice = 0;
-        			   //$(".modal").fadeIn();
-        			   console.log(data.list.length);
-        			   console.log(list.RSSTATUS)
-        			   //console.log(data.list.DOCNO);
-        			    $("#tbl_modal tr:first-child").children().eq(1).text(list.DOCNO);
-        			    if(list.RSTATUS == 'WAIT' || list.RSTATUS == 'REJECT') {
-         			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
+     			   var totalPrice = 0;
+     			   
+     			  $.each(data.list, function(index, list) {
+                      $('#tbl_modal .temp').after("<tr class='repeat'><td>"+list.ITYPE+"</td><td>" + list.CNAME + "</td><td>"+list.INAME+"</td><td>" + list.MFG +"</td><td>"+list.VOS + "</td><td>" + list.AMOUNT + "</td><td>"+list.VOS * list.AMOUNT+"</td></tr>");
+                  	
+                      
+     			  });
+     			   
+     			   
+     			   
+     			    $("#tbl_modal tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+     			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+     			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
 
-         			    }else {
-         			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-         			    }
-        			 	
-        			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-        			   $("#tbl_modal tr:nth-child(2)").children().eq(1).text(list.DNAME);
-        			   $("#tbl_modal tr:nth-child(3)").children().eq(1).text(list.MNAME);
-        			   $("#tbl_modal tr:nth-child(4)").children().eq(1).text(list.RDATE);
-        			   $("#tbl_modal tr:nth-child(5)").children().eq(1).text(list.SNAME);
-        			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-        		 	      for(var i = 0; i < data.list.length ; i++) {
-        		 	    	  var ctr = data.list[i].VOS;
-        		 	    	 var amount = data.list[i].AMOUNT;
-        		 	    	 
-        		 	    	 
-        		 	    	 console.log(data.list.length);
-        		 	    	if(i == 0) {
- 		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].ITYPE);
- 		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].CNAME);
- 		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
- 		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].MFG);
- 		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
- 		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].AMOUNT);
- 		    		 	    	$("#tbl_modal #repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
- 		    		 	    	$("#tbl_modal #repeat").append("</tr>");
- 		    		 	    	totalPrice += ctr * amount;
-     		 	    	  }else {
- 		    		 	    	var $sunTr = $("</tr><tr id='repeat'>");
+     			    }else {
+     			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(data.list[0].SNAME);
+     			    }
+     			 	
+     			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+     			   $("#tbl_modal tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+     			   $("#tbl_modal tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+     			   $("#tbl_modal tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+     			   $("#tbl_modal tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+     			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+     		 	     /*  for(var i = 0; i < data.list.length ; i++) {
+     		 	    	  var ctr = data.list[i].VOS;
+     		 	    	 var amount = data.list[i].AMOUNT;
+     		 	    	 
+     		 	    	 
+     		 	    	 console.log(data.list.length);
+     		 	    	 console.log("????");
+     		 	    	  if(i == 0) {
+ 		    		 	    	$("#tbl_modal .repeat").children().eq(0).text(data.list[i].ITYPE);
+ 		    		 	    	$("#tbl_modal .repeat").children().eq(1).text(data.list[i].CNAME);
+ 		    		 	    	$("#tbl_modal .repeat").children().eq(2).text(data.list[i].INAME);
+ 		    		 	    	$("#tbl_modal .repeat").children().eq(3).text(data.list[i].MFG);
+ 		    		 	    	$("#tbl_modal .repeat").children().eq(4).text(data.list[i].VOS + "원");
+ 		    		 	    	$("#tbl_modal .repeat").children().eq(5).text(data.list[i].AMOUNT);
+ 		    		 	    	$("#tbl_modal .repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+ 		    		 	    	/* $("#tbl_modal .repeat").append("</tr>");
+ 		    		 	    	$("#tbl_modal .repeat").after($sunTr);  */
+ 		    		 	    	//totalPrice += ctr * amount;
+     		 	    	 /*  }else {
+ 		    		 	    	var $sunTr = $("</tr><tr class='repeat'>");
  						 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
  						 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
  						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
@@ -970,17 +1027,17 @@ solid
  						 		$sunTr.append($ctr5);
  						 		$sunTr.append($ctr6);
  						 		$sunTr.append($ctr7);
- 						 		$("#tbl_modal #repeat").after($sunTr); 
+ 						 		$("#tbl_modal .repeat").after($sunTr); 
  						 		totalPrice += ctr * amount;
      		 	    	  } 
      		 	    	
      		 	    	  
      		 	    	
      		 	    
-     		   }
-     		 	     $("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
-     		 	     console.log(list.PRSN)
-     		 	    $("#tbl_modal #content").children().children().text(list.PRSN);
+     		   }  */
+     		 	     //$("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
+     		 	    // console.log(list.PRSN)
+     		 	    $("#tbl_modal #content").children().children().text(data.list[0].PRSN);
      		 	     
      		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
@@ -1076,7 +1133,11 @@ solid
 				 		var $ctr4 = "<td>" + reportList[i].RPTITLE + "</td>";
 				 		var $ctr5 = "<td>" + reportList[i].RPTYPE + "</td>";
 				 		var $ctr6 = "<td>" + reportList[i].MNAME + "</td>";
-				 		var $ctr7 = "<td>" + reportList[i].RNAME + "</td>";
+				 		if(reportList[i].RPSTATUS == "승인") {
+				 			var $ctr7 = "<td>" + reportList[i].SNAME + "</td>";
+				 		}else {
+				 			var $ctr7 = "<td></td>";
+				 		}
 				 		var $ctr8 = "<td>" + reportList[i].RPSTATUS + "</td>";
 				 		var $ctr9 = "<td>  보기  </td></tr>";
 				 		//var sumTd  = $ctr1.append($ctr2);
@@ -1175,77 +1236,88 @@ solid
 				  			   rptNo:rptNo,
 				  			   type:type
 				  		   },
-				  		   success:function(data) {
-				  			   console.log("data : " + data.list[0].RDATE);
-				  				   var list = data.list[0];
-				      			   var totalPrice = 0;
-				      			   //$(".modal").fadeIn();
-				      			   console.log(data.list.length);
-				      			   //console.log(data.list.DOCNO);
-				      			    $("#tbl_modal_order tr:first-child").children().eq(1).text(list.DOCNO);
-				      			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(list.MNAME);
-				      			 	if(list.RSTATUS == "APPR") {
-				           			 	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(list.MNAME);
-				           			 	}				      			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(list.DNAME);
-				      			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(list.MNAME);
-				      			   $("#tbl_modal_order tr:nth-child(4)").children().eq(1).text(list.RDATE);
-				      			   $("#tbl_modal_order tr:nth-child(5)").children().eq(1).text(list.SNAME);
-				      			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-				      		 	      for(var i = 0; i < data.list.length ; i++) {
-				      		 	    	  var ctr = data.list[i].VOS;
-				      		 	    	 var amount = data.list[i].AMOUNT;
-				      		 	    	 
-				      		 	    	 
-				      		 	    	 console.log(data.list.length);
-				      		 	    	  if(i == 0) {
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(0).text(data.list[i].RNUM);
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(1).text(data.list[i].ITYPE);
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(2).text(data.list[i].INAME);
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(3).text(data.list[i].AMOUNT);
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(4).text(data.list[i].VOS + "원");
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(5).text(data.list[i].CNAME);
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").children().eq(6).text(ctr * amount + "원");
-				  		    		 	    	$("#tbl_modal_order #repeatOrder").append("</tr>");
-				  		    		 	    	totalPrice += ctr * amount;
-				      		 	    	  }else {
-				  		    		 	    	var $sunTr = $("</tr><tr>");
-				  						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
-				  						 		var $ctr2 = "<td>" + data.list[i].LCATEGORY + "</td>";
-				  						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
-				  						 		var $ctr4 = "<td>" + data.list[i].AMOUNT + "</td>";
-				  						 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
-				  						 		var $ctr6 = "<td>" + data.list[i].CNAME +"</td>";
-				  						 		var $ctr7 = "<td>" + ctr * amount + "원" + "</td></tr>";
-				  						 		$sunTr.append($ctr1);
-				  						 		$sunTr.append($ctr2);
-				  						 		$sunTr.append($ctr3);
-				  						 		$sunTr.append($ctr4);
-				  						 		$sunTr.append($ctr5);
-				  						 		$sunTr.append($ctr6);
-				  						 		$sunTr.append($ctr7);
-				  						 		$("#tbl_modal_order #repeat").after($sunTr); 
-				  						 		totalPrice += ctr * amount;
-				      		 	    	  } 
-				      		 	    	
-				      		 	    	  
-				      		 	    	
-				      		 	    
-				      		   }
-				      		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(totalPrice + "원");
-				      		 	     console.log(list.PRSN)
-				      		 	    $("#tbl_modal_order #content_order").children().children().text(list.ORSN);
-				      		 	     
-				      		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
-				  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
-				  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
-				  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
-				  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
-				  	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
-				      			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
-				      			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
-				      			   $(".modal_order").fadeIn();
-				      	
-				  		   },
+				  		 success:function(data) {
+				   			   var totalPrice = 0;
+				   			   
+				   			  $.each(data.list, function(index, list) {
+				                    $('#tbl_modal_order .tempOrder').after("<tr class='repeatOrder'><td>"+list.ITYPE+"</td><td>" + list.CNAME + "</td><td>"+list.INAME+"</td><td>" + list.MFG +"</td><td>"+list.VOS + "</td><td>" + list.AMOUNT + "</td><td>"+list.VOS * list.AMOUNT+"</td></tr>");
+				                	
+				                    
+				   			  });
+				   			   
+				   			   
+				   			   
+				   			    $("#tbl_modal_order tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+				   			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+				   			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
+
+				   			    }else {
+				   			    }
+				   			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
+				   			 	
+				   			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+				   			   $("#tbl_modal_order tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+				   			   $("#tbl_modal_order tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+				   			   $("#tbl_modal_order tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+				   			   $("#tbl_modal_order tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+				   			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+				   		 	     /*  for(var i = 0; i < data.list.length ; i++) {
+				   		 	    	  var ctr = data.list[i].VOS;
+				   		 	    	 var amount = data.list[i].AMOUNT;
+				   		 	    	 
+				   		 	    	 
+				   		 	    	 console.log(data.list.length);
+				   		 	    	 console.log("????");
+				   		 	    	  if(i == 0) {
+						    		 	    	$("#tbl_modal .repeat").children().eq(0).text(data.list[i].ITYPE);
+						    		 	    	$("#tbl_modal .repeat").children().eq(1).text(data.list[i].CNAME);
+						    		 	    	$("#tbl_modal .repeat").children().eq(2).text(data.list[i].INAME);
+						    		 	    	$("#tbl_modal .repeat").children().eq(3).text(data.list[i].MFG);
+						    		 	    	$("#tbl_modal .repeat").children().eq(4).text(data.list[i].VOS + "원");
+						    		 	    	$("#tbl_modal .repeat").children().eq(5).text(data.list[i].AMOUNT);
+						    		 	    	$("#tbl_modal .repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+						    		 	    	/* $("#tbl_modal .repeat").append("</tr>");
+						    		 	    	$("#tbl_modal .repeat").after($sunTr);  */
+						    		 	    	//totalPrice += ctr * amount;
+				   		 	    	 /*  }else {
+						    		 	    	var $sunTr = $("</tr><tr class='repeat'>");
+										 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
+										 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
+										 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
+										 		var $ctr4 = "<td>" + data.list[i].MFG + "</td>";
+										 		var $ctr5 = "<td>" + data.list[i].VOS + "원" + "</td>";
+										 		var $ctr6 = "<td>" + data.list[i].AMOUNT + "</td>";
+										 		var $ctr7 = "<td>" + data.list[i].VOS * data.list[i].AMOUNT + "원" +"</td>";
+										 		$sunTr.append($ctr1);
+										 		$sunTr.append($ctr2);
+										 		$sunTr.append($ctr3);
+										 		$sunTr.append($ctr4);
+										 		$sunTr.append($ctr5);
+										 		$sunTr.append($ctr6);
+										 		$sunTr.append($ctr7);
+										 		$("#tbl_modal .repeat").after($sunTr); 
+										 		totalPrice += ctr * amount;
+				   		 	    	  } 
+				   		 	    	
+				   		 	    	  
+				   		 	    	
+				   		 	    
+				   		   }  */
+				   		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(data.list[0].TPRICE + "원");
+				   		 	    // console.log(list.PRSN)
+				   		 	    $("#tbl_modal_order_order #content").children().children().text(data.list[0].ORSN);
+				   		 	     
+				   		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
+					       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
+					       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
+					       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
+					       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
+					       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
+				   			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
+				   			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
+				   			   $(".modal_order").fadeIn();
+				   	
+						   },
 				  		 error:function(data) {
 							   alert("에러요");
 							   
@@ -1260,79 +1332,84 @@ solid
 				     			   rptNo:rptNo,
 				     			   type:type
 				     		   },
-				     		   success:function(data) {
-				     			   console.log("data : " + data.list[0].RDATE);
-				     				   var list = data.list[0];
-				         			   var totalPrice = 0;
-				         			   //$(".modal").fadeIn();
-				         			   console.log(data.list.length);
-				         			   //console.log(data.list.DOCNO);
-				         			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(list.DOCNO);
-				         			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(list.MNAME);
-				         			 	if(list.RSTATUS == 'WAIT' || list.RSTATUS == 'REJECT') {
-			             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
-
-			             			    }else {
-			             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-			             			    }		         			   
-				         			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(list.DNAME);
-				         			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(list.MNAME);
-				         			   $("#tbl_modal_repair tr:nth-child(4)").children().eq(1).text(list.RDATE);
-				         			   $("#tbl_modal_repair tr:nth-child(5)").children().eq(1).text(list.SNAME);
-				         			   $("#tbl_modal_repair tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-				         		 	      for(var i = 0; i < data.list.length ; i++) {
-				         		 	    	  var ctr = data.list[i].VOS;
-				         		 	    	 var amount = data.list[i].AMOUNT;
-				         		 	    	 
-				         		 	    	 
-				         		 	    	 console.log(data.list.length);
-				         		 	    	  if(i == 0) {
-				     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(0).text(data.list[i].RNUM);
-				     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(1).text(data.list[i].INO);
-				     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(2).text(data.list[i].INAME);
-				     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(3).text(data.list[i].CNAME);
-				     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(4).text(data.list[i].RPRICE + "원");
-				     		    		 	    	$("#tbl_modal_repair #repeatRepair").children().eq(5).text(data.list[i].RSN);
-				     		    		 	    	$("#tbl_modal_repair #repeatRepair").append("</tr>");
-				     		    		 	    	totalPrice += data.list[i].RPRICE;
-				         		 	    	  }else {
-				     		    		 	    	var $sunTr = $("</tr><tr>");
-				     						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
-				     						 		var $ctr2 = "<td>" + data.list[i].INO + "</td>";
-				     						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
-				     						 		var $ctr4 = "<td>" + data.list[i].CNAME + "</td>";
-				     						 		var $ctr5 = "<td>" + data.list[i].RPRICE + "원" + "</td>";
-				     						 		var $ctr6 = "<td>" + data.list[i].RSN +"</td>";
-				     						 		$sunTr.append($ctr1);
-				     						 		$sunTr.append($ctr2);
-				     						 		$sunTr.append($ctr3);
-				     						 		$sunTr.append($ctr4);
-				     						 		$sunTr.append($ctr5);
-				     						 		$sunTr.append($ctr6);
-				     						 		$sunTr.append($ctr7);
-				     						 		$("#tbl_modal_repair #repeatRepair").after($sunTr); 
-				     						 		totalPrice += data.list[i].RPRICE;
-				         		 	    	  } 
-				         		 	    	
-				         		 	    	  
-				         		 	    	
-				         		 	    
-				         		   }
-				         		 	     $("#tbl_modal_repair #totalPrice").text(totalPrice + "원");
-				         		 	     console.log(list.PRSN)
-				         		 	    $("#tbl_modal_repair #content_repair").children().children().text(list.RSN);
-				         		 	     
-				         		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
-				     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
-				     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
-				     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
-				     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
-				     	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
-				         			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
-				         			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
-				         			   $(".modal_repair").fadeIn();
-				         	
-				     		   },
+				     		  success:function(data) {
+			          			  
+		              			   var totalPrice = 0;
+		              			   //$(".modal").fadeIn();
+		              			   //console.log(data.list.length);
+		              			   //console.log(data.list.DOCNO);
+		              			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
+		              			 	if(data.list.RSTATUS == "APPR") {
+		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
+		              			 	}
+		              			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+		              			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+		              			   $("#tbl_modal_repair tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+		              			   $("#tbl_modal_repair tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+		              			   $("#tbl_modal_repair tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+		              			   $("#tbl_modal_repair tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+		              		 	      
+		              			 $.each(data.list, function(index, list) {
+		                             $('#tbl_modal_repair .repeatRepair').after("<tr class='repairTr'><td>"+list.RNUM+"</td><td>" + list.INO + "</td><td>"+list.INAME+"</td><td>" + list.CNAME +"</td><td>"+list.RPRICE + "</td><td>" + list.RSN + "</td></tr>");
+		                         	
+		                             
+		            			  });
+		              			   
+		              			   
+		              			   /* for(var i = 0; i < data.list.length ; i++) {
+		              		 	    	  var ctr = data.list[i].VOS;
+		              		 	    	 var amount = data.list[i].AMOUNT;
+		              		 	    	 
+		              		 	    	 
+		              		 	    	 console.log(data.list.length);
+		              		 	    	  if(i == 0) {
+		          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(0).text(data.list[i].RNUM);
+		          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(1).text(data.list[i].INO);
+		          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(2).text(data.list[i].INAME);
+		          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(3).text(data.list[i].CNAME);
+		          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(4).text(data.list[i].RPRICE + "원");
+		          		    		 	    	$("#tbl_modal_repair .repeatRepair").children().eq(5).text(data.list[i].RSN);
+		          		    		 	    	$("#tbl_modal_repair .repeatRepair").append("</tr>");
+		          		    		 	    	totalPrice += data.list[i].RPRICE;
+		              		 	    	  }else {
+		          		    		 	    	var $sunTr = $("</tr><tr class='repeatRepair'>");
+		          						 		var $ctr1 = "<td>" + data.list[i].RNUM + "</td>";
+		          						 		var $ctr2 = "<td>" + data.list[i].INO + "</td>";
+		          						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
+		          						 		var $ctr4 = "<td>" + data.list[i].CNAME + "</td>";
+		          						 		var $ctr5 = "<td>" + data.list[i].RPRICE + "원" + "</td>";
+		          						 		var $ctr6 = "<td>" + data.list[i].RSN +"</td>";
+		          						 		$sunTr.append($ctr1);
+		          						 		$sunTr.append($ctr2);
+		          						 		$sunTr.append($ctr3);
+		          						 		$sunTr.append($ctr4);
+		          						 		$sunTr.append($ctr5);
+		          						 		$sunTr.append($ctr6);
+		          						 		//$sunTr.append($ctr7);
+		          						 		$("#tbl_modal_repair .repeatRepair").after($sunTr); 
+		          						 		totalPrice += data.list[i].RPRICE;
+		              		 	    	  } 
+		              		 	    	
+		              		 	    	  
+		              		 	    	
+		              		 	    
+		              		   } */
+		              		 	     $("#tbl_modal_repair #totalPrice").text(data.list[0].TPRICE + "원");
+		              		 	     //console.log(list.PRSN)
+		              		 	    $("#tbl_modal_repair #content_repair").children().children().text(data.list[0].RSN);
+		              		 	     
+		              		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
+		          	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
+		          	       			   $("#tbl_modal tr:nth-child(i)").children().eq(2).text(list.INAME);
+		          	       			   $("#tbl_modal tr:nth-child(i)").children().eq(3).text(list.AMOUNT);
+		          	       			   $("#tbl_modal tr:nth-child(i)").children().eq(4).text(list.VOS);
+		          	       			   $("#tbl_modal tr:nth-child(i)").children().eq(5).text(list.UP + "원");
+		              			   //$("#tbl_modal tr:nth-child(2)").text("asdasd"); */
+		              			   //$("#tbl_modal").children().eq(3).text("asdasd"); 
+		              			   $(".modal_repair").fadeIn();
+		              	
+		          		   },
 				     		 error:function(data) {
 							   alert("에러요");
 							   
@@ -1347,44 +1424,50 @@ solid
 				    			   type:type
 				    		   },
 				    		   success:function(data) {
-				    			   console.log("data : " + data.list[0].RDATE);
-				    				   var list = data.list[0];
-				        			   var totalPrice = 0;
-				        			   //$(".modal").fadeIn();
-				        			   console.log(data.list.length);
-				        			   console.log(list.RSSTATUS)
-				        			   //console.log(data.list.DOCNO);
-				        			    $("#tbl_modal tr:first-child").children().eq(1).text(list.DOCNO);
-				        			    if(list.RSTATUS == 'WAIT' || list.RSTATUS == 'REJECT') {
-				        			    	
-				        			    }else {
-				        			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-				        			    }
-				        			 	
-				        			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
-				        			   $("#tbl_modal tr:nth-child(2)").children().eq(1).text(list.DNAME);
-				        			   $("#tbl_modal tr:nth-child(3)").children().eq(1).text(list.MNAME);
-				        			   $("#tbl_modal tr:nth-child(4)").children().eq(1).text(list.RDATE);
-				        			   $("#tbl_modal tr:nth-child(5)").children().eq(1).text(list.SNAME);
-				        			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(list.RTITLE);
-				        		 	      for(var i = 0; i < data.list.length ; i++) {
-				        		 	    	  var ctr = data.list[i].VOS;
-				        		 	    	 var amount = data.list[i].AMOUNT;
-				        		 	    	 
-				        		 	    	 
-				        		 	    	 console.log(data.list.length);
-				        		 	    	if(i == 0) {
-		         		    		 	    	$("#tbl_modal #repeat").children().eq(0).text(data.list[i].ITYPE);
-		         		    		 	    	$("#tbl_modal #repeat").children().eq(1).text(data.list[i].CNAME);
-		         		    		 	    	$("#tbl_modal #repeat").children().eq(2).text(data.list[i].INAME);
-		         		    		 	    	$("#tbl_modal #repeat").children().eq(3).text(data.list[i].MFG);
-		         		    		 	    	$("#tbl_modal #repeat").children().eq(4).text(data.list[i].VOS + "원");
-		         		    		 	    	$("#tbl_modal #repeat").children().eq(5).text(data.list[i].AMOUNT);
-		         		    		 	    	$("#tbl_modal #repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
-		         		    		 	    	$("#tbl_modal #repeat").append("</tr>");
-		         		    		 	    	totalPrice += ctr * amount;
-		             		 	    	  }else {
-		         		    		 	    	var $sunTr = $("</tr><tr>");
+		             			   var totalPrice = 0;
+		             			   
+		             			  $.each(data.list, function(index, list) {
+		                              $('#tbl_modal .temp').after("<tr class='repeat'><td>"+list.ITYPE+"</td><td>" + list.CNAME + "</td><td>"+list.INAME+"</td><td>" + list.MFG +"</td><td>"+list.VOS + "</td><td>" + list.AMOUNT + "</td><td>"+list.VOS * list.AMOUNT+"</td></tr>");
+		                          	
+		                              
+		             			  });
+		             			   
+		             			   
+		             			   
+		             			    $("#tbl_modal tr:first-child").children().eq(1).text(data.list[0].DOCNO);
+		             			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+		             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
+
+		             			    }else {
+		             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text(data.list[0].SNAME);
+		             			    }
+		             			 	
+		             			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
+		             			   $("#tbl_modal tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
+		             			   $("#tbl_modal tr:nth-child(3)").children().eq(1).text(data.list[0].MNAME);
+		             			   $("#tbl_modal tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
+		             			   $("#tbl_modal tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
+		             			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
+		             		 	     /*  for(var i = 0; i < data.list.length ; i++) {
+		             		 	    	  var ctr = data.list[i].VOS;
+		             		 	    	 var amount = data.list[i].AMOUNT;
+		             		 	    	 
+		             		 	    	 
+		             		 	    	 console.log(data.list.length);
+		             		 	    	 console.log("????");
+		             		 	    	  if(i == 0) {
+		         		    		 	    	$("#tbl_modal .repeat").children().eq(0).text(data.list[i].ITYPE);
+		         		    		 	    	$("#tbl_modal .repeat").children().eq(1).text(data.list[i].CNAME);
+		         		    		 	    	$("#tbl_modal .repeat").children().eq(2).text(data.list[i].INAME);
+		         		    		 	    	$("#tbl_modal .repeat").children().eq(3).text(data.list[i].MFG);
+		         		    		 	    	$("#tbl_modal .repeat").children().eq(4).text(data.list[i].VOS + "원");
+		         		    		 	    	$("#tbl_modal .repeat").children().eq(5).text(data.list[i].AMOUNT);
+		         		    		 	    	$("#tbl_modal .repeat").children().eq(6).text(data.list[i].VOS * data.list[i].AMOUNT + "원");
+		         		    		 	    	/* $("#tbl_modal .repeat").append("</tr>");
+		         		    		 	    	$("#tbl_modal .repeat").after($sunTr);  */
+		         		    		 	    	//totalPrice += ctr * amount;
+		             		 	    	 /*  }else {
+		         		    		 	    	var $sunTr = $("</tr><tr class='repeat'>");
 		         						 		var $ctr1 = "<td>" + data.list[i].ITYPE + "</td>";
 		         						 		var $ctr2 = "<td>" + data.list[i].CNAME + "</td>";
 		         						 		var $ctr3 = "<td>" + data.list[i].INAME + "</td>";
@@ -1399,17 +1482,17 @@ solid
 		         						 		$sunTr.append($ctr5);
 		         						 		$sunTr.append($ctr6);
 		         						 		$sunTr.append($ctr7);
-		         						 		$("#tbl_modal #repeat").after($sunTr); 
+		         						 		$("#tbl_modal .repeat").after($sunTr); 
 		         						 		totalPrice += ctr * amount;
 		             		 	    	  } 
 		             		 	    	
 		             		 	    	  
 		             		 	    	
 		             		 	    
-		             		   }
-		             		 	     $("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
-		             		 	     console.log(list.PRSN)
-		             		 	    $("#tbl_modal #content").children().children().text(list.PRSN);
+		             		   }  */
+		             		 	     //$("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
+		             		 	    // console.log(list.PRSN)
+		             		 	    $("#tbl_modal #content").children().children().text(data.list[0].PRSN);
 		             		 	     
 		             		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
 		         	       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);

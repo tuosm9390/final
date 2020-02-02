@@ -183,7 +183,7 @@
 						<td>제목</td>
 						<td colspan="6"></td>
 					</tr>
-					<tr style="background:lightgray;">
+					<tr style="background:lightgray;" class="temp">
 						<td>구분</td>
 						<td>매입처</td>
 						<td>물품명</td>
@@ -193,18 +193,10 @@
 						<td>금액</td>
 					</tr>
 					
-					<tr id="repeat">
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr id="totalPrice">
+					
+					<tr>
 						<td colspan="2">총 금액</td>
-						<td colspan="5" style="text-align:right;"> </td>
+						<td colspan="5" style="text-align:right;" id="totalPrice"> </td>
 					</tr>
 					<tr id="content">
 						<td colspan="7" rowspan="6">
@@ -235,7 +227,22 @@
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
 				
-				$("#tbl_modal tr").find("#repeat").children().remove();
+				
+				/* $("#tbl_modal tr:first-child").children().eq(1).val('');
+				$("#tbl_modal tr:nth-child(2)").children().eq(1).val('');
+				$("#tbl_modal tr:nth-child(2)").children().eq(2).val('');
+				$("#tbl_modal tr:nth-child(2)").children().eq(3).val('');
+				$("#tbl_modal tr:nth-child(3)").children().eq(1).val('');
+				$("#tbl_modal tr:nth-child(4)").children().eq(1).val('');
+				$("#tbl_modal tr:nth-child(5)").children().eq(1).val('');
+				$("#tbl_modal tr:nth-child(6)").children().eq(1).val('');
+				$(".repeat").children().remove();
+				$("#totalPrice").children().eq(1).val('');
+				$("#content").val(''); */
+				
+				$(".repeat").children().remove();
+				
+				
 				$(".modal").fadeOut();
 			});
 		});

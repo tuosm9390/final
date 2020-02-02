@@ -1,5 +1,6 @@
 package com.kh.hotels.mngApproval.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -179,14 +180,48 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 
+
+
 	@Override
-	public int insertList(PurRequest purRequest) {
+	public int insertList(ArrayList<PurRequest> pRequestList) throws ReportException {
+		System.out.println("service전 : " + pRequestList);
+		int docNo = pRequestList.get(0).getDocno();
+		//Report테이블에 정보 넣기
+		int result = ad.insertPurchase(sqlSession,pRequestList);
+		//rptNo가져오기
+		int result2 = ad.selectRptNo(sqlSession, docNo);
 		
-		int result = ad.insertPurchase(sqlSession,purRequest);
+		for(int i = 0; i < pRequestList.size(); i++) {
+			pRequestList.get(i).setRptNo(result2);
+			System.out.println("service : " + pRequestList.get(i));
+		}
+		//pur_request에 값 넣기
+		int result3 = ad.insertPurRequest(sqlSession, pRequestList);
 		
 		
+		int finalResult = 0;
+		if(result > 0 && result2 > 0 && result3 > 0) {
+			finalResult = 1;
+		}else {
+			throw new ReportException("에러났어요~");
+		}
 		
-		return result;
+		
+		return finalResult;
+	}
+
+
+	@Override
+	public String selectIname(int ino) throws ReportException {
+
+		String iname = ad.selectIname(sqlSession, ino);
+		System.out.println("iname : " + iname);
+		
+		if(iname == null) {
+			throw new ReportException("에러~~");
+		}
+		
+		return iname;
 	}
 
 

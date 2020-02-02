@@ -45,7 +45,9 @@ public interface ApprovalService {
 
 	List<String> selectItemName(PurRequest pRequest) throws ReportException;
 
-	int insertList(PurRequest purRequest);
+	int insertList(ArrayList<PurRequest> pRequestList) throws ReportException;
+
+	String selectIname(int ino) throws ReportException;
 
 	
 	
