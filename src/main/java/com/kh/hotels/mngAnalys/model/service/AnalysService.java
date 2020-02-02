@@ -7,6 +7,6 @@ import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
 
 public interface AnalysService {
 
-	ArrayList<SalesDetail> selectSalesDetailList(Map<String, Object> map);
+	ArrayList<SalesDetail> selectSalesDetailList(Map<String, String> map);
 
 }

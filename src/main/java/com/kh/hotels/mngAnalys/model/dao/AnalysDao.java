@@ -9,6 +9,6 @@ import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
 
 public interface AnalysDao {
 
-	ArrayList<SalesDetail> selectSalesDetailList(SqlSessionTemplate sqlSession, Map<String, Object> map);
+	ArrayList<SalesDetail> selectSalesDetailList(SqlSessionTemplate sqlSession, Map<String, String> map);
 
 }

@@ -12,7 +12,9 @@ import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
 public class AnalysDaoImpl implements AnalysDao{
 
 	@Override
-	public ArrayList<SalesDetail> selectSalesDetailList(SqlSessionTemplate sqlSession, Map<String, Object> map) {
+	public ArrayList<SalesDetail> selectSalesDetailList(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		
+		System.out.println(map.get("startDate"));
 		return (ArrayList)sqlSession.selectList("Analys.selectSalesDetailList", map);
 	}
 

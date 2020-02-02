@@ -17,21 +17,30 @@
 	</resultMap>
 
 	<select id="selectSalesDetailList" resultType="java.util.ArrayList" resultMap="SalesDetailResultSet">
-		SELECT RM.RM_NUM, RSV_NO, R.MNO, M.NAME, CHECKIN, CHECKOUT, STAY_PRICE, RSV_DATE
+		SELECT RM.RM_NUM, RSV_NO, R.MNO, M.NAME, CHECKIN, CHECKOUT, STAY_PRICE, TO_DATE(RSV_DATE, 'YYYY-MM-DD HH24:MI:SS') AS RSV_DATE
 		FROM RSV R
 		LEFT JOIN MEMBER M ON (R.MNO = M.MNO)
 		LEFT JOIN ROOM RM ON (RM.RM_NO = R.RM_NO)
-<!-- 		<choose> -->
-<!-- 			<when test="searchCondition == 'sales'"> -->
-<!-- 				WHERE RSV_DATE LIKE '%'||#{startDate}||'%' -->
-<!-- 			</when> -->
-<!-- 			<when test="searchCondition == 'checkIn'"> -->
-<!-- 				WHERE QTYPE LIKE '%'||#{searchValue}||'%' -->
-<!-- 			</when> -->
-<!-- 			<when test="searchCondition == 'checkOut'"> -->
-<!-- 				WHERE QTYPE LIKE '%'||#{searchValue}||'%' -->
-<!-- 			</when> -->
-<!-- 		</choose> -->
+		<choose>
+			<when test="searchCondition == 'sales' and searchCondition != null">
+			<![CDATA[
+				WHERE TO_DATE(RSV_DATE, 'YYYY-MM-DD HH24:MI:SS') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND TO_DATE(RSV_DATE, 'YYYY-MM-DD HH24:MI:SS') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+			]]>
+			</when>
+			<when test="searchCondition == 'checkIn' and searchCondition != null">
+			<![CDATA[
+				WHERE CHECKIN >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND CHECKIN <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+			]]>
+			</when>
+			<when test="searchCondition == 'checkOut' and searchCondition != null">
+			<![CDATA[
+				WHERE CHECKOUT >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND CHECKOUT <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+			]]>
+			</when>
+		</choose>
 	</select>
 
 

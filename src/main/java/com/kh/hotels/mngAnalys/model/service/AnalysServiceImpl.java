@@ -18,7 +18,7 @@ public class AnalysServiceImpl implements AnalysService{
 	private AnalysDao hd;
 	
 	@Override
-	public ArrayList<SalesDetail> selectSalesDetailList(Map<String, Object> map) {
+	public ArrayList<SalesDetail> selectSalesDetailList(Map<String, String> map) {
 		return hd.selectSalesDetailList(sqlSession, map);
 	}
 
