@@ -33,6 +33,9 @@
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.StockDetail" alias="StockDetail"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.WarehouseDetail" alias="WarehouseDetail"/>
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.Que" alias="Que"/>
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.QueFilter" alias="QueFilter"/>
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.QueModal" alias="QueModal"/>
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.QueSearchCondition" alias="QueSearchCondition"/>
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.Ans" alias="Ans"/>
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.ClientSearchCondition" alias="ClientSearchCondition"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomList" alias="RoomList" />

@@ -7,6 +7,9 @@ import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngClient.model.vo.BlackList;
 import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
+import com.kh.hotels.mngClient.model.vo.QueFilter;
+import com.kh.hotels.mngClient.model.vo.QueModal;
+import com.kh.hotels.mngClient.model.vo.QueSearchCondition;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.Reservation;
 import com.kh.hotels.mngStay.model.vo.Stay;
@@ -48,6 +51,40 @@ public interface ClientService {
 	int insertBlackList(BlackList blackList);
 
 	ArrayList<BlackList> selectBlackListContent(int blackListMno);
+
+	int updateBlackListStatus(String[] mnos);
+
+	int getSearchBlackListCount(ClientSearchCondition csc);
+
+	ArrayList<Member> selectSearchBlackLists(ClientSearchCondition csc, PageInfo pi);
+
+	int getQueListCount();
+
+	ArrayList<Que> selectQueList(PageInfo pi);
+
+	ArrayList<Que> selectFilterQueList(PageInfo pi, QueFilter queFilter);
+
+	int getFilterQueListCount(QueFilter queFilter);
+
+	QueModal selectQueDetail(Que que);
+
+	int insertOfflineMember(Que que);
+
+	int selectOfflineMember(Que que);
+
+	int insertQue(Que que);
+
+	int selectQueNo(Que que);
+
+	int insertAns(Que que);
+
+	int insertAnswer(Que que);
+
+	int getSearchQueCount(QueSearchCondition qsc);
+
+	ArrayList<Que> selectSearchQueList(QueSearchCondition qsc, PageInfo pi);
+
+
 
 
 }
