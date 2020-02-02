@@ -147,4 +147,17 @@ public class StockController {
 		}
 		
 	}
+	
+	@PostMapping("selectScategory.sto")
+	public ModelAndView selectScategory(ModelAndView mv) {
+		
+		ArrayList<ItemType> sCategoryList = ss.selectScategory();
+		
+		mv.setViewName("jsonView");
+		mv.addObject("sCategoryList",sCategoryList);
+		
+		return mv;
+		
+	}
+	
 }

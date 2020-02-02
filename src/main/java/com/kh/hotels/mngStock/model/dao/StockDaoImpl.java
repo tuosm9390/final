@@ -63,6 +63,12 @@ public class StockDaoImpl implements StockDao{
 		return sqlSession.insert("Stock.insertCategory",it);
 	}
 
+	@Override
+	public ArrayList<ItemType> selectScategory(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("Stock.selectScategory");
+	}
+
 
 
 }
