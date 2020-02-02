@@ -114,7 +114,7 @@
 	border: 1px solid #919191;
 	box-sizing: border-box;
 	}
-#new{
+#news{
 	color:white;
 	background : #3498DB;
 	border: 1px solid #3498DB;
@@ -187,9 +187,9 @@ width:1000px;
 		<jsp:include page="../../common/menubar.jsp"/>
 		<jsp:include page="../../common/productMenubar.jsp"/>
 		
+		<jsp:include page="../modal/mStockNowAdd.jsp"/>
 		<jsp:include page="../modal/mStockNowDetail.jsp"/>
 		<jsp:include page="../modal/mStockNowEnroll.jsp"/>
-		<jsp:include page="../modal/mStockNowAdd.jsp"/>
 		
 	</header>
 	<section>
@@ -245,9 +245,9 @@ width:1000px;
 			<div class="btns">
 			<button id="delete">선택삭제</button>
 			<button id="excel">Excel</button>
-			<button id="new">신규</button>&nbsp;
+			<button id="news">신규</button>&nbsp;
 			</div>
-		<div class="btns"><button id="addCategory">품목추가</button></div>
+		<div class="btns"><button id="addCategorys">품목추가</button></div>
 	
 	<!-- ddddddddddddddddddddddddddd  -->
 	<!-- 페이저 시작 -->
@@ -299,6 +299,19 @@ width:1000px;
 	</section>
 	
 	<script>
+		//품목추가
+		
+		$("#addCategorys").click(function(){
+			console.log("지이이이압ㄹ");
+			console.log($(".modalDetailAdd").fadeIn());
+			$("#mselect").attr('disabled',true);
+			$("#sselect").attr('disabled',true); 
+			console.log($("#lselect").val());
+			//
+			category();
+		});
+		</script>
+		<script>
 	
 		//테이블
 		$(function(){
@@ -350,7 +363,7 @@ width:1000px;
 								$("#detailBody").append(
 									"<tr><td><input type='checkbox'></td><td>"+
 									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
-									data.stockDetailList[i].unit+"</td><td>"+
+									data.stockDetailList[i].amount+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
 									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
 									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
@@ -364,12 +377,6 @@ width:1000px;
 					}
 					
 				});
-				
-				
-				
-				
-				
-				
 				$(".modal").fadeIn();
 			});
 		});
@@ -383,17 +390,6 @@ width:1000px;
 		
 		
 		
-		//품목추가
-		
-		$("#addCategory").click(function(){
-			$(".modalDetailAdd").fadeIn();
-			$("#mselect").attr('disabled',true);
-			$("#sselect").attr('disabled',true); 
-			console.log($("#lselect").val());
-			//
-			category();
-			
-		});
 		
 		////카테고리조회 ajax
 		function category(){
@@ -436,9 +432,8 @@ width:1000px;
 		};
 		
 		//신규등록
-		$("#new").click(function(){
+		$("#news").click(function(){
 			$(".modalEnroll").fadeIn();
-			
 			//sCategory ajax
 				$.ajax({
 				url:"selectScategory.sto",

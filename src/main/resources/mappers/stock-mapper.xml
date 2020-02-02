@@ -40,6 +40,23 @@
 		<result property="scategory" column="SCATEGORY" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngStock.model.vo.Conn" id="resultSetConn">
+		<id property="cnCode" column="CN_CODE" />
+		<result property="cnName" column="CN_NAME" />
+		<result property="ownerName" column="OWNER_NAME" />
+		<result property="cnPhone" column="CN_PHONE" />
+		<result property="cnEmail" column="CN_EMAIL" />
+		<result property="cnItem" column="CN_ITEM" />
+		<result property="cnStatus" column="CN_STATUS" />
+		<result property="cnAdd" column="CN_ADD" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="bankCode" column="BANK_CODE" />
+		<result property="bankName" column="BANK_NAME" />
+		<result property="account" column="ACCOUNT" />
+		<result property="accName" column="ACC_NAME" />
+		<result property="accMemo" column="ACC_MEMO" />
+	</resultMap>
+	
 	
 	<!-- 리스트카운트 -->
 	<select id="selectListCount" resultType="_int">
@@ -71,7 +88,7 @@
 	<!-- 물품 디테일 -->
 	
 	<select id="selectStockDetailList" resultMap="resultSetStock">
-		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.UNIT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM AS RM_NO,T.TYPE
+		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.UNIT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM AS RM_NO,T.TYPE,I.AMOUNT
 		FROM ITEM I
 		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
 		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
@@ -117,6 +134,14 @@
 		SELECT SCATEGORY,TYPE_NO
 		FROM ITEM_TYPE
 		ORDER BY SCATEGORY ASC
+	</select>
+	
+	<select id="selectCnName" resultMap="resultSetConn">
+		SELECT CN_NAME 
+		FROM CONN
+		JOIN ITEM USING(CN_CODE)
+		JOIN ITEM_TYPE USING(TYPE_NO)
+		WHERE SCATEGORY = #{cnName}
 	</select>
 </mapper>
 
