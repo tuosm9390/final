@@ -12,6 +12,7 @@ import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
+import com.kh.hotels.mngApproval.model.vo.RepRequest;
 
 @Repository
 public class ApprovalDaoImpl implements ApprovalDao{
@@ -189,6 +190,43 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		
 		
 		return sqlSession.selectOne("Report.selectRepairIname", ino);
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectRepairInfo(SqlSessionTemplate sqlSession) {
+		ArrayList<HashMap<String, Object>> list = null;
+		list = (ArrayList)sqlSession.selectList("Report.selectRepairInfo");
+		System.out.println("datList : " + list);
+		return list;
+	}
+
+	@Override
+	public int insertRepReqInfo(SqlSessionTemplate sqlSession, ArrayList<RepRequest> rRequestList) {
+		
+		int result = sqlSession.insert("Report.insertReqReqInfo", rRequestList.get(0));
+		
+		
+		return result;
+	}
+
+	@Override
+	public int insertRepReqList(SqlSessionTemplate sqlSession, int docNo) {
+		int result = sqlSession.selectOne("Report.selectRepReqRptNo", docNo);
+		return result;
+	}
+
+	@Override
+	public int insertRepReqListAll(SqlSessionTemplate sqlSession, ArrayList<RepRequest> rRequestList) {
+		int result = 0;
+		
+		System.out.println("DaopRequestList : " + rRequestList);
+		
+		for(int i = 0; i < rRequestList.size(); i++) {
+			result = sqlSession.insert("Report.insertRepReqList", rRequestList.get(i));
+		}
+		
+		return result;
+		
 	}
 
 	

@@ -32,4 +32,5 @@ public class PurRequest {
 	private String sinfo;
 	private int smno;
 	private int mmno;
+	
 }

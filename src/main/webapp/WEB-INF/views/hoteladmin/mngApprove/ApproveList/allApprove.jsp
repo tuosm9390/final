@@ -443,7 +443,7 @@ solid
           			   type:type
           		   },
           		   success:function(data) {
-          			  
+          			  		console.log(data.list[0].RSTATUS)
               			   var totalPrice = 0;
               			   //$(".modal").fadeIn();
               			   //console.log(data.list.length);
@@ -451,8 +451,8 @@ solid
               			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
               			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
               			 	
-              			 	if(data.list.RSTATUS == "APPR") {
-              			 		$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
+              			 	if(data.list[0].RSTATUS == "APPR") {
+              			 		$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).text(data.list[0].SNAME);
               			 	}
               			 	
               			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
@@ -878,15 +878,15 @@ solid
      			   type:type
      		   },
      		  success:function(data) {
-      			  
+     			 console.log(data.list.RSTATUS)
      			   var totalPrice = 0;
      			   //$(".modal").fadeIn();
      			   //console.log(data.list.length);
      			   //console.log(data.list.DOCNO);
      			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
      			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
-     			 	if(data.list.RSTATUS == "APPR") {
-     			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
+     			 	if(data.list[0].RSTATUS == "APPR") {
+     			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).text(data.list[0].SNAME);
      			 	}
      			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
      			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
@@ -1333,15 +1333,15 @@ solid
 				     			   type:type
 				     		   },
 				     		  success:function(data) {
-			          			  
+				     			 console.log(data.list.RSTATUS)
 		              			   var totalPrice = 0;
 		              			   //$(".modal").fadeIn();
 		              			   //console.log(data.list.length);
 		              			   //console.log(data.list.DOCNO);
 		              			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
 		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
-		              			 	if(data.list.RSTATUS == "APPR") {
-		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
+		              			 	if(data.list[0].RSTATUS == "APPR") {
+		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).text(data.list[0].SNAME);
 		              			 	}
 		              			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
 		              			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
