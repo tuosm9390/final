@@ -276,7 +276,7 @@
 								<option value="5">5시간</option>
 								<option value="6">6시간</option>
 							</select>
-							후 까지 예약하지 않을 시 <input type="text" style="width:100px;" name="nsRate" class="recInput"> % 의 수수료가 발생합니다.
+							후 까지 입실하지 않을 경우, <input type="text" style="width:100px;" name="nsRate" class="recInput"> % 의 수수료가 발생합니다.
 						</td>
 					</tr>
 					<tr>

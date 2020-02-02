@@ -988,7 +988,7 @@ input[type=checkbox] {
 	            }
 
 	            showRemaining();
-	            timer = setInterval(showRemaining, 1000);
+	            timer = setInterval(showRemaining, 5000);
 	        }
 		</script>
 </body>

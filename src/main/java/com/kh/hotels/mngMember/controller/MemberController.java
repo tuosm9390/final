@@ -36,10 +36,11 @@ public class MemberController {
 			loginUser = ms.loginMember(m);
 			
 			model.addAttribute("loginUser", loginUser);
-			
+			System.out.println(loginUser);
 			if(loginUser.getDeptNo() == 1) {
 				
 				int result = ms.checkHotelSetting();
+				System.out.println("ㅎ널마ㅣㅓㄹ머ㅏㅣㄷ머ㅏㅣㅜ다ㅣㄱㅊㅈ뒥ㅈ춤ㅈㄷ궃지모김           " + result);
 				
 				if(result == 0) {
 					return "hotelSetting/hotelInfoSetting";
