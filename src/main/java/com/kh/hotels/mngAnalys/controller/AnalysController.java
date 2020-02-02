@@ -22,7 +22,7 @@ public class AnalysController {
 	@RequestMapping("viewDetailList.an")
 	public ModelAndView goAnalys(String Condition, ModelAndView mv) {
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, String> map = new HashMap<String, String>();
 		
 		ArrayList<SalesDetail> sdList = null;
 		if(Condition.equals("sales")) {
@@ -31,6 +31,7 @@ public class AnalysController {
 			
 		}
 		
+		mv.addObject("view", "view");
 		mv.addObject("sdList", sdList);
 		mv.addObject("Condition", Condition);
 		mv.setViewName("hoteladmin/mngAnalys/detailList");
@@ -41,7 +42,7 @@ public class AnalysController {
 	@RequestMapping("searchDetail.an")
 	public ModelAndView searchDetail(ModelAndView mv, String Condition, String searchCondition, String startDate, String endDate) {
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, String> map = new HashMap<String, String>();
 		
 		System.out.println("searchCondition : " + searchCondition);
 		System.out.println("startDate : " + startDate);
@@ -58,6 +59,10 @@ public class AnalysController {
 			
 		}
 		
+		mv.addObject("view", "search");
+		mv.addObject("searchCondition", searchCondition);
+		mv.addObject("startDate", startDate);
+		mv.addObject("endDate", endDate);
 		mv.addObject("sdList", sdList);
 		mv.addObject("Condition", Condition);
 		mv.setViewName("hoteladmin/mngAnalys/detailList");
