@@ -23,7 +23,9 @@ import com.kh.hotels.mngClient.model.service.ClientService;
 import com.kh.hotels.mngClient.model.vo.BlackList;
 import com.kh.hotels.mngClient.model.vo.ClientSearchCondition;
 import com.kh.hotels.mngClient.model.vo.Que;
+import com.kh.hotels.mngClient.model.vo.QueFilter;
 import com.kh.hotels.mngClient.model.vo.QueModal;
+import com.kh.hotels.mngClient.model.vo.QueSearchCondition;
 import com.kh.hotels.mngClient.model.vo.StayAndRsv;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.Reservation;
@@ -327,9 +329,304 @@ public class ClientController {
 		return mv;
 	}
 	
+	@RequestMapping("deleteBlackList.cl")
+	public String deleteBlackList(String mno, Model model) {
+		
+		String[] mnos = mno.split(",");
+		
+		int result = cs.updateBlackListStatus(mnos);
+		
+		if(result > 0) {
+			return "redirect:/viewBlackList.cl";
+		}else {
+			model.addAttribute("msg", "블랙리스트 삭제 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
+	@RequestMapping("searchBlackList.cl")
+	public String selectSearchBlackList(String searchOption, String searchContent, HttpServletRequest request, Model model) {
+		
+		ClientSearchCondition csc = new ClientSearchCondition();
+		
+		if(searchOption.equals("blackListName")) {
+			csc.setClientName(searchContent);
+		}else if(searchOption.equals("blackListPhone")){
+			csc.setClientPhone(searchContent);
+		}else if(searchOption.equals("blackListEmail")) {
+			csc.setClientEmail(searchContent);
+		}
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int blackListCount = cs.getSearchBlackListCount(csc);
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, blackListCount);
+		
+		ArrayList<Member> blackLists = cs.selectSearchBlackLists(csc, pi);
+		
+		model.addAttribute("check", "ok");
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("searchContent", searchContent);
+		model.addAttribute("blackListCount", blackListCount);
+		model.addAttribute("blackLists", blackLists);
+		model.addAttribute("pi", pi);
+		
+		return "blackList";
+		
+	}
+	
 	@GetMapping("question.cl")
-	public String goQuestion() {
+	public String goQuestion(Model model, HttpServletRequest request) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String qdate;
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int QueCount = cs.getQueListCount();
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, QueCount);
+		
+		ArrayList<Que> queList = cs.selectQueList(pi);
+		
+		for(int i = 0; i < queList.size(); i++) {
+			qdate = sdf.format(queList.get(i).getQdate());
+			queList.get(i).setQdate(null);
+			queList.get(i).setQdateView(qdate);
+			if(queList.get(i).getQtype().equals("ROOM")) {
+				queList.get(i).setQtype("객실");
+			}else if(queList.get(i).getQtype().equals("SERVICE")) {
+				queList.get(i).setQtype("서비스");
+			}else if(queList.get(i).getQtype().equals("RESERVE")) {
+				queList.get(i).setQtype("예약");
+			}else if(queList.get(i).getQtype().equals("ETC")) {
+				queList.get(i).setQtype("기타");
+			}
+			if(queList.get(i).getAnsStatus().equals("Y")) {
+				queList.get(i).setAnsStatus("답변완료");
+			}else if(queList.get(i).getAnsStatus().equals("N")) {
+				queList.get(i).setAnsStatus("미답변");
+			}
+		}
+		
+		model.addAttribute("queList", queList);
+		model.addAttribute("pi", pi);
+		
 		return "viewQuestion";
 	}
+	
+	@RequestMapping("queFilter.cl")
+	public String queFilter(String filterType, Model model, HttpServletRequest request) {
+		
+		QueFilter queFilter = new QueFilter();
+		
+		if(filterType.equals("on")) {
+			queFilter.setOnline(filterType);
+		}else if(filterType.equals("off")) {
+			queFilter.setOffline(filterType);
+		}else if(filterType.equals("unQue")) {
+			queFilter.setUnQue(filterType);
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String qdate;
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int QueCount = cs.getFilterQueListCount(queFilter);
 
+		PageInfo pi = Pagination.getPageInfo(currentPage, QueCount);
+		
+		ArrayList<Que> queList = cs.selectFilterQueList(pi, queFilter);
+		
+		for(int i = 0; i < queList.size(); i++) {
+			qdate = sdf.format(queList.get(i).getQdate());
+			queList.get(i).setQdate(null);
+			queList.get(i).setQdateView(qdate);
+			if(queList.get(i).getQtype().equals("ROOM")) {
+				queList.get(i).setQtype("객실");
+			}else if(queList.get(i).getQtype().equals("SERVICE")) {
+				queList.get(i).setQtype("서비스");
+			}else if(queList.get(i).getQtype().equals("RESERVE")) {
+				queList.get(i).setQtype("예약");
+			}else if(queList.get(i).getQtype().equals("ETC")) {
+				queList.get(i).setQtype("기타");
+			}
+			if(queList.get(i).getAnsStatus().equals("Y")) {
+				queList.get(i).setAnsStatus("답변완료");
+			}else if(queList.get(i).getAnsStatus().equals("N")) {
+				queList.get(i).setAnsStatus("미답변");
+			}
+		}
+		
+		model.addAttribute("filterType", filterType);
+		model.addAttribute("queList", queList);
+		model.addAttribute("pi", pi);
+		
+		return "viewQuestion";
+	}
+	
+	@PostMapping("queDetail.cl")
+	public ModelAndView queDetailModal(String qno, String mno, ModelAndView mv) {
+		
+		int mnoInt = Integer.parseInt(mno);
+		int qnoInt = Integer.parseInt(qno);
+		
+		Que que = new Que();
+		que.setMno(mnoInt);
+		que.setQno(qnoInt);
+		
+		QueModal queModal = cs.selectQueDetail(que);
+		if(queModal.getQtype().equals("ETC")) {
+			queModal.setQtype("기타");
+		}else if(queModal.getQtype().equals("RESERVE")) {
+			queModal.setQtype("예약");
+		}else if(queModal.getQtype().equals("ROOM")) {
+			queModal.setQtype("객실");
+		}else if(queModal.getQtype().equals("SERVICE")) {
+			queModal.setQtype("서비스");
+		}
+		mv.addObject("queModal", queModal);
+		mv.setViewName("jsonView");
+		
+		System.out.println(queModal);
+		
+		return mv;
+	}
+	
+	@PostMapping("insertQue.cl")
+	public String insertQue(String queType, String queName, String quePhone, String queTitle, String queContent, String queAnswer, String hotelMno, Model model) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Date date = new Date();
+		String offlineMemberDate = sdf.format(date);
+		
+		Que que = new Que();
+		que.setHotelMno(Integer.parseInt(hotelMno));
+		que.setQtype(queType);
+		que.setUserName(queName);
+		que.setPhone(quePhone);
+		que.setQtitle(queTitle);
+		que.setQcontent(queContent);
+		que.setQueAnswer(queAnswer);
+		que.setQueOfflineDate(offlineMemberDate + "전화문의고객");
+		
+		int result = 0;
+		
+		int result1 = cs.insertOfflineMember(que);
+		
+		int mno = cs.selectOfflineMember(que);
+		que.setMno(mno);
+		
+		int result2 = cs.insertQue(que);
+		
+		int qno = cs.selectQueNo(que);
+		que.setQno(qno);
+		
+		int result3 = cs.insertAns(que);
+		
+		if(result1 > 0 && result2 > 0 && result3 > 0) {
+			result = 1;
+		}else {
+			result = 0;
+		}
+		
+		
+		if(result > 0) {
+			return "redirect:/question.cl";
+		}else {
+			model.addAttribute("msg", "오프라인 고객문의 등록 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	@PostMapping("saveAnswer.cl")
+	public String saveAnswer(String qno, String acontent, String mno, Model model) {
+		
+		Que que = new Que();
+		que.setQno(Integer.parseInt(qno));
+		que.setQueAnswer(acontent);
+		que.setMno(Integer.parseInt(mno));
+		
+		int result = cs.insertAnswer(que);
+		
+		if(result > 0) {
+			return "redirect:/question.cl";
+		}else {
+			model.addAttribute("msg", "답변등록실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
+	@RequestMapping("searchQue.cl")
+	public String searchQue(HttpServletRequest request, Model model, String searchOption, String searchContent) {
+		
+		QueSearchCondition qsc = new QueSearchCondition();
+		
+		if(searchOption.equals("clientName")) {
+			qsc.setClientName(searchContent);
+		}else if(searchOption.equals("clientPhone")){
+			qsc.setClientPhone(searchContent);
+		}else if(searchOption.equals("queTitle")) {
+			qsc.setQueTitle(searchContent);
+		}else if(searchOption.equals("queType")) {
+			qsc.setQueType(searchContent);
+		}
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int queCount = cs.getSearchQueCount(qsc);
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, queCount);
+		
+		ArrayList<Que> queList = cs.selectSearchQueList(qsc, pi);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String qdate;
+		
+		for(int i = 0; i < queList.size(); i++) {
+			qdate = sdf.format(queList.get(i).getQdate());
+			queList.get(i).setQdate(null);
+			queList.get(i).setQdateView(qdate);
+			if(queList.get(i).getQtype().equals("ROOM")) {
+				queList.get(i).setQtype("객실");
+			}else if(queList.get(i).getQtype().equals("SERVICE")) {
+				queList.get(i).setQtype("서비스");
+			}else if(queList.get(i).getQtype().equals("RESERVE")) {
+				queList.get(i).setQtype("예약");
+			}else if(queList.get(i).getQtype().equals("ETC")) {
+				queList.get(i).setQtype("기타");
+			}
+			if(queList.get(i).getAnsStatus().equals("Y")) {
+				queList.get(i).setAnsStatus("답변완료");
+			}else if(queList.get(i).getAnsStatus().equals("N")) {
+				queList.get(i).setAnsStatus("미답변");
+			}
+		}
+		model.addAttribute("check", "ok");
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("searchContent", searchContent);
+		model.addAttribute("queCount", queCount);
+		model.addAttribute("queList", queList);
+		model.addAttribute("pi", pi);
+		
+		return "viewQuestion";
+	}
 }

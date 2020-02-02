@@ -107,14 +107,16 @@
 		
 		<!-- searchSec -->
 		<div class="searchSec">
-			<select name="searchOption">
-				<option selected disabled hidden>검색조건</option>
-				<option value="">고객명</option>
-				<option value="">전화번호</option>
-				<option value="">이메일</option>
-			</select>
-			<input type="text" name="searchContent" class="searchContent">
-			<button id="searchBtn">검색</button>
+			<form action="searchBlackList.cl" method="post">
+				<select name="searchOption" class="searchOption">
+					<option value="">검색조건</option>
+					<option value="blackListName">고객명</option>
+					<option value="blackListPhone">전화번호</option>
+					<option value="blackListEmail">이메일</option>
+				</select>
+				<input type="text" name="searchContent" class="searchContent">
+				<button id="searchBtn" onclick="return searchBlackList();">검색</button>
+			</form>
 		</div>
 		<!-- searchSec end -->
 		<div class="btnGroup">
@@ -125,7 +127,7 @@
 		<div class="blackListArea">
 			<table style="border-collapse: collapse;" class="blackListTable">
 				<tr>
-					<th width="50px;"><input type="checkbox"></th>
+					<th width="50px;"></th>
 					<th width="100px;">No</th>
 					<th width="150px;">고객명</th>
 					<th width="150px;">고객번호</th>
@@ -189,7 +191,7 @@
 				[이전] &nbsp;
 			</c:if>
 			<c:if test="${ pi.currentPage > 1 }">
-				<c:url var="clistBack" value="searchClient.cl">
+				<c:url var="clistBack" value="searchBlackList.cl">
 					<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
 					<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
 					<c:param name="searchOption" value="${ sessionScope.searchOption }"/>
@@ -202,7 +204,7 @@
 					<font color="red" size="4"><b>${ p }</b></font>
 				</c:if>
 				<c:if test="${ p ne pi.currentPage }">
-					<c:url var="clistCheck" value="searchClient.cl">
+					<c:url var="clistCheck" value="searchBlackList.cl">
 						<c:param name="currentPage" value="${ p }"/>
 						<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
 						<c:param name="searchOption" value="${ sessionScope.searchOption }"/>
@@ -215,7 +217,7 @@
 				&nbsp; [다음]
 			</c:if>
 			<c:if test="${ pi.currentPage < pi.maxPage }">
-				<c:url var="clistEnd" value="searchClient.cl">
+				<c:url var="clistEnd" value="searchBlackList.cl">
 					<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
 					<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
 					<c:param name="searchOption" value="${ sessionScope.searchOption }"/>
@@ -228,6 +230,7 @@
 		</div>
 	</section>
 	<script>
+	var searchCheck = "";
 	
 	$(function(){
 		
@@ -316,7 +319,7 @@
 			  if(confirm(count + " 명의 정보를 삭제하시겠습니까? ")){
 				  $("input[type='checkbox']:checked").parent().parent().remove();  
 				  
-				  //location.href="deleteBlackList.cl?mno="+mno;
+				  location.href="deleteBlackList.cl?mno="+mno;
 			  }
 		  };
 	};

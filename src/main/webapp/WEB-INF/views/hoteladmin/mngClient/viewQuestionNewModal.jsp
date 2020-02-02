@@ -90,12 +90,14 @@ cursor: pointer;
 				<a style="padding-top:5px;margin-right:10px;" class="btn_close">×</a>
 			</div>
 			<div class="modal_content_real2" align="center">
+			
+			<form action="saveAnswer.cl" method="post">
 				<div class="modalTitleArea2">
 					<table align="center" style="margin-top:10px;">
 						<tr>
-							<td><b>문의자 명</b> :  송기준</td>
-							<td><b>연락처</b> : mrSong@naver.com</td>
-							<td><b>문의 유형</b> : 기타</td>
+							<td><b>문의자 명</b> : <input type="text" class="queModalName" style="border:0; width:90px; font-size:18px;" readonly="readonly"></td>
+							<td><b>연락처</b> : <input type="text" class="queModalPhone" style="border:0; width:90px; font-size:18px;" readonly="readonly"></td>
+							<td><b>문의 유형</b> : <input type="text" class="queModalQtype" style="border:0; width:90px; font-size:18px;" readonly="readonly"></td>
 						</tr>
 					</table>
 				</div>
@@ -106,7 +108,7 @@ cursor: pointer;
 								<b>문의 일자 : </b>
 							</td>
 							<td>
-								2020-10-10
+								<input type="text" class="queModalQdate" style="border:0;" readonly="readonly">
 							</td>
 							<td colspan="3">
 							</td>
@@ -116,7 +118,7 @@ cursor: pointer;
 								<b>문의 제목 : </b>
 							</td>
 							<td>
-								송기준을 짤라주세요
+								<input type="text" class="queModalQtitle" style="border:0; font-size:15px;" readonly="readonly">
 							</td>
 							<td colspan="3">
 							</td>
@@ -129,7 +131,9 @@ cursor: pointer;
 						</tr>
 						<tr>
 							<td colspan="4">
-								<textarea rows="5" cols="82" style="resize: none;"></textarea>
+								<input type="hidden" name="mno" value="${ sessionScope.loginUser.mno }">
+								<input type="hidden" name="qno" class="queModalQno">
+								<textarea rows="5" cols="82" style="resize: none; border:0; font-size:15px;" class="queModalQcontent" readonly="readonly"></textarea>
 							</td>
 						</tr>
 					</table>
@@ -141,14 +145,15 @@ cursor: pointer;
 							<td colspan="3"></td>
 						</tr>
 						<tr>
-							<td colspan="4"><textarea rows="5" cols="82" style="resize: none;"></textarea></td>
+							<td colspan="4"><textarea rows="5" cols="82" style="resize: none; border:0;" name="acontent" class="queModalAcontent"></textarea></td>
 						</tr>
 						<tr>
 							<td></td>
-							<td><button style="float:right;">저장</button></td>
+							<td><button type="submit" onclick="return saveAnswer();"style="float:right;">저장</button></td>
 						</tr>
 					</table>
 				</div>
+			</form>
 			</div>
 		</div>
 	</div>
@@ -159,6 +164,15 @@ cursor: pointer;
 				$(".queModal").fadeOut();
 			});
 		});
+		function saveAnswer(){
+			if($(".queModalAcontent").val() == ""){
+				alert("답변내용을 입력해주세요.");
+				return false;
+			}
+			if(confirm("답변내용을 저장하시겠습니까?")){
+				return true;
+			}
+		}
 	</script>
 </body>
 </html>

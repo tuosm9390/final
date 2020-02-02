@@ -150,44 +150,47 @@ button{
 				<h2 style="margin-top: 0px; margin-left: 10px;">고객문의</h2>
 				<a style="padding-top: 5px; margin-right: 10px;" class="btn_close">×</a>
 			</div>
+			<form action="insertQue.cl" method="post">
 			<div class="modal_content_real" align="center">
 				<table align="center">
 					<tr>
 						<td><b>문의유형</b></td>
 						<td colspan="3">
-							<select>
+							<select class="queType" name="queType">
 								<option value="">====선택====</option>
-								<option value="">기타</option>
-								<option value="">예약</option>
-								<option value="">숙박</option>
-								<option value="">객실</option>
+								<option value="ETC">기타</option>
+								<option value="RESERVE">예약</option>
+								<option value="SERVICE">서비스</option>
+								<option value="ROOM">객실</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<td><b>문의자명</b></td>
-						<td><input type="text"></td>
+						<td><input type="text" name="queName" class="queName"></td>
 						<td><b>연락처</b></td>
-						<td><input type="text"></td>
+						<td><input type="text" name="quePhone" class="quePhone"></td>
 					</tr>
 					<tr>
 						<td><b>문의제목</b></td>
-						<td colspan="3"><input type="text" style="width:572px;"></td>
+						<td colspan="3"><input type="text" name="queTitle" class="queTitle" style="width:572px;"></td>
 					</tr>
 					<tr>
 						<td><b>문의 내용</b></td>
-						<td colspan="3"><textarea rows="5" cols="79" style="resize: none;"></textarea></td>
+						<td colspan="3"><textarea rows="5" name="queContent" class="queContent" cols="79" style="resize: none;"></textarea></td>
 					</tr>
 					<tr>
 						<td style="margin-top:30px;"><b>답변 내용</b></td>
-						<td colspan="3"><textarea rows="5" cols="79" style="resize: none;margin-top:30px;"></textarea></td>
+						<td colspan="3"><textarea rows="5" name="queAnswer" class="queAnswer" cols="79" style="resize: none;margin-top:30px;"></textarea></td>
 					</tr>
 				</table>
 				<div class="btnGroup" align="right" style="margin-right: 65px;margin-top:65px;">
+					<input type="hidden" value="${ sessionScope.loginUser.mno }" name="hotelMno">
 					<button style="width: 100px; height: 30px; background:gray;">취소</button>
-					<button style="width: 100px; height: 30px;">등록</button>
+					<button style="width: 100px; height: 30px;" type="submit" onclick="return addQue();">등록</button>
 				</div>
 			</div>
+			</form>
 		</div>
 	</div>
 
@@ -197,6 +200,40 @@ button{
 				$(".queNewModal").fadeOut();
 			});
 		});
+		
+		function addQue(){
+			
+			if($(".queType").val() == "" ){
+				alert("문의 유형을 선택해주세요.");
+				return false;
+			}
+			
+			if($(".queName").val() == "" ){
+				alert("문의자명을 입력해주세요.");
+				return false;
+			}
+			
+			if($(".quePhone").val() == "" ){
+				alert("연락처를 입력해주세요.");
+				return false;
+			}
+			
+			if($(".queTitle").val() == "" ){
+				alert("문의 제목을 입력해주세요.");
+				return false;
+			}
+			
+			if($(".queContent").val() == "" ){
+				alert("문의 내용을 입력해주세요.");
+				return false;
+			}
+			
+			if($(".queAnswer").val() == "" ){
+				alert("답변 내용을 입력해주세요.");
+				return false;
+			}
+			return true;
+		}
 	</script>
 </body>
 </html>

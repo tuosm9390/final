@@ -5,6 +5,34 @@
   
 <mapper namespace="Client">
 	
+	<resultMap type="QueModal" id="queDetailResultSet">
+		<result property="userName" column="NAME" />
+		<result property="qtype" column="QTYPE" />
+		<result property="qtitle" column="QTITLE" />
+		<result property="qdate" column="QDATE" />
+		<result property="qcontent" column="QCONTENT" />
+		<result property="acontent" column="ACONTENT" />
+		<result property="qno" column="QNO" />
+		<result property="email" column="EMAIL" />
+		<result property="phone" column="PHONE" />
+	</resultMap>
+
+	<resultMap type="Que" id="queListResultSet">
+		<id property="qno" column="QNO" />
+		<result property="mno" column="MNO" />
+		<result property="userName" column="NAME" />
+		<result property="phone" column="PHONE" />
+		<result property="qtype" column="QTYPE" />
+		<result property="qtitle" column="QTITLE" />
+		<result property="qdate" column="QDATE" />
+		<result property="qcontent" column="QCONTENT" />
+		<result property="ansStatus" column="ANS_STATUS" />
+		<result property="delStatus" column="DEL_STATUS" />
+		<result property="qpwd" column="QPWD" />
+		<result property="pwdStatus" column="PWD_STATUS" />
+		<result property="queDivision" column="QUE_DIVISION" />
+	</resultMap>
+	
 	<resultMap type="BlackList" id="selectBlackListContentResultSet">
 		<result property="regDate" column="REG_DATE" />
 		<result property="regRsn" column="REG_RSN" />
@@ -160,7 +188,7 @@
 			AND PHONE LIKE '%' || #{clientPhone} || '%'
 		</if>
 		<if test="clientEmail != null">
-			AND BCONTENT LIKE '%' || #{clientEmail} || '%'
+			AND EMAIL LIKE '%' || #{clientEmail} || '%'
 		</if>
 	</select>
 	
@@ -175,7 +203,7 @@
 			AND PHONE LIKE '%' || #{clientPhone} || '%'
 		</if>
 		<if test="clientEmail != null">
-			AND BCONTENT LIKE '%' || #{clientEmail} || '%'
+			AND EMAIL LIKE '%' || #{clientEmail} || '%'
 		</if>
 		ORDER BY MNO DESC
 	</select>
@@ -209,6 +237,176 @@
 		SELECT REG_DATE, REG_RSN, RESPONSE
 		FROM BLIST
 		WHERE MNO = #{blackListMno} AND BLACK_STATUS = 'Y'
+	</select>
+	
+	<select id="updateBlackListStatus" parameterType="java.lang.String">
+		UPDATE BLIST
+		SET BLACK_STATUS = 'N'
+		WHERE MNO = #{mnos}
+	</select>
+	
+	<select id="getSearchBlackListCount" parameterType="ClientSearchCondition" resultType="_int">
+		SELECT COUNT(*)
+		FROM BLIST B
+		JOIN MEMBER M ON(B.MNO = M.MNO)
+		WHERE BLACK_STATUS = 'Y' AND M.STATUS = 'Y'
+		<if test="clientName != null">
+			AND M.NAME = #{clientName}
+		</if>
+		<if test="clientPhone != null">
+			AND M.PHONE LIKE '%' || #{clientPhone} || '%'
+		</if>
+		<if test="clientEmail != null">
+			AND M.EMAIL LIKE '%' || #{clientEmail} || '%'
+		</if>
+	</select>
+	
+	<select id="selectSearchBlackLists" parameterType="ClientSearchCondition" resultMap="blackListsResultSet">
+		SELECT BLACK_NO, NAME, B.MNO, M.PHONE, M.EMAIL
+		FROM BLIST B
+		JOIN MEMBER M ON(B.MNO = M.MNO)
+		WHERE BLACK_STATUS = 'Y' AND M.STATUS = 'Y'
+		<if test="clientName != null">
+			AND M.NAME = #{clientName}
+		</if>
+		<if test="clientPhone != null">
+			AND M.PHONE LIKE '%' || #{clientPhone} || '%'
+		</if>
+		<if test="clientEmail != null">
+			AND M.EMAIL LIKE '%' || #{clientEmail} || '%'
+		</if>
+		ORDER BY BLACK_NO DESC
+	</select>
+	
+	<select id="getQueListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM QUE
+		WHERE DEL_STATUS = 'N'
+	</select>
+	
+	<select id="getFilterQueListCount" resultType="_int" parameterType="QueFilter">
+		SELECT COUNT(*)
+		FROM QUE
+		WHERE DEL_STATUS = 'N'
+		<if test="online != null">
+			AND QUE_DIVISION = 'ONLINE'
+		</if>
+		<if test="offline != null">
+			AND QUE_DIVISION = 'OFFLINE'
+		</if>
+		<if test="unQue != null">
+			AND ANS_STATUS = 'N'
+		</if>
+	</select>
+	
+	<select id="getSearchQueCount" resultType="_int" parameterType="QueSearchCondition">
+		SELECT COUNT(*)
+		FROM QUE Q
+		JOIN MEMBER M ON(Q.MNO = M.MNO)
+		WHERE DEL_STATUS = 'N'
+		<if test="clientName != null">
+			AND M.NAME LIKE '%' || #{clientName} || '%'
+		</if>
+		<if test="clientPhone != null">
+			AND M.PHONE LIKE '%' || #{clientPhone} || '%'
+		</if>
+		<if test="queTitle != null">
+			AND Q.QTITLE LIKE '%' || #{queTitle} || '%'
+		</if>
+		<if test="queType != null">
+			AND Q.QTYPE = #{queType}
+		</if>
+	</select>
+	
+	<select id="selectQueList" resultMap="queListResultSet">
+		SELECT QNO, Q.MNO, QTITLE, QTYPE, M.NAME, M.PHONE, QDATE, QCONTENT, ANS_STATUS, DEL_STATUS, QPWD, PWD_STATUS, QUE_DIVISION
+		FROM QUE Q
+		LEFT JOIN MEMBER M ON(Q.MNO = M.MNO)
+		WHERE DEL_STATUS = 'N'
+		ORDER BY QNO DESC
+	</select>
+	
+	<select id="selectFilterQueList" resultMap="queListResultSet" parameterType="QueFilter">
+		SELECT QNO, Q.MNO, QTITLE, QTYPE, M.NAME, M.PHONE, QDATE, QCONTENT, ANS_STATUS, DEL_STATUS, QPWD, PWD_STATUS, QUE_DIVISION
+		FROM QUE Q
+		LEFT JOIN MEMBER M ON(Q.MNO = M.MNO)
+		WHERE DEL_STATUS = 'N'
+		<if test="online != null">
+			AND QUE_DIVISION = 'ONLINE'
+		</if>
+		<if test="offline != null">
+			AND QUE_DIVISION = 'OFFLINE'
+		</if>
+		<if test="unQue != null">
+			AND ANS_STATUS = 'N'
+		</if>
+		ORDER BY QNO DESC
+	</select>
+	
+	<select id="selectSearchQueList" resultMap="queListResultSet" parameterType="QueSearchCondition">
+		SELECT QNO, Q.MNO, QTITLE, QTYPE, M.NAME, M.PHONE, QDATE, QCONTENT, ANS_STATUS, DEL_STATUS, QPWD, PWD_STATUS, QUE_DIVISION
+		FROM QUE Q
+		LEFT JOIN MEMBER M ON(Q.MNO = M.MNO)
+		WHERE DEL_STATUS = 'N'
+		<if test="clientName != null">
+			AND M.NAME LIKE '%' || #{clientName} || '%'
+		</if>
+		<if test="clientPhone != null">
+			AND M.PHONE LIKE '%' || #{clientPhone} || '%'
+		</if>
+		<if test="queTitle != null">
+			AND Q.QTITLE LIKE '%' || #{queTitle} || '%'
+		</if>
+		<if test="queType != null">
+			AND Q.QTYPE = #{queType}
+		</if>
+		ORDER BY QNO DESC
+	</select>
+	
+	<select id="selectQueDetail" resultMap="queDetailResultSet" parameterType="Que">
+		SELECT M.NAME, NVL(M.EMAIL, '정보없음') AS EMAIL, NVL(M.PHONE, '정보없음') AS PHONE, Q.QTYPE, Q.QDATE, QTITLE, QCONTENT, ACONTENT, Q.QNO
+		FROM QUE Q
+		JOIN MEMBER M ON(Q.MNO = M.MNO)
+		LEFT JOIN ANS A ON(A.QNO = Q.QNO)
+		WHERE Q.QNO = #{qno} AND Q.MNO = #{mno}
+	</select>
+	
+	<select id="insertOfflineMember" parameterType="Que">
+		INSERT INTO MEMBER(MNO, NAME, PHONE, EMAIL, STATUS, TYPE, MMEMO)
+		VALUES(SEQ_MNO.NEXTVAL, #{userName}, #{phone}, NULL, 'Y', 'CLIENT', #{queOfflineDate})
+	</select>
+	
+	<select id="selectOfflineMember" parameterType="Que" resultType="_int">
+		SELECT M.MNO
+		FROM MEMBER M
+		WHERE M.NAME = #{userName} AND PHONE = #{phone} AND MMEMO = #{queOfflineDate}
+	</select>
+	
+	<select id="insertQue" parameterType="Que">
+		INSERT INTO QUE(QNO, MNO, QTYPE, QTITLE, QDATE, QCONTENT, ANS_STATUS, DEL_STATUS, QPWD, PWD_STATUS, QUE_DIVISION)
+		VALUES( SEQ_QNO.NEXTVAL, #{mno}, #{qtype}, #{qtitle}, SYSDATE, #{qcontent}, 'Y', 'N', NULL, 'N', 'OFFLINE')
+	</select>
+	
+	<select id="selectQueNo" parameterType="Que" resultType="_int">
+		SELECT QNO
+		FROM QUE
+		WHERE MNO = #{mno} AND QTYPE = #{qtype} AND QTITLE = #{qtitle} AND QCONTENT = #{qcontent}
+	</select>
+	
+	<select id="insertAns" parameterType="Que">
+		INSERT INTO ANS(ANO, QNO, MNO, ACONTENT, ADATE)
+		VALUES(SEQ_ANO.NEXTVAL, #{qno}, #{mno}, #{queAnswer}, SYSDATE)
+	</select>
+	
+	<select id="insertAnswer" parameterType="Que">
+		INSERT INTO ANS(ANO, QNO, MNO, ACONTENT, ADATE)
+		VALUES(SEQ_ANO.NEXTVAL, #{qno}, #{mno}, #{queAnswer}, SYSDATE)
+	</select>
+	
+	<select id="updateQueAns" parameterType="Que">
+		UPDATE QUE
+		SET ANS_STATUS = 'Y'
+		WHERE QNO = #{qno}
 	</select>
 	
 </mapper>
