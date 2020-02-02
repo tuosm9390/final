@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta content="5e31127002f57e00366eedc7" name="bootpay-application-id" />
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 <script src="https://cdn.bootpay.co.kr/js/bootpay-3.0.2.min.js"
 	type="application/javascript"></script>
 <script

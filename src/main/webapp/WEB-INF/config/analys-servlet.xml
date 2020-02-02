@@ -23,6 +23,13 @@
 	
 	<context:component-scan base-package="com.kh.hotels" />
 	
+	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView"/>
+	
+		<!-- 뷰 리졸버 설정 -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<!-- 우선순위설정 -->
+		<beans:property name="order" value="1"/>
+	</beans:bean>
 	
 	
 </beans:beans>
