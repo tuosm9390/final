@@ -121,7 +121,6 @@
 		JOIN NOSHOW N ON (I.HNAME = N.HNAME)
 		JOIN CAL C ON (I.HNAME = C.HNAME)
 		JOIN BASIC B ON (I.HNAME = B.HNAME)
-		WHERE I.HNAME = 'Boutique'
 	</select>
 	
 	<select id="ajxFindClient" resultMap="memberSet" parameterType="java.lang.String">

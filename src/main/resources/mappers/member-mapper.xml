@@ -7,7 +7,7 @@
 	
 	<resultMap type="com.kh.hotels.mngMember.model.vo.Member" id="resultSetMember">
 	
-		<id property="mno" column="MNO"/>
+		<result property="mno" column="MNO"/>
 		<result property="userName" column="NAME"/>
 		<result property="phone" column="PHONE"/>
 		<result property="email" column="EMAIL"/>
@@ -52,10 +52,7 @@
 	</select>
 	
 	<select id="selectMember" parameterType="Member" resultMap="resultSetMember">
-		SELECT *
-		FROM MEMBER M 
-		JOIN STAFF S ON(M.MNO = S.MNO)
-		WHERE S.STF_ID = #{userId}
+		SELECT M.MNO, NAME, PHONE, EMAIL, STATUS, TYPE, MMEMO, STF_ID, STF_PWD, AUTH_NO, DEPT_NO, PWD_STATUS FROM MEMBER M JOIN STAFF S ON(M.MNO = S.MNO) WHERE S.STF_ID = #{userId}
 	</select>
 	
 	<select id="updateMemberPwd" parameterType="Member">

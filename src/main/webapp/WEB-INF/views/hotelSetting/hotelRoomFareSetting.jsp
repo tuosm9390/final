@@ -102,7 +102,7 @@
 		color:black;
 	}
 </style>
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 </head>
 <body>
 	<div class="contentArea">
