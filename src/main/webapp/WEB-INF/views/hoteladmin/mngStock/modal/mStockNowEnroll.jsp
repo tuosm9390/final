@@ -18,7 +18,7 @@
 	z-index: 2;
 }
 
- .modal_contents {
+ .modal_contentsEnroll {
 	position: absolute;
 	left: 50%;
 	top: 45%;
@@ -82,7 +82,7 @@ cursor: pointer;
 </head>
 <body>
 	<div class="modalEnroll">
-		<div class="modal_contents">
+		<div class="modal_contentsEnroll">
 			<div class="titleBarplus">
             <h2>물품등록</h2>
             <a class="btn_close_plus">×</a>

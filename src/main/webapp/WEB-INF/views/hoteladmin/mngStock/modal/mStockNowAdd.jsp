@@ -51,7 +51,7 @@ color:darkgray;
 cursor: pointer;
 }
 
-.btn_close_plus {
+.btn_close_pluss {
    position: absolute;
    top: -1%;
    left: 95.5%;
@@ -60,7 +60,7 @@ cursor: pointer;
    color: white;
 }
 
-.btn_close_plus:hover {
+.btn_close_pluss:hover {
    cursor: pointer;
 }
 
@@ -83,7 +83,7 @@ cursor: pointer;
 		<div class="modal_contentDetailAdd">
 			<div class="titleBarplus">
             <h2>창고상세</h2>
-            <a class="btn_close_plus">×</a>
+            <a class="btn_close_pluss">×</a>
          </div>
 			
 			<div class="modal_content_realDetail">
@@ -94,7 +94,7 @@ cursor: pointer;
 
 	<script>
 		$(document).ready(function() {
-			$(".btn_close_plus").click(function() {
+			$(".btn_close_pluss").click(function() {
 				$(".modalDetailAdd").fadeOut();
 			});
 		});

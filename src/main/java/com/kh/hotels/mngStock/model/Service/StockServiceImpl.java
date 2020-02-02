@@ -65,6 +65,12 @@ public class StockServiceImpl implements StockService{
 		return sd.insertCategory(sqlSession,it);
 	}
 
+	@Override
+	public ArrayList<ItemType> selectScategory() {
+		// TODO Auto-generated method stub
+		return sd.selectScategory(sqlSession);
+	}
+
 
 	
 	

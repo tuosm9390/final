@@ -70,8 +70,8 @@
 		<form action="insertStock.sto" method="post" id="insertStock">
 		<div class="bodyDiv">
 		
-		<div>	<div class="same" id="ssam">품목명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="iName"></div>  </div>
-		<div>	<div class="same" id="ssam">품목그룹</div>  <div class="same"><button>검색</button>&nbsp;<input type="text" class="space" style="width:550px" id="sam" name="sCategory"></div>  </div>
+		<div>	<div class="same" id="ssam">물품명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="iName"></div>  </div>
+		<div>	<div class="same" id="ssam">품목그룹</div>  <div class="same"><select style="width: 150px; height: 24px" id="sCategoryFilter"><option hidden="hidden">검색조건</option></select></div>
 		<div>	<div class="same" id="ssam">매입처</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnName"></div>  </div>
 		 <div>	<div class="same" id="ssam">제조사</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="mfg"></div>  </div>
 		 <div>	<div class="same" id="ssam">단가</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="up"></div>  </div>
@@ -89,5 +89,8 @@ $(function(){
 		$("#insertStock").submit();
 	})
 })
+
+		
+
 </script>
 </html>

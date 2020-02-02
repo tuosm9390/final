@@ -28,6 +28,8 @@ public interface StockService {
 
 	int insertCategory(ItemType it);
 
+	ArrayList<ItemType> selectScategory();
+
 	
 
 }

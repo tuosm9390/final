@@ -381,17 +381,14 @@ width:1000px;
 			location.href='selectRepair.sto';
 		})
 		
-		//신규등록
-		$("#new").click(function(){
-			$(".modalEnroll").fadeIn();
-		});
+		
 		
 		//품목추가
 		
 		$("#addCategory").click(function(){
 			$(".modalDetailAdd").fadeIn();
 			$("#mselect").attr('disabled',true);
-			$("#sselect").attr('disabled',true);
+			$("#sselect").attr('disabled',true); 
 			console.log($("#lselect").val());
 			//
 			category();
@@ -436,9 +433,33 @@ width:1000px;
 				}
 				
 			});
-		}
+		};
 		
-		
+		//신규등록
+		$("#new").click(function(){
+			$(".modalEnroll").fadeIn();
+			
+			//sCategory ajax
+				$.ajax({
+				url:"selectScategory.sto",
+				type:"post",
+				data:{},
+				success:function(data){
+					console.log(data);
+					console.log(data.sCategoryList.sCategory);
+					$("#sCategoryFilter").empty();
+					$("#sCategoryFilter").append("<option hidden='hidden'>품목그룹</option>");
+					for(var i=0;i<data.sCategoryList.length;i++){
+						$("#sCategoryFilter").append("<option value='"+data.sCategoryList[i].sCategory+"'>"+data.sCategoryList[i].sCategory+"</option>");
+						
+					}
+				},
+				error:function(status){
+					console.log(status)
+				}
+			})
+			
+		}); 
 		
 	</script>
 	

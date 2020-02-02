@@ -112,6 +112,12 @@
 		INSERT INTO ITEM_TYPE(TYPE_NO,TYPE,LCATEGORY,MCATEGORY,SCATEGORY)
 		VALUES(SEQ_TYPE_NO.NEXTVAL,#{type},#{lCategory},#{mCategory},#{sCategory})
 	</insert>
+	
+	<select id="selectScategory" resultMap="resultSetType">
+		SELECT SCATEGORY,TYPE_NO
+		FROM ITEM_TYPE
+		ORDER BY SCATEGORY ASC
+	</select>
 </mapper>
 
  
