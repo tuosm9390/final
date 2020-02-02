@@ -3,10 +3,12 @@ package com.kh.hotels.mngRooms.model.service;
 import java.util.ArrayList;
 
 import com.kh.hotels.mngMember.model.vo.Member;
+import com.kh.hotels.mngRooms.model.exception.InsertStayException;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
+import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
 
 public interface RoomsService {
@@ -17,8 +19,18 @@ public interface RoomsService {
 
 	ArrayList<ServiceList> viewServiceList() throws RoomListException;
 
+	RuleInfo viewRuleInfo() throws RoomListException;
+	
 	ArrayList<Member> ajxFindClient(String searchName);
 
-	void insertCheckIn(CheckIn checkIn);
+	void ajxInsertClient(CheckIn newClient) throws InsertStayException;
+
+	ArrayList<Member> ajxFindTempClient(String hipen);
+
+	void insertTempMember(CheckIn checkIn) throws InsertStayException;
+
+	int selectMno(String clientName);
+
+	void insertCheckIn(CheckIn checkIn) throws InsertStayException;
 
 }

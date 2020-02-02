@@ -257,6 +257,10 @@ select[name=selRoomType], select[name=selRoomNum] {
 	margin-top: 22px;
 	width: 400px;
 }
+.vfeeDetailBar table {
+	margin-top: 0px;
+	width: 400px;
+}
 
 .feeDetailSec {
 	width: 400px;
@@ -283,7 +287,7 @@ select[name=selRoomType], select[name=selRoomNum] {
 }
 
 .svcDetailBar table {
-	margin-top: 22px;
+	margin-top: 4px;
 	width: 400px;
 }
 
@@ -348,7 +352,7 @@ input[name=svcFee], input[name=svcTot] {
 }
 
 .totalDetailBar table {
-	margin-top: 22px;
+	margin-top: 10px;
 	width: 400px;
 }
 
@@ -617,6 +621,16 @@ input[type=number]:disabled {
 					<table style="border-collapse: collapse;">
 					</table>
 				</div>
+				
+				<div class="vfeeDetailBar">
+					<table>
+						<tr>
+							<td width="20%"><h4>봉사료</h4></td>
+							<td style="text-align:right;" width="80%"><h4 id="totalVlt"></h4></td>
+							<input type="hidden" name="totalVlt" id="iptTotalVlt" value="0">
+						</tr>
+					</table>
+				</div>
 
 				<div class="svcDetailBar">
 					<table>
@@ -659,19 +673,19 @@ input[type=number]:disabled {
 					<table>
 						<tr>
 							<td>신용카드</td>
-							<td><input type="number" name="creditCard" id="payCard" min="0" onchange="payMoney()"></td>
+							<td><input type="number" name="creditCard" id="payCard" min="0" onchange="payMoney()" value="0"></td>
 						</tr>
 						<tr>
 							<td>현금</td>
-							<td><input type="number" name="cash" min="0" id="payCash" onchange="payMoney()"></td>
+							<td><input type="number" name="cash" min="0" id="payCash" onchange="payMoney()" value="0"></td>
 						</tr>
 						<tr>
 							<td>계좌이체</td>
-							<td><input type="number" name="account" min="0" id="payAcc" onchange="payMoney()"></td>
+							<td><input type="number" name="account" min="0" id="payAcc" onchange="payMoney()" value="0"></td>
 						</tr>
 						<tr>
 							<td>환불</td>
-							<td><input type="number" name="refund" min="0" id="payRfd" onchange="payMoney()"></td>
+							<td><input type="number" name="refund" min="0" id="payRfd" onchange="payMoney()" value="0"></td>
 						</tr>
 						<tr>
 							<td colspan="2">최종결제일 : <span id="lastPayDay"></span></td>
@@ -747,8 +761,9 @@ input[type=number]:disabled {
 		//총금액 변경 함수
 		function changeTotalPrcTxt() {
 			var prc1 = parseInt($("#totalRoom").text().replace(/,/g , '')); 
+			var prc3 = parseInt($("#totalVlt").text().replace(/,/g , '')); 
 			var prc2 = parseInt($("#totalSvc").text().replace(/,/g , '')); 
-			var sum = prc1 + prc2;
+			var sum = prc1 + prc2 + prc3;
 			$("#totalPrc").text(sum.toLocaleString()); 
 			changeChargePrcTxt();
 			changePrcIH();
@@ -757,6 +772,7 @@ input[type=number]:disabled {
 		//input hidden 값 변경 함수
 		function changePrcIH() {
 			$("#iptTotalRoom").val(parseInt($("#totalRoom").text().replace(/,/g , '')));
+			$("#iptTotalVlt").val(parseInt($("#totalVlt").text().replace(/,/g , '')));
 			$("#iptTotalSvc").val(parseInt($("#totalSvc").text().replace(/,/g , '')));
 			$("#iptTotalPrc").val(parseInt($("#totalPrc").text().replace(/,/g , '')));
 		}
@@ -780,6 +796,7 @@ input[type=number]:disabled {
 				$(".feeDetailSec tr").remove();
 				$(".svcDetailSec tr:not(:first)").remove();
 				$("#personCnt option").remove();
+				$("#insertClient").text('추가');
 				$(".modal").fadeOut();
 			});
 			
@@ -919,6 +936,7 @@ input[type=number]:disabled {
 					$("#clientPhone").val(clientList[i].phone);
 					$("#clientEmail").val(clientList[i].email);
 					$("#clientNo").val(mno);
+					$("#insertClient").text(mno);
 				}
 			}
 		}
@@ -926,11 +944,13 @@ input[type=number]:disabled {
 		$("#selRoomType").change(function(){
 			var rmType = $(this).val();
 			var cnt = 0;
+			var stdPer = 0;
 			for(var i = 0; i < roomlist.length; i++) {
 				if(roomlist[i].rtName != rmType) {
 					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
 				} else {
 					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+					stdPer = roomlist[i].stdPer;
 					if($("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop('disabled')) {
 					} else {
 						cnt++;
@@ -941,6 +961,11 @@ input[type=number]:disabled {
 					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop("selected", true);
 					cnt++;
 				}
+			}
+			
+			$("#personCnt option").remove();
+			for(var i = 1; i <= stdPer; i++) {
+				$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
 			}
 		});
 		

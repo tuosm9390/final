@@ -161,6 +161,7 @@
 	color: white;
 	font-weight: bold;
 }
+
 </style>
 </head>
 <body>
@@ -176,15 +177,15 @@
 					<table>
 						<tr>
 							<td>고객번호</td>
-							<td><input type="text" value="20292030" readonly></td>
+							<td><input type="text" readonly></td>
 							<td>전화</td>
-							<td><input type="tel"></td>
+							<td><input type="tel" id="inputTel" maxlength="11" placeholder=" '-'를 제외하고 입력"></td>
 						</tr>
 						<tr>
 							<td>* 고객명</td>
-							<td><input type="text"></td>
+							<td><input type="text" id="inputName"></td>
 							<td>이메일</td>
-							<td><input type="email"></td>
+							<td><input type="email" id="inputEmail"></td>
 						</tr>
 					</table>
 				</div>
@@ -271,6 +272,33 @@
 		$("#changeHisPlus").click(function(){
 			$(".stayHisSec").hide();
 			$(".changeHisSec").show();
+		});
+		
+		$("#inputEmail").keyup(function(event){
+			var email = $("#inputEmail").val();
+			var check = /(\w{4,})@(\w{1,})\.(\w{1,3})/ig;
+			if(check.test(email)){
+				$("#inputEmail").css({"border":"1px solid darkgray"});
+			} else {
+				$("#inputEmail").css({"border":"2px solid red"});
+			}
+		});
+		
+		$("#saveBtnPlus").click(function(){
+			var cName = $("#inputName").val();
+			var cTel = $("#inputTel").val();
+			var cEmail = $("#inputEmail").val();
+			$.ajax({
+				url:"ajxInsertClient.ro",
+				data:{cName:cName, cTel:cTel, cEmail:cEmail},
+				type:"post",
+				success:function(data){
+					$(".modalplus").fadeOut();
+				},
+				error:function(error, status){
+					alert("SYSTEM ERROR!");
+				}
+			});
 		});
 	</script>
 </body>

@@ -443,6 +443,7 @@ input[type=checkbox] {
 			var roomlist;
 			var roomprice;
 			var svclist;
+			var ruleInfo;
 			var today;
 			
 			//onload
@@ -455,7 +456,8 @@ input[type=checkbox] {
 				roomlist = JSON.parse('${jsonList}');
 				roomprice = JSON.parse('${jsonList2}');
 				svclist = JSON.parse('${jsonList3}');
-				today = new Date().format("yyyy-MM-dd");
+				ruleInfo = JSON.parse('${jsonObject}');
+				today = new Date().format('yyyy-MM-dd');
 				console.log(roomlist);
 				
 				var stEmpty = roomlist.length;
@@ -476,7 +478,12 @@ input[type=checkbox] {
 						//입실대기 (예약)
 						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("lightsteelblue");
 						stReserv++;
-						var reservname = roomlist[r].reservname.substring(0, 1) + " * " + roomlist[r].reservname.substring(2);
+						var reservname;
+						if(roomlist[r].reservname.indexOf('-') == -1) {
+							reservname = roomlist[r].reservname.substring(0, 1) + " * " + roomlist[r].reservname.substring(2);
+						} else {
+							reservname = roomlist[r].reservname;
+						}
 						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(reservname);
 						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
 						$("#roomBox" + roomlist[r].rmNo).children(".reservRoom").css({"display":"block"});
@@ -484,7 +491,12 @@ input[type=checkbox] {
 						//투숙
 						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("mediumseagreen");
 						stSleep++;
-						var stayname = roomlist[r].sname.substring(0, 1) + " * " + roomlist[r].sname.substring(2);
+						var stayname;
+						if(roomlist[r].sname.indexOf('-') == -1) {
+							stayname = roomlist[r].sname.substring(0, 1) + " * " + roomlist[r].sname.substring(2);
+						} else {
+							stayname = roomlist[r].sname;
+						}
 						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(stayname);
 						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
 						$("#roomBox" + roomlist[r].rmNo).children(".fullRoom").css({"display":"block"});
@@ -492,10 +504,11 @@ input[type=checkbox] {
 						//대실
 						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("gold");
 						stRent++;
-						if(roomlist[r].sname.length < 6) {
-							var stayname = roomlist[r].sname.substring(0, 1) + " * " + roomlist[r].sname.substring(2);	
+						var stayname;
+						if(roomlist[r].sname.indexOf('-') == -1) {
+							stayname = roomlist[r].sname.substring(0, 1) + " * " + roomlist[r].sname.substring(2);
 						} else {
-							var stayname = roomlist[r].sname;
+							stayname = roomlist[r].sname;
 						}
 						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(stayname);
 						var dateConvert = function(date) {
@@ -652,9 +665,27 @@ input[type=checkbox] {
 			});
 			
 			
-			
+			function namecntfunc(n, width) {
+				  n = n + '';
+				  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+			}
 			//모달1 : [ 재실 ] 버튼 클릭 (= 공실)
 			function goRoom(rmNo) {
+				var nametoday = new Date().format('yyyyMMdd');
+				var namecnt = 0;
+				$.ajax({
+					url:"ajxFindTempClient.ro",
+					data:{hipen:nametoday},
+					type:"post",
+					success:function(data){
+						namecnt = data.tempClientCnt + 1;
+						$("#clientName").val(nametoday + "-" + namecntfunc(namecnt, 3));
+					},
+					error:function(error, status){
+						alert("SYSTEM ERROR!");
+					}
+				});
+				
 				var totalPrc;
 				$("#ciCancelBtn").hide();
 				$("#rsvCancelBtn").hide();
@@ -766,6 +797,7 @@ input[type=checkbox] {
 						}
 					}
 					$("#totalRoom").text(totalFee.toLocaleString());
+					$("#totalVlt").text((totalFee * ruleInfo.serviceRate).toLocaleString());
 					changeTotalPrcTxt();
 					
 					return totalFee;
@@ -899,7 +931,7 @@ input[type=checkbox] {
 		<script>
 		//대실 남은 시간 계산 javascript
 			function CountDownTimer(dt, rmNo){
-				dt.setHours(dt.getHours() + 6);
+				dt.setHours(dt.getHours() + ruleInfo.rentUnit);
 				dt.setMinutes(dt.getMinutes() + 1);
 	            var end = new Date(dt);
 	            
