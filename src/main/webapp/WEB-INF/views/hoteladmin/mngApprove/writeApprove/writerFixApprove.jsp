@@ -97,10 +97,30 @@ textarea {
 .tbl3_wrap .payTbl td {
 	padding:10px;
 }
-#noTxt {
+.noTxt {
 	width:70px;
 }
-#anoTxt {
+.anoTxt {
+	border-radius:3px;
+	height:17px;
+	border:1px solid lightgray;
+}
+.anoTxt_ino {
+	border-radius:3px;
+	height:17px;
+	border:1px solid lightgray;
+}
+.anoTxt_price {
+	border-radius:3px;
+	height:17px;
+	border:1px solid lightgray;
+}
+.anoTxt_iname {
+	border-radius:3px;
+	height:17px;
+	border:1px solid lightgray;
+}
+.anoTxt_cname {
 	border-radius:3px;
 	height:17px;
 	border:1px solid lightgray;
@@ -159,9 +179,10 @@ textarea {
 </header>
 	<section>
 	<div class="inArea">
+	<form action="insertRepairRequest.ap" method="get">
 	<div class="resultBtnFix">
 				<button id="pre" onclick="preWatch();">미리보기</button>
-				<button id="submit">기안하기</button>
+				<button id="submit" type="button" onclick="insertRepair();">기안하기</button>
 			</div>
 	<div class="tbl_wrap fix">
 	<table class="tbl">
@@ -180,15 +201,15 @@ textarea {
 				</tr>
 				<tr class="tbl_tit">
 					<td>문서번호</td>
-					<td colspan="3"><input type="text" id="txt" placeholder="2020-01" style="text-align:center;"></td>
+					<td colspan="3"style="text-align:center;"><input type="text" name="docno" id="docuNo"></td>
 					
 					
 				</tr>
 				<tr class="tbl_tit">
 					<td>기안부서</td>
-					<td><input type="text" id="txt" placeholder="구매팀"></td>
+					<td>시설관리팀</td>
 					<td>기안자</td>
-					<td><input type="text" id="txt" placeholder="이름을 입력하세요"></td>
+					<td><c:out value="${sessionScope.loginUser.userName }"/><input type="hidden" value="${sessionScope.loginUser.mno }" name="mname"></td>
 					
 				</tr>
 				
@@ -219,7 +240,7 @@ textarea {
 			</table><br><br>
 			
 			<div class="tbl3_wrap">
-				<button id="plusBtn4">+ 추가</button><br>
+				<button id="plusBtn4" type="button">+ 추가</button><br>
 			<table class="payTbl fix">
 				<colgroup>
 					<col width="10%">
@@ -230,7 +251,7 @@ textarea {
 					<col width="15%">
 					
 				</colgroup>
-				<tr>
+				<tr class="repairTr">
 					<th>No</th>
 					<th>제품코드</th>
 					<th>제품 명</th>
@@ -238,13 +259,13 @@ textarea {
 					<th>금액</th>
 					<th>수리사유</th>
 				</tr>
-				<tr >
-					<td><input type="text" id="noTxt" placeholder="No"></td>
-					<td><input type="text" id="anoTxt" placeholder="항목"></td>
-					<td><input type="text" id="anoTxt" placeholder="품목명"></td>
-					<td><input type="text" id="anoTxt" placeholder="수량"></td>
-					<td><input type="text" id="anoTxt" placeholder="공급가액"></td>
-					<td><input type="text" id="anoTxt" placeholder="금액"></td>
+				<tr class="repeat">
+					<td>1</td>
+					<td><input type="text" class="anoTxt_ino" style="text-align:center;"></td>
+					<td><input type="text" class="anoTxt_iname" placeholder="품목명" readonly style="text-align:center;"></td>
+					<td><input type="text" class="anoTxt_cname" placeholder="수량" style="text-align:center;"></td>
+					<td><input type="text" class="anoTxt_price" placeholder="공급가액" style="text-align:center;"></td>
+					<td><input type="text" class="anoTxt_rsn" placeholder="금액" style="text-align:center;"></td>
 				</tr>
 				
 			</table>
@@ -260,11 +281,12 @@ textarea {
 				</colgroup>
 				<tr>
 					<td colspan="2" id="total">총금액</td>
-					<td colspan="4"><input type="text" id="txtLong"></td>
+					<td colspan="4"><input type="text" id="txtLong" style="text-align:center;"></td>
 				</tr>
 			</table>
 			</div>
 </div>
+</form>
 </div>
 <div style="height:200px;">
 	
@@ -272,22 +294,111 @@ textarea {
 </section>
 <script>
 	$(function(){
-		$("#plusBtn4").click(function() {
+		
+		var now = new Date();
+	       var year = now.getFullYear();
+	       var month = now.getMonth() + 1;    //1월이 0으로 되기때문에 +1을 함.
 
-					var plusTable = "<tr>";
-					plusTable += "<td> <input type='text' id='noTxt' placeholder='구매팀'></td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </div> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </td>"
-					plusTable += "<td> <input type='text' id='anoTxt' placeholder='구매팀'> </td>"
-					plusTable += "</tr>"
-					var n = $(".payTbl.fix").eq(0);
-
-					n.append(plusTable);
-
-				})
+	       if((month + "").length < 2){        //2자리가 아니면 0을 붙여줌.
+	           month = "0" + month;
+	       }
+	        // ""을 빼면 year + month (숫자+숫자) 됨.. ex) 2018 + 12 = 2030이 리턴됨.
+	       var today = ""+year + month; 
+	      var random = Math.floor(Math.random() * 1000) + 1;
+	      var docuNum = today.concat(random);
+	      //var docuNum = 
+	      
+	      
+	      
+	      //$(".tbl tr").children().find(".txt_docu").val(docuNum);
+	      //$(".txt_docu").text(docuNum);
+	            
+	      //startDate();
+	      $(".tbl tr:nth-child(2)").children().eq(1).find("#docuNo").val(docuNum);
+		
+		
+		
+		
+		
 	});
+	
+	$(document).on("keyup", ".anoTxt_ino", function(){
+		
+		var idx = $(this).parents("tr").index();
+		console.log(idx);
+		var value = $(this).val();
+		console.log(value)
+		
+		$.ajax({
+			url:"repairIname.ap",
+			type:"get",
+			data:{
+				value:value
+			},
+			success:function(data) {
+				console.log(data);
+				
+				$(".payTbl.fix tr").eq(idx).find(".anoTxt_iname").val(data.iname);
+				console.log(data.iname);
+				
+				
+			},
+			error:function(data) {
+				
+			}
+		})
+		
+		
+	});
+	$(document).on("keyup", ".anoTxt_price", function(){
+		$(this).val();
+		//console.log($(this).val());
+		var idx = $(this).parents("tr").index();
+		console.log(idx);
+		var totalPrice = "";
+		//var price = $(".payTbl.fix tr").find(".anoTxt_price").val();
+		for(var i = 0; i < idx; i++) {
+			var price = $(".payTbl.fix tr").eq(idx).find(".anoTxt_price").val();
+			if(idx == 1) {
+				totalPrice = price*1;				
+			}else {
+			totalPrice += price*1;
+				
+			}
+		}
+		$(".payTbl.Area tr").find("#txtLong").val(totalPrice);
+		
+		//$(".payTbl.Area tr")
+		
+	});
+	
+	
+	$("#plusBtn4").click(function() {
+
+		/* var plusTable = "<tr>";
+		plusTable += "<td> <input type='text' class='noTxt' placeholder='구매팀'></td>"
+		plusTable += "<td> <input type='text' class='anoTxt' placeholder='구매팀'> </td>"
+		plusTable += "<td> <input type='text' class='anoTxt' placeholder='구매팀'> </div> </td>"
+		plusTable += "<td> <input type='text' class='anoTxt' placeholder='구매팀'> </td>"
+		plusTable += "<td> <input type='text' class='anoTxt' placeholder='구매팀'> </td>"
+		plusTable += "<td> <input type='text' class='anoTxt' placeholder='구매팀'> </td>"
+		plusTable += "</tr>"
+		var n = $(".payTbl.fix").eq(0);
+
+		n.append(plusTable); */
+		
+		var valueTd = $(".payTbl.fix tr:last-child").children().eq(0).text();
+		console.log(valueTd);
+		var tblClone = $(".payTbl.fix tr:last-child").clone();
+		tblClone.children().children().val("");
+		tblClone.children().eq(0).text((valueTd*1+1));
+		
+		
+		$(".payTbl.fix").append(tblClone);
+		//tblClone.children().eq(0).
+		
+
+	})
 </script>
 
 

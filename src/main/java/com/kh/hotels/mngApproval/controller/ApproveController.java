@@ -246,7 +246,6 @@ public class ApproveController {
 				mv.setViewName("jsonView");
 
 
-				System.out.println("list : " + list);
 
 				return mv;
 
@@ -329,85 +328,109 @@ public class ApproveController {
 
 	}
 	@RequestMapping("insertPurchase.ap")
-	public ModelAndView insertPurchase(HttpServletRequest request, Model m, String docno, String rptDate, 
-			String sname, String mname, String smno, String title, String content, String type, String cname, String iname, String mfg, String vosPrice, String amount,
-			String price, String totPrice, String ino ) {
-
-		System.out.println("박상준짱꺠");
-
-		PurRequest pRequest = new PurRequest();
-
-		System.out.println("docno : " + docno);
-		System.out.println("rptDate : " + rptDate);
-		System.out.println("sname : " + sname);
-		System.out.println("smno : " + smno);
-		System.out.println("title : " + title);
-		System.out.println("content : " + content);
-		System.out.println("type : " + type);
-		System.out.println("cname : " + cname);
-		System.out.println("iname : " + iname);
-		System.out.println("mfg : " + mfg);
-		System.out.println("vosPrice : " + vosPrice);
-		System.out.println("amount : " + amount);
-		System.out.println("price : " + price);
-		System.out.println("totPrice : " + totPrice);
-		System.out.println("ino : " + ino);
-		System.out.println("mmno : " + mname);
-		System.out.println("smno : " + smno);
+	public String insertPurchase(HttpServletRequest request, Model m, String docno, String rptDate, 
+			String sname, String mname, String smno, String title, String content, String type, String cname, String iname, String mfg, String vosprice, String amount,
+			String price, String totPrice, String ino, Model model ) {
 
 
+		System.out.println("처음넘어오는 리스트 : " + ino);
+		
+		/*
+		 * System.out.println("docno : " + docno); System.out.println("rptDate : " +
+		 * rptDate); System.out.println("sname : " + sname);
+		 * System.out.println("smno : " + smno); System.out.println("title : " + title);
+		 * System.out.println("content : " + content); System.out.println("type : " +
+		 * type); System.out.println("mmno : " + mname); System.out.println("smno : " +
+		 * smno);
+		 * 
+		 * System.out.println("cname : " + cname); System.out.println("iname : " +
+		 * iname); System.out.println("mfg : " + mfg); System.out.println("vosPrice : "
+		 * + vosprice); System.out.println("amount : " + amount);
+		 * System.out.println("price : " + price); System.out.println("totPrice : " +
+		 * totPrice); System.out.println("ino : " + ino);
+		 */
+
+		ArrayList<PurRequest> pRequestList = new ArrayList<>();
 
 		//int docNo = Integer.parseInt(docno);
 
 		int mno = Integer.parseInt(mname); 
 		int sno = Integer.parseInt(smno);
-		pRequest.setDeptname("구매팀"); 
-		pRequest.setMmno(mno);
-		pRequest.setRptDate(rptDate); 
-		pRequest.setSmno(sno);
-		pRequest.setSname(sname); 
-		pRequest.setTitle(title);
-		pRequest.setContent(content);
+		int docNo = Integer.parseInt(docno);
+		int totalPrice = Integer.parseInt(totPrice);
+		
+		
 		
 		String[] cName = cname.split(",");
 		String[] iName = iname.split(",");
 		String[] mFg = mfg.split(",");
 		
 		//int
-		String[] vo = vosPrice.split(",");
+		String[] vo = vosprice.split(",");
 		String[] am = amount.split(",");
 		String[] pr = price.split(",");
-		String[] in = ino.split(",,");
+		String[] in = ino.split(",");
 		
 		int[] vos2 = new int[cName.length];
 		int[] amount2 = new int[cName.length];
 		int[] price2 = new int[cName.length];
 		int[] ino2 = new int[cName.length];
 		
+		
+		System.out.println("cName.length : " + cName.length);
+		
+		PurRequest pRequest = null;
+		
+		
+		
+		
 		for(int j = 0; j < cName.length; j++) {
+			pRequest = new PurRequest();
 			vos2[j] = Integer.parseInt(vo[j]);
 			amount2[j] = Integer.parseInt(am[j]);
 			price2[j] = Integer.parseInt(pr[j]);
 			ino2[j] = Integer.parseInt(in[j]);
-					
+			
+			pRequest.setVosprice(vos2[j]);
+			pRequest.setAmount(amount2[j]);
+			pRequest.setPrice(price2[j]);
+			pRequest.setIno(ino2[j]);
+			pRequest.setCname(cName[j]);
+			pRequest.setIname(iName[j]);
+			pRequest.setMfg(mFg[j]);
+			pRequest.setDeptname("구매팀"); 
+			pRequest.setMmno(mno);
+			pRequest.setRptDate(rptDate); 
+			pRequest.setSmno(sno);
+			pRequest.setSname(sname); 
+			pRequest.setTitle(title);
+			pRequest.setContent(content);
+			pRequest.setType(type);
+			pRequest.setDocno(docNo);
+			pRequest.setTotPrice(totPrice);
+			pRequestList.add(pRequest);
+			System.out.println("for문안 pRequestList : " + pRequestList);
 		}
-
-
+		
+		
+		
+		
+		System.out.println("중간pRequestList : " + pRequestList);
+		try {
+			System.out.println("pRequestList : " + pRequestList);
+			int result = as.insertList(pRequestList);
+			model.addAttribute("pRequestList", pRequestList);
+			
+			return "redirect:/documentApproval.ap";
+			
+			
+			
+		} catch (ReportException e) {
+			model.addAttribute("msg", "실패");
+			return "common/errorPage";
+		}
 		
 
-		
-
-
-
-
-
-
-
-
-
-
-
-		return null;
 	}
 
 	
@@ -441,15 +464,12 @@ public class ApproveController {
 		pRequest.setCname(cname);
 		pRequest.setMfg(mfg);
 
-		System.out.println("value : " + mfg);
-		System.out.println("notax : " + cname);
 
 		try {
 			list = as.selectItemName(pRequest);
 
 			mv.addObject("list", list);
 			mv.setViewName("jsonView");
-			System.out.println("씨발 여기 안들어오니? : " + list);
 
 			return mv;
 
@@ -476,9 +496,7 @@ public class ApproveController {
 
 			mv.addObject("list", list);
 			mv.setViewName("jsonView");
-			System.out.println("list : " + list);
 
-			System.out.println("cnName : " + list);
 
 			return mv;
 
@@ -497,10 +515,6 @@ public class ApproveController {
 	@GetMapping("selectVos.ap")
 	public ModelAndView selectVos(HttpServletRequest request, ModelAndView mv, String type, String cnName, String iname, String madeComName) {
 
-		System.out.println("type : " + type);
-		System.out.println("type : " + cnName);
-		System.out.println("type : " + iname);
-		System.out.println("type : " + madeComName);
 
 		/*
 		 * if(type.equals("비품")) { type = ""; type = "EQUIP"; }else { type = ""; type =
@@ -519,11 +533,32 @@ public class ApproveController {
 		mv.addObject("list", list);
 		mv.setViewName("jsonView");
 
-		System.out.println("ㅅㅂ : "+ list);
 
 
 
 		return mv;
+	}
+	@GetMapping("repairIname.ap")
+	public ModelAndView selectRepairIname(HttpServletRequest request, ModelAndView mv, String value) {
+		
+		int ino = Integer.parseInt(value);
+		
+		try {
+			String result = as.selectIname(ino);
+			
+			mv.addObject("iname", result);
+			mv.setViewName("jsonView");
+			return mv;
+			
+		} catch (ReportException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("jsonView");
+			return mv;
+
+		}
+		
+		
+		
 	}
 
 

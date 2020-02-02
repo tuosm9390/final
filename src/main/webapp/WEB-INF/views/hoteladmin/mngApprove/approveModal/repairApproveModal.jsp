@@ -178,21 +178,13 @@
 								<td>제목</td>
 								<td colspan="5">수리 요청서</td>
 							</tr>
-							<tr style="background: lightgray;">
+							<tr style="background: lightgray;" class="repeatRepair">
 								<td>NO</td>
 								<td>제품코드</td>
 								<td>제품 명</td>
 								<td>수리 업체명</td>
 								<td>금액</td>
 								<td>수리사유</td>
-							</tr>
-							<tr id="repeatRepair">
-								<td>1</td>
-								<td></td>
-								<td>LG 36인치 TV</td>
-								<td>2</td>
-								<td>1000000</td>
-								<td>2000000</td>
 							</tr>
 							<tr>
 								<td colspan="2">총 금액</td>
@@ -223,6 +215,18 @@
 	<script>
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
+				$("#tbl_modal_repair tr:first-child").children().eq(1).val('');
+				$("#tbl_modal_repair tr:nth-child(2)").children().eq(1).val('');
+				$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).val('');
+				$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).val('');
+				$("#tbl_modal_repair tr:nth-child(3)").children().eq(1).val('');
+				$("#tbl_modal_repair tr:nth-child(4)").children().eq(1).val('');
+				$("#tbl_modal_repair tr:nth-child(5)").children().eq(1).val('');
+				$("#tbl_modal_repair tr:nth-child(6)").children().eq(1).val('');
+				$(".repeatRepair").children().val('');
+				$("#totalPrice").children().eq(1).val('');
+				$("#content").val('');
+				
 				$(".modal_repair").fadeOut();
 			});
 		});

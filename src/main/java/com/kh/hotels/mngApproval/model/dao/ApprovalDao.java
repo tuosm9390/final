@@ -42,6 +42,12 @@ public interface ApprovalDao {
 
 	List<String> selectItemName(SqlSessionTemplate sqlSession, PurRequest pRequest);
 
-	int insertPurchase(SqlSessionTemplate sqlSession, PurRequest purRequest);
+	int insertPurchase(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
+
+	int selectRptNo(SqlSessionTemplate sqlSession, int docNo);
+
+	int insertPurRequest(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
+
+	String selectIname(SqlSessionTemplate sqlSession, int ino);
 
 }

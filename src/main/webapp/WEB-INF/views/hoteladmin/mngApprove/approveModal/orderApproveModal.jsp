@@ -184,7 +184,7 @@
 						<td>제목</td>
 						<td colspan="6"></td>
 					</tr>
-					<tr style="background:lightgray;">
+					<tr style="background:lightgray;" class="tempOrder">
 						<td>NO</td>
 						<td>항목</td>
 						<td>품목명</td>
@@ -194,15 +194,6 @@
 						<td>금액</td>
 					</tr>
 					
-					<tr id="repeatOrder">
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
 					<tr id="totalPrice">
 						<td colspan="2" style="text-align:center;">총 금액</td>
 						<td colspan="5"  style="text-align:right;"> </td>
