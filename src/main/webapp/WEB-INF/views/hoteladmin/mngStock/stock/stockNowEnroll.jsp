@@ -72,11 +72,12 @@
 		
 		<div>	<div class="same" id="ssam">물품명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="iName"></div>  </div>
 		<div>	<div class="same" id="ssam">품목그룹</div>  <div class="same"><select style="width: 150px; height: 24px" id="sCategoryFilter"><option hidden="hidden">검색조건</option></select></div>
-		<div>	<div class="same" id="ssam">매입처</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnName"></div>  </div>
-		 <div>	<div class="same" id="ssam">제조사</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="mfg"></div>  </div>
+		<div>	<div class="same" id="ssam">매입처</div>  <div class="same"></div><select style="width: 150px; height: 24px" id="cnName"><option hidden="hidden">검색조건</option></select>  </div>
+		 <div>	<div class="same" id="ssam">제조사</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="mfg"></div></div>
 		 <div>	<div class="same" id="ssam">단가</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="up"></div>  </div>
 		 <div>	<div class="same" id="ssam">부가세</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="vat"></div>  </div>
 		 <div>	<div class="same" id="ssam">공급가액</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="vos"></div>  </div>
+		 <div>	<div class="same" id="ssam">개수</div>  <div class="same"><input type="number" class="space" style="width:100px" id="sam" name="unit"></div>  </div>
 		 <div>	<div class="same" id="ssam">품목구분</div>  <div class="same"><input type="radio" name="type" value="EQUIP">비품&nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="CONS">소모품</div>  </div>
 		</div><!-- end -->
 		</form>
@@ -90,6 +91,26 @@ $(function(){
 	})
 })
 
+$("#sCategoryFilter").change(function(){
+	var cnName = $(this).val();
+	
+	$.ajax({
+		url:"selectCnName.sto",
+		type:"post",
+		data:{cnName:cnName},
+		success:function(data){
+			console.log(data);
+			$("#cnName").empty();
+			$("#cnName").append("<option hidden='hidden'>매입처</option>");
+			for(var i=0;i<data.Conn.length;i++){
+				$("#cnName").append("<option value='"+data.Conn[i].cnName+"'>"+data.Conn[i].cnName+"</option>");
+			}
+		},error:function(status){
+			console.log(status);
+		}
+		
+	})
+})
 		
 
 </script>

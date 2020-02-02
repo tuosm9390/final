@@ -17,6 +17,7 @@ import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngStock.model.Service.StockService;
+import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -141,7 +142,7 @@ public class StockController {
 		int result = ss.insertCategory(it);
 		
 		if(result>0) {
-			return "redirect:/selectStock.sto";
+			return "redirect:selectStock.sto";
 		}else {
 			return "common/errorPage";
 		}
@@ -159,5 +160,19 @@ public class StockController {
 		return mv;
 		
 	}
+	
+	@PostMapping("selectCnName.sto")
+	public ModelAndView selectCnName(ModelAndView mv,String cnName) {
+		
+		ArrayList<Conn> Conn = ss.selectCnName(cnName);
+		
+		mv.setViewName("jsonView");
+		mv.addObject("Conn",Conn);
+		
+		return mv;
+		
+	}
+	
+	
 	
 }
