@@ -11,9 +11,19 @@ public class RepRequest {
 
 	private int ino;
 	private String cnCode;
-	private String repRsn;
-	private int repPrice;
-	private int totPrice;
+	private String rsn;
+	private int price;
+	private int totalPrice;
 	private int rptNo;
-	
+	private int docno;
+	private String mname;
+	private String sname;
+	private int smno;
+	private String title;
+	private String content;
+	private String iname;
+	private String cnName;
+	private String deptName;
+	private int mmno;
+	private String rptDate;
 }

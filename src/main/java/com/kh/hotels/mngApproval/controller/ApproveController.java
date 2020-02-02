@@ -19,6 +19,7 @@ import com.kh.hotels.mngApproval.model.service.ApprovalService;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
+import com.kh.hotels.mngApproval.model.vo.RepRequest;
 
 @Controller
 public class ApproveController {
@@ -206,9 +207,23 @@ public class ApproveController {
 		return "hoteladmin/mngApprove/writeApprove/writerPurchaseApprove";
 	}
 	@RequestMapping("writeFixApprove.ap")
-	public String goWriteFixApprove() {
-
-		return "hoteladmin/mngApprove/writeApprove/writerFixApprove";
+	public String goWriteFixApprove(HttpServletRequest request, Model m) {
+		
+		try {
+			List<HashMap<String, Object>> list = as.selectRepairInfo();
+			m.addAttribute("list", list);
+			
+			return "hoteladmin/mngApprove/writeApprove/writerFixApprove";
+			
+		} catch (ReportException e) {
+			m.addAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+		
+		
+		
+		
+		
 	}
 	@RequestMapping("writeOrderApprove.ap")
 	public String goWriteOrderApprove() {
@@ -560,7 +575,68 @@ public class ApproveController {
 		
 		
 	}
+	
+	@GetMapping("insertRepairRequest.ap")
+	public String insertRepair(HttpServletRequest request, Model model, String docno, String mmno,
+									String rptDate, String sname, String smno, String title, String content, 
+									String ino, String iname, String cnName, String price, String rsn, String totalPrice) {
+	
+		ArrayList<RepRequest> rRequestList = new ArrayList<>();
 
+		//int docNo = Integer.parseInt(docno);
 
-
+		int mName = Integer.parseInt(mmno); 
+		int sno = Integer.parseInt(smno);
+		int docNo = Integer.parseInt(docno);
+		int totPrice = Integer.parseInt(totalPrice);
+		
+		String[] cName = cnName.split(",");
+		String[] iName = iname.split(",");
+		String[] repRson = rsn.split(",");
+		
+		//int
+		String[] pr = price.split(",");
+		String[] in = ino.split(",");
+		
+		int[] price2 = new int[cName.length];
+		int[] ino2 = new int[cName.length];
+		
+		
+		System.out.println("cName.length : " + cName.length);
+		
+		RepRequest rRequest = null;
+		
+		
+		
+		
+		for(int j = 0; j < cName.length; j++) {
+			rRequest = new RepRequest();
+			price2[j] = Integer.parseInt(pr[j]);
+			ino2[j] = Integer.parseInt(in[j]);
+			
+			rRequest.setPrice(price2[j]);
+			rRequest.setIno(ino2[j]);
+			rRequest.setCnName(cName[j]);
+			rRequest.setIname(iName[j]);
+			rRequest.setDeptName(("시설팀")); 
+			rRequest.setMmno(mName);
+			rRequest.setRptDate(rptDate); 
+			rRequest.setSmno(sno);
+			rRequest.setSname(sname); 
+			rRequest.setTitle(title);
+			rRequest.setContent(content);
+			rRequest.setDocno(docNo);
+			rRequest.setTotalPrice((totPrice));
+			rRequest.setRsn(repRson[j]);
+			rRequestList.add(rRequest);
+			System.out.println("for문안 pRequestList : " + rRequestList);
+		}
+		
+		
+		int result = as.insertRepairRequestList(rRequestList);
+		
+		
+	
+	return null;
+	}
 }

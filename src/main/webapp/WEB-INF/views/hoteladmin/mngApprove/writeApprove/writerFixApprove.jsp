@@ -168,6 +168,12 @@ textarea {
 	float:right;
 	
 }
+#totalPrice {
+	 width:60px;
+   height:35px;
+   border-radius:2px;
+   border:1px solid lightgray;
+}
 
 
 </style>
@@ -201,7 +207,7 @@ textarea {
 				</tr>
 				<tr class="tbl_tit">
 					<td>문서번호</td>
-					<td colspan="3"style="text-align:center;"><input type="text" name="docno" id="docuNo"></td>
+					<td colspan="3"style="text-align:center;"><input type="text" name="docno" id="docuNo" style="text-align:center;"></td>
 					
 					
 				</tr>
@@ -209,31 +215,35 @@ textarea {
 					<td>기안부서</td>
 					<td>시설관리팀</td>
 					<td>기안자</td>
-					<td><c:out value="${sessionScope.loginUser.userName }"/><input type="hidden" value="${sessionScope.loginUser.mno }" name="mname"></td>
+					<td><c:out value="${sessionScope.loginUser.userName }"/><input type="hidden" value="${sessionScope.loginUser.mno }" name="mmno"></td>
 					
 				</tr>
 				
 				<tr class="tbl_tit">
 					<td>기안일</td>
-					<td><input type="text" id="txt" placeholder="SYSDATE"></td>
+					<td><input type="text" id="txt" placeholder="SYSDATE" name="rptDate"></td>
 					<td >수신자</td>
 					<td colspan="">
-						<select id="receiver">
+						<select id="receiver" name="sname">
 							<option selected disabled hidden>수신자를 선택하세요</option>
-							<option>부서명(부서장)</option>
-							<option>부서명(부서장)</option>
+							<c:forEach var="b" items="${list }">
+								<option><c:out value="${b.NAME }"/>(총지배인)</option>
+							</c:forEach>
 						</select>
+						<c:forEach var="c" items="${list }">
+							<input type="hidden" value="${c.SMNO }" name="smno">
+						</c:forEach>
 					</td>
 					
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3"><input type="text" id="txtLong"></td>
+					<td colspan="3"><input type="text" id="txtLong" name="title"></td>
 				</tr>
 				<tr>
 					<td>내용</td>
 					<td colspan="3">
-						<textarea style="resize:none;"></textarea>
+						<textarea style="resize:none;" id="content" name="content"></textarea>
 					</td>
 				</tr>
 				
@@ -261,11 +271,11 @@ textarea {
 				</tr>
 				<tr class="repeat">
 					<td>1</td>
-					<td><input type="text" class="anoTxt_ino" style="text-align:center;"></td>
-					<td><input type="text" class="anoTxt_iname" placeholder="품목명" readonly style="text-align:center;"></td>
-					<td><input type="text" class="anoTxt_cname" placeholder="수량" style="text-align:center;"></td>
-					<td><input type="text" class="anoTxt_price" placeholder="공급가액" style="text-align:center;"></td>
-					<td><input type="text" class="anoTxt_rsn" placeholder="금액" style="text-align:center;"></td>
+					<td><input type="text" class="anoTxt_ino" style="text-align:center;" name="ino"></td>
+					<td><input type="text" class="anoTxt_iname" placeholder="제품명" readonly style="text-align:center;" name="iname"></td>
+					<td><input type="text" class="anoTxt_cname" placeholder="수리 업체명" style="text-align:center;" name="cnName"></td>
+					<td><input type="text" class="anoTxt_price" placeholder="금액" style="text-align:center;" name="price"></td>
+					<td><input type="text" class="anoTxt_rsn" placeholder="사유" style="text-align:center;" name="rsn"></td>
 				</tr>
 				
 			</table>
@@ -281,7 +291,8 @@ textarea {
 				</colgroup>
 				<tr>
 					<td colspan="2" id="total">총금액</td>
-					<td colspan="4"><input type="text" id="txtLong" style="text-align:center;"></td>
+					<td colspan="3"><input type="text" id="txtLong" style="text-align:center;" name="totalPrice"></td>
+					<td><button id="totalPrice" type="button" onclick="showTotalPrice();">보기</button></td>
 				</tr>
 			</table>
 			</div>
@@ -313,7 +324,7 @@ textarea {
 	      //$(".tbl tr").children().find(".txt_docu").val(docuNum);
 	      //$(".txt_docu").text(docuNum);
 	            
-	      //startDate();
+	      startDate();
 	      $(".tbl tr:nth-child(2)").children().eq(1).find("#docuNo").val(docuNum);
 		
 		
@@ -321,6 +332,28 @@ textarea {
 		
 		
 	});
+	 var dateString = ""; 
+	   function startDate() {
+	      //console.log("하이");
+	      var date;
+	       date = setInterval(function () { 
+	             
+	            dateString = "";
+	               var newDate = new Date(); 
+
+	               //String.slice(-2) : 문자열을 뒤에서 2자리만 출력한다. (문자열 자르기) 
+	               dateString += newDate.getFullYear() + "/"; 
+	               dateString += ("0" + (newDate.getMonth() + 1)).slice(-2) + "/"; //월은 0부터 시작하므로 +1을 해줘야 한다. 
+	               dateString += ("0" + newDate.getDate()).slice(-2) + " "; 
+	               dateString += ("0" + newDate.getHours()).slice(-2) + ":"; 
+	               dateString += ("0" + newDate.getMinutes()).slice(-2) + ":"; 
+	               dateString += ("0" + newDate.getSeconds()).slice(-2);
+	               //document.write(dateString); 문서에 바로 그릴 수 있다. 
+	              //console.log(dateString);
+	           }, 1000);
+	       
+	      
+	   }
 	
 	$(document).on("keyup", ".anoTxt_ino", function(){
 		
@@ -350,7 +383,24 @@ textarea {
 		
 		
 	});
-	$(document).on("keyup", ".anoTxt_price", function(){
+	
+	function showTotalPrice(){
+		var Count = $(".payTbl.fix tr").length;
+		var tblCount = (Count - 1);
+		
+		var totalPrice = "";
+		for(var i = 0; i < tblCount; i++) {
+			if(i == 0) {
+				totalPrice = $(".payTbl.fix tr").eq(i+1).children().find(".anoTxt_price").val()*1;
+				
+			}else {
+				totalPrice += $(".payTbl.fix tr").eq(i+1).children().find(".anoTxt_price").val()*1;
+			}
+		}
+		$(".payTbl.Area tr").children().find("#txtLong").val(totalPrice);
+		
+	}
+	/* $(document).on("keyup", ".anoTxt_price", function(){
 		$(this).val();
 		//console.log($(this).val());
 		var idx = $(this).parents("tr").index();
@@ -370,7 +420,7 @@ textarea {
 		
 		//$(".payTbl.Area tr")
 		
-	});
+	}); */
 	
 	
 	$("#plusBtn4").click(function() {
@@ -399,6 +449,15 @@ textarea {
 		
 
 	})
+	function insertRepair() {
+		clearInterval(startDate());
+		
+		console.log("기안하기");
+		console.log(dateString);
+		$(".tbl tr:nth-child(4)").children().eq(1).find("#txt").val(dateString);
+		
+		$("#submit").attr("type", "submit");
+	}
 </script>
 
 

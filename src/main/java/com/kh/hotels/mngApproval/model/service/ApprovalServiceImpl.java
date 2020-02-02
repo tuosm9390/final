@@ -13,6 +13,7 @@ import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
+import com.kh.hotels.mngApproval.model.vo.RepRequest;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -213,7 +214,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	@Override
 	public String selectIname(int ino) throws ReportException {
-
+		
 		String iname = ad.selectIname(sqlSession, ino);
 		System.out.println("iname : " + iname);
 		
@@ -222,6 +223,36 @@ public class ApprovalServiceImpl implements ApprovalService {
 		}
 		
 		return iname;
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> selectRepairInfo() throws ReportException {
+		ArrayList<HashMap<String, Object>> list = ad.selectRepairInfo(sqlSession);
+		
+		if (list == null) {
+			throw new ReportException("에러~");
+		}
+		
+		return list;
+	}
+
+
+	@Override
+	public int insertRepairRequestList(ArrayList<RepRequest> rRequestList) {
+		int docNo = rRequestList.get(0).getDocno();
+		int result = ad.insertRepReqInfo(sqlSession, rRequestList);
+		int result2 = ad.insertRepReqList(sqlSession, docNo);
+		
+		for(int i = 0; i < rRequestList.size(); i++) {
+			rRequestList.get(i).setRptNo(result2);
+			System.out.println("service : " + rRequestList.get(i));
+		}
+		
+		int result3 = ad.insertRepReqListAll(sqlSession, rRequestList);
+		
+		
+		return 0;
 	}
 
 

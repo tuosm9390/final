@@ -11,6 +11,7 @@ import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
+import com.kh.hotels.mngApproval.model.vo.RepRequest;
 import com.kh.hotels.mngApproval.model.vo.Report;
 
 public interface ApprovalService {
@@ -48,6 +49,10 @@ public interface ApprovalService {
 	int insertList(ArrayList<PurRequest> pRequestList) throws ReportException;
 
 	String selectIname(int ino) throws ReportException;
+
+	List<HashMap<String, Object>> selectRepairInfo() throws ReportException;
+
+	int insertRepairRequestList(ArrayList<RepRequest> rRequestList);
 
 	
 	

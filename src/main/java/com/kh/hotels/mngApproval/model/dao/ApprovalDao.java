@@ -10,6 +10,7 @@ import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
+import com.kh.hotels.mngApproval.model.vo.RepRequest;
 import com.kh.hotels.mngApproval.model.vo.Report;
 
 public interface ApprovalDao {
@@ -49,5 +50,13 @@ public interface ApprovalDao {
 	int insertPurRequest(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
 
 	String selectIname(SqlSessionTemplate sqlSession, int ino);
+
+	ArrayList<HashMap<String, Object>> selectRepairInfo(SqlSessionTemplate sqlSession);
+
+	int insertRepReqInfo(SqlSessionTemplate sqlSession, ArrayList<RepRequest> rRequestList);
+
+	int insertRepReqList(SqlSessionTemplate sqlSession, int docNo);
+
+	int insertRepReqListAll(SqlSessionTemplate sqlSession, ArrayList<RepRequest> rRequestList);
 
 }

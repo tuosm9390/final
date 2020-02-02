@@ -46,6 +46,7 @@
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.ItemType" alias="ItemType" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PageInfo" alias="PageInfo"/>
 		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.SalesDetail" alias="SalesDetail"/>
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.RepRequest" alias="RepRequest"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>

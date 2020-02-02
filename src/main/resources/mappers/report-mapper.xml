@@ -38,6 +38,28 @@
 		<result property="rptType" column="RPT_TYPE" />
 
 	</resultMap>
+	
+	<resultMap id="repRequestResultset" type="RepRequest">
+		<result property="ino" column="INO"></result>
+		<result property="cnCode" column="CN_CODE"></result>
+		<result property="rsn" column="REP_RSN"></result>
+		<result property="price" column="REP_PRICE"></result>
+		<result property="totalPrice" column="TOT_PRICE"></result>
+		<result property="rptNo" column="RPT_NO"></result>
+		<result property="docno" column="DOC_NO"></result>
+		<result property="mname" column="NAME"></result>
+		<result property="rptDate" column="RPT_DATE"></result>
+		<result property="sname" column="NAME"></result>
+		<result property="smno" column="MNO"></result>
+		<result property="title" column="RPT_TITLE"></result>
+		<result property="content" column="REP_RSN"></result>
+		<result property="iname" column="INAME"></result>
+		<result property="cnName" column="CN_NAME"></result>
+		<result property="deptName" column="DEPT_NAME"></result>
+		<result property="mmno" column="MNO"></result>
+	</resultMap>
+
+
 
 	<select id="selectApproveList" resultType="java.util.HashMap">
 
@@ -317,6 +339,26 @@
 		SELECT INAME
 		FROM ITEM
 		WHERE INO = #{ino}
+	</select>
+	<select id="selectRepairInfo" resultType="java.util.HashMap">
+		SELECT M.MNO AS "SMNO", NAME, D.DEPT_NO AS "DNO"
+		FROM MEMBER M
+		JOIN STAFF S ON(M.MNO = S.MNO)
+		JOIN DEPT D ON(S.DEPT_NO = D.DEPT_NO)
+		WHERE D.DEPT_NO = 1
+	</select>
+	<!-- 수리요청서 정보 넣기 -->
+	<select id="insertReqReqInfo" parameterType="RepRequest">
+		INSERT INTO REPORT (RPT_NO, MNO, RPT_DATE, RECEIVER, RPT_TITLE, RPT_STATUS,
+		APPR_DATE, DOC_NO, RPT_TYPE)
+		VALUES(SEQ_RPT_NO.NEXTVAL, #{mmno}, #{rptDate}, #{smno}, #{title}, DEFAULT, DEFAULT, #{docno},
+		'REPAIR')
+	</select>
+	<!-- 수리 요청서 rptno가져오기 -->
+	<select id="selectRepReqRptNo" parameterType="_int" resultType="_int">
+		SELECT RPT_NO
+		FROM REPORT
+		WHERE DOC_NO = #{docNo}
 	</select>
 
 </mapper>
