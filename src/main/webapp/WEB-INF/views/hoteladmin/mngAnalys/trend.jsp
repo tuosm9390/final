@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 <style>
 .top-menu{
 	position: fixed;
@@ -119,7 +119,7 @@ input[type=text] {
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<button><</button>
-					<input type="text" id="datepicker">
+					<input type="text" id="dailySales">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -167,7 +167,7 @@ input[type=text] {
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<button><</button>
-					<input type="text" id="datepicker2">
+					<input type="text" id="dailySalesCst">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -233,7 +233,7 @@ input[type=text] {
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<button><</button>
-					<input type="text" id="datepicker3">
+					<input type="text" id="dailyRoomStatus">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -244,11 +244,6 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
-					<c:set var="room" value="객실"/>	
-					<c:set var="rent" value="대실"/>
-					<c:set var="total" value="총 지불액"></c:set>
-					<c:set var="roomprice" value="800000"></c:set>
-					<c:set var="rentprice" value="200000"></c:set>
 					<c:set var="totalprice" value="${ roomprice + rentprice }"></c:set>
 				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
@@ -281,7 +276,7 @@ input[type=text] {
 				<!-- 검색 영역 -->
 				<div class="filterArea">
 					<button><</button>
-					<input type="text" id="datepicker4">
+					<input type="text" id="dailySpendStrg">
 					<button>></button>
 				</div>
 				<!-- 검색 영역 끝 -->
@@ -342,7 +337,7 @@ input[type=text] {
 			<!-- 검색 영역 -->
 			<div class="filterArea" style="margin-right: 180px;">
 				<button><</button>
-				<input type="text" id="datepicker5">
+				<input type="text" id="monthlySalesPerRoomType">
 				<button>></button>
 			</div><br><br>
 			<div class="priceInfo" align="right" style="width: 1385px;"><label>기준 : 원</label></div>
@@ -376,11 +371,44 @@ input[type=text] {
 // 			$(".movemonthly").click();
 // 		});
 		
-		$("#datepicker").datepicker();
-		$("#datepicker2").datepicker();
-		$("#datepicker3").datepicker();
-		$("#datepicker4").datepicker();
-		$("#datepicker5").datepicker();
+		$("#dailySales").datepicker({
+			autoClose : true,
+		});
+		$("#dailySalesCst").datepicker({
+			autoClose : true,
+		});
+		$("#dailyRoomStatus").datepicker({
+			autoClose : true,
+		});
+		$("#dailySpendStrg").datepicker({
+			autoClose : true,
+		});
+		$("#monthlySalesPerRoomType").datepicker({
+			autoClose : true,
+		});
+		
+		$(document).on("change keyup paste", "#dailySales", function() {
+			dailySales = $(this).val();
+			$.ajax({
+				type : "post",
+				url : "searchTrend.an",
+				data : {dailySales:dailySales},
+				success:function(data){
+					console.log(data);
+				},
+				error:function(data){
+					console.log(data);
+				}
+			});
+		}).on("change", "#dailySalesCst", function() {
+			
+		}).on("change", "#dailyRoomStatus", function() {
+			
+		}).on("change", "#dailySpendStrg", function() {
+			
+		}).on("change", "#monthlySalesPerRoomType", function() {
+			
+		});
 		
 		var chart1 = {
 			'legend': {

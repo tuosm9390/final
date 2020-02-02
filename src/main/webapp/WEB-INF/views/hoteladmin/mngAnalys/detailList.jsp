@@ -6,10 +6,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 <style>
 .site-outer{
-	width: 90%;
+	width: 90%; 
 	margin-left: 5%;
 }
 

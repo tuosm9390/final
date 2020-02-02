@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 <style>
 /* 좌우 방향 버튼 */
 .carousel-control{

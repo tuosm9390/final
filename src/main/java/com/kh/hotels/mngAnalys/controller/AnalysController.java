@@ -19,6 +19,7 @@ public class AnalysController {
 	@Autowired
 	private AnalysService as;
 
+	// 매출 상세
 	@RequestMapping("viewDetailList.an")
 	public ModelAndView goAnalys(String Condition, ModelAndView mv) {
 		
@@ -39,6 +40,7 @@ public class AnalysController {
 		return mv;
 	}
 	
+	// 매출 상세 검색
 	@RequestMapping("searchDetail.an")
 	public ModelAndView searchDetail(ModelAndView mv, String Condition, String searchCondition, String startDate, String endDate) {
 		
@@ -76,5 +78,15 @@ public class AnalysController {
 	public String goTrend() {
 		
 		return "hoteladmin/mngAnalys/trend";
+	}
+	
+	@RequestMapping("searchTrend.an")
+	public ModelAndView searchTrend(ModelAndView mv, String dailySales) {
+		
+		System.out.println("dailySales : " + dailySales);
+		
+		mv.setViewName("jsonView");
+		
+		return mv;
 	}
 }
