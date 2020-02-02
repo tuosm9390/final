@@ -65,6 +65,13 @@
 		<result property="svcStatus" column="SVC_STATUS" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.RuleInfo" id="ruleInfoSet">
+		<id property="hotelName" column="HNAME" />
+		<result property="svcRate" column="SVC_RATE" />
+		<result property="nsUnit" column="NS_UNIT" />
+		<result property="ltUnit" column="LENT_UNIT" />
+	</resultMap>
+	
 	<select id="viewRoomList" resultMap="roomListSet">
 		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
 		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
@@ -76,19 +83,19 @@
 		LEFT JOIN ROOM_STT N ON (R.RM_NO = N.RM_NO)
 		LEFT JOIN (SELECT *
 		           FROM STAY
-		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE, 'YYYY-MM-DD')
-		           AND TO_CHAR(CHECKOUT, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		           AND TO_CHAR(CHECKOUT, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
 		           AND STAY_STATUS = 'N') S ON (R.RM_NO = S.RM_NO)
 		LEFT JOIN (SELECT *
 		           FROM RSV
-		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')) V ON (R.RM_NO = V.RM_NO)
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') = TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')) V ON (R.RM_NO = V.RM_NO)
 		LEFT JOIN MEMBER M1 ON (V.MNO = M1.MNO)
 		LEFT JOIN MEMBER M2 ON (S.MNO = M2.MNO)
         LEFT JOIN (SELECT RM_NO, BRK_BEGIN, BRK_END, BRK_RSN
                    FROM ROOM
                    LEFT JOIN BROKEN_HIS USING (RM_NO)
-                   WHERE TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE, 'YYYY-MM-DD')
-                   AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE, 'YYYY-MM-DD')) B ON (R.RM_NO = B.RM_NO)
+                   WHERE TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+                   AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')) B ON (R.RM_NO = B.RM_NO)
 		WHERE R.RM_STATUS = 'Y'
 		ORDER BY FLOOR, RM_NUM
 	</select>
@@ -97,7 +104,7 @@
 		SELECT *
 		FROM PRC
 		WHERE TERM_TYPE = CASE
-		                  WHEN EXTRACT(MONTH FROM SYSDATE) IN (1, 2, 7, 8, 12) THEN 'SEASON'
+		                  WHEN EXTRACT(MONTH FROM (SYSDATE + 9 / (24) + 135 / (24 * 60 * 60))) IN (1, 2, 7, 8, 12) THEN 'SEASON'
 		                  ELSE 'OFFSEASON'
 		                  END
 	</select>
@@ -108,6 +115,15 @@
 		WHERE SVC_STATUS = 'Y'
 	</select>
 	
+	<select id="viewRuleInfo" resultMap="ruleInfoSet">
+		SELECT I.HNAME, N.NS_UNIT, C.SVC_RATE, B.LENT_UNIT
+		FROM INFO I
+		JOIN NOSHOW N ON (I.HNAME = N.HNAME)
+		JOIN CAL C ON (I.HNAME = C.HNAME)
+		JOIN BASIC B ON (I.HNAME = B.HNAME)
+		WHERE I.HNAME = 'Boutique'
+	</select>
+	
 	<select id="ajxFindClient" resultMap="memberSet" parameterType="java.lang.String">
 		SELECT MNO, NAME, PHONE, EMAIL, STATUS
 		FROM MEMBER
@@ -116,12 +132,53 @@
 		AND NAME LIKE '%'||#{ searchName }||'%'
 	</select>
 	
+	<insert id="ajxInsertClient" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO MEMBER
+		VALUES (SEQ_MNO.NEXTVAL, #{clientName}, #{clientPhone}, #{clientEmail}, DEFAULT, 'CLIENT', NULL)
+	</insert>
+	
+	<select id="ajxFindTempClient" resultMap="memberSet" parameterType="java.lang.String">
+		SELECT *
+		FROM MEMBER
+		WHERE NAME LIKE '%'||#{hipen}||'%'
+	</select>
+	
+	<insert id="insertTempMember" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO MEMBER
+		VALUES (SEQ_MNO.NEXTVAL, #{clientName}, #{clientPhone}, #{clientEmail}, DEFAULT, 'CLIENT', 'TEMP')
+	</insert>
+	
+	<select id="selectMno" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT MNO
+		FROM MEMBER
+		WHERE NAME = #{clientName}
+	</select>
+	
 	<insert id="insertCIstay" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO STAY
+		VALUES (SEQ_STAY_NO.NEXTVAL, #{selRoomNum}, #{clientNo}, TO_DATE(#{checkinTime}, 'yyyy-MM-dd'),
+				TO_DATE(#{checkoutTime}, 'yyyy-MM-dd'), DEFAULT, #{lentYN}, #{totalPrc}, #{totalPay},
+				TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), NULL, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), NULL, #{personCnt})
+	</insert>
+	
+	<insert id="insertCIstayHis">
+		INSERT INTO STAY_HIS
+		VALUES (SEQ_STAY_NO.CURRVAL, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'ALL', 'NONE', 'ALL', 'INSERT')
 	</insert>
 	
 	<insert id="insertCIpayment" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO PAYMENT
+		VALUES (SEQ_PNO.NEXTVAL, #{payWay}, #{payWayMoney}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'DONE', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'N', NULL, SEQ_STAY_NO.CURRVAL)
 	</insert>
 	
 	<insert id="insertCIsvcuse" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO SVC_USE
+		VALUES (SEQ_STAY_NO.CURRVAL, #{svcCode}, #{svcCount}, DEFAULT, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), SEQ_SVC_NO.NEXTVAL, NULL)
 	</insert>
+	
+	<insert id="insertCIsvcuseHis" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO SVC_USE_HIS
+		VALUES (SEQ_SVC_NO.CURRVAL, 'ALL', 'NONE', 'ALL', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'INSERT')
+	</insert>
+	
 </mapper>

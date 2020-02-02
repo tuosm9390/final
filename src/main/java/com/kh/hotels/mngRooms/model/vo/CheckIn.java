@@ -34,6 +34,12 @@ public class CheckIn implements java.io.Serializable {
 	private int creditCard;
 	private int cash;
 	private int account;
+	private int totalPay;
 	private int refund;
+	
+	private String payWay;
+	private int payWayMoney;
+	private String svcCode;
+	private int svcCount;
 
 }
