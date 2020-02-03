@@ -14,6 +14,8 @@ public class Stay {
 	private int stayNo;
 	private String rmNum; // 객실호실
 	private int rmNo;
+	private int rtNo; // 방유형번호
+	private String rtName; // 방이름
 	private int mno;
 	private Date checkIn;
 	private Date checkOut;

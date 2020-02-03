@@ -66,6 +66,11 @@
 	text-align: center;
 	height: 300px;
 }
+
+.chartArea>ul{
+	display: none;
+}
+
 .priceArea{
 	border: 2px solid darkgray;
 	border-radius: 20px;
@@ -85,7 +90,10 @@
 }
 
 input[type=text] {
-	width: 100px;
+	width: 130px;
+	border: 1px solid lightgrey;
+    border-radius: 2px;
+    text-align: center;
 }
 .priceInfo{
 	margin-bottom: 5px;
@@ -118,9 +126,7 @@ input[type=text] {
 				
 				<!-- 검색 영역 -->
 				<div class="filterArea">
-					<button><</button>
-					<input type="text" id="dailySales">
-					<button>></button>
+					<input type="text" id="dailySales" readonly placeholder="날짜를 선택해주세요.">
 				</div>
 				<!-- 검색 영역 끝 -->
 				<!-- 차트 영역 -->
@@ -130,32 +136,29 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
-					<c:set var="room" value="객실"/>	
-					<c:set var="rent" value="대실"/>
-					<c:set var="total" value="총 지불액"></c:set>
-					<c:set var="roomprice" value="800000"></c:set>
-					<c:set var="rentprice" value="200000"></c:set>
-					<c:set var="totalprice" value="${ roomprice + rentprice }"></c:set>
+					<c:set var="dailyRsvSales" value="${ dailyRsvSales }"></c:set>
+					<c:set var="dailyStaySales" value="${ dailyStaySales }"></c:set>
+					<c:set var="totalprice" value="${ dailyRsvSales + dailyStaySales }"/>
 					<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
-						<div style="float: left;">
-							<label>${ room }</label>
+						<div style="float: left;" class="type-room">
+							<label>객실</label>
 						</div>
-						<div style="float: right;">
-							<label>${ roomprice }</label>
+						<div style="float: right;" class="type-room-sales">
+							<label>${ dailyRsvSales }</label>
 						</div>
 						<br><br>
-						<div style="float: left;">
-							<label>${ rent }</label>
+						<div style="float: left;" class="type-rent">
+							<label>대실</label>
 						</div>
-						<div style="float: right;">
-							<label>${ rentprice }</label>
+						<div style="float: right;" class="type-rent-sales">
+							<label>${ dailyStaySales }</label>
 						</div>
 						<br><br><br><br>
-						<div style="float: left;">
-							<label style="font-weight: bold;">${ total }</label>
+						<div style="float: left;" class="type-total">
+							<label style="font-weight: bold;">총 매출액</label>
 						</div>
-						<div style="float: right;">
+						<div style="float: right;" class="type-total-sales">
 							<label style="font-weight: bold;">${ totalprice }</label>
 						</div>
 					</div>
@@ -166,9 +169,7 @@ input[type=text] {
 				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 일별 지불 (고객)</label>
 				<!-- 검색 영역 -->
 				<div class="filterArea">
-					<button><</button>
-					<input type="text" id="dailySalesCst">
-					<button>></button>
+					<input type="text" id="dailySalesCst" placeholder="날짜를 선택해주세요.">
 				</div>
 				<!-- 검색 영역 끝 -->
 				<!-- 차트 영역 -->
@@ -231,10 +232,8 @@ input[type=text] {
 				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 일별 객실 현황</label>
 				
 				<!-- 검색 영역 -->
-				<div class="filterArea">
-					<button><</button>
-					<input type="text" id="dailyRoomStatus">
-					<button>></button>
+				<div class="filterArea" style="margin-right: 150px;">
+					<input type="text" id="dailyRoomStatus" placeholder="날짜를 선택해주세요.">
 				</div>
 				<!-- 검색 영역 끝 -->
 				<!-- 차트 영역 -->
@@ -244,27 +243,60 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
-					<c:set var="totalprice" value="${ roomprice + rentprice }"></c:set>
+				<c:set var="totalprice" value="0"/>
+				<c:set var="deluxeprice" value="0"/>
+				<c:set var="spaprice" value="0"/>
+				<c:set var="standardprice" value="0"/>
+				<c:set var="suiteprice" value="0"/>
+				<c:forEach var="list" items="${ list }">
+					${ totalprice } += ${ list.price }
+					<c:if test="${ list.rtName eq '디럭스' }">
+						${ deluxeprice } = ${ list.price }
+					</c:if>
+					<c:if test="${ list.rtName eq '스파' }">
+						${ spaprice } = ${ list.price }
+					</c:if>
+					<c:if test="${ list.rtName eq '스탠다드' }">
+						${ standardprice } = ${ list.price }
+					</c:if>
+					<c:if test="${ list.rtName eq '스위트' }">
+						${ suiteprice } = ${ list.price }
+					</c:if>
+				</c:forEach>
 				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
 						<div style="float: left;">
-							<label>${ room }</label>
+							<label>디럭스</label>
 						</div>
-						<div style="float: right;">
-							<label>${ roomprice }</label>
+						<div style="float: right;" class="deluxe-price">
+							<label>${ deluxeprice }</label>
 						</div>
-						<br><br>
+						<br>
 						<div style="float: left;">
-							<label>${ rent }</label>
+							<label>스파</label>
 						</div>
-						<div style="float: right;">
-							<label>${ rentprice }</label>
+						<div style="float: right;" class="spa-price">
+							<label>${ spaprice }</label>
 						</div>
-						<br><br><br><br>
+						<br>
 						<div style="float: left;">
-							<label style="font-weight: bold;">${ total }</label>
+							<label>스탠다드</label>
 						</div>
-						<div style="float: right;">
+						<div style="float: right;" class="standard-price">
+							<label>${ standardprice }</label>
+						</div>
+						<br>
+						<div style="float: left;">
+							<label>스위트</label>
+						</div>
+						<div style="float: right;" class="suite-price">
+							<label>${ suiteprice }</label>
+						</div>
+						<br><br><br>
+						<div style="float: left;">
+							<label style="font-weight: bold;">총 매출액</label>
+						</div>
+						<div style="float: right;" class="total-price">
 							<label style="font-weight: bold;">${ totalprice }</label>
 						</div>
 					</div>
@@ -274,10 +306,8 @@ input[type=text] {
 				<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6;">| 일별 지불 (재고)</label>
 				
 				<!-- 검색 영역 -->
-				<div class="filterArea">
-					<button><</button>
-					<input type="text" id="dailySpendStrg">
-					<button>></button>
+				<div class="filterArea" style="margin-right: 150px;">
+					<input type="text" id="dailySpendStrg" placeholder="날짜를 선택해주세요.">
 				</div>
 				<!-- 검색 영역 끝 -->
 				<!-- 차트 영역 -->
@@ -336,9 +366,7 @@ input[type=text] {
 			<label style="font-weight: bold; font-size: 20px; line-height: 17px; color: #72B8E6; margin-left:20px;">| 월 별 객실 타입 별 매출</label>
 			<!-- 검색 영역 -->
 			<div class="filterArea" style="margin-right: 180px;">
-				<button><</button>
-				<input type="text" id="monthlySalesPerRoomType">
-				<button>></button>
+				<input type="text" id="monthlySalesPerRoomType" placeholder="날짜를 선택해주세요.">
 			</div><br><br>
 			<div class="priceInfo" align="right" style="width: 1385px;"><label>기준 : 원</label></div>
 			<!-- 검색 영역 끝 -->
@@ -371,52 +399,14 @@ input[type=text] {
 // 			$(".movemonthly").click();
 // 		});
 		
-		$("#dailySales").datepicker({
-			autoClose : true,
-		});
-		$("#dailySalesCst").datepicker({
-			autoClose : true,
-		});
-		$("#dailyRoomStatus").datepicker({
-			autoClose : true,
-		});
-		$("#dailySpendStrg").datepicker({
-			autoClose : true,
-		});
-		$("#monthlySalesPerRoomType").datepicker({
-			autoClose : true,
-		});
-		
-		$(document).on("change keyup paste", "#dailySales", function() {
-			dailySales = $(this).val();
-			$.ajax({
-				type : "post",
-				url : "searchTrend.an",
-				data : {dailySales:dailySales},
-				success:function(data){
-					console.log(data);
-				},
-				error:function(data){
-					console.log(data);
-				}
-			});
-		}).on("change", "#dailySalesCst", function() {
-			
-		}).on("change", "#dailyRoomStatus", function() {
-			
-		}).on("change", "#dailySpendStrg", function() {
-			
-		}).on("change", "#monthlySalesPerRoomType", function() {
-			
-		});
-		
-		var chart1 = {
+		// 일별 매출 차트
+		chart1 = {
 			'legend': {
 				names: ['객실','대실'],
 			},
 			'dataset': {
 				title: 'Playing time per day',
-				values: [${ roomprice }, ${ rentprice }],
+				values: [${ dailyRsvSales }, ${ dailyStaySales }],
 				colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
 			},
 			'chartDiv': 'chartArea',
@@ -426,38 +416,159 @@ input[type=text] {
 			'increment': 100000
 		};
 		Nwagon.chart(chart1);
-				
-		var chart2 = {
-				'dataset':{
-					title: 'Web accessibility status',
-					values:[69083116, 1100000, 1100000, 101100000],
-					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
-					fields: ['신용카드', '현금', '계좌이체', '후불', '환불'],
-				},
-				'donut_width' : 50,
-				'core_circle_radius':70,
-				'chartDiv': 'chartArea2',
-				'chartType': 'donut',
-				'chartSize': {width:700, height:400}
-			};
-			Nwagon.chart(chart2);
-			
-		var chart3 = {
-				'dataset':{
-					title: 'Web accessibility status',
-					values:[25, 3],
-					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
-					fields: ['대실', '투숙'],
-				},
-				'donut_width' : 50,
-				'core_circle_radius':70,
-				'chartDiv': 'chartArea3',
-				'chartType': 'donut',
-				'chartSize': {width:700, height:400}
-			};
-			Nwagon.chart(chart3);
 		
-		var chart4 = {
+		$("#dailySales").datepicker({
+			autoClose : true,
+			onSelect: function(){
+	            dailySales = $("#dailySales").val();
+	  			$.ajax({
+	  				type : "post",
+	  				url : "searchTrend.an?Condition=dailySales",
+	  				data : {dailySales:dailySales},
+	  				success:function(data){
+	  					$("#chartArea").children().remove();
+	  					$(".type-room-sales").children().remove();
+	  					$(".type-room-sales").append("<label>" + data.dailyRsvSales + "</label>");
+	  					$(".type-rent-sales").children().remove();
+	  					$(".type-rent-sales").append("<label>" + data.dailyStaySales + "</label>");
+	  					$(".type-total-sales").children().remove();
+	  					$(".type-total-sales").append("<label style='font-weight: bold;'>" + (data.dailyRsvSales + data.dailyStaySales) + "</label>")
+	  					chart1 = {
+	  						'legend': {
+	  							names: ['객실','대실'],
+	  						},
+	  						'dataset': {
+	  							values: [data.dailyRsvSales, data.dailyStaySales],
+	  							colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
+	  							},
+	  						'chartDiv': 'chartArea',
+	  						'chartType': 'column',
+	  						'chartSize': { width: 600, height: 300 },
+	  						'maxValue': 800000,
+	  						'increment': 100000
+	  					};
+	  					Nwagon.chart(chart1);
+	  				},
+	  				error:function(data){
+	  					console.log(data);
+	  					console.log("에러");
+	  				}
+	  			});
+		     }
+		});
+		
+		$("#dailySalesCst").datepicker({
+			autoClose : true,
+		});
+		
+		// 일별 객실 현황 차트
+		chart3 = {
+			'dataset':{
+				title: 'Web accessibility status',
+				values:[25, 3],
+				colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+				fields: ['대실', '투숙'],
+			},
+			'donut_width' : 50,
+			'core_circle_radius':70,
+			'chartDiv': 'chartArea3',
+			'chartType': 'donut',
+			'chartSize': {width:700, height:400}
+		};
+		Nwagon.chart(chart3);
+		
+		$("#dailyRoomStatus").datepicker({
+			autoClose : true,
+			onSelect: function(){
+				dailyRoomStatus = $("#dailyRoomStatus").val();
+	  			$.ajax({
+	  				type : "post",
+	  				url : "searchTrend.an?Condition=dailyRoomStatus",
+	  				data : {dailyRoomStatus : dailyRoomStatus},
+	  				success:function(data){
+	  					// 객실 유형별 매출액
+	  					var pricelist = [];
+	  					$.each(data.list, function(index, list){
+	  						pricelist.push(list.price);
+	  					});
+	  					
+	  					var deluxe = 0;
+	  					var spa = 0;
+	  					var standard = 0;
+	  					var suite = 0;
+	  					// 객실 유형 이름
+	  					var namelist = [];
+	  					$.each(data.list, function(index, list){
+	  						namelist.push(list.rtName);
+	  						if(list.rtName == '디럭스'){
+	  							deluxe = list.price;
+	  						} else if(list.rtName == '스파'){
+	  							spa = list.price;
+	  						} else if(list.rtName == '스탠다드'){
+	  							standard = list.price;
+	  						} else {
+	  							suite = list.price;
+	  						}
+	  					});
+	  					
+	  					
+	  					
+	  					$("#chartArea3").children().remove();
+	  					$(".deluxe-price").children().remove();
+	  					$(".deluxe-price").append("<label>" + deluxe + "</label>");
+	  					$(".spa-price").children().remove();
+	  					$(".spa-price").append("<label>" + spa + "</label>");
+	  					$(".standard-price").children().remove();
+	  					$(".standard-price").append("<label>" + standard + "</label>");
+	  					$(".suite-price").children().remove();
+	  					$(".suite-price").append("<label>" + suite + "</label>");
+	  					$(".total-price").children().remove();
+	  					$(".total-price").append("<label>" + (deluxe+spa+standard+suite) + "</label>");
+	  					chart3 = {
+	  						'dataset':{
+	  							title: 'Web accessibility status',
+	  							values : pricelist,
+	  							colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+	  							fields: namelist,
+	  						},
+	  						'donut_width' : 50,
+	  						'core_circle_radius':70,
+	  							'chartDiv': 'chartArea3',
+	  						'chartType': 'donut',
+	  						'chartSize': {width:700, height:400}
+	  					};
+	  					Nwagon.chart(chart3);
+	  				},
+	  				error:function(data){
+	  					console.log(data);
+	  					console.log("에러");
+	  				}
+	  			});
+		     }
+		});
+		$("#dailySpendStrg").datepicker({
+			autoClose : true,
+		});
+		$("#monthlySalesPerRoomType").datepicker({
+			autoClose : true,
+		});
+		
+		chart2 = {
+			'dataset':{
+				title: 'Web accessibility status',
+				values:[69083116, 1100000, 1100000, 101100000],
+				colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+				fields: ['신용카드', '현금', '계좌이체', '후불', '환불'],
+			},
+			'donut_width' : 50,
+			'core_circle_radius':70,
+			'chartDiv': 'chartArea2',
+			'chartType': 'donut',
+			'chartSize': {width:700, height:400}
+		};
+		Nwagon.chart(chart2);
+			
+		chart4 = {
 				'dataset':{
 					title: 'Web accessibility status',
 					values:[69083116, 1100000, 1100000, 101100000],
@@ -472,7 +583,7 @@ input[type=text] {
 			};
 			Nwagon.chart(chart4);
 		
-		var chart5 = {
+		chart5 = {
 				'legend': {
 					names: ['스위트더블', '스위트 패밀리', '디럭스 트윈', '디럭스 더블', '스탠다드'],
 				},

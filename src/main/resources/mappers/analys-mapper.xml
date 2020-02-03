@@ -7,25 +7,36 @@
 	<resultMap type="com.kh.hotels.mngAnalys.model.vo.SalesDetail" id="SalesDetailResultSet">
 		<id property="rsvNo" column="rsv_No" />
 		<result property="rmNo" column="rm_No" />
+		<result property="rtNo" column="rt_No" />
+		<result property="rtName" column="rt_Name" />
 		<result property="rmNum" column="rm_Num" />
-		<result property="mno" column="mno" />
-		<result property="name" column="name" />
-		<result property="checkIn" column="checkIn" />
-		<result property="checkOut" column="checkOut" />
-		<result property="stayPrice" column="stay_Price" />
+		<result property="price" column="stay_Price" />
+		<result property="rsvDate" column="rsv_Date" />
+	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngStay.model.vo.Stay" id="StayResultSet">
+		<id property="stayNo" column="stay_No" />
+		<result property="rmNo" column="rm_No" />
+		<result property="rtNo" column="rt_No" />
+		<result property="rtName" column="rt_Name" />
+		<result property="stayStatus" column="stay_Status" />
+		<result property="stayType" column="stay_Type" />
+		<result property="price" column="price" />
+		<result property="payment" column="payment" />
+		<result property="rsvNo" column="rsv_No" />
 		<result property="rsvDate" column="rsv_Date" />
 	</resultMap>
 
 	<select id="selectSalesDetailList" resultType="java.util.ArrayList" resultMap="SalesDetailResultSet">
-		SELECT RM.RM_NUM, RSV_NO, R.MNO, M.NAME, CHECKIN, CHECKOUT, STAY_PRICE, TO_DATE(RSV_DATE, 'YYYY-MM-DD HH24:MI:SS') AS RSV_DATE
+		SELECT RM.RM_NUM, RSV_NO, R.MNO, M.NAME, CHECKIN, CHECKOUT, STAY_PRICE, TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') AS RSV_DATE
 		FROM RSV R
 		LEFT JOIN MEMBER M ON (R.MNO = M.MNO)
 		LEFT JOIN ROOM RM ON (RM.RM_NO = R.RM_NO)
 		<choose>
 			<when test="searchCondition == 'sales' and searchCondition != null">
 			<![CDATA[
-				WHERE TO_DATE(RSV_DATE, 'YYYY-MM-DD HH24:MI:SS') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
-				AND TO_DATE(RSV_DATE, 'YYYY-MM-DD HH24:MI:SS') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+				WHERE TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
 			]]>
 			</when>
 			<when test="searchCondition == 'checkIn' and searchCondition != null">
@@ -43,7 +54,47 @@
 		</choose>
 	</select>
 
+	<select id="selectRsvList" resultType="java.util.ArrayList" resultMap="SalesDetailResultSet">
+		SELECT SUM(STAY_PRICE) AS STAY_PRICE, TO_DATE(SUBSTR(R.RSV_DATE, 0, 10), 'YYYY-MM-DD') AS RSV_DATE, RT.RT_NO, RT_NAME
+		FROM RSV R
+		LEFT JOIN MEMBER M ON (R.MNO = M.MNO)
+		LEFT JOIN ROOM RM ON (RM.RM_NO = R.RM_NO)
+		LEFT JOIN ROOM_TYPE RT ON (RM.RT_NO = RT.RT_NO)
+		<choose>
+			<when test="Condition == 'view'">
+				WHERE TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') = SYSDATE
+			</when>
+			<when test="Condition == 'dailySales'">
+				WHERE TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailySales}, 'YYYY-MM-DD')
+			</when>
+			<when test="Condition == 'dailyRoomStatus'">
+				WHERE TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailyRoomStatus}, 'YYYY-MM-DD')
+			</when>
+		</choose>
+		GROUP BY (TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD'), RT.RT_NO, RT.RT_NAME)
+		ORDER BY RT.RT_NO
+	</select>
 
+	<select id="selectStayList" resultType="java.util.ArrayList" resultMap="StayResultSet">
+		SELECT SUM(PRICE) AS PRICE, TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD') AS REAL_CI, STAY_TYPE, RT.RT_NO, RT.RT_NAME
+		FROM STAY S
+		LEFT JOIN ROOM R ON (S.RM_NO = R.RM_NO)
+		LEFT JOIN ROOM_TYPE RT ON (R.RT_NO = RT.RT_NO)
+		WHERE STAY_TYPE = 'LENT'
+		<choose>
+			<when test="Condition == 'view'">
+				AND TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD') = SYSDATE
+			</when>
+			<when test="Condition == 'dailySales'">
+				AND TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailySales}, 'YYYY-MM-DD')
+			</when>
+			<when test="Condition == 'dailyRoomStatus'">
+				AND TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailyRoomStatus}, 'YYYY-MM-DD')
+			</when>
+		</choose>
+		GROUP BY (TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD'), STAY_TYPE, RT.RT_NO, RT.RT_NAME)
+		ORDER BY RT.RT_NO
+	</select>
 
 
 
