@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
+import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
@@ -41,5 +42,17 @@ public interface RoomsDao {
 	int insertCIsvcuse(SqlSessionTemplate sqlSession, CheckIn checkIn);
 
 	int insertCIsvcuseHis(SqlSessionTemplate sqlSession, CheckIn checkIn);
+
+	BrokenRoom ajxFindBrokenHis(SqlSessionTemplate sqlSession, int rmNo);
+
+	int ajxUpdateBrkStt(SqlSessionTemplate sqlSession, int rmNo);
+
+	int ajxUpdateRoomClean(SqlSessionTemplate sqlSession, int rmNo);
+
+	int ajxUpdateRoomNoClean(SqlSessionTemplate sqlSession, int rmNo);
+
+	int ajxUpdateAllRoomSttClean(SqlSessionTemplate sqlSession, ArrayList<String> floorList);
+
+	int ajxUpdateAllRoomSttNoClean(SqlSessionTemplate sqlSession, ArrayList<String> floorList);
 
 }

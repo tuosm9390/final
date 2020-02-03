@@ -29,6 +29,8 @@ public class RoomList implements java.io.Serializable {
 	private String reservname;		//예약 고객이름
 	private int smno;				//투숙 고객 고유번호
 	private String sname;			//투숙 고객이름
+	private String reservphone;
+	private String sphone;
 	
 	//투숙내역 (STAY)
 	private int stayNo;				//투숙 고유번호

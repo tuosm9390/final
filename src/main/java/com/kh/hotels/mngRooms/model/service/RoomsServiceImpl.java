@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.dao.RoomsDao;
+import com.kh.hotels.mngRooms.model.exception.BrokenRoomException;
 import com.kh.hotels.mngRooms.model.exception.InsertStayException;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
+import com.kh.hotels.mngRooms.model.exception.UpdateRoomException;
+import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
@@ -131,6 +134,53 @@ public class RoomsServiceImpl implements RoomsService {
 			throw new InsertStayException("Error : Insert Stay Failed");
 		}
 		
+	}
+
+	@Override
+	public BrokenRoom ajxFindBrokenHis(int rmNo) throws BrokenRoomException {
+		BrokenRoom brkRoom = rd.ajxFindBrokenHis(sqlSession, rmNo);
+		if(brkRoom == null) {
+			throw new BrokenRoomException("Error : View BrokenDetail Failed");
+		}
+		return brkRoom;
+	}
+
+	@Override
+	public void ajxUpdateBrkStt(int rmNo) throws BrokenRoomException {
+		int result = rd.ajxUpdateBrkStt(sqlSession, rmNo);
+		if(result > 0) {
+		} else {
+			throw new BrokenRoomException("Error : Insert Client Failed");
+		}
+	}
+
+	@Override
+	public int ajxUpdateRoomStt(String nowStt, int rmNo) throws UpdateRoomException {
+		int result = 0;
+		if(nowStt.equals("noClean")) {
+			result = rd.ajxUpdateRoomClean(sqlSession, rmNo);
+		} else if(nowStt.equals("clean")) {
+			result = rd.ajxUpdateRoomNoClean(sqlSession, rmNo);
+		}
+		
+		if(result > 0) {
+		} else {
+			throw new UpdateRoomException("Error : Update CleanStatus Failed");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int ajxUpdateAllRoomStt(String nowStt, ArrayList<String> floorList) {
+		int result = 0;
+		if(nowStt.equals("clean")) {
+			result = rd.ajxUpdateAllRoomSttClean(sqlSession, floorList);
+		} else if(nowStt.equals("unclean")) {
+			result = rd.ajxUpdateAllRoomSttNoClean(sqlSession, floorList);
+		}
+		
+		return result;
 	}
 
 }

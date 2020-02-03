@@ -789,14 +789,18 @@ input[type=number]:disabled {
 		}
 		
 		$(document).ready(function() {
+			$("#ciCancelBtn").hide();
+			$("#rsvCancelBtn").hide();
+			
 			$(".btn_close").click(function() {
-				$("input").val('');
+				$(".modal input").val('');
 				$("#checkIn").remove();
 				$("#checkOut").remove();
 				$(".feeDetailSec tr").remove();
 				$(".svcDetailSec tr:not(:first)").remove();
 				$("#personCnt option").remove();
 				$("#insertClient").text('추가');
+				$(".findClientList").hide();
 				$(".modal").fadeOut();
 			});
 			

@@ -3,8 +3,11 @@ package com.kh.hotels.mngRooms.model.service;
 import java.util.ArrayList;
 
 import com.kh.hotels.mngMember.model.vo.Member;
+import com.kh.hotels.mngRooms.model.exception.BrokenRoomException;
 import com.kh.hotels.mngRooms.model.exception.InsertStayException;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
+import com.kh.hotels.mngRooms.model.exception.UpdateRoomException;
+import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
@@ -32,5 +35,13 @@ public interface RoomsService {
 	int selectMno(String clientName);
 
 	void insertCheckIn(CheckIn checkIn) throws InsertStayException;
+
+	BrokenRoom ajxFindBrokenHis(int rmNo) throws BrokenRoomException;
+
+	void ajxUpdateBrkStt(int rmNo) throws BrokenRoomException;
+
+	int ajxUpdateRoomStt(String nowStt, int rmNo) throws UpdateRoomException;
+
+	int ajxUpdateAllRoomStt(String nowStt, ArrayList<String> floorList);
 
 }
