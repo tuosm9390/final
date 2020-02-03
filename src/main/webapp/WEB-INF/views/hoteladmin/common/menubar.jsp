@@ -161,15 +161,31 @@
 </style>
 </head>
 <body>
+<c:set var="loginUser" value="${ sessionScope.loginUser }" scope="session"/>
 <c:set var="contextPath" value="${ pageContext.servletContext.contextPath }"  scope="application" />
 	<ul class="menubar">
 		<li class="menu logo">
 				<img alt="" src="${ contextPath }/resources/images/logo.png"  class="logoimg">
 		</li>
+		<c:if test="${ loginUser.deptNo == 3 or loginUser.deptNo == 2 }">
+		<li class="menu tab t1" onclick="authAlert();">
+				<img alt="" src="${ contextPath }/resources/images/iconRoom.png"  class="tabimg"><br>
+				<label>객실관리</label>
+		</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo != 3 && loginUser.deptNo != 2}">
 		<li class="menu tab t1" onclick="location.href='view.ro'">
 				<img alt="" src="${ contextPath }/resources/images/iconRoom.png"  class="tabimg"><br>
 				<label>객실관리</label>
 		</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo == 3 or loginUser.deptNo == 2 }">
+		<li class="menu tab t2 reservation" onclick="authAlert();">
+				<img alt="" src="${ contextPath }/resources/images/iconReservation.png"  class="tabimg"><br>
+				<label>예약관리</label><br>
+		</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo != 3 && loginUser.deptNo != 2  }">
 		<li class="menu tab t2 reservation">
 				<img alt="" src="${ contextPath }/resources/images/iconReservation.png"  class="tabimg"><br>
 				<label>예약관리</label><br>
@@ -179,14 +195,32 @@
 					<a href="viewHis.re">예약내역</a>
 				</div>
 		</li>
-		<li class="menu tab t3 materiel">
-				<img alt="" src="${ contextPath }/resources/images/iconWMS.png"  class="tabimg"><br>
-				<label>재고관리</label>
-		</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo == 3 or loginUser.deptNo == 4 }">
+			<li class="menu tab t3" onclick="authAlert();">
+					<img alt="" src="${ contextPath }/resources/images/iconWMS.png"  class="tabimg"><br>
+					<label>재고관리</label>
+			</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo != 3 && loginUser.deptNo != 4 }">
+			<li class="menu tab t3 materiel" onclick="location.href='selectStock.sto'">
+					<img alt="" src="${ contextPath }/resources/images/iconWMS.png"  class="tabimg"><br>
+					<label>재고관리</label>
+			</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo != 3 && loginUser.deptNo != 2  }">
 		<li class="menu tab t4" onclick="location.href='viewList.cl'">
 				<img alt="" src="${ contextPath }/resources/images/iconCS.png"  class="tabimg"><br>
 				<label>고객관리</label>
 		</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo == 3 or loginUser.deptNo == 2  }">
+		<li class="menu tab t4" onclick="authAlert();">
+				<img alt="" src="${ contextPath }/resources/images/iconCS.png"  class="tabimg"><br>
+				<label>고객관리</label>
+		</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo == 1 }">
 		<li class="menu tab t5 analys">
 				<img alt="" src="${ contextPath }/resources/images/iconFinance.png"  class="tabimg"><br>
 				<label>판매분석</label>
@@ -195,22 +229,58 @@
 					<a href="viewDetailList.an?Condition=sales">매출 및 지불 상세</a>
 				</div>
 		</li>
-		<li class="menu tab t6 contract">
+		</c:if>
+		<c:if test="${ loginUser.deptNo != 1 }">
+		<li class="menu tab t5 analys" onclick="authAlert();">
+				<img alt="" src="${ contextPath }/resources/images/iconFinance.png"  class="tabimg"><br>
+				<label>판매분석</label>
+		</li>
+		</c:if>
+		
+		<c:if test="${ loginUser.deptNo != 4 }">
+			<li class="menu tab t6 contract">
 				<img alt="" src="${ contextPath }/resources/images/iconContract.png"  class="tabimg"><br>
 				<label>전자결재</label>
 				<div class="subnav2">
 					<a href="documentApproval.ap">결재함</a><br>
 					<a href="joinDocumentApproval.ap">참여결재함</a>
 				</div>
-		</li>
+			</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo == 4 }">
+			<li class="menu tab t6" onclick="authAlert();">
+				<img alt="" src="${ contextPath }/resources/images/iconContract.png"  class="tabimg"><br>
+				<label>전자결재</label>
+			</li>
+		</c:if>
+		
+		<c:if test="${ loginUser.deptNo == 1 }">
 		<li class="menu tab t7" onclick="location.href='goSetting.st'">
 				<img alt="" src="${ contextPath }/resources/images/iconSettings.png"  class="tabimg"><br>
 				<label>관리</label>
 		</li>
+		</c:if>
+		<c:if test="${ loginUser.deptNo != 1 }">
+		<li class="menu tab t7" onclick="authAlert();">
+				<img alt="" src="${ contextPath }/resources/images/iconSettings.png"  class="tabimg"><br>
+				<label>관리</label>
+		</li>
+		</c:if>
 		<li class="menu userArea">
 			<div class="menu userArea rightArea" onclick="location.href='logout.me'">로그아웃</div>
 			<div class="menu userArea midArea">
-				<label class="userName">전세환<br>(총지배인)</label>
+			<c:if test="${ loginUser.deptNo == 1 }">
+				<label class="userName">${ loginUser.userName }<br>(총지배인)</label>
+			</c:if>
+			<c:if test="${ loginUser.deptNo == 2 }">
+				<label class="userName">${ loginUser.userName }<br>(구매팀)</label>
+			</c:if>
+			<c:if test="${ loginUser.deptNo == 3 }">
+				<label class="userName">${ loginUser.userName }<br>(시설팀)</label>
+			</c:if>
+			<c:if test="${ loginUser.deptNo == 4 }">
+				<label class="userName">${ loginUser.userName }<br>(프론트)</label>
+			</c:if>
 			</div>
 			<div class="menu userArea leftArea">
 				<img alt="" src="${ contextPath }/resources/images/iconBell.png" class="bellimg">
@@ -253,12 +323,10 @@
 	</script>
 	
 	<script>
-		$(function(){
-			$(".materiel").click(function(){
-				location.href='selectStock.sto';
-			})
-		});
 		
+		function authAlert(){
+			alert("접근 권한이 없습니다");
+		};
 	</script>
 </body>
 </html>

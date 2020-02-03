@@ -146,8 +146,16 @@
 		<url-pattern>*.cl</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>mngSetting</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/mngSetting-servlet.xml</param-value>
+		</init-param>
+	</servlet>
 	<servlet-mapping>
-		<servlet-name>hoteladmin</servlet-name>
+		<servlet-name>mngSetting</servlet-name>
 		<url-pattern>*.st</url-pattern>
 	</servlet-mapping>
 	
