@@ -18,5 +18,8 @@ public class Report {
 	private String apprDate;
 	private int docNo;
 	private String rptType;
+	private String mname;
+	private String sname;
+	private int smno;
 	
 }

@@ -243,7 +243,10 @@
 				<label>전자결재</label>
 				<div class="subnav2">
 					<a href="documentApproval.ap">결재함</a><br>
-					<a href="joinDocumentApproval.ap">참여결재함</a>
+					<a class="partiApprove">참여결재함</a>
+					<input type="hidden" class="userDept" value="${sessionScope.loginUser.deptNo }">
+					<input type="hidden" class="userAuth" value="${sessionScope.loginUser.authNo }">
+					<input type="hidden" class="userMno" value="${sessionScope.loginUser.mno }">
 				</div>
 			</li>
 		</c:if>
@@ -323,6 +326,23 @@
 	</script>
 	
 	<script>
+		
+		$(".partiApprove").click(function(){
+			console.log("클릭이요~~");
+			var userDept = $(".userDept").val();
+			var userAuth = $(".userAuth").val();
+			var mno = $(".userMno").val();
+			console.log(userDept);
+			console.log(userAuth);
+			
+			if(userDept == 1 || userAuth == 'AUTH2') {
+				location.href="joinDocumentApproval.ap?userDept=" + userDept + "&userAuth=" + userAuth + "&userMno=" + mno;
+			}else {
+				alert("조회하실 수 없습니다.");
+				return false;
+			}
+			
+		});
 		
 		function authAlert(){
 			alert("접근 권한이 없습니다");

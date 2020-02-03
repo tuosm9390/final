@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import com.kh.hotels.mngApproval.model.dao.ApprovalDao;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 import com.kh.hotels.mngApproval.model.vo.RepRequest;
+import com.kh.hotels.mngApproval.model.vo.Report;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -239,27 +241,90 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 
 	@Override
-	public int insertRepairRequestList(ArrayList<RepRequest> rRequestList) {
+	public int insertRepairRequestList(ArrayList<RepRequest> rRequestList) throws ReportException {
 		int docNo = rRequestList.get(0).getDocno();
+		String Code = "";
 		int result = ad.insertRepReqInfo(sqlSession, rRequestList);
 		int result2 = ad.insertRepReqList(sqlSession, docNo);
 		
 		for(int i = 0; i < rRequestList.size(); i++) {
 			rRequestList.get(i).setRptNo(result2);
 			System.out.println("service : " + rRequestList.get(i));
+			Code = ad.selectRepairCncode(sqlSession, rRequestList.get(i).getCnName());	
+			rRequestList.get(i).setCnCode(Code);
+			
 		}
 		
+		int finalResult = 0;
 		int result3 = ad.insertRepReqListAll(sqlSession, rRequestList);
+		if(result > 0 && result2 > 0 && result3 > 00) {
+			finalResult = 1;
+		}else {
+			throw new ReportException("에러~~");
+		}
 		
 		
-		return 0;
+		return finalResult;
 	}
 
 
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPartiApproveList(PartiReport member, PageInfo pi) throws ReportException {
 
-	
+		ArrayList<HashMap<String, Object>> list = ad.selectPartiApproveList(sqlSession, member, pi);
+		
+		if(list == null) {
+			throw new ReportException("에러~~");
+		}else {
+			
+		}
+		
+		
+		
+		return list;
+	}
 
-	
+
+	@Override
+	public int getPartiApproveListCount(int mno) {
+		
+		int listCount = ad.getPartiApproveListCount(sqlSession, mno);
+		
+		
+
+		return listCount;
+		
+	}
 
 
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPartiApproveList(int mno, PageInfo pi) {
+		
+		ArrayList<HashMap<String, Object>> list = ad.selectPartiApprovePagingList(sqlSession, mno, pi);
+		
+		return list;
+	}
+
+
+	@Override
+	public int getListCountPartiFilter(String category, String mno) {
+		
+		int getListCountFilter = ad.getListCountPartiFilter(sqlSession, category, mno);
+		
+		
+		
+		return getListCountFilter;
+	}
+
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPartiApproveFilter(PageInfo pi, String category, String mno) {
+		
+		ArrayList<HashMap<String, Object>> list = ad.selectPartiApproveFilter(sqlSession, category, mno, pi);
+		
+		
+		return list;
+	}
 }
+
+

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,9 +18,11 @@ import com.kh.hotels.hotel.controller.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.service.ApprovalService;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 import com.kh.hotels.mngApproval.model.vo.RepRequest;
+import com.kh.hotels.mngApproval.model.vo.Report;
 
 @Controller
 public class ApproveController {
@@ -177,10 +180,85 @@ public class ApproveController {
 			return mv;
 		}      
 	}
+	
 	@RequestMapping("joinDocumentApproval.ap")
-	public String goJoinApproval() {
+	public String goJoinApproval(HttpServletRequest request, String userDept, String userAuth, String userMno, Model model) {
+		System.out.println("userDept : " + userDept);
+		System.out.println("userAuth : " + userAuth);
+		System.out.println("mno : " + userMno);
+		
+		
+		int currentPage = 1;
 
-		return "hoteladmin/mngApprove/ApproveList/partiApprove";
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+
+		Report report = new Report();
+		
+		PartiReport member = new PartiReport();
+		
+		int userDeptNum = Integer.parseInt(userDept);
+		int mno = Integer.parseInt(userMno);
+		
+		member.setAuth(userAuth);
+		member.setDeptNo(userDeptNum);
+		member.setMno(mno);
+		
+		
+		
+		try {
+			
+			int listCount = as.getPartiApproveListCount(mno);
+
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+
+
+			//List<HashMap<String, Object>> ReportList = as.selectReportList(pi);
+		
+			
+			ArrayList<HashMap<String, Object>> list = null;
+			
+			if(userDeptNum == 2) {
+				list = as.selectPartiApproveList(member, pi);
+				
+			}else if(userDeptNum == 3){
+				
+			}
+			
+			for(int i = 0; i < list.size(); i++) {
+				if(list.get(i).get("RPSTATUS").equals("WAIT")) {
+					list.get(i).put("RPSTATUS", "진행중");
+				}else if(list.get(i).get("RPSTATUS").equals("APPR")) {
+					list.get(i).put("RPSTATUS", "승인");
+				}else {
+					list.get(i).put("RPSTATUS", "반려");
+				}
+			}
+			for(int i = 0; i < list.size(); i++) {
+				if(list.get(i).get("RPTYPE").equals("PURCHASE")) {
+					list.get(i).put("RPTYPE", "구매 요청서");
+				}else if(list.get(i).get("RPTYPE").equals("ORDER")) {
+					list.get(i).put("RPTYPE", "발주 요청서");
+				}else {
+					list.get(i).put("RPTYPE", "수리 요청서");
+				}
+			}
+			
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+			System.out.println("list : " + list);
+			return "hoteladmin/mngApprove/ApproveList/partiApprove";
+			
+		} catch (ReportException e) {
+			model.addAttribute("msg", e.getMessage());
+			
+			return "common/errorPage";
+		}
+		
+		
+
 	}
 
 
@@ -291,6 +369,7 @@ public class ApproveController {
 
 				mv.addObject("list", list);
 				mv.setViewName("jsonView");
+				System.out.println("list : " + list);
 				return mv;
 
 			} catch (ReportException e) {
@@ -633,10 +712,120 @@ public class ApproveController {
 		}
 		
 		
-		int result = as.insertRepairRequestList(rRequestList);
+		try {
+			int result = as.insertRepairRequestList(rRequestList);
+			
+			model.addAttribute("rRequestList", rRequestList);
+			return "redirect:/documentApproval.ap";
+			
+		} catch (ReportException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 		
 		
 	
-	return null;
 	}
+	
+	@GetMapping("documentPartiApproval.ap")
+	public String partiApprovePaging(HttpServletRequest request, Model model) {
+		
+		int currentPage = 1;
+		int mno = Integer.parseInt(request.getParameter("mno"));
+				
+
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		
+		int listCount = as.getPartiApproveListCount(mno);
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+	
+		
+		ArrayList<HashMap<String, Object>> list = null;
+		
+		list = as.selectPartiApproveList(mno, pi);
+		
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).get("RPSTATUS").equals("WAIT")) {
+				list.get(i).put("RPSTATUS", "진행중");
+			}else if(list.get(i).get("RPSTATUS").equals("APPR")) {
+				list.get(i).put("RPSTATUS", "승인");
+			}else {
+				list.get(i).put("RPSTATUS", "반려");
+			}
+		}
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).get("RPTYPE").equals("PURCHASE")) {
+				list.get(i).put("RPTYPE", "구매 요청서");
+			}else if(list.get(i).get("RPTYPE").equals("ORDER")) {
+				list.get(i).put("RPTYPE", "발주 요청서");
+			}else {
+				list.get(i).put("RPTYPE", "수리 요청서");
+			}
+		}
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pi", pi);
+
+
+
+		return "hoteladmin/mngApprove/ApproveList/partiApprove";
+		
+		
+		
+	}
+	@PostMapping("docuPartiFilter.ap")
+	public ModelAndView partiCateFilter(ModelAndView mv, String cate, String scurrentPage, String mno) {
+		System.out.println("넘어오니???");
+		int currentPage = 1;
+		String category = "";
+		
+		if(cate.equals("진행중")) {
+			category = "WAIT";
+		}else if(cate.equals("반려")) {
+			category = "REJECT";
+		}else if(cate.equals("승인")){
+			category = "APPR";
+			
+		}else {
+			category = "";
+		}
+		
+		if(scurrentPage != null) {
+			currentPage = Integer.parseInt(scurrentPage);
+		}
+		
+		int listCount = 0;
+		ArrayList<HashMap<String, Object>> partiReportList = null;
+		PageInfo pi = null;
+		
+		if(category != "") {
+			listCount = as.getListCountPartiFilter(category, mno);
+			pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			partiReportList = as.selectPartiApproveFilter(pi, category, mno);
+		}else {
+			
+			/*
+			 * listCount = as.getPartiApproveListCount(mno); pi =
+			 * Pagination.getPageInfo(currentPage, listCount); partiReportList =
+			 * as.selectPartiApproveList(pi, mno);
+			 */
+			 
+		}
+		
+		
+		mv.addObject("partiReportList",partiReportList);
+		mv.addObject("pi", pi);
+		mv.setViewName("jsonView");
+		
+		
+		
+		
+		return mv;
+	}
+	
 }
