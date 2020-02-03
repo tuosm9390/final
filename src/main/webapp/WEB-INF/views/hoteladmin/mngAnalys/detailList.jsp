@@ -223,10 +223,10 @@ input[type=text], select{
 							<td>${ list.rsvDate }</td>
 							<td>${ list.checkIn }</td>
 							<td>${ list.checkOut }</td>
-							<td align="right"><fmt:formatNumber value="${ list.stayPrice }" pattern="#,###"/> 원</td>
+							<td align="right"><fmt:formatNumber value="${ list.price }" pattern="#,###"/> 원</td>
 							<td></td>	
 						</tr>
-						<c:set var="sum" value="${ sum + list.stayPrice }"></c:set>
+						<c:set var="sum" value="${ sum + list.price }"></c:set>
 						</c:forEach>
 						<tr>
 							<th colspan="5"></th>

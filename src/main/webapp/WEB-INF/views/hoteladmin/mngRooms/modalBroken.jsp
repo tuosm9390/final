@@ -83,7 +83,8 @@
 	<div class="modalBroken">
 		<div class="modal_content_broken">
 			<div class="brokentitle">
-				<h1 style="margin: 0">201</h1>
+				<h1 style="margin: 0" id="brkRmNo">201</h1>
+				<input type="hidden" id="realRmNo" value="">
 				<a class="btn_close_broken">×</a>
 			</div>
 			
@@ -91,18 +92,16 @@
 				<table>
 					<tr>
 						<td width="25%">고장기간</td>
-						<td width="75%">01-07(화) ~ 02-12(수)</td>
+						<td width="75%" id="brkPeriod">01-07(화) ~ 02-12(수)</td>
 					</tr>
 					<tr>
 						<td>고장사유</td>
-						<td>관리자 / 2020-01-11 12:11:11</td>
+						<td id="brkMno">관리자</td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>
-							<div style="max-height: 300px; overflow-y: auto;">
-								고장이 나 버렸음
-							</div>				
+							<div style="max-height: 300px; overflow-y: auto;" id="brkRsnTA"></div>				
 						</td>
 					</tr>
 				</table>
@@ -115,6 +114,22 @@
 		$(document).ready(function() {
 			$(".btn_close_broken").click(function() {
 				$(".modalBroken").fadeOut();
+			});
+		});
+		
+		$("#endBroken").click(function(){
+			var rmNo = $("#realRmNo").val();
+			$.ajax({
+				url:"ajxUpdateBrkStt.ro",
+				data:{rmNo:rmNo},
+				type:"post",
+				success:function(data) {
+					$(".modalBroken").fadeOut();
+					location.reload(true);
+				},
+				error:function(error, status) {
+					alert("SYSTEM ERROR!");
+				}
 			});
 		});
 	</script>

@@ -1,12 +1,15 @@
 package com.kh.hotels.mngRooms.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
+import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
@@ -102,6 +105,60 @@ public class RoomsDaoImpl implements RoomsDao {
 	@Override
 	public int insertCIsvcuseHis(SqlSessionTemplate sqlSession, CheckIn checkIn) {
 		return sqlSession.insert("Rooms.insertCIsvcuseHis", checkIn);
+	}
+
+	@Override
+	public BrokenRoom ajxFindBrokenHis(SqlSessionTemplate sqlSession, int rmNo) {
+		return sqlSession.selectOne("Rooms.ajxFindBrokenHis", rmNo);
+	}
+
+	@Override
+	public int ajxUpdateBrkStt(SqlSessionTemplate sqlSession, int rmNo) {
+		return sqlSession.update("Rooms.ajxUpdateBrkStt", rmNo);
+	}
+
+	@Override
+	public int ajxUpdateRoomClean(SqlSessionTemplate sqlSession, int rmNo) {
+		int result, result1, result2;
+		result1 = sqlSession.update("Rooms.ajxUpdateRoomClean", rmNo);
+		if(result1 > 0) {
+			result2 = sqlSession.insert("Rooms.ajxUpdateRoomCleanHis", rmNo);
+			if(result2 > 0) {
+				result = 1;
+			} else {
+				result = 0;
+			}
+		} else {
+			result = 0;
+		}
+		return result;
+	}
+
+	@Override
+	public int ajxUpdateRoomNoClean(SqlSessionTemplate sqlSession, int rmNo) {
+		int result, result1, result2;
+		result1 = sqlSession.update("Rooms.ajxUpdateRoomNoClean", rmNo);
+		if(result1 > 0) {
+			result2 = sqlSession.insert("Rooms.ajxUpdateRoomNoCleanHis", rmNo);
+			if(result2 > 0) {
+				result = 1;
+			} else {
+				result = 0;
+			}
+		} else {
+			result = 0;
+		}
+		return result;
+	}
+
+	@Override
+	public int ajxUpdateAllRoomSttClean(SqlSessionTemplate sqlSession, ArrayList<String> floorList) {
+		return sqlSession.update("Rooms.ajxUpdateAllRoomSttClean", floorList);
+	}
+
+	@Override
+	public int ajxUpdateAllRoomSttNoClean(SqlSessionTemplate sqlSession, ArrayList<String> floorList) {
+		return sqlSession.update("Rooms.ajxUpdateAllRoomSttNoClean", floorList);
 	}
 
 }

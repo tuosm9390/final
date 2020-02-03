@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.mngMember.model.vo.Member;
+import com.kh.hotels.mngRooms.model.exception.BrokenRoomException;
 import com.kh.hotels.mngRooms.model.exception.InsertStayException;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
+import com.kh.hotels.mngRooms.model.exception.UpdateRoomException;
 import com.kh.hotels.mngRooms.model.service.RoomsService;
+import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
@@ -63,7 +66,7 @@ public class RoomsController {
 			return "mngRooms/viewRoomList";
 		} catch (RoomListException e) {
 			model.addAttribute("msg", e.getMessage());
-			return "common/errorPage.jsp";
+			return "common/errorPage";
 		}
 	}
 	
@@ -90,7 +93,7 @@ public class RoomsController {
 			mv.setViewName("jsonView");
 		} catch (InsertStayException e) {
 			mv.addObject("msg", e.getMessage());
-			mv.setViewName("common/errorPage.jsp");
+			mv.setViewName("common/errorPage");
 		}
 		return mv;
 	}
@@ -128,8 +131,72 @@ public class RoomsController {
 			mv.setViewName("redirect:view.ro");
 		} catch (InsertStayException e) {
 			mv.addObject("msg", e.getMessage());
-			mv.setViewName("common/errorPage.jsp");
+			mv.setViewName("common/errorPage");
 		}
+		return mv;
+	}
+	
+	@RequestMapping("ajxFindBrokenHis.ro")
+	public ModelAndView ajxFindBrokenHis(ModelAndView mv, int rmNo) {
+		BrokenRoom brkRoom;
+		try {
+			brkRoom = rs.ajxFindBrokenHis(rmNo);
+			mv.addObject("brkRoom", brkRoom);
+			mv.setViewName("jsonView");
+		} catch (BrokenRoomException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	@RequestMapping("ajxUpdateBrkStt.ro")
+	public ModelAndView ajxUpdateBrkStt(ModelAndView mv, int rmNo) {
+		try {
+			rs.ajxUpdateBrkStt(rmNo);
+		} catch (BrokenRoomException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	@RequestMapping("ajxUpdateRoomStt.ro")
+	public ModelAndView ajxUpdateRoomStt(ModelAndView mv, String nowStt, int rmNo) { 
+		System.out.println(nowStt);
+		try {
+			int result = rs.ajxUpdateRoomStt(nowStt, rmNo);
+			if(result > 0) {
+				mv.addObject("result", "success");
+			} else {
+				mv.addObject("result", "fail");
+			}
+			mv.setViewName("jsonView");
+		} catch (UpdateRoomException e) {
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	@RequestMapping("ajxUpdateAllRoomStt.ro")
+	public ModelAndView ajxUpdateAllRoomStt(ModelAndView mv, String nowStt, String[] floor) {
+		ArrayList<String> floorList = new ArrayList<String>();
+		for(String f : floor) {
+			floorList.add(f);
+		}
+		if(floorList.get(0).equals("all")) {
+			floorList.remove(0);
+		}
+		int result = rs.ajxUpdateAllRoomStt(nowStt, floorList);
+		if(result > 0) {
+			mv.addObject("floorlist", floorList);
+			mv.addObject("result", "success");
+		} else {
+			mv.addObject("result", "fail");
+		}
+		mv.setViewName("jsonView");
+		
 		return mv;
 	}
 

@@ -36,6 +36,8 @@
 		<result property="realCI" column="REAL_CI" />
 		<result property="stdPer" column="STD_PER" />
 		<result property="maxPer" column="MAXPER" />
+		<result property="reservphone" column="RPHONE" />
+		<result property="sphone" column="SPHONE" />
 	</resultMap>
 	
 	<resultMap type="RoomPrice" id="roomPriceSet">
@@ -72,12 +74,21 @@
 		<result property="ltUnit" column="LENT_UNIT" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.BrokenRoom" id="brkRoomSet">
+		<result property="rmNo" column="RM_NUM" />
+		<result property="brkBegin" column="BRK_BEGIN" />
+		<result property="brkEnd" column="BRK_END" />
+		<result property="brkRsn" column="BRK_RSN" />
+		<result property="userName" column="NAME" />
+		<result property="brkStatus" column="BRK_STATUS" />
+	</resultMap>
+	
 	<select id="viewRoomList" resultMap="roomListSet">
 		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
 		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
 		       V.RSV_NO, TO_CHAR(V.CHECKIN, 'yyyy-MM-dd') AS "R_CHECKIN", TO_CHAR(V.CHECKOUT, 'yyyy-MM-dd') AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
 		       M1.MNO AS "RMNO", M1.NAME AS "RNAME", M2.MNO AS "SMNO", M2.NAME AS "SNAME", TO_CHAR(B.BRK_BEGIN, 'yyyy-MM-dd') AS "BRK_BEGIN", TO_CHAR(B.BRK_END, 'yyyy-MM-dd') AS "BRK_END",
-		       BRK_RSN, R.STD_PER, T.MAXPER
+		       BRK_RSN, R.STD_PER, T.MAXPER, M1.PHONE AS "RPHONE", M2.PHONE AS "SPHONE"
 		FROM ROOM R
 		LEFT JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
 		LEFT JOIN ROOM_STT N ON (R.RM_NO = N.RM_NO)
@@ -95,7 +106,8 @@
                    FROM ROOM
                    LEFT JOIN BROKEN_HIS USING (RM_NO)
                    WHERE TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
-                   AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')) B ON (R.RM_NO = B.RM_NO)
+                   AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+                   AND BRK_STATUS = 'Y') B ON (R.RM_NO = B.RM_NO)
 		WHERE R.RM_STATUS = 'Y'
 		ORDER BY FLOOR, RM_NUM
 	</select>
@@ -129,6 +141,7 @@
 		WHERE STATUS = 'Y'
 		AND TYPE = 'CLIENT'
 		AND NAME LIKE '%'||#{ searchName }||'%'
+		AND NAME NOT LIKE '%-%'
 	</select>
 	
 	<insert id="ajxInsertClient" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
@@ -140,6 +153,8 @@
 		SELECT *
 		FROM MEMBER
 		WHERE NAME LIKE '%'||#{hipen}||'%'
+		AND STATUS = 'Y'
+		AND TYPE = 'CLIENT'
 	</select>
 	
 	<insert id="insertTempMember" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
@@ -147,7 +162,7 @@
 		VALUES (SEQ_MNO.NEXTVAL, #{clientName}, #{clientPhone}, #{clientEmail}, DEFAULT, 'CLIENT', 'TEMP')
 	</insert>
 	
-	<select id="selectMno" resultType="java.lang.Integer" parameterType="java.lang.String">
+	<select id="selectMno" resultType="_int" parameterType="java.lang.String">
 		SELECT MNO
 		FROM MEMBER
 		WHERE NAME = #{clientName}
@@ -180,4 +195,61 @@
 		VALUES (SEQ_SVC_NO.CURRVAL, 'ALL', 'NONE', 'ALL', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'INSERT')
 	</insert>
 	
+	<select id="ajxFindBrokenHis" parameterType="_int" resultMap="brkRoomSet">
+		SELECT R.RM_NUM, B.BRK_BEGIN, B.BRK_END, B.BRK_RSN, M.NAME, B.BRK_STATUS
+		FROM BROKEN_HIS B
+		JOIN MEMBER M ON (B.MNO = M.MNO)
+		JOIN ROOM R ON (B.RM_NO = R.RM_NO)
+		WHERE B.RM_NO = #{rmNo}
+		AND TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+	</select>
+	
+	<update id="ajxUpdateBrkStt" parameterType="_int">
+		UPDATE BROKEN_HIS
+		SET BRK_STATUS = 'N', BRK_END = (SYSDATE + 9 / (24) + 135 / (24 * 60 * 60))
+		WHERE RM_NO = #{rmNo}
+		AND TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+	</update>
+	
+	<update id="ajxUpdateRoomClean" parameterType="_int">
+		UPDATE ROOM_STT
+		SET CLEAN_STATUS = 'Y'
+		WHERE RM_NO = #{rmNo}
+	</update>
+	
+	<insert id="ajxUpdateRoomCleanHis" parameterType="_int">
+		INSERT INTO ROOM_STT_HIS
+		VALUES (#{rmNo}, 'N', 'Y', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'CLEAN')
+	</insert>
+	
+	<update id="ajxUpdateRoomNoClean" parameterType="_int">
+		UPDATE ROOM_STT
+		SET CLEAN_STATUS = 'N'
+		WHERE RM_NO = #{rmNo}
+	</update>
+	
+	<insert id="ajxUpdateRoomNoCleanHis" parameterType="_int">
+		INSERT INTO ROOM_STT_HIS
+		VALUES (#{rmNo}, 'Y', 'N', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'UNCLEAN')
+	</insert>
+	
+	<update id="ajxUpdateAllRoomSttClean" parameterType="java.util.ArrayList">
+		UPDATE ROOM_STT
+		SET CLEAN_STATUS = 'N'
+		WHERE RM_NO IN (SELECT RM_NO
+		               FROM ROOM
+		               WHERE FLOOR IN
+		               <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>)
+	</update>
+	
+	<update id="ajxUpdateAllRoomSttNoClean" parameterType="java.util.ArrayList">
+		UPDATE ROOM_STT
+		SET CLEAN_STATUS = 'Y'
+		WHERE RM_NO IN (SELECT RM_NO
+		               FROM ROOM
+		               WHERE FLOOR IN
+		               <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>)
+	</update>
 </mapper>

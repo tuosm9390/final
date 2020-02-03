@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +11,9 @@
 		width:1300px;
 		height:600px;
 		float:right;
+	}
+	.newTrArea input{
+		text-align:center;
 	}
 	.roomBtn{
 		margin-top:20px; 
@@ -67,7 +71,9 @@
 		background-color: #f7f7f7;
 		color: #005B9E;
 		border: 1px solid lightgray;
-		height:30px;
+	}
+	.roomTable tr{
+		height:40px;
 	}
 	.roomTable input{
 		border:0;
@@ -111,32 +117,82 @@
 			</div>
 			<h2>객실 타입 설정</h2>
 			<div class="roomTableArea">
-				<label class="textArea">객실타입은 수정 및 삭제가 불가능 합니다. 비활성화 후 신규로 생성할 수 있습니다.</label>
+				<label class="textArea">객실타입은 수정 및 삭제가 불가능 합니다. 신규로 생성할 수 있습니다.</label>
 				<button class="addRoomType" onclick="addRoomType();">+ 추가</button>
 				<br>
-				<div class="tableAreaRoom">
-					<table border="1" class="roomTable" style="border-collapse: collapse;">
-						<tr class="thArea">
-							<th width="5%"><input type="checkbox"></th>
-							<th width="20%">객실 타입</th>
-							<th width="20%">객실 수</th>
-							<th width="15%">기준 인원</th>
-							<th width="15%">최대 인원</th>
-							<th width="15%">정상가</th>
-						</tr>
-					</table>
-				</div>
-				<div align="right" style="margin-top:10px;">
-					<button class="saveBtn">저장</button>
-				</div>
+				<form action="addRoomType.st" method="post">
+					<div class="tableAreaRoom">
+						<table border="1" class="roomTable" style="border-collapse: collapse;">
+							<tr class="thArea">
+								<th width="25%">객실 타입</th>
+								<th width="15%">객실 수</th>
+								<th width="15%">기준 인원</th>
+								<th width="15%">최대 인원</th>
+								<th width="20%">정상가</th>
+							</tr>
+							<c:forEach var="roomTypeList" items="${ roomTypeList }">
+								<tr>
+									<td>${ roomTypeList.rtName } <input type="hidden" value="${ roomTypeList.rtNo }" class="roomTypeNo"> <input type="hidden" value="${ roomTypeList.rtName }" class="roomTypeName"></td>
+									<td>${ roomTypeList.roomCount }</td>
+									<td>${ roomTypeList.minPer }</td>
+									<td>${ roomTypeList.maxPer }</td>
+									<td>${ roomTypeList.limitprc }</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</div>
+					<div align="right" style="margin-top:10px;">
+						<button type="reset" class="saveBtn resetBtn" onclick="return resetRoomType();">취소</button>
+						<button type="submit" class="saveBtn" onclick="return saveRoomType();">저장</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
 </section>
 <script type="text/javascript">
-function addRoomType(){
-	$("tbody:last").append("<tr><td><input type='checkbox'></td><td><input type='text'></td><td></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;'></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;'></td><td><input type='text' style='width:100px;height:30px;'></td></tr>");
-};
+	function addRoomType(){
+		$("tbody:last").append("<tr class='newTrArea'><td><input type='text' name='rtName' class='rtNames'></td><td></td><td><input type='number' class='minPer' min='1' value='1' max='20' name='minPer' class='minPer' style='text-align:center; margin-left:14px;'></td><td><input type='number' class='maxPer' min='1' name='maxPer' value='1' max='20' class='maxPer' style='text-align:center; margin-left:14px;'></td><td><input type='text' class='limitprc' name='limitprc' style='width:100px;height:30px;'></td></tr>");
+		$(".minPer").each(function(){
+			$(this).change(function(){
+				$(this).parent().siblings().children(".maxPer").attr("min", $(this).val());
+				$(this).parent().siblings().children(".maxPer").attr("value", $(this).val());
+			});
+		})
+	};
+	function saveRoomType(){
+		if($(".newTrArea").length < 1){
+			alert("추가할 객실 타입을 입력해주세요.");
+			return false;
+		}
+		
+		$(".roomTypeName").each(function(index, item){
+			
+			$(".rtNames").each(function(index, items){
+				if(items.value == ""){
+					alert("객실 타입 명을 입력해주세요.");
+					return false;
+				}
+				if(items.value == item.value){
+					alert("같은 타입의 객실명을 입력하실 수 없습니다.");
+					return false;
+				}
+			});
+
+		});
+		
+		$(".limitprc").each(function(index, item){
+			if(item.value == ""){
+				alert("객실 가격을 입력해주세요.");
+				return false;
+			}
+		});
+		
+		return true;
+	};
+	function resetRoomType(){
+		$(".newTrArea").remove();
+	};
 </script>
 </body>
 </html>
