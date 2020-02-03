@@ -8,10 +8,12 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 import com.kh.hotels.mngApproval.model.vo.RepRequest;
 import com.kh.hotels.mngApproval.model.vo.Report;
+import com.kh.hotels.mngMember.model.vo.Member;
 
 public interface ApprovalDao {
 
@@ -58,5 +60,19 @@ public interface ApprovalDao {
 	int insertRepReqList(SqlSessionTemplate sqlSession, int docNo);
 
 	int insertRepReqListAll(SqlSessionTemplate sqlSession, ArrayList<RepRequest> rRequestList);
+
+	String selectRepairCncode(SqlSessionTemplate sqlSession, String cnName);
+
+	ArrayList<HashMap<String, Object>> selectPartiApproveList(SqlSessionTemplate sqlSession, PartiReport member, PageInfo pi);
+
+	int getPartiApproveListCount(SqlSessionTemplate sqlSession, int mno) ;
+
+	ArrayList<HashMap<String, Object>> selectPartiApprovePagingList(SqlSessionTemplate sqlSession, int mno,
+			PageInfo pi);
+
+	int getListCountPartiFilter(SqlSessionTemplate sqlSession, String category, String mno);
+
+	ArrayList<HashMap<String, Object>> selectPartiApproveFilter(SqlSessionTemplate sqlSession, String category,
+			String mno, PageInfo pi);
 
 }

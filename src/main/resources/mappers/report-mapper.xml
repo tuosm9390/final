@@ -36,9 +36,11 @@
 		<result property="apprDate" column="APPR_DATE" />
 		<result property="docNo" column="DOC_NO" />
 		<result property="rptType" column="RPT_TYPE" />
-
+		<result property="mname" column="NAME" />
+		<result property="sname" column="NAME" />
+		<result property="smno" column="MNO" />
 	</resultMap>
-	
+
 	<resultMap id="repRequestResultset" type="RepRequest">
 		<result property="ino" column="INO"></result>
 		<result property="cnCode" column="CN_CODE"></result>
@@ -58,6 +60,14 @@
 		<result property="deptName" column="DEPT_NAME"></result>
 		<result property="mmno" column="MNO"></result>
 	</resultMap>
+	
+	<resultMap id="PartiResultSet" type="PartiReport">
+		<result property="mno" column="MNO"></result>
+		<result property="deptNo" column="DEPT_NO"></result>
+		<result property="auth" column="AUTH1"></result>
+	</resultMap>
+	
+	
 
 
 
@@ -284,17 +294,20 @@
 		resultMap="purRequestResultSet">
 		SELECT INAME, INO
 		FROM (SELECT INAME, MAX(INO) AS "INO"
-		FROM CONN C
+		FROM
+		CONN C
 		JOIN ITEM I ON(C.CN_CODE = I.CN_CODE)
 		WHERE MFG = #{mfg}
-		AND CN_NAME = #{cname}
+		AND
+		CN_NAME = #{cname}
 		GROUP BY INAME)
 	</select>
 	<select id="selectMadeComName" parameterType="String"
 		resultType="java.util.HashMap">
 		SELECT DISTINCT MFG
 		FROM ITEM I
-		JOIN CONN C ON(I.CN_CODE = C.CN_CODE)
+		JOIN CONN C ON(I.CN_CODE =
+		C.CN_CODE)
 		WHERE C.CN_NAME = #{value}
 	</select>
 	<select id="selectVosPrice" resultType="java.util.HashMap"
@@ -302,13 +315,16 @@
 
 		SELECT VOS, INO
 		FROM (SELECT VOS, MAX(INO) AS "INO"
-		FROM ITEM I
+		FROM
+		ITEM I
 		JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
-		JOIN CONN C ON (I.CN_CODE =
+		JOIN CONN C ON
+		(I.CN_CODE =
 		C.CN_CODE)
 		WHERE INAME = #{iname}
 		AND TYPE = #{type}
-		AND CN_NAME =
+		AND
+		CN_NAME =
 		#{cnName}
 		AND MFG = #{madeComName}
 		GROUP BY VOS)
@@ -318,21 +334,26 @@
 	<!-- 구매요청서 입력 쿼리문 -->
 	<select id="insertPurchaseApproveList"
 		parameterType="PurRequest">
-		INSERT INTO REPORT (RPT_NO, MNO, RPT_DATE, RECEIVER, RPT_TITLE, RPT_STATUS,
+		INSERT INTO REPORT (RPT_NO, MNO, RPT_DATE, RECEIVER,
+		RPT_TITLE, RPT_STATUS,
 		APPR_DATE, DOC_NO, RPT_TYPE)
-		VALUES(SEQ_RPT_NO.NEXTVAL, #{mmno}, #{rptDate}, #{smno}, #{title}, DEFAULT, DEFAULT, #{docno},
+		VALUES(SEQ_RPT_NO.NEXTVAL, #{mmno}, #{rptDate}, #{smno}, #{title},
+		DEFAULT, DEFAULT, #{docno},
 		'PURCHASE')
 	</select>
 	<!-- rptno가져오기 -->
 	<select id="selectRptNo" parameterType="_int" resultType="_int">
-		SELECT RPT_NO
+		SELECT
+		RPT_NO
 		FROM REPORT
 		WHERE DOC_NO = #{docNo}
 	</select>
 	<!-- 구매요청서 값 insert -->
 	<select id="insertPurRequest" parameterType="PurRequest">
-		INSERT INTO PUR_REQ(INO, AMOUNT, TOT_PRICE, PUR_RSN, RPT_NO)
-		VALUES(#{ino}, #{amount}, #{totPrice}, #{content}, #{rptNo})
+		INSERT INTO
+		PUR_REQ(INO, AMOUNT, TOT_PRICE, PUR_RSN, RPT_NO)
+		VALUES(#{ino},
+		#{amount}, #{totPrice}, #{content}, #{rptNo})
 	</select>
 	<select id="selectRepairIname" parameterType="_int"
 		resultType="String">
@@ -341,7 +362,8 @@
 		WHERE INO = #{ino}
 	</select>
 	<select id="selectRepairInfo" resultType="java.util.HashMap">
-		SELECT M.MNO AS "SMNO", NAME, D.DEPT_NO AS "DNO"
+		SELECT M.MNO AS "SMNO",
+		NAME, D.DEPT_NO AS "DNO"
 		FROM MEMBER M
 		JOIN STAFF S ON(M.MNO = S.MNO)
 		JOIN DEPT D ON(S.DEPT_NO = D.DEPT_NO)
@@ -349,18 +371,111 @@
 	</select>
 	<!-- 수리요청서 정보 넣기 -->
 	<select id="insertReqReqInfo" parameterType="RepRequest">
-		INSERT INTO REPORT (RPT_NO, MNO, RPT_DATE, RECEIVER, RPT_TITLE, RPT_STATUS,
-		APPR_DATE, DOC_NO, RPT_TYPE)
-		VALUES(SEQ_RPT_NO.NEXTVAL, #{mmno}, #{rptDate}, #{smno}, #{title}, DEFAULT, DEFAULT, #{docno},
+		INSERT INTO REPORT
+		(RPT_NO, MNO, RPT_DATE, RECEIVER, RPT_TITLE, RPT_STATUS,
+		APPR_DATE,
+		DOC_NO, RPT_TYPE)
+		VALUES(SEQ_RPT_NO.NEXTVAL, #{mmno}, #{rptDate},
+		#{smno}, #{title}, DEFAULT, DEFAULT, #{docno},
 		'REPAIR')
 	</select>
 	<!-- 수리 요청서 rptno가져오기 -->
-	<select id="selectRepReqRptNo" parameterType="_int" resultType="_int">
+	<select id="selectRepReqRptNo" parameterType="_int"
+		resultType="_int">
 		SELECT RPT_NO
 		FROM REPORT
 		WHERE DOC_NO = #{docNo}
 	</select>
+	<!-- 수리 요청서 값 insert -->
+	<select id="insertRepReqList" parameterType="RepRequest">
+		INSERT INTO
+		REP_REQ(INO, CN_CODE, REP_RSN, REP_PRICE, TOT_PRICE, RPT_NO)
+		VALUES(#{ino}, #{cnCode}, #{rsn}, #{price}, #{totalPrice}, #{rptNo})
+	</select>
+	<!-- cncode가져오기 -->
+	<select id="selectCncode" parameterType="String"
+		resultType="String">
+		SELECT CN_CODE
+		FROM CONN
+		WHERE CN_NAME = #{cnName}
+	</select>
 
+	<!-- 참여결재 리스트 불러오기 -->
+	<select id="selectPariApproveList" parameterType="_int" resultType="java.util.HashMap">
+		SELECT ROWNUM RNUM,
+		RPT_NO, RMNO, MNAME, RPTDATE, RCEIVER, SNAME, RPTITLE,
+		RPSTATUS,
+		APPDATE, DOCNO, RPTYPE
+		FROM(
+		SELECT
+		R.RPT_NO AS "RPT_NO", R.MNO AS
+		"RMNO", M.NAME "MNAME", R.RPT_DATE AS
+		"RPTDATE", R.RECEIVER AS
+		"RCEIVER", S.NAME AS "SNAME",
+		R.RPT_TITLE AS
+		"RPTITLE", R.RPT_STATUS AS
+		"RPSTATUS", R.APPR_DATE AS "APPDATE",
+		R.DOC_NO AS "DOCNO", R.RPT_TYPE
+		AS "RPTYPE"
+		FROM REPORT R, MEMBER M,
+		(SELECT MNO, NAME
+		FROM MEMBER
+		WHERE
+		MNO IN (SELECT DISTINCT RECEIVER
+		FROM REPORT)
+		) S
+		WHERE R.MNO = M.MNO
+		AND
+		R.RECEIVER = S.MNO
+        AND RECEIVER = #{mno}
+		ORDER BY RPT_NO ASC)
+		ORDER BY RNUM DESC
+	</select>
+	
+	<select id="selectPartiApproveListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		Report
+		WHERE RECEIVER = #{mno}
+	</select>
+	<select id="selectPartiFilterCount" parameterType="PartiReport" resultType="_int">
+		SELECT COUNT(*)
+		FROM REPORT
+		WHERE RECEIVER = #{mno}
+		AND RPT_STATUS = #{category}
+	</select>
+	<select id="selectPartiFilterList" parameterType="PartiReport" resultType="java.util.HashMap">
+		SELECT ROWNUM RNUM,
+		RPT_NO, RMNO, MNAME, RPTDATE, RCEIVER, SNAME, RPTITLE,
+		RPSTATUS,
+		APPDATE, DOCNO, RPTYPE
+		FROM(
+		SELECT
+		R.RPT_NO AS "RPT_NO", R.MNO AS
+		"RMNO", M.NAME "MNAME", R.RPT_DATE AS
+		"RPTDATE", R.RECEIVER AS
+		"RCEIVER", S.NAME AS "SNAME",
+		R.RPT_TITLE AS
+		"RPTITLE", R.RPT_STATUS AS
+		"RPSTATUS", R.APPR_DATE AS "APPDATE",
+		R.DOC_NO AS "DOCNO", R.RPT_TYPE
+		AS "RPTYPE"
+		FROM REPORT R, MEMBER M,
+		(SELECT MNO, NAME
+		FROM MEMBER
+		WHERE
+		MNO IN (SELECT DISTINCT RECEIVER
+		FROM REPORT)
+		) S
+		WHERE R.MNO = M.MNO
+		AND
+		R.RECEIVER = S.MNO
+        AND RECEIVER = #{mno}
+        AND RPT_STATUS = #{category}
+		ORDER BY RPT_NO ASC)
+		ORDER BY RNUM DESC
+	</select>
+	
 </mapper>
   
   

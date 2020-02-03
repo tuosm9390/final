@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 import com.kh.hotels.mngApproval.model.vo.RepRequest;
 import com.kh.hotels.mngApproval.model.vo.Report;
+import com.kh.hotels.mngMember.model.vo.Member;
 
 public interface ApprovalService {
 
@@ -52,7 +54,18 @@ public interface ApprovalService {
 
 	List<HashMap<String, Object>> selectRepairInfo() throws ReportException;
 
-	int insertRepairRequestList(ArrayList<RepRequest> rRequestList);
+	int insertRepairRequestList(ArrayList<RepRequest> rRequestList) throws ReportException;
+
+
+	int getPartiApproveListCount(int mno);
+
+	ArrayList<HashMap<String, Object>> selectPartiApproveList(PartiReport member, PageInfo pi) throws ReportException;
+
+	ArrayList<HashMap<String, Object>> selectPartiApproveList(int mno, PageInfo pi);
+
+	int getListCountPartiFilter(String category, String mno);
+
+	ArrayList<HashMap<String, Object>> selectPartiApproveFilter(PageInfo pi, String category, String mno);
 
 	
 	

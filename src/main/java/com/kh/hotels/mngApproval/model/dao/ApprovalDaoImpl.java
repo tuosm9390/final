@@ -10,9 +10,11 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
+import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
 import com.kh.hotels.mngApproval.model.vo.PurVos;
 import com.kh.hotels.mngApproval.model.vo.RepRequest;
+import com.kh.hotels.mngApproval.model.vo.Report;
 
 @Repository
 public class ApprovalDaoImpl implements ApprovalDao{
@@ -214,7 +216,8 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		int result = sqlSession.selectOne("Report.selectRepReqRptNo", docNo);
 		return result;
 	}
-
+	
+	//수리요청서 인설트하기
 	@Override
 	public int insertRepReqListAll(SqlSessionTemplate sqlSession, ArrayList<RepRequest> rRequestList) {
 		int result = 0;
@@ -227,6 +230,94 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		
 		return result;
 		
+	}
+
+	@Override
+	public String selectRepairCncode(SqlSessionTemplate sqlSession, String cnName) {
+		String code = sqlSession.selectOne("Report.selectCncode", cnName);
+		
+		
+		return code;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPartiApproveList(SqlSessionTemplate sqlSession, PartiReport member, PageInfo pi) {
+		
+		ArrayList<HashMap<String, Object>> list = null;
+		int mno = member.getMno();
+		
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		list = (ArrayList)sqlSession.selectList("Report.selectPariApproveList", mno, rowBounds);
+		
+		System.out.println("daoList : " + list);
+		
+		return list;
+	}
+
+	@Override
+	public int getPartiApproveListCount(SqlSessionTemplate sqlSession, int mno){
+		int result = 0;
+		
+		result = sqlSession.selectOne("Report.selectPartiApproveListCount", mno);
+		
+		
+		
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPartiApprovePagingList(SqlSessionTemplate sqlSession, int mno,
+			PageInfo pi) {
+
+		ArrayList<HashMap<String, Object>> list = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		list = (ArrayList)sqlSession.selectList("Report.selectPariApproveList", mno, rowBounds);
+		
+		System.out.println("daoList : " + list);
+		
+		return list;
+	}
+
+	@Override
+	public int getListCountPartiFilter(SqlSessionTemplate sqlSession, String category, String mno) {
+		
+		int result = 0;
+		
+		int chMno = Integer.parseInt(mno);
+		PartiReport pr = new PartiReport();
+		pr.setMno(chMno);
+		pr.setCategory(category);
+		
+		result = sqlSession.selectOne("Report.selectPartiFilterCount", pr);
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPartiApproveFilter(SqlSessionTemplate sqlSession, String category,
+			String mno, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		PartiReport pr = new PartiReport();
+		int chMno = Integer.parseInt(mno);
+		pr.setMno(chMno);
+		pr.setCategory(category);
+		
+		
+		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectPartiFilterList", pr, rowBounds);
+		
+		return list;
 	}
 
 	
