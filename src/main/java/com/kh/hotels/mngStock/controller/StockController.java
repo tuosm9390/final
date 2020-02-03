@@ -134,7 +134,7 @@ public class StockController {
 	public String insertCategory(String lcategory,String mcategory,String scategory,String type) {
 		ItemType it = new ItemType();
 		
-		it.setlCategory(lcategory);
+		it.setlCategory(lcategory);	
 		it.setmCategory(mcategory);
 		it.setsCategory(scategory);
 		it.setType(type);
@@ -148,7 +148,7 @@ public class StockController {
 		}
 		
 	}
-	
+	//품목그룹조호ㅣ
 	@PostMapping("selectScategory.sto")
 	public ModelAndView selectScategory(ModelAndView mv) {
 		
@@ -161,10 +161,11 @@ public class StockController {
 		
 	}
 	
+	//매입처조회
 	@PostMapping("selectCnName.sto")
-	public ModelAndView selectCnName(ModelAndView mv,String cnName) {
+	public ModelAndView selectCnName(ModelAndView mv,int typeNo) {
 		
-		ArrayList<Conn> Conn = ss.selectCnName(cnName);
+		ArrayList<Conn> Conn = ss.selectCnName(typeNo);
 		
 		mv.setViewName("jsonView");
 		mv.addObject("Conn",Conn);
@@ -173,6 +174,28 @@ public class StockController {
 		
 	}
 	
-	
-	
+	//물품삭제
+	@PostMapping("deleteStock.sto")
+	public String deleteStock(String checkRow) {
+		
+		int result = 0 ;
+		
+		
+		  String checkRowSplit[] = checkRow.split(",");
+		  
+		  
+		  
+		  for(int i = 0; i < checkRowSplit.length; i++) {
+			  int check = Integer.parseInt(checkRowSplit[i]);
+			  result =ss.deleteStock(check);
+			  }
+		 
+		
+		if(result>0) {
+			return "redirect:selectStock.sto";
+		}else {
+			return "common/errorPage";
+		}
+		
+	}
 }

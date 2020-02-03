@@ -23,6 +23,8 @@
 		<result property="mCategory" column="MCATEGORY" />
 		<result property="sCategory" column="SCATEGORY" />
 		<result property="unit" column="UNIT"/>
+		<result property="typeNo" column="TYPE_NO"/>
+		<result property="cnCode" column="CN_CODE"/>
 	</resultMap>
 	
 	
@@ -80,8 +82,9 @@
 		ORDER BY INAME
 	</select>
 	
-	<insert id="insertStock" parameterType="_int">
-		
+	<insert id="insertStock">
+		INSERT INTO ITEM 
+		VALUES(SEQ_INO.NEXTVAL,#{iName},#{up},#{vat},#{vos},#{mfg},DEFAULT,DEFAULT,DEFAULT,DEFAULT,#{typeNo},#{cnCode},NULL,NULL,NULL,NULL,#{unit})
 	</insert>
 	
 	
@@ -137,12 +140,18 @@
 	</select>
 	
 	<select id="selectCnName" resultMap="resultSetConn">
-		SELECT CN_NAME 
+		SELECT CN_NAME,CN_CODE
 		FROM CONN
 		JOIN ITEM USING(CN_CODE)
 		JOIN ITEM_TYPE USING(TYPE_NO)
-		WHERE SCATEGORY = #{cnName}
+		WHERE TYPE_NO =#{typeNo}
 	</select>
+	
+	<update id="deleteStock">
+		UPDATE ITEM
+		SET ITEM_STATUS = 'Y'
+		WHERE INO = #{check}
+	</update>
 </mapper>
 
  

@@ -187,8 +187,8 @@ width:1000px;
 		<jsp:include page="../../common/menubar.jsp"/>
 		<jsp:include page="../../common/productMenubar.jsp"/>
 		
-		<jsp:include page="../modal/mStockNowAdd.jsp"/>
 		<jsp:include page="../modal/mStockNowDetail.jsp"/>
+		<jsp:include page="../modal/mStockNowAdd.jsp"/>
 		<jsp:include page="../modal/mStockNowEnroll.jsp"/>
 		
 	</header>
@@ -226,24 +226,25 @@ width:1000px;
 		<div id="stockTb">
 			<table style="border-collapse: collapse; width: 100%;">  
 				<tr>  
-					<th><input type="checkbox"></th>
+					<th class="checkTb"><input type="checkbox"  id="allCheck"></th>
 					<th width="250px;">품목명</th>
 					<th>재고수량</th>
 					<th>품목구분</th>
 				</tr>
 				<c:forEach var="i" items="${stockList }">
+				<tbody class="stockTbody">
 					<tr>
-						<td><input type="checkbox"></td>
+						<td class="checkTb"><input type="checkbox"></td>
 						<td style="color: #005B9E"><c:out value="${i.iName}"/></td>
 						<td><c:out value="${i.cnt }"/></td>
 						<td><c:out value="${i.type }"/></td>
 					</tr>
+				</tbody>
 				</c:forEach>
 			</table>
 		<div id="hrDiv"></div>
 		</div>
 			<div class="btns">
-			<button id="delete">선택삭제</button>
 			<button id="excel">Excel</button>
 			<button id="news">신규</button>&nbsp;
 			</div>
@@ -315,7 +316,7 @@ width:1000px;
 	
 		//테이블
 		$(function(){
-			$("#stockTb").find("td").mouseenter(function(){
+			$("#stockTb").find("td:not(.checkTb)").mouseenter(function(){
 				$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
 			}).mouseout(function(){
 				$(this).parent("tr").css({"background":"white"});
@@ -332,10 +333,10 @@ width:1000px;
 						$("#stockTbb").empty();
 						$("#stockTbb").append("<tbody id='detailBody'></tbody>")
 						if(data.stockDetailList[0].type=="EQUIP"){
-							$("#detailBody").append("<tr><th><input type='checkbox'></th><th>물품코드</th><th>물품명</th>"+
-						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
+							$("#detailBody").append("<tr><th style='display:none'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
+							"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
 						}else{
-							$("#detailBody").append("<tr><th><input type='checkbox'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
+							$("#detailBody").append("<tr><th style='display:none'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
 						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
 						}
 						for(var i=0;i<data.stockDetailList.length;i++){
@@ -353,15 +354,16 @@ width:1000px;
 									
 							if(data.stockDetailList[0].type=="EQUIP"){
 							$("#detailBody").append(
-									"<tr><td><input type='checkbox'></td><td>"+
+									"<tr><td style='display:none'><input type='checkbox' name='checkRow'></td><td>"+
 									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
+									data.stockDetailList[i].amount+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
 									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
 									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
 									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
 							}else{
 								$("#detailBody").append(
-									"<tr><td><input type='checkbox'></td><td>"+
+									"<tr><td style='display:none'><input type='checkbox' name='checkRow'></td><td>"+
 									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
 									data.stockDetailList[i].amount+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
@@ -369,7 +371,24 @@ width:1000px;
 									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
 									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
 							}
-						
+							
+							//디테일전체체크박스
+							
+							$("#checkDetail").change(function(){
+					            if($(this).prop("checked")) {
+					               $("#detailBody").find("input[type=checkbox]").prop("checked", true);
+					            } else {
+					            	console.log("?asdasdasd")
+					               $("#detailBody").find("input[type=checkbox]").prop("checked", false);
+					            }
+					         });
+							
+					         $("#detailBody").find("input[type=checkbox]").change(function(){
+					            if($(this).prop("checked") == false) {
+					               $("#checkDetail").prop("checked", false);
+					            }
+					         });
+					         
 						}
 					
 					},error:function(status){
@@ -377,6 +396,7 @@ width:1000px;
 					}
 					
 				});
+				
 				$(".modal").fadeIn();
 			});
 		});
@@ -389,6 +409,20 @@ width:1000px;
 		})
 		
 		
+		//전체체크박스
+		$("#allCheck").change(function(){
+            if($(this).prop("checked")) {
+               $(".stockTbody").find("input[type=checkbox]").prop("checked", true);
+            } else {
+               $(".stockTbody").find("input[type=checkbox]").prop("checked", false);
+            }
+         });
+		
+         $(".stockTbody").find("input[type=checkbox]").change(function(){
+            if($(this).prop("checked") == false) {
+               $("#allCheck").prop("checked", false);
+            }
+         });
 		
 		
 		////카테고리조회 ajax
@@ -412,7 +446,7 @@ width:1000px;
 						}
 					}
 					
-					//대분류값이 없으면
+					//중분류값이 없으면
 					if(data.categoryList[0].mCategory==""){
 					}else{
 						$("#mselect").empty();
@@ -431,7 +465,7 @@ width:1000px;
 			});
 		};
 		
-		//신규등록
+		//품목그룹가져오기 
 		$("#news").click(function(){
 			$(".modalEnroll").fadeIn();
 			//sCategory ajax
@@ -444,10 +478,11 @@ width:1000px;
 					console.log(data.sCategoryList.sCategory);
 					$("#sCategoryFilter").empty();
 					$("#sCategoryFilter").append("<option hidden='hidden'>품목그룹</option>");
+					
 					for(var i=0;i<data.sCategoryList.length;i++){
-						$("#sCategoryFilter").append("<option value='"+data.sCategoryList[i].sCategory+"'>"+data.sCategoryList[i].sCategory+"</option>");
-						
+						$("#sCategoryFilter").append("<option value='"+data.sCategoryList[i].typeNo+"'>"+data.sCategoryList[i].sCategory+"</option>");
 					}
+					
 				},
 				error:function(status){
 					console.log(status)
@@ -456,7 +491,14 @@ width:1000px;
 			
 		}); 
 		
+		
+		//
+		
+		
+		
 	</script>
+	
+	
 	
 </body>
 </html>

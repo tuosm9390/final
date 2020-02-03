@@ -67,7 +67,7 @@
 	height: 400px;
 	border: 1px solid lightgray;
 	} 
-	#detail-modify-btn{
+	#detail-modify-btn,#detail-ok-btn{
 	color:white;
 	background : royalblue;
 	border: 1px solid royalblue;
@@ -75,6 +75,9 @@
 	height: 25px;
 	font-weight: bold;
 	border-radius: 2px;
+	}
+	#detail-modify-btn:hover,#detail-ok-btn:hover{
+	cursor: pointer;
 	}
 </style>
 </head>
@@ -101,33 +104,15 @@
 					<th>창고명</th>
 					<th>위치</th>
 				</tr>
-				<tbody id="detailBody">
-				<c:forEach var="i" begin="1" end="19">
-					<tr>
-						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="전자제품"/></td>
-						<td style="color: #005B9E"><c:out value="TV"/></td>
-						<td><c:out value="36인치 TV"/></td>
-						<td><c:out value="1231251253"/></td>
-						<td><c:out value="500,000"/></td>
-						<td><c:out value="5000"/></td>
-						<td><c:out value="500,000"/></td>
-						<td><c:out value="삼성전자"/></td>
-						<td><c:out value="상찬마트"/></td>
-						<td><c:out value="창고A"/></td>
-						<td><c:out value="A진열대"/></td>
-						
-					</tr>
-				</c:forEach>
-				</tbody>
-				<tbody id="detailBody2">
 				
-				</tbody>
+			
 			</table>
 				
 		</div>
 			<div class="btnss">
+			<button id="delete">삭제</button>
 			<button id="detail-modify-btn">수정</button>&nbsp;
+			<button id="detail-ok-btn" hidden="hidden">수정완료</button>&nbsp;
 			</div> 
 	
 	 
@@ -150,6 +135,77 @@
 		});
 		
 		
+		//수정버튼클릭시
+		$("#detail-modify-btn").click(function(){
+			$("#detail-modify-btn").hide();
+			$("#detail-ok-btn").show();
+			
+			 var checkRow = "";
+			  $( "input[name='checkRow']:checked" ).each (function (){
+			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
+			    $(this).parent().parent().children("td").eq(9).html("<input type='text' style='width:70px;'>");
+			    $(this).parent().parent().children("td").eq(10).html("<input type='text' style='width:70px;'>");
+			    $(this).parent().parent().children("td").eq(11).html("<input type='text' style='width:60px;'>");
+			  });
+			  checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
+			  $("#detailBody").children().children().eq(0).show();
+			  $("#detailBody").children().children().children().eq(0).show();
+			  
+			console.log(checkRow);
+		});
+      	
+		
+		//수정완료버튼
+		$("#detail-ok-btn").click(function(){
+			$("#detail-modify-btn").show();
+			$("#detail-ok-btn").hide();
+			//체크값가져오기
+			 var checkRow = "";
+			  $( "input[name='checkRow']:checked" ).each (function (){
+			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
+			    $(this).parent().parent().children("td").eq(9).html("<input type='text' style='width:70px;'>");
+			    $(this).parent().parent().children("td").eq(10).html("<input type='text' style='width:70px;'>");
+			    $(this).parent().parent().children("td").eq(11).html("<input type='text' style='width:60px;'>");
+			  });
+			  checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
+			console.log(checkRow);
+		})
+		
+		//삭제버튼클릭시
+		$("#delete").click(function(){
+			//체크값 가져오기
+			 var checkRow = "";
+			  $( "input[name='checkRow']:checked" ).each (function (){
+			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
+			    $(this).parent().parent().children("td").eq(9).html("<input type='text' style='width:70px;'>");
+			    $(this).parent().parent().children("td").eq(10).html("<input type='text' style='width:70px;'>");
+			    $(this).parent().parent().children("td").eq(11).html("<input type='text' style='width:60px;'>");
+			  });
+			  checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
+			console.log(checkRow);
+			  
+			  if(checkRow==''){
+				  alert("삭제할 대상을 섡택하세요.");
+				  return false
+			  }
+			  
+			  
+			  $.ajax({
+				url:"deleteStock.sto",
+				type:"post",
+				data:{checkRow:checkRow},
+			  	success:function(data){
+			  		console.log(data);
+			  		alert("삭제성공")
+			  	},
+			  	error:function(status){
+			  		console.log(status);
+			  		alert("삭제실패")
+			  	}
+			  });
+			  
+			  
+		});
 	</script>
 	
 </body>

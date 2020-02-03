@@ -31,7 +31,11 @@ public interface StockService {
 
 	ArrayList<ItemType> selectScategory();
 
-	ArrayList<Conn> selectCnName(String cnName);
+	ArrayList<Conn> selectCnName(int typeNo);
+
+	int deleteStock(int check);
+
+
 
 	
 

@@ -108,6 +108,8 @@ margin-left: 50px;
 		var mcategory ="";
 		var scategory =$("#scategoryText").val();
 		
+		console.log($("#lselect").val());
+		console.log($("#select").val());
 		
 		//대분류에서 직접입력일떄
 		if($("#lselect").val()=="select"){
@@ -129,6 +131,12 @@ margin-left: 50px;
 		var typee = type;
 		console.log("out : " + type);
 		
+		if($("#lselect").val()==''){
+			alert("lsert");
+		}
+		if($("#mselect").val()==''){
+			alert("msert");
+		}
 	
 		
 		$.ajax({
