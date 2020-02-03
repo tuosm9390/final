@@ -33,7 +33,9 @@ public interface StockDao {
 
 	ArrayList<ItemType> selectScategory(SqlSessionTemplate sqlSession);
 
-	ArrayList<Conn> selectCnName(SqlSessionTemplate sqlSession, String cnName);
+	ArrayList<Conn> selectCnName(SqlSessionTemplate sqlSession, int typeNo);
+
+	int deleteStock(SqlSessionTemplate sqlSession, int check);
 
 
 

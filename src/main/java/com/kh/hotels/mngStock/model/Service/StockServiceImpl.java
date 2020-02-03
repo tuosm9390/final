@@ -73,9 +73,15 @@ public class StockServiceImpl implements StockService{
 	}
 
 	@Override
-	public ArrayList<Conn> selectCnName(String cnName) {
+	public ArrayList<Conn> selectCnName(int typeNo) {
 		// TODO Auto-generated method stub
-		return sd.selectCnName(sqlSession,cnName); 
+		return sd.selectCnName(sqlSession,typeNo); 
+	}
+
+	@Override
+	public int deleteStock(int check) {
+		// TODO Auto-generated method stub
+		return sd.deleteStock(sqlSession,check);
 	}
 
 

@@ -69,16 +69,15 @@
 		<div id="wrap">
 		<form action="insertStock.sto" method="post" id="insertStock">
 		<div class="bodyDiv">
-		
-		<div>	<div class="same" id="ssam">물품명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="iName"></div>  </div>
-		<div>	<div class="same" id="ssam">품목그룹</div>  <div class="same"><select style="width: 150px; height: 24px" id="sCategoryFilter"><option hidden="hidden">검색조건</option></select></div>
-		<div>	<div class="same" id="ssam">매입처</div>  <div class="same"></div><select style="width: 150px; height: 24px" id="cnName"><option hidden="hidden">검색조건</option></select>  </div>
-		 <div>	<div class="same" id="ssam">제조사</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="mfg"></div></div>
-		 <div>	<div class="same" id="ssam">단가</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="up"></div>  </div>
-		 <div>	<div class="same" id="ssam">부가세</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="vat"></div>  </div>
-		 <div>	<div class="same" id="ssam">공급가액</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="vos"></div>  </div>
-		 <div>	<div class="same" id="ssam">개수</div>  <div class="same"><input type="number" class="space" style="width:100px" id="sam" name="unit"></div>  </div>
-		 <div>	<div class="same" id="ssam">품목구분</div>  <div class="same"><input type="radio" name="type" value="EQUIP">비품&nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="CONS">소모품</div>  </div>
+		<div>	<div class="same" id="ssam">물품명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="iName" name="iName"></div>  </div>
+		<div>	<div class="same" id="ssam">품목그룹</div>  <div class="same"><select style="width: 150px; height: 24px" id="sCategoryFilter" name="typeNo"><option hidden="hidden">검색조건</option></select></div>
+		<div>	<div class="same" id="ssam">매입처</div>  <div class="same"></div><select style="width: 150px; height: 24px" id="cnName" name="cnCode"><option hidden="hidden">검색조건</option></select>  </div>
+		 <div>	<div class="same" id="ssam">제조사</div>  <div class="same"><input type="text" class="space" style="width:600px" id="mfg" name="mfg"></div></div>
+		 <div>	<div class="same" id="ssam">단가</div>  <div class="same"><input type="text" class="space" style="width:600px" id="up" name="up"></div>  </div>
+		 <div>	<div class="same" id="ssam">부가세</div>  <div class="same"><input type="text" class="space" style="width:600px" id="vat" name="vat"></div>  </div>
+		 <div>	<div class="same" id="ssam">공급가액</div>  <div class="same"><input type="text" class="space" style="width:600px" id="vos" name="vos"></div>  </div>
+		 <div>	<div class="same" id="ssam">개수</div>  <div class="same"><input type="number" min="0" class="space" style="width:100px" id="unit" name="unit"></div>  </div>
+		 </div>
 		</div><!-- end -->
 		</form>
 		<div class="btnsc"><button id="enrollBtn">저장</button></div> 
@@ -87,23 +86,68 @@
 <script>
 $(function(){
 	$("#enrollBtn").click(function(){
-		$("#insertStock").submit();
+		var x = $("#cnName").val();
+		var y = $("#sCategoryFilter").val();
+		console.log("cnName : " + x + " sCategory : " + y);
+		
+		
+		
+		if($("#iName").val()==""){
+			alert("물품명을 입력해주세요.");
+			return false;
+		}
+		if($("#sCategoryFilter").val()=="품목그룹"){
+			alert("물품명을 입력해주세요.");
+			return false;
+		}
+		if($("#cnName").val()=="검색조건"){
+			alert("품목을 선택해주세요.");
+			return false;
+		}
+		else if($("#mfg").val()==""){
+			alert("제조사를 입력해주세요.");
+			return false;
+		}
+		else if($("#up").val()==""){
+			alert("단가를 입력해주세요.");
+			return false;
+		}
+		else if($("#vat").val()==""){
+			alert("부가세를 입력해주세요.");
+			return false;
+		}
+		else if($("#vos").val()==""){
+			alert("공급가액을 입력해주세요.");
+			return false;
+		}
+		else if($("#unit").val()==""){
+			alert("개수를 입력해주세요.");
+			return false;
+		}else{
+			$("#insertStock").submit();
+		}
+		
+
+		
+		
 	})
 })
 
+/////////////매입처 
 $("#sCategoryFilter").change(function(){
-	var cnName = $(this).val();
+	var typeNo = $(this).val()*1;
+	console.log("진짜로 : "+ typeNo);
 	
 	$.ajax({
 		url:"selectCnName.sto",
 		type:"post",
-		data:{cnName:cnName},
+		data:{typeNo:typeNo},
 		success:function(data){
 			console.log(data);
 			$("#cnName").empty();
 			$("#cnName").append("<option hidden='hidden'>매입처</option>");
 			for(var i=0;i<data.Conn.length;i++){
-				$("#cnName").append("<option value='"+data.Conn[i].cnName+"'>"+data.Conn[i].cnName+"</option>");
+				$("#cnName").append("<option value='"+data.Conn[i].cnCode+"'>"+data.Conn[i].cnName+"</option>");
 			}
 		},error:function(status){
 			console.log(status);

@@ -41,7 +41,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/hotelmain-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -56,7 +55,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/hotelmain-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -71,7 +69,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/hotelSetting-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -87,7 +84,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/hoteladmin-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -102,7 +98,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/mngApprove-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>mngApprove</servlet-name>
@@ -116,7 +111,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/mngrooms-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -131,7 +125,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/mngreserv-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -146,7 +139,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/mngclient-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -166,7 +158,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/member-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -182,7 +173,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/warehouse-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -197,7 +187,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/stock-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -213,7 +202,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/stock-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>
@@ -233,7 +221,6 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/analys-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
 	<servlet-mapping>

@@ -70,12 +70,18 @@ public class StockDaoImpl implements StockDao{
 		return (ArrayList)sqlSession.selectList("Stock.selectScategory");
 	}
 
+
 	@Override
-	public ArrayList<Conn> selectCnName(SqlSessionTemplate sqlSession, String cnName) {
+	public ArrayList<Conn> selectCnName(SqlSessionTemplate sqlSession,int typeNo) {
 		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("Stock.selectCnName",cnName);
+		return (ArrayList)sqlSession.selectList("Stock.selectCnName",typeNo);
 	}
 
+	@Override
+	public int deleteStock(SqlSessionTemplate sqlSession, int check) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("Stock.deleteStock",check);
+	}
 
 
 }
