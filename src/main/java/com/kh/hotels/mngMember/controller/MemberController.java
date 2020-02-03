@@ -40,7 +40,6 @@ public class MemberController {
 			if(loginUser.getDeptNo() == 1) {
 				
 				int result = ms.checkHotelSetting();
-				System.out.println("ㅎ널마ㅣㅓㄹ머ㅏㅣㄷ머ㅏㅣㅜ다ㅣㄱㅊㅈ뒥ㅈ춤ㅈㄷ궃지모김           " + result);
 				
 				if(result == 0) {
 					return "hotelSetting/hotelInfoSetting";
@@ -48,6 +47,28 @@ public class MemberController {
 					return "redirect:/view.ro";
 				}
 				
+			}else if(loginUser.getDeptNo() == 3){
+
+				if(loginUser.getPwdStatus().equals("Y")) {
+				
+					return "redirect:/documentApproval.ap";
+					
+				}else{
+					
+					return "hoteladmin/main/pwdReset";
+					
+				}
+			}else if(loginUser.getDeptNo() == 2){
+				
+				if(loginUser.getPwdStatus().equals("Y")) {
+					
+					return "redirect:/selectStock.sto";
+					
+				}else{
+	
+					return "hoteladmin/main/pwdReset";
+					
+				}
 			}else {
 				
 				if(loginUser.getPwdStatus().equals("Y")) {

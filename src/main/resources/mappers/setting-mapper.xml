@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Setting">
+	
+	<resultMap type="Room" id="roomDetailListResultSet">
+		<result property="rmNo" column="RM_NO" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="stdPer" column="STD_PER" />
+		<result property="rmOption" column="RM_OPTION" />
+		<result property="floor" column="FLOOR" />
+		<result property="rtNo" column="RT_NO" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="rmStatus" column="RM_STATUS" />
+	</resultMap>
+	
+	<resultMap type="SettingRoomType" id="roomTypeListResultSet">
+		<result property="rtNo" column="RT_NO" />
+		<result property="rtName" column="RT_NAME" />
+		<result property="minPer" column="MINPER" />
+		<result property="maxPer" column="MAXPER" />
+		<result property="limitprc" column="LIMITPRC" />
+		<result property="regDate" column="REGDATE" />
+	</resultMap>
+	
+	<select id="selectRoomTypeList" resultMap="roomTypeListResultSet">
+		SELECT *
+		FROM ROOM_TYPE
+	</select>
+	
+	<select id="selectRoomCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM ROOM
+		WHERE RT_NO = #{rtNo}
+	</select>
+	
+	<select id="insertRoomType" resultType="RoomType">
+		INSERT INTO ROOM_TYPE(RT_NO, RT_NAME, MINPER, MAXPER, LIMITPRC, REG_DATE)
+		VALUES(SEQ_RT_NO.NEXTVAL, #{rtName}, #{minPer}, #{maxPer}, #{limitprc}, #{regDate})
+	</select>
+	
+	<select id="selectRoomDetailList" parameterType="_int" resultMap="roomDetailListResultSet">
+		SELECT *
+		FROM ROOM
+		WHERE RT_NO = #{rtNo}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
