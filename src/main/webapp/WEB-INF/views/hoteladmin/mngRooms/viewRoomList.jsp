@@ -287,6 +287,19 @@ input[type=checkbox] {
 .boldFont {
 	font-weight: bold;
 }
+
+@keyframes warnAct
+{
+    0% { background-color: orangered; }
+    50% { background-color: lightsteelblue; }
+    100% { background-color: orangered; }
+}
+@keyframes endAct
+{
+    0% { border-color: orangered; background-color: orangered; }
+    50% { border-color: blue; background-color: white; }
+    100% { border-color: orangered; background-color: orangered; }
+}
 </style>
 </head>
 <body>
@@ -300,14 +313,14 @@ input[type=checkbox] {
 		<div class="topSec">
 			<!-- searchSec -->
 			<div class="searchSec">
-				<select name="searchOption">
+				<select name="searchOption" id="searchOption">
 					<option selected disabled hidden>검색조건</option>
-					<option value="">고객명</option>
-					<option value="">전화번호</option>
-					<option value="">객실번호</option>
-					<option value="">객실유형</option>
+					<option value="searchName">고객명</option>
+					<option value="searchPhone">전화번호</option>
+					<option value="searchRmNum">객실번호</option>
+					<option value="searchRmType">객실유형</option>
 				</select>
-				<input type="text" name="searchContent" class="searchContent">
+				<input type="text" name="searchContent" class="searchContent" id="searchContent">
 				<button id="searchBtn">검색</button>
 			</div>
 			<!-- searchSec end -->
@@ -338,14 +351,14 @@ input[type=checkbox] {
 			</div>
 			<div class="selectClean">
 				<div>
-					<input type="checkbox" name="selectCleanAll" id="selectCleanAll">
+					<input type="checkbox" name="selectCleanAll" id="selectCleanAll" value="all">
 					<label for="selectCleanAll">전체</label>
 					<c:set var="nowFloor" value="" />
 					<c:set var="oldFloor" value="" />
 					<c:forEach var="f" items="${ roomList }">
 						<c:set var="nowFloor" value="${ f.floor }" />
 						<c:if test="${ nowFloor ne oldFloor }">
-							<input type="checkbox" name="selectClean${ f.floor }" id="selectClean${ f.floor }">
+							<input type="checkbox" name="selectClean${ f.floor }" id="selectClean${ f.floor }" value="${ f.floor }">
 							<label for="selectClean${ f.floor }">${ f.floor }층</label><br>
 							<c:set var="oldFloor" value="${ nowFloor }" />
 						</c:if>
@@ -355,14 +368,14 @@ input[type=checkbox] {
 			</div>
 			<div class="selectUnclean">
 				<div>
-					<input type="checkbox" name="selectUncleanAll" id="selectUncleanAll">
+					<input type="checkbox" name="selectUncleanAll" id="selectUncleanAll" value="all">
 					<label for="selectUncleanAll">전체</label>
 					<c:set var="nowFloor" value="" />
 					<c:set var="oldFloor" value="" />
 					<c:forEach var="f" items="${ roomList }">
 						<c:set var="nowFloor" value="${ f.floor }" />
 						<c:if test="${ nowFloor ne oldFloor }">
-							<input type="checkbox" name="selectUnclean${ f.floor }" id="selectUnclean${ f.floor }">
+							<input type="checkbox" name="selectUnclean${ f.floor }" id="selectUnclean${ f.floor }" value="${ f.floor }">
 						<label for="selectUnclean${ f.floor }">${ f.floor }층</label><br>
 							<c:set var="oldFloor" value="${ nowFloor }" />
 						</c:if>
@@ -387,7 +400,7 @@ input[type=checkbox] {
 					<input type="hidden" name="rmNo" value="${ r.rmNo }">
 					<input type="hidden" name="floor" value="${ r.floor }">
 					<div class="statusBox lightgrey">
-						<div class="stClean"></div>
+						<div class="stClean" onclick="changeCleanStt(${ r.rmNo })"></div>
 						<div class="stDetail">
 							<p class="roomNo">${ r.rmNum }</p>
 							<p class="roomType">${ r.rtName }</p>
@@ -396,7 +409,7 @@ input[type=checkbox] {
 					</div>
 					<!-- 공실 detail -->
 					<div class="detailBox emptyRoom">
-						<button id="enterBtn${ r.rmNo }" class="enterBtn" onclick="goRoom(${ r.rmNo });">재실</button>
+						<button id="enterBtn${ r.rmNo }" class="enterBtn" onclick="goRoom(${ r.rmNo });">입실</button>
 					</div>
 					<!-- 예약 detail -->
 					<div class="detailBox reservRoom">
@@ -484,9 +497,11 @@ input[type=checkbox] {
 						} else {
 							reservname = roomlist[r].reservname;
 						}
+						$("#roomBox" + roomlist[r].rmNo).attr("onclick", "goReserv(" + roomlist[r].rsvNo + ")");
 						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(reservname);
 						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
 						$("#roomBox" + roomlist[r].rmNo).children(".reservRoom").css({"display":"block"});
+						warningAction(roomlist[r].rmNo);
 					} else if(roomlist[r].stayNo != 0 && roomlist[r].stayType == "STAY") {
 						//투숙
 						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("mediumseagreen");
@@ -536,6 +551,7 @@ input[type=checkbox] {
 					//고장 객실상태 표시
 					if(roomlist[r].brkRsn != "") {
 						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("darkgray");
+						$("#roomBox" + roomlist[r].rmNo).attr("onclick", "goBroken(" + roomlist[r].rmNo + ")");
 						stBroken++;
 						if(roomlist[r].brkRsn.length > 10) {
 							var brokenRsn = roomlist[r].brkRsn.substring(0, 10);
@@ -601,6 +617,13 @@ input[type=checkbox] {
 			//[ 정비 ] 상태 버튼
 			$("#stClean").click(function(){
 				$(".selectClean").toggle();
+				$(".selectUnclean").hide();
+				if($(".selectClean").css('display') == 'none') {
+					$(".selectClean").find("input[type=checkbox]").prop("checked", false);
+				}
+				if($(".selectUnclean").css('display') == 'none') {
+					$(".selectUnclean").find("input[type=checkbox]").prop("checked", false);
+				}
 			});
 			$("#selectCleanAll").change(function(){
 				if($(this).prop("checked")) {
@@ -620,6 +643,13 @@ input[type=checkbox] {
 			//[ 미정비 ] 상태 버튼
 			$("#stUnclean").click(function(){
 				$(".selectUnclean").toggle();
+				$(".selectClean").hide();
+				if($(".selectClean").css('display') == 'none') {
+					$(".selectClean").find("input[type=checkbox]").prop("checked", false);
+				}
+				if($(".selectUnclean").css('display') == 'none') {
+					$(".selectUnclean").find("input[type=checkbox]").prop("checked", false);
+				}
 			});
 			$("#selectUncleanAll").change(function(){
 				if($(this).prop("checked")) {
@@ -637,12 +667,140 @@ input[type=checkbox] {
 			
 			
 			//상태변경 버튼
+			var selCleanF = new Array;
 			$("#changeClean").click(function(){
+				$(".selectClean").find("input[type=checkbox]:checked").each(function(){
+					selCleanF.push($(this).val());
+				});
+				
+				if(window.confirm("[ 정비 → 미정비 ] 정비상태를 변경하시겠습니까?")) {
+					$.ajax({
+						url:"ajxUpdateAllRoomStt.ro",
+						data:{nowStt:"clean", floor:selCleanF},
+						type:"post",
+						traditional:true,
+						success:function(data) {
+							var result = data.result;
+							if(result == 'success') {
+								for(var i = 0; i < roomlist.length; i++) {
+									for(var j = 0; j < data.floorlist.length; j++) {
+										if(roomlist[i].floor == (data.floorlist[j] * 1)) {
+											$("#roomBox" + roomlist[i].rmNo).find(".statusBox").children().eq(0).removeClass('stClean').addClass('stNoClean'); 
+										}
+									}
+								}
+								$("#stClean").next().text($(".stClean").length - 1);
+								$("#stUnclean").next().text($(".stNoClean").length - 1);
+							} else {
+								alert("Failed");
+							}
+						},
+						error:function(error, status) {
+							alert("SYSTEM ERROR!");
+						}
+					});
+				}
+				
+				$(".selectClean").find("input[type=checkbox]").prop("checked", false);
+				$("#selectCleanAll").prop("checked", false);
+				selCleanF = new Array;
 				$(".selectClean").hide();
+				$("#stClean").next().text($(".stClean").length - 1);
+				$("#stUnclean").next().text($(".stNoClean").length - 1);
 			});
+			
+			var selNoCleanF = new Array;
 			$("#changeUnclean").click(function(){
+				$(".selectUnclean").find("input[type=checkbox]:checked").each(function(){
+					selNoCleanF.push($(this).val());
+				});
+				
+				if(window.confirm("[ 미정비 → 정비 ] 정비상태를 변경하시겠습니까?")) { 
+					$.ajax({
+						url:"ajxUpdateAllRoomStt.ro",
+						data:{nowStt:"unclean", floor:selNoCleanF},
+						type:"post",
+						traditional:true,
+						success:function(data) {
+							var result = data.result;
+							if(result == 'success') {
+								for(var i = 0; i < roomlist.length; i++) {
+									for(var j = 0; j < data.floorlist.length; j++) {
+										if(roomlist[i].floor == (data.floorlist[j] * 1)) {
+											$("#roomBox" + roomlist[i].rmNo).find(".statusBox").children().eq(0).removeClass('stNoClean').addClass('stClean'); 
+										}
+									}
+								}
+								$("#stClean").next().text($(".stClean").length - 1);
+								$("#stUnclean").next().text($(".stNoClean").length - 1);
+							} else {
+								alert("Failed");
+							}
+						},
+						error:function(error, status) {
+							alert("SYSTEM ERROR!");
+						}
+					});
+				}
+				
+				$(".selectUnclean").find("input[type=checkbox]").prop("checked", false);
+				$("#selectUncleanAll").prop("checked", false);
+				selNoCleanF = new Array;
 				$(".selectUnclean").hide();
 			});
+			
+			
+			
+			//개별 객실 정비/미정비 변경
+			function changeCleanStt(rmNo) {
+				var thisEl = $("#roomBox" + rmNo).find('.statusBox').children().eq(0);
+				console.log(thisEl);
+				if(thisEl.hasClass("stNoClean")) {
+					//미정비 -> 정비
+					if(window.confirm("[ 미정비 → 정비 ] 정비상태를 변경하시겠습니까?")) {
+						$.ajax({
+							url:"ajxUpdateRoomStt.ro",
+							data:{nowStt:"noClean", rmNo:rmNo},
+							type:"post",
+							success:function(data) {
+								var result = data.result;
+								if(result == 'success') {
+									thisEl.removeClass('stNoClean').addClass('stClean'); 
+									$("#stClean").next().text($(".stClean").length - 1);
+									$("#stUnclean").next().text($(".stNoClean").length - 1);
+								} else {
+									alert("Failed");
+								}
+							},
+							error:function(error, status) {
+								alert("SYSTEM ERROR!");
+							}
+						});
+					}
+				} else if(thisEl.hasClass("stClean")) {
+					//정비 -> 미정비
+					if(window.confirm("[ 정비 → 미정비 ] 정비상태를 변경하시겠습니까?")) {
+						$.ajax({
+							url:"ajxUpdateRoomStt.ro",
+							data:{nowStt:"clean", rmNo:rmNo},
+							type:"post",
+							success:function(data) {
+								var result = data.result;
+								if(result == 'success') {
+									thisEl.removeClass('stClean').addClass('stNoClean'); 
+									$("#stClean").next().text($(".stClean").length - 1);
+									$("#stUnclean").next().text($(".stNoClean").length - 1);
+								} else {
+									alert("Failed");
+								}
+							},
+							error:function(error, status) {
+								alert("SYSTEM ERROR!");
+							}
+						});
+					}
+				}
+			}
 			
 			
 			
@@ -651,6 +809,7 @@ input[type=checkbox] {
 				$(this).hide();
 				$("#changeFilterA").show();
 				var tempFloor = $(".roomBox").find("input[name=floor]").eq(0).val();
+				console.log(tempFloor);
 				$(".roomBox").find("input[name=floor]").each(function(){
 					if($(this).val() != tempFloor) {
 						tempFloor = $(this).val();
@@ -665,12 +824,13 @@ input[type=checkbox] {
 			});
 			
 			
-			function namecntfunc(n, width) {
-				  n = n + '';
-				  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
-			}
-			//모달1 : [ 재실 ] 버튼 클릭 (= 공실)
+			
+			//모달1 : 공실 [ 입실 ] 버튼 클릭
 			function goRoom(rmNo) {
+				function namecntfunc(n, width) {
+					  n = n + '';
+					  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+				}
 				var nametoday = new Date().format('yyyyMMdd');
 				var namecnt = 0;
 				$.ajax({
@@ -687,9 +847,7 @@ input[type=checkbox] {
 				});
 				
 				var totalPrc;
-				$("#ciCancelBtn").hide();
-				$("#rsvCancelBtn").hide();
-				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn'>");
+				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
 				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
 				$("#openMemoMD").prop("disabled", true); $("#openMemoMD").css({"background-color":"lightgrey", "border":"none"});
 				$("#checkinBtn").show();
@@ -697,10 +855,10 @@ input[type=checkbox] {
 				
 				//datepicker
 				date = new Date();
-				$("#checkIn").val(today);
+				$("#checkIn").attr("readonly", 'readonly');
 				var sttfeeday = new Date();
 				var endfeeday = 0;
-				checkIn = $("#checkIn").datepicker({
+				/* checkIn = $("#checkIn").datepicker({
 					autoClose : true,
 					minDate : new Date(),
 					onSelect : function(date) {
@@ -718,7 +876,7 @@ input[type=checkbox] {
 							minDate : new Date(endNum),
 						});
 					}
-				}).data('datepicker');
+				}).data('datepicker'); */
 
 				checkOut = $("#checkOut").datepicker({
 					autoClose : true,
@@ -828,6 +986,52 @@ input[type=checkbox] {
 			
 			
 			
+			//모달2 : 예약 [ 입실대기 ] 객실 클릭
+			function goReserv(rsvNo) {
+				$(".modal").fadeIn();
+			}
+			
+			
+			//모달3 : [ 대실 ] 객실 클릭
+			
+			
+			
+			//모달4 : [ 투숙 ] 객실 클릭
+			
+			
+			
+			//모달5 : [ 고장 ] 객실 클릭
+			function goBroken(rmNo) {
+				$("#realRmNo").val(rmNo);
+				$.ajax({
+					url:"ajxFindBrokenHis.ro",
+					data:{rmNo:rmNo},
+					type:"post",
+					success:function(data) {
+						var brkRoom = data.brkRoom;
+						$("#brkRmNo").text(brkRoom.rmNo);
+						
+						var week = new Array('일', '월', '화', '수', '목', '금', '토');
+						var begin = new Date(brkRoom.brkBegin);
+						var dateB = begin.format('MM-dd');
+						var dayB = week[begin.getDay()];
+						var end = new Date(brkRoom.brkEnd);
+						var dateE = end.format('MM-dd');
+						var dayE = week[end.getDay()];
+						$("#brkPeriod").text(dateB + "(" + dayB + ") ~ " + dateE + "(" + dayE + ")");
+						console.log("begin : " + begin + "/" + dateB + dayB);
+						console.log("end : " + end + "/" + dateE + dayE);
+						$("#brkMno").text(brkRoom.userName);
+						$("#brkRsnTA").text(brkRoom.brkRsn);
+					},
+					error:function(error, status) {
+						alert("SYSTEM ERROR!");
+					}
+				});
+				$(".modalBroken").fadeIn();
+			}
+			
+			
 			
 			//층수 버튼 클릭
 			function filterFloor(num) {
@@ -897,6 +1101,51 @@ input[type=checkbox] {
 				});
 			}
 			
+			
+			
+			//검색버튼 클릭 함수
+			$("#searchContent").focus(function(){
+				$(this).val('');
+			});
+			$("#searchBtn").click(function(){
+				var searchOption = $("#searchOption").val(); 
+				var searchContent = $("#searchContent").val();
+				
+				switch(searchOption) {
+				case "searchName" :
+					$(".roomBox").hide();
+					for(var i = 0; i < roomlist.length; i++) {
+						if(roomlist[i].sname.indexOf(searchContent) != -1 || roomlist[i].reservname.indexOf(searchContent) != -1) {
+							$("#roomBox" + roomlist[i].rmNo).show();
+						}
+					}break;
+				case "searchPhone" :
+					$(".roomBox").hide();
+					for(var i = 0; i < roomlist.length; i++) {
+						if(roomlist[i].sphone.indexOf(searchContent) != -1 || roomlist[i].reservphone.indexOf(searchContent) != -1) {
+							$("#roomBox" + roomlist[i].rmNo).show();
+						}
+					} break;
+				case "searchRmNum" :
+					$(".roomBox").hide();
+					for(var i = 0; i < roomlist.length; i++) {
+						if(roomlist[i].rmNum.indexOf(searchContent) != -1) {
+							$("#roomBox" + roomlist[i].rmNo).show();
+						}
+					} break;
+				case "searchRmType" :
+					$(".roomBox").hide();
+					for(var i = 0; i < roomlist.length; i++) {
+						if(roomlist[i].rtName.indexOf(searchContent) != -1) {
+							$("#roomBox" + roomlist[i].rmNo).show();
+						}
+					} break;
+				default : alert("검색 조건을 선택하세요."); $(".roomBox").show(); break;
+				}
+					
+				
+			});
+			
 		</script>
 		
 		<script>
@@ -949,7 +1198,7 @@ input[type=checkbox] {
 	                if (distance < 0) {
 
 	                    clearInterval(timer);
-
+	                    $("#timeBtn" + rmNo).css({"animation":"endAct 1s infinite"});
 	                    return;
 	                }
 	                var days = Math.floor(distance / _day);
@@ -989,6 +1238,41 @@ input[type=checkbox] {
 
 	            showRemaining();
 	            timer = setInterval(showRemaining, 5000);
+	        }
+		</script>
+		
+		<script>
+			//노쇼고객 알림
+			function warningAction(rmNo){
+				var noshowUnit = ruleInfo.noshowUnit;
+				var ciTime;
+				for(var i = 0; i < roomlist.length; i++) {
+					if(roomlist[i].rmNo == rmNo) {
+						ciTime = roomlist[i].ciTime.substring(0, roomlist[i].ciTime.indexOf(":"));
+					}
+				}
+				var ruleTime = Number(noshowUnit) + Number(ciTime);
+				var nowTime = Number(new Date().getHours());
+	            
+	            var _second = 1000;
+	            var _minute = _second * 60;
+	            var _hour = _minute * 60;
+	            var _day = _hour * 24;
+	            var timer2;
+	                console.log(ruleTime);
+	                console.log(nowTime);
+	
+	            function showAction() {
+	                var distance =  ruleTime - nowTime;
+	
+	                if (distance < 0) {
+	                    clearInterval(timer2);
+	                    $("#roomBox" + rmNo).find('.statusBox').css({"animation":"warnAct 1s infinite"});
+	                    return;
+	                }
+	            }
+	            showAction();
+	            timer2 = setInterval(showAction, 1000);
 	        }
 		</script>
 </body>
