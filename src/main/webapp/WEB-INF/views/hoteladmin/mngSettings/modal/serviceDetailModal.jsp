@@ -7,7 +7,7 @@
 <title>MODAL</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
-	.modal {
+	.modalDetail {
 		display: none;
 		position: fixed;
 		width: 100%;
@@ -89,31 +89,31 @@
 </style>
 </head>
 <body>
-	<div class="modal">
+	<div class="modalDetail">
 		<div class="modal_content">
 			<div class="titleArea">
-				<h2 style="margin:0 auto;">서비스 추가</h2>
+				<h2 style="margin:0 auto;">서비스 정보</h2>
 				<a class="btn_close">×</a>
 			</div>
 			<div class="modal_content_real">
-			<form action="addService.st" method="post">
+			<form action="updateService.st" method="post">
 				<table align="center" class="addServiceArea">
 					<tr>
 						<td>* 서비스 코드</td>
-						<td><input type="text" name="svcCode" class="serviceCode"></td>
+						<td><input type="text" name="svcCode" class="serviceCodeDetailModal" readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>* 서비스 명</td>
-						<td><input type="text" name="svcName" class="serviceName"></td>
+						<td><input type="text" name="svcName" class="serviceNameDetailModal" readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>* 판매 금액</td>
-						<td><input type="text" name="svcPrice" class="servicePrice"></td>
+						<td><input type="text" name="svcPrice" class="servicePriceDetailModal"></td>
 					</tr>
 					<tr>
 						<td>* 매출 구분</td>
 						<td>
-							<select name="salesType" class="serviceType">
+							<select name="salesType" class="serviceTypeDetailModal" disabled="disabled">
 								<option value="">==선택==</option>
 								<option value="ADDTIME">시간추가</option>
 								<option value="ETC">기타</option>
@@ -122,10 +122,10 @@
 					</tr>
 					<tr>
 						<td>사용</td>
-						<td><input type="radio" id="used" name="svcStatus" class="serviceUsing" value="Y"><label for="used">사용</label><input  value="N" class="serviceUsing" type="radio" id="noUse" name="svcStatus"><label for="noUse">아니오</label></td>
+						<td><input type="radio" id="usedDetailModal" name="svcStatus" class="serviceUsingDetailModal" value="Y"><label for="used">사용</label><input  value="N" class="serviceUsingDetailModal" type="radio" id="noUseDetailModal" name="svcStatus"><label for="noUse">아니오</label></td>
 					</tr>
 					<tr>
-						<td colspan="2"><button class="saveServiceBtn" onclick="return addService();">저장</button></td>
+						<td colspan="2"><button class="saveServiceBtn" onclick="return updateService();">저장</button></td>
 					</tr>
 				</table>
 			</form>
@@ -136,7 +136,7 @@
 	<script>
 		$(document).ready(function() {
 			$(".btn_close").click(function() {
-				$(".modal").fadeOut();
+				$(".modalDetail").fadeOut();
 			});
 		});
 	</script>

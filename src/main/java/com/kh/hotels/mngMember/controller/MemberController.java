@@ -121,7 +121,7 @@ public class MemberController {
 		int result = ms.insertMember(m);
 		
 		if(result > 0) {
-			return "redirect:index.jsp";
+			return "redirect:/hotelUserInsert.st";
 		}else {
 			request.setAttribute("msg", "회원가입실패");
 			return "common/errorPage";

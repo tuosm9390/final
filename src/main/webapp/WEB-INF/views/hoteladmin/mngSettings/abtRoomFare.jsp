@@ -8,7 +8,6 @@
 	.rightAreaRoom{
 		width:1300px;
 		height:600px;
-		float:right;
 	}
 	.roomTitleArea{
 		width:1265px; 

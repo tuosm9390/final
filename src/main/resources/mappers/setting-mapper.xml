@@ -4,6 +4,45 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="Setting">
+
+	<resultMap type="_int" id="floorResultSet">
+		<result property="floor" column="FLOOR" />
+	</resultMap>
+	
+	<resultMap type="BrokenRoom" id="brokenRoomListResultSet">
+		<result property="rmNo" column="RM_NO" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="brkBegin" column="BRK_BEGIN" />
+		<result property="brkEnd" column="BRK_END" />
+		<result property="brkRsn" column="BRK_RSN" />
+		<result property="userName" column="NAME" />
+		<result property="mno" column="MNO" />
+		<result property="brkStatus" column="BRK_STATUS" />
+	</resultMap>
+	
+	<resultMap type="Svc" id="serviceListResultSet">
+		<result property="svcCode" column="SVC_CODE" />
+		<result property="svcName" column="SVC_NAME" />
+		<result property="salesType" column="SALES_TYPE" />
+		<result property="svcPrice" column="SVC_PRICE" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="svcStatus" column="SVC_STATUS" />
+	</resultMap>
+	
+	<resultMap type="Member" id="selectStaffListResultSet">
+		<result property="mno" column="MNO" />
+		<result property="userName" column="NAME" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+		<result property="status" column="STATUS" />
+		<result property="type" column="TYPE" />
+		<result property="mmemo" column="MMEMO" />
+		<result property="userId" column="STF_ID" />
+		<result property="userPwd" column="STF_PWD" />
+		<result property="authNo" column="AUTH_NO" />
+		<result property="deptNo" column="DEPT_NO" />
+		<result property="pwdStatus" column="PWD_STATUS" />
+	</resultMap>
 	
 	<resultMap type="Room" id="roomDetailListResultSet">
 		<result property="rmNo" column="RM_NO" />
@@ -14,6 +53,8 @@
 		<result property="rtNo" column="RT_NO" />
 		<result property="regDate" column="REG_DATE" />
 		<result property="rmStatus" column="RM_STATUS" />
+		<result property="maxPer" column="MAXPER" />
+		<result property="minPer" column="MINPER" />
 	</resultMap>
 	
 	<resultMap type="SettingRoomType" id="roomTypeListResultSet">
@@ -42,9 +83,135 @@
 	</select>
 	
 	<select id="selectRoomDetailList" parameterType="_int" resultMap="roomDetailListResultSet">
+		SELECT R.RM_NO, R.RM_NUM, R.STD_PER, R.RM_OPTION, R.FLOOR, R.RT_NO, R.REG_DATE, R.RM_STATUS, RT.MAXPER, RT.MINPER
+		FROM ROOM R
+		JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
+		WHERE R.RT_NO = #{rtNo}
+	</select>
+	
+	<select id="getStaffListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE TYPE = 'STAFF' AND STATUS = 'Y'
+	</select>
+	
+	<select id="selectStaffList" resultMap="selectStaffListResultSet">
+		SELECT M.MNO, NAME, PHONE, EMAIL, STATUS, TYPE, MMEMO, STF_ID, STF_PWD, AUTH_NO, DEPT_NO, PWD_STATUS
+		FROM MEMBER M
+        JOIN STAFF S ON(M.MNO = S.MNO)
+		WHERE TYPE = 'STAFF' AND STATUS = 'Y'
+		ORDER BY M.MNO DESC
+ 	</select>
+	
+	<select id="selectStaffInfo" parameterType="_int" resultMap="selectStaffListResultSet">
+		SELECT M.MNO, NAME, PHONE, EMAIL, STATUS, TYPE, MMEMO, STF_ID, STF_PWD, AUTH_NO, DEPT_NO, PWD_STATUS
+		FROM MEMBER M
+        JOIN STAFF S ON(M.MNO = S.MNO)
+		WHERE TYPE = 'STAFF' AND STATUS = 'Y' AND S.MNO = #{staffMno}
+	</select>
+	
+	<select id="updateStaffPwdReset" parameterType="Member">
+		UPDATE STAFF
+		SET STF_PWD = #{userPwd}
+		WHERE MNO = #{mno}
+	</select>
+	
+	<select id="updateStaffPwdStatus" parameterType="Member">
+		UPDATE STAFF
+		SET PWD_STATUS = 'N'
+		WHERE MNO = #{mno}
+	</select>
+	
+	<select id="getSearchStaffListCount" parameterType="SearchStaff" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER M
+		JOIN STAFF S ON(S.MNO = M.MNO)
+		WHERE STATUS = 'Y' AND TYPE = 'STAFF'
+		<if test="staffId != null">
+			AND STF_ID LIKE '%' || #{staffId} || '%'
+		</if>
+		<if test="staffName != null">
+			AND NAME LIKE '%' || #{staffName} || '%' 
+		</if>
+	</select>
+	
+	<select id="selectSearchStaffList" parameterType="SearchStaff" resultMap="selectStaffListResultSet">
+		SELECT M.MNO, NAME, PHONE, EMAIL, STATUS, TYPE, MMEMO, STF_ID, STF_PWD, AUTH_NO, DEPT_NO, PWD_STATUS
+		FROM MEMBER M
+		JOIN STAFF S ON(S.MNO = M.MNO)
+		WHERE STATUS = 'Y'
+		<if test="staffId != null">
+			AND STF_ID LIKE '%' || #{staffId} || '%'
+		</if>
+		<if test="staffName != null">
+			AND NAME LIKE '%' || #{staffName} || '%' 
+		</if>
+		ORDER BY M.MNO DESC
+	</select>
+	
+	<select id="updateStaffInfoMember" parameterType="Member">
+		UPDATE MEMBER
+		SET NAME = #{userName}, PHONE = #{phone}, EMAIL = #{email}, STATUS = #{status}
+		WHERE MNO = #{mno}
+	</select>
+	
+	<select id="updateStaffInfoStaff" parameterType="Member">
+		UPDATE STAFF
+		SET DEPT_NO = #{deptNo}, AUTH_NO = #{authNo}
+		WHERE MNO = #{mno}
+	</select>
+	
+	<select id="selectServiceList" resultMap="serviceListResultSet">
 		SELECT *
+		FROM SVC
+	</select>
+	
+	<select id="insertNewService" parameterType="Svc">
+		INSERT INTO SVC(SVC_CODE, SVC_NAME, SALES_TYPE, SVC_PRICE, REG_DATE, SVC_STATUS)
+		VALUES(#{svcCode}, #{svcName}, #{salesType}, #{svcPrice}, #{regDate}, #{svcStatus})
+	</select>
+	
+	<select id="selectServiceOne" resultMap="serviceListResultSet" parameterType="java.lang.String">
+		SELECT *
+		FROM SVC
+		WHERE SVC_CODE = #{svcCode}
+	</select>
+	
+	<select id="updateService" parameterType="Svc">
+		UPDATE SVC
+		SET SVC_PRICE = #{svcPrice}, SVC_STATUS = #{svcStatus}
+		WHERE SVC_CODE = #{svcCode}
+	</select>
+	
+	<select id="selectSearchServiceList" resultMap="serviceListResultSet" parameterType="SearchService">
+		SELECT *
+		FROM SVC
+		<where>
+			<if test="serviceName != null">
+				AND SVC_NAME LIKE '%' || #{serviceName} || '%'
+			</if>
+			<if test="serviceCode != null">
+				AND SVC_CODE LIKE '%' || #{serviceCode} || '%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectBrokenRoomList" resultMap="brokenRoomListResultSet">
+		SELECT BH.RM_NO,RM_NUM, BRK_BEGIN, BRK_END, BRK_RSN, NAME, M.MNO, BRK_STATUS
+		FROM BROKEN_HIS BH
+		JOIN ROOM R ON(BH.RM_NO = R.RM_NO)
+		JOIN MEMBER M ON(BH.MNO = M.MNO)
+		WHERE BRK_STATUS = 'Y'
+	</select>
+	
+	<select id="selectFloorList" resultMap="floorResultSet">
+		SELECT DISTINCT FLOOR
 		FROM ROOM
-		WHERE RT_NO = #{rtNo}
+		ORDER BY FLOOR
+	</select>
+	
+	<select id="selectRoomList" resultMap="roomListResultSet">
+		
 	</select>
 </mapper>
 

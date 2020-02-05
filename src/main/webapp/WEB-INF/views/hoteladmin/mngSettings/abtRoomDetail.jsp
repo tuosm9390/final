@@ -10,7 +10,6 @@
 	.rightAreaRoom{
 		width:1300px;
 		height:600px;
-		float:right;
 	}
 	.roomBtn{
 		margin-top:20px; 
@@ -126,6 +125,9 @@
 		border:1px solid #3498DB;	
 		width:80px;	
 	}
+	.roomTable input{
+		text-align:center;
+	}
 </style>
 </head>
 <body>
@@ -183,16 +185,18 @@
 	<script type="text/javascript">
 	$(function(){
 		
-		$("#addRoomBtn").click(function(){
+		/* $("#addRoomBtn").click(function(){
 			if(roomtypes != "all"){
-			 	$("#" + activeTab).append("<tr><td><input type='hidden' name='rtName' value='"+activeTab+"'><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' class='rmNum' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption' class='rmOption'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;' class='stdPer' name='stdPer'> </td><td>상태</td></tr>");
+			 	$("#" + activeTab).append("<tr><td><input type='hidden' name='rtNo' value='"+activeTab+"'><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' class='rmNum' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption' class='rmOption'> </td> <td> <input type='number' disabled='disabled' min='1' value='1' max='20' style='text-align:center;' class='stdPer' name='stdPer'> </td><td> <input type='number' disabled='disabled' min='1' value='1' max='20' style='text-align:center;' class='maxPer' name='maxPer'></td><td>상태</td></tr>");
 			}else{
 				alert("룸타입을 선택해주세요.");
 			}
-		});
+		}); */
 
 	    $(".roomTable").hide();
 	    $(".roomTable:first").show();
+	    
+	  
 	});
 	
 	function showDetailArea(obj){
@@ -201,7 +205,7 @@
 	    $(obj).addClass("active").css("color", "darkred");
 	    $(".roomTable").hide();
 	    activeTab = obj.value;
-	    
+	    $("#"+activeTab+" tr:not(.thArea)").remove();
 	    $.ajax({
 	    	url:"roomDetailList.st",
 	    	type:"post",
@@ -209,16 +213,18 @@
 	    		roomtypes:roomtypes
 	    	},
 	    	success:function(data){
-	    		
 	    		$.each(data.roomDetailList, function(index, roomDetailList){
-	    			if($(".existing").length < 11){
-		    			$("#" + activeTab +" tbody:last").after("<tr class='existing'><td><input type='hidden' name='rtName' value='"+activeTab+"'><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='"+roomDetailList.floor+"' selected>"+roomDetailList.floor+"<option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' class='rmNum' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption' class='rmOption'> </td> <td> <input type='number' min='1' value='1' max='20' style='text-align:center;' class='stdPer' name='stdPer'></td><td><input type='number' min='1' value='1' max='20' style='text-align:center;' class='maxPer' name='maxPer'> </td><td>상태</td></tr>");
-	    			}else{
-	    				
-	    			}
+	    			$("#" + activeTab +" tbody:last").after("<tr class='existing'><td><input type='hidden' name='rtNo' value='"+activeTab+"'><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='"+roomDetailList.floor+"' selected>"+roomDetailList.floor+"<option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' class='rmNum' name='rmNum' value='"+roomDetailList.rmNum+"'> </td> <td> <input type='text' style='width:337px;' name='rmOption' class='rmOption' value='"+roomDetailList.rmOption+"'> </td> <td> <input type='number' disabled='disabled' min='"+roomDetailList.minPer+"'  max='"+roomDetailList.maxPer+"' style='text-align:center;' class='stdPer2' name='stdPer' value='"+roomDetailList.stdPer+"'></td><td><input type='number' disabled='disabled' min='"+roomDetailList.minPer+"' max='"+roomDetailList.maxPer+"' style='text-align:center;' class='maxPer' name='maxPer' value='"+roomDetailList.maxPer+"'> </td><td>"+roomDetailList.rmStatus+"</td></tr>");
 	    		});
 	    		
 			    $("#" + activeTab).fadeIn();
+			    $("#addRoomBtn").click(function(){
+					if(roomtypes != "all"){
+					 	$("#" + activeTab).append("<tr><td><input type='hidden' name='rtNo' value='"+activeTab+"'><input type='checkbox' style='width:34px;' name='roomDetailCheck'></td><td><select class='floor' name='floor'><option value=''>선택</option><option value='2'>2층</option><option value='3'>3층</option><option value='4'>4층</option><option value='5'>5층</option> <option value='6'>6층</option> <option value='7'>7층</option> <option value='8'>8층</option> <option value='9'>9층</option> <option value='10'>10층</option> <option value='11'>11층</option> <option value='12'>12층</option> <option value='13'>13층</option> </select> </td> <td> <input type='text' style='width:128px;' class='rmNum' name='rmNum'> </td> <td> <input type='text' style='width:337px;' name='rmOption' class='rmOption'> </td> <td> <input type='number' disabled='disabled' min='1' value='"+data.roomDetailList.stdPer+"' max='20' style='text-align:center;' class='stdPer' name='stdPer'> </td><td> <input type='number' disabled='disabled' min='1' value='"+data.roomDetailList.maxPer+"' max='20' style='text-align:center;' class='maxPer' name='maxPer'></td><td>상태</td></tr>");
+					}else{
+						alert("룸타입을 선택해주세요.");
+					}
+				});
 	    	},
 	    	error:function(data){
 	    		

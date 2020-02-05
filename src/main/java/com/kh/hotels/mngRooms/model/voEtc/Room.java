@@ -17,5 +17,7 @@ public class Room implements java.io.Serializable {
 	private int rtNo;
 	private String regDate;
 	private String rmStatus;
+	private int maxPer;
+	private int minPer;
 
 }
