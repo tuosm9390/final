@@ -10,7 +10,6 @@
 .searchSec {
 	float: right;
 	display: inline;
-	margin-right: 293px;
 }
 
 .searchSec select {
@@ -76,10 +75,11 @@
 
 .pagingSec {
 	text-align: center;
-	width: 400px;
+	width: 1200px;
 	height: 30px;
-	margin-left: 300px;
-	margin-top: 20px;
+}
+.clientTabel{
+	width:1200px;
 }
 </style>
 </head>
@@ -93,9 +93,9 @@
 	<section>
 
 		<h1 style="margin-left: 10px; margin-bottom:0px;">고객관리</h1>
-		<hr style="width:100px; margin-right:1195px;"> 
+		<hr style="width:1195px; margin-right:1195px;"> 
 		
-		<div style="margin-left:10px">
+		<div style="margin-left:10px; width:1200px;">
 		<button id="deleteClientMD" onclick="deleteClient();">삭제</button>
 		<!-- searchSec -->
 		<div class="searchSec">

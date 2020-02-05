@@ -3,6 +3,7 @@ package com.kh.hotels.mngSetting.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,9 +14,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.common.model.vo.Pagination;
+import com.kh.hotels.common.model.vo.Svc;
+import com.kh.hotels.mngMember.model.vo.Member;
+import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.voEtc.Room;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 import com.kh.hotels.mngSetting.model.service.SettingService;
+import com.kh.hotels.mngSetting.model.vo.SearchService;
+import com.kh.hotels.mngSetting.model.vo.SearchStaff;
 import com.kh.hotels.mngSetting.model.vo.SettingRoomType;
 
 @Controller
@@ -124,21 +132,99 @@ public class SettingController {
 	@RequestMapping("goRoomFare.st")
 	public String goRoomFarePage() {
 		
+		
+		
 		return "hoteladmin/mngSettings/abtRoomFare";
 	}
 	
 	@RequestMapping("goBrokenRoom.st")
-	public String goBrokenRoomPage() {
+	public String goBrokenRoomPage(Model model) {
+		
+		ArrayList<BrokenRoom> brokenRoomList = ss.selectBrokenRoomList();
+		
+		model.addAttribute("brokenRoomList", brokenRoomList);
 		
 		return "hoteladmin/mngSettings/abtBrokenRoom";
 	}
 	
+	@PostMapping("brokenAddRoomList.st")
+	public ModelAndView brokenAddRoomList(ModelAndView mv) {
+		
+		HashMap<String, Object> roomList = ss.selectFloorList();
+		
+		return mv;
+	}
+	
 	@RequestMapping("goServiceSetting.st")
-	public String goServiceSettingPage() {
+	public String goServiceSettingPage(Model model) {
+		
+		ArrayList<Svc> svcList = ss.selectServiceList();
+		
+		model.addAttribute("svcList", svcList);
 		
 		return "hoteladmin/mngSettings/abtServiceSetting";
 	}
 
+	@PostMapping("addService.st")
+	public String addService(Model model, Svc svc) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		String from = sdf.format(date);
+		
+		svc.setRegDate(from);
+		
+		int result = ss.insertNewService(svc);
+		
+		if(result > 0) {
+			return "redirect:/goServiceSetting.st";
+		}else {
+			model.addAttribute("msg", "서비스 추가 실패");
+			return "common/errorPage";
+		}
+	}
+	@PostMapping("serviceDetail.st")
+	public ModelAndView serviceDetail(ModelAndView mv, String svcCode) {
+		
+		Svc svc = ss.selectServiceOne(svcCode);
+		System.out.println(svc);
+		mv.addObject("svc", svc);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	@PostMapping("updateService.st")
+	public String updateService(Svc svc, Model model) {
+		
+		
+		int result = ss.updateService(svc);
+		
+		if(result > 0) {
+			return "redirect:/goServiceSetting.st";
+		}else {
+			model.addAttribute("msg", "서비스 변경 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
+	@PostMapping("searchService.st")
+	public String searchService(Model model, String serviceOption, String serviceValue) {
+		
+		SearchService searchService = new SearchService();
+		if(serviceOption.equals("serviceCode")) {
+			searchService.setServiceCode(serviceValue);
+		}else if(serviceOption.equals("serviceName")) {
+			searchService.setServiceName(serviceValue);
+		}
+		
+		ArrayList<Svc> searchSvcList = ss.selectSearchServiceList(searchService);
+		
+		model.addAttribute("svcList", searchSvcList);
+		
+		return "hoteladmin/mngSettings/abtServiceSetting";
+	}
 	
 	@RequestMapping("goReserv.st")
 	public String goReserv() {
@@ -155,11 +241,150 @@ public class SettingController {
 	public String goHotelInfo() {
 		return "hoteladmin/mngSettings/abtHotel/hotelInfo";
 	}
+	
 	@RequestMapping("hotelUserInsert.st")
-	public String goHotelUserInfo() {
+	public String goHotelUserInfo(HttpServletRequest request, Model model) {
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int staffCount = ss.getStaffListCount();
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, staffCount);
+		
+		ArrayList<Member> staffList = ss.selectStaffList(pi);
+		
+		model.addAttribute("staffCount", staffCount);
+		model.addAttribute("staffList", staffList);
+		model.addAttribute("pi", pi);
+		
+		
+		
 		return "hoteladmin/mngSettings/abtHotel/userInsert";
 
 	}
 		
+	@PostMapping("staffDetail.st")
+	public ModelAndView staffDetailModal(String mno, ModelAndView mv) {
+		
+		int staffMno = Integer.parseInt(mno);
+		
+		Member staff = ss.selectStaffInfo(staffMno);
+		
+		mv.addObject("staff", staff);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
 	
+	@RequestMapping("pwdReset.st")
+	public String pwdReset(Model model, String mno) {
+		
+		int staffMno = Integer.parseInt(mno);
+		
+		Member staff = new Member();
+		staff.setMno(staffMno);
+		staff.setUserPwd("0000");
+		
+		int result = ss.updateStaffPwdReset(staff);
+		
+		if(result > 0) {
+			return "redirect:/hotelUserInsert.st";
+		}else {
+			model.addAttribute("msg", "비밀번호 초기화 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	@RequestMapping("searchStaff.st")
+	public String searchStaff(String searchValue, String searchOption, HttpServletRequest request, Model model) {
+		
+		SearchStaff searchS = new SearchStaff();
+		
+		if(searchOption.equals("staffName")) {
+			searchS.setStaffName(searchValue);
+		}else if(searchOption.equals("staffId")) {
+			searchS.setStaffId(searchValue);
+		}
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int staffCount = ss.getSearchStaffListCount(searchS);
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, staffCount);
+		
+		ArrayList<Member> searchStaffList = ss.selectSearchStafftList(searchS, pi);
+		
+		model.addAttribute("check", "ok");
+		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("searchContent", searchValue);
+		model.addAttribute("staffCount", staffCount);
+		model.addAttribute("staffList", searchStaffList);
+		model.addAttribute("pi", pi);
+		
+		return "hoteladmin/mngSettings/abtHotel/userInsert";
+	}
+	
+	@PostMapping("updateStaff.st")
+	public String updateStaffInfo(Model model,String mnoStaffDetailModal, String userNameStaffDetailModal
+			, String phoneStaffDetailModal, String emailStaffDetailModal, String deptNoStaffDetailModal
+			, String statusStaffDetailModal, String authNoStaffDetailModal) {
+		
+		Member staff = new Member();
+		staff.setMno(Integer.parseInt(mnoStaffDetailModal));
+		staff.setUserName(userNameStaffDetailModal);
+		staff.setPhone(phoneStaffDetailModal);
+		staff.setEmail(emailStaffDetailModal);
+		staff.setDeptNo(Integer.parseInt(deptNoStaffDetailModal));
+		staff.setStatus(statusStaffDetailModal);
+		staff.setAuthNo(authNoStaffDetailModal);
+		
+		int result = ss.updateStaffInfo(staff);
+		
+		System.out.println("컨트롤러 접근 result  = " + result);
+		
+		if(result > 0) {
+			return "redirect:/hotelUserInsert.st";
+		}else {
+			model.addAttribute("msg", "직원정보 수정 실패");
+			return "common/errorPage";
+		}
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

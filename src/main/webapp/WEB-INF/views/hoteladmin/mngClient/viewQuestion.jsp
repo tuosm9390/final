@@ -9,6 +9,7 @@
 <style>
 .topSec {
 	display: inline-flex;
+	width:1200px;
 }
 
 .topSec select {
@@ -23,7 +24,7 @@
 	margin-top: 10px;
 	float: right;
 	display: inline;
-	margin-right: 38px;
+	margin-left:10px;
 }
 
 .searchSec select {
@@ -47,7 +48,7 @@
 #openNewMD {
 	margin-top: 10px;
 	width: 100px;
-	margin-left: 10px;
+	margin-left: 790px;
 	border: 1px solid #3498DB;
 	border-radius: 5px;
 	background-color: #3498DB;
@@ -75,6 +76,9 @@
 	color: #005B9E;
 	border: 1px solid lightgray;
 	height:30px;
+}
+section{
+	width:1250px;
 }
 </style>
 </head>
@@ -120,9 +124,8 @@
 				</select>
 			</c:if>
 		</div>
-		<hr style="width:100px; margin-right:1195px;"> 
-		
-		<button id="openNewMD">신규</button>
+		<hr style="width:1250px; margin-left:10px;"> 
+		<div style="display: flex;">
 		<!-- searchSec -->
 		<form action="searchQue.cl" method="post">
 		<div class="searchSec">
@@ -137,6 +140,8 @@
 			<button id="searchBtn" type="submit" onclick="return searchQue();">검색</button>
 		</div>
 		</form>
+		<button id="openNewMD">신규</button>
+		</div>
 		<!-- searchSec end -->
 		
 		<div class="qList">

@@ -10,7 +10,6 @@
 	.rightAreaRoom{
 		width:1300px;
 		height:600px;
-		float:right;
 	}
 	.newTrArea input{
 		text-align:center;
@@ -103,6 +102,7 @@
 </head>
 <body>
 <header>
+	<jsp:include page="modal/roomDetailModal.jsp"/>
 	<jsp:include page="../common/settingMenubar.jsp"/>
 	<jsp:include page="../common/menubar.jsp"/>
 </header>
@@ -152,13 +152,14 @@
 </section>
 <script type="text/javascript">
 	function addRoomType(){
-		$("tbody:last").append("<tr class='newTrArea'><td><input type='text' name='rtName' class='rtNames'></td><td></td><td><input type='number' class='minPer' min='1' value='1' max='20' name='minPer' class='minPer' style='text-align:center; margin-left:14px;'></td><td><input type='number' class='maxPer' min='1' name='maxPer' value='1' max='20' class='maxPer' style='text-align:center; margin-left:14px;'></td><td><input type='text' class='limitprc' name='limitprc' style='width:100px;height:30px;'></td></tr>");
-		$(".minPer").each(function(){
+
+		$(".modalRoomDetail").fadeIn();
+		/* $(".minPer").each(function(){
 			$(this).change(function(){
 				$(this).parent().siblings().children(".maxPer").attr("min", $(this).val());
 				$(this).parent().siblings().children(".maxPer").attr("value", $(this).val());
 			});
-		})
+		}) */
 	};
 	function saveRoomType(){
 		if($(".newTrArea").length < 1){
@@ -177,6 +178,8 @@
 					alert("같은 타입의 객실명을 입력하실 수 없습니다.");
 					return false;
 				}
+				
+				return false;
 			});
 
 		});
@@ -186,9 +189,14 @@
 				alert("객실 가격을 입력해주세요.");
 				return false;
 			}
+			return false;
 		});
 		
-		return true;
+		if(confirm("객실 유형을 등록하시겠습니까? ")){
+			return true;
+		}
+		
+		return false;
 	};
 	function resetRoomType(){
 		$(".newTrArea").remove();

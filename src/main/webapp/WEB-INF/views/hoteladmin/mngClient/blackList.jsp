@@ -8,13 +8,13 @@
 <title>Insert title here</title>
 <style type="text/css">
 	.blackListArea{
-		width: 1000px;
+		width: 1200px;
 		height: 461px;
 		border: 1px solid darkgray;
 		margin-left: 10px;
 	}
 	.blackListArea table{
-		width: 1000px;
+		width: 1200px;
 		text-align:center;
 		border:1px solid lightgray;
 	}
@@ -32,7 +32,6 @@
 		float: right;
 		display: inline;
 		margin-top: 10px;
-		margin-right: 300px;
 	}  
 	
 	.searchSec select {
@@ -90,8 +89,10 @@
 	height: 30px;
 	margin-left: 350px;
 	margin-top: 20px;
-}
-	
+	}
+	section{
+		width:1200px;
+	}
 </style>
 </head>
 <body>
@@ -103,7 +104,7 @@
 	</header>
 	<section>
 		<h1 style="margin-left:10px; margin-bottom:0px;">블랙리스트</h1>
-		<hr style="width:125px; margin-right:1170px;"> 
+		<hr style="width:1170px;/*  margin-right:125px; */"> 
 		
 		<!-- searchSec -->
 		<div class="searchSec">

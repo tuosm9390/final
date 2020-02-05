@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HotelsCompile</title>
 <style type="text/css">
 	.rightAreaRoom{
 		width:1300px;
 		height:600px;
-		float:right;
 	}
 	.brokenRoomDate{
 		width:1200px;
@@ -42,7 +42,8 @@
 	}
 	.brokenRoomTable{
 		width:1200px;
-		border-color:lightgray;
+		border:1px solid lightgray;
+		text-align:center;
 	}
 	.brokenRoomTable th{
 		background-color: #f7f7f7;
@@ -116,6 +117,15 @@
 						<th width="20%">종료 일자</th>
 						<th width="35%">고장 사유</th>
 					</tr>
+					<c:forEach var="brokenRoomList" items="${ brokenRoomList }">
+						<tr>
+							<td><input type="checkbox"></td>
+							<td>${ brokenRoomList.rmNo }</td>
+							<td>${ brokenRoomList.brkBegin }</td>
+							<td>${ brokenRoomList.brkEnd }</td>
+							<td>${ brokenRoomList.brkRsn }</td>
+						</tr>
+					</c:forEach>
 				</table>
 			</div>
 		</div>
@@ -153,6 +163,21 @@
 	});
 	
 	function openBrokenModal(){
+		
+		$.ajax({
+			url:"brokenAddRoomList.st",
+			type:"post",
+			data:{
+				
+			},
+			success:function(data){
+				
+			},
+			error:function(data){
+				
+			}
+		});
+		
 		$(".modal").fadeIn();		
 	}
 </script>

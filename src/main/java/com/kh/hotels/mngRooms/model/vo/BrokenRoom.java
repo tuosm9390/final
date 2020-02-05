@@ -8,11 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BrokenRoom implements java.io.Serializable {
-	
+	 
 	private int rmNo;
+	private String rmNum;
 	private String brkBegin;
 	private String brkEnd;
 	private String brkRsn;
+	private int mno;
 	private String userName;
 	private String brkStatus;
 	
