@@ -28,7 +28,10 @@ import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.Reservation;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
+
+import net.sf.json.JSONArray;
 
 @Controller
 public class HotelMainContoller {
@@ -54,9 +57,12 @@ public class HotelMainContoller {
 		
 		String[] filePathList = new String[roomList.size()];
 		
+		String[] str = new String[2];
 		for(int i = 0; i < roomList.size(); i++) {
-			filePathList[i] = roomList.get(i).getFilePath().substring(47).replace('\\', '/');
+			str = roomList.get(i).getFilePath().split("webapp", 2);
+			filePathList[i] = str[1];
 			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
+			str = null;
 		}
 		
 		mv.addObject("filePathList", filePathList);
@@ -68,43 +74,87 @@ public class HotelMainContoller {
 
 	// 객실 정보 조회 메소드
 	@RequestMapping("roomdetail.hmain")
-	public String showHotelRoomsDetail(int roomType, HttpSession session) {
-
+	public ModelAndView showHotelRoomsDetail(ModelAndView mv, int roomType, HttpSession session) {
+		
 		ArrayList<RoomInfo> roomInfo = hs.selectRoom(roomType);
+		ArrayList<RoomInfo> selectFile = hs.selectFile(roomType);
+		System.out.println("roomInfo : " + roomInfo);
 		
-		String[] filePathList = new String[roomInfo.size()];
+		String[] filePathList = new String[selectFile.size()];
 		
-		for(int i = 0; i < roomInfo.size(); i++) {
-			filePathList[i] = roomInfo.get(i).getFilePath().substring(47).replace('\\', '/');
+		String[] str = new String[2];
+		for(int i = 0; i < selectFile.size(); i++) {
+			str = selectFile.get(i).getFilePath().split("webapp", 2);
+			filePathList[i] = str[1];
 			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
+			str = null;
 		}
 		
 		session.setAttribute("listsize", filePathList.length);
 		session.setAttribute("filePathList", filePathList);
-		session.setAttribute("roomInfo", roomInfo.get(0));
-		System.out.println("roomInfo : " + roomInfo);
-
-		return "hotelmain/rooms/roomDetail";
+		session.setAttribute("roomInfo", roomInfo);
+		mv.addObject("roomType", roomType);
+		mv.addObject("roomInfo", roomInfo);
+		mv.setViewName("hotelmain/rooms/roomDetail");
+		
+		return mv;
+	}
+	
+	// 객실호수 지정 메소드
+	@RequestMapping("selectRoomNo.hmain")
+	public ModelAndView selectRoomNo(ModelAndView mv, int roomType, Date checkIn, Date checkOut) {
+		
+		List<RoomInfo> roomNoList = hs.selectRoomNoList(roomType);
+		System.out.println("roomNoList : " + roomNoList);
+						
+		// 예약 가능한 객실이 있을 때
+		if(roomNoList.size() > 0) {
+			// 난수 발생
+			int r = (int) (Math.random() * roomNoList.size());
+			// 객실유형별 호수 갯수만큼 반복돌려서 난수와 같은 index에 있는 호수 지정
+			int roomNo = 0;
+			for(int i = 0; i < roomNoList.size(); i++) {
+				if(i == r) {
+					System.out.println("roomInfo.getRm_No() : " + roomNoList.get(r).getRm_No());
+					roomNo = roomNoList.get(r).getRm_No();
+				}
+			}
+			mv.addObject("roomType", roomType);
+			mv.addObject("roomNo", roomNo);
+		}
+		
+		mv.setViewName("jsonView");
+		
+		return mv;
 	}
 
 	// 예약 메소드
 	@RequestMapping("reservation.hmain")
-	public String showHotelRoomReservation(HttpSession session, Reservation rsv, Date checkIn, Date checkOut, int adult,
-			int child) {
+	public ModelAndView showHotelRoomReservation(ModelAndView mv, HttpSession session,
+			Reservation rsv, Date checkIn, Date checkOut, int adult, int child, int roomNo, int roomType) {
 		
+		ArrayList<Prc> roomprice = hs.selectRoomPrice(roomType);
+		JSONArray json = JSONArray.fromObject(roomprice);
+
+		System.out.println("roomprice : " + roomprice);
+		
+		rsv.setRmNo(roomNo);
 		rsv.setCheckIn(checkIn);
 		rsv.setCheckOut(checkOut);
 		rsv.setAdult(adult);
 		rsv.setChild(child);
-
+		
 		session.setAttribute("rsv", rsv);
+		mv.addObject("roomprice", json);
+		mv.addObject("rsv", rsv);
+		mv.setViewName("hotelmain/rooms/roomReservation");
 
-		return "hotelmain/rooms/roomReservation";
+		return mv;
 	}
 
 	// 결제 메소드
 	@PostMapping("reservationPay.hmain")
-	public String test(ReservationCheck rsvCheck, int roomType, HttpSession session) {
+	public String test(ReservationCheck rsvCheck, int roomType, HttpSession session, int roomNo) {
 		
 		System.out.println("roomType : " + roomType);
 		System.out.println(session.getAttribute("rsv"));
@@ -120,11 +170,16 @@ public class HotelMainContoller {
 
 		String rsvNo = "";
 		if (nMonth < 10) {
-			rsvNo += nYear + "0" + nMonth + nDay;
+			rsvNo += nYear + "0" + nMonth;
 		} else {
-			rsvNo += nYear + nMonth + nDay;
+			rsvNo += nYear + nMonth;
 		}
-
+		
+		if(nDay < 10) {
+			rsvNo += "0" + nDay;
+		} else {
+			rsvNo += nDay;
+		}
 		System.out.println("날짜 : " + rsvNo);
 
 		int rsvNoCnt = hs.reservationCnt(rsvNo);
@@ -142,22 +197,7 @@ public class HotelMainContoller {
 
 		System.out.println("생성된 예약번호 : " + rsvNo);
 		rsvCheck.setRsvNo(rsvNo);
-		
-		// 객실호수 지정 메소드
-		List<RoomInfo> roomNoList = hs.selectRoomNoList(roomType);
-		
-		System.out.println("roomNoList : " + roomNoList);
-		
-		// 난수 발생
-		int r = (int) (Math.random() * roomNoList.size());
-		
-		// 객실유형별 호수 갯수만큼 반복돌려서 난수와 같은 index에 있는 호수 지정
-		for(int i = 0; i < roomNoList.size(); i++) {
-			if(i == r) {
-				rsvCheck.setRmNo(roomNoList.get(r).getRm_No());
-			}
-		}
-		
+		rsvCheck.setRmNo(roomNo);
 		session.setAttribute("rsvCheck", rsvCheck);
 		
 		return "hotelmain/rooms/ReservationPayPage";
@@ -165,7 +205,8 @@ public class HotelMainContoller {
 	
 	// 예약 및 결제 결과 메소드
 	@PostMapping("reservationResult.hmain")
-	public ModelAndView InsertReservation(ReservationCheck rsvCheck, ModelAndView mv, SessionStatus session) {
+	public ModelAndView InsertReservation(ReservationCheck rsvCheck, ModelAndView mv) {
+		System.out.println("rsvCheck : " + rsvCheck);
 		
 		// 예약자 회원번호 호출 메소드
 		Member selectMember;
@@ -182,44 +223,51 @@ public class HotelMainContoller {
 			// 회원정보 등록
 			int insertMember = hs.insertMember(rsvCheck);
 			System.out.println("멤버 insert : " + insertMember);
-			
-			// 예약자 회원번호 호출
-			selectMember = hs.selectMember(rsvCheck);
-			rsvCheck.setMno(selectMember.getMno());
-		}
-		
-		// 예약정보 등록
-		java.util.Date date = new java.util.Date();
-		rsvCheck.setRsvDate(date);
-		System.out.println("rsvCheck : " + rsvCheck);
-		int result = hs.insertReservation(rsvCheck);
-		
-		if(rsvCheck.getRsvOption().equals("Y")) {
-			int insertBreakfast = hs.insertBreakfast(rsvCheck);
-		}
-		
-		int roomType = hs.selectRoomType(rsvCheck.getRsvNo());
-		
-		ArrayList<RoomInfo> roomInfo = hs.selectRoom(roomType);
-		
-		String[] filePathList = new String[roomInfo.size()];
-		
-		for(int i = 0; i < roomInfo.size(); i++) {
-			filePathList[i] = roomInfo.get(i).getFilePath().substring(47).replace('\\', '/');
-			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
-		}
-		
-		if (result > 0) {
-			mv.addObject("filePathList", filePathList);
-			mv.addObject("rsvCheck", rsvCheck);
-			mv.setViewName("hotelmain/rooms/roomReservationResult");
-		} else {
-			mv.addObject("error", "예약 정보 입력 실패");
-			mv.setViewName("hotelmain/common/errorPage");
 		}
 
-		session.setComplete();
-		
+		// 예약시간 생성
+		java.util.Date date = new java.util.Date();
+		rsvCheck.setRsvDate(date);
+
+		// 예약자 회원번호 호출
+		selectMember = hs.selectMember(rsvCheck);
+		rsvCheck.setMno(selectMember.getMno());
+		int result = hs.insertReservation(rsvCheck);
+		System.out.println("result : " + result);
+		if(result > 0) {
+			int insertReservationHis = hs.insertReservationHis(rsvCheck);
+			if(insertReservationHis > 0) {
+				// 조식 신청시 등록
+				if(rsvCheck.getRsvOption().equals("Y")) {
+					int insertBreakfast = hs.insertBreakfast(rsvCheck);
+					System.out.println("insertBreakfast : " + rsvCheck.getNum());
+					if(insertBreakfast > 0) {
+						int insertSvcUseHis = hs.insertSvcUseHis(rsvCheck);
+						if(insertSvcUseHis > 0) {
+							System.out.println("조식 등록 완료");
+						}
+					}
+				}
+				// insertStay
+//				int insertStay = hs.insertStay(rsvCheck);
+//				System.out.println("insertStay : " + rsvCheck.getNum());
+//				if(insertStay > 0) {
+//					int insertStayHis = hs.insertStayUse(rsvCheck);
+//					if(insertStayHis > 0) {
+				// insertPayment
+				int insertPayment = hs.insertPayment(rsvCheck);
+				System.out.println("insertPayment : " + insertPayment);
+				if (insertPayment > 0) {
+					// 성공시 페이지 호출
+					mv.addObject("rsvCheck", rsvCheck);
+					mv.setViewName("hotelmain/rooms/roomReservationResult");
+				} else {
+					mv.addObject("error", "예약 정보 입력 실패");
+					mv.setViewName("hotelmain/common/errorPage");
+				}
+			}
+		}
+
 		return mv;
 	}
 

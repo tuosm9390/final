@@ -12,6 +12,7 @@ import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 public interface HotelDao {
@@ -51,5 +52,23 @@ public interface HotelDao {
 	int insertBreakfast(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
 
 	int selectRoomType(SqlSessionTemplate sqlSession, String rsvNo);
+
+	ArrayList<RoomInfo> selectFile(SqlSessionTemplate sqlSession, int roomType);
+
+	int insertPayment(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
+
+	int insertStay(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
+
+	int selectStayNo(SqlSessionTemplate sqlSession, String rsvNo);
+
+	int insertSvcUseHis(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
+
+	int insertStayUse(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
+
+	int insertMemberHis(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
+
+	int insertReservationHis(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
+
+	ArrayList<Prc> selectRoomPrice(SqlSessionTemplate sqlSession, int roomType);
 
 }

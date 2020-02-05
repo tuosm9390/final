@@ -14,6 +14,7 @@ import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 @Component
@@ -129,6 +130,51 @@ public class HotelDaoImpl implements HotelDao{
 	@Override
 	public int selectRoomType(SqlSessionTemplate sqlSession, String rsvNo) {
 		return sqlSession.selectOne("hotel.selectRoomType", rsvNo);
+	}
+
+	@Override
+	public ArrayList<RoomInfo> selectFile(SqlSessionTemplate sqlSession, int roomType) {
+		return (ArrayList)sqlSession.selectList("hotel.selectFile", roomType);
+	}
+
+	@Override
+	public int insertPayment(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck) {
+		return sqlSession.insert("hotel.insertPayment", rsvCheck);
+	}
+
+	@Override
+	public int insertStay(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck) {
+		return sqlSession.insert("hotel.insertStay", rsvCheck);
+	}
+
+	@Override
+	public int selectStayNo(SqlSessionTemplate sqlSession, String rsvNo) {
+		return sqlSession.selectOne("hotel.selectStayNo", rsvNo);
+	}
+
+	@Override
+	public int insertSvcUseHis(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck) {
+		return sqlSession.insert("hotel.insertSvcUseHis", rsvCheck);
+	}
+
+	@Override
+	public int insertStayUse(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck) {
+		return sqlSession.insert("hotel.insertStayHis", rsvCheck);
+	}
+
+	@Override
+	public int insertMemberHis(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck) {
+		return sqlSession.insert("hotel.insertMemberHis", rsvCheck);
+	}
+
+	@Override
+	public int insertReservationHis(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck) {
+		return sqlSession.insert("hotel.insertReservationHis", rsvCheck);
+	}
+
+	@Override
+	public ArrayList<Prc> selectRoomPrice(SqlSessionTemplate sqlSession, int roomType) {
+		return (ArrayList)sqlSession.selectList("hotel.selectRoomPrice", roomType);
 	}
 
 }

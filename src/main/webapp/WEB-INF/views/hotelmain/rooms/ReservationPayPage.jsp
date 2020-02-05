@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta content="5e31127002f57e00366eedc7" name="bootpay-application-id" />
-<title>HotelsCompile</title>
+<title>Hotels Boutique</title>
 <script src="https://cdn.bootpay.co.kr/js/bootpay-3.0.2.min.js"
 	type="application/javascript"></script>
 <script
@@ -44,12 +44,12 @@
 		BootPay.request({
 			price : '1000', //실제 결제되는 가격
 			application_id : "5e31127002f57e00366eedc7",
-			name : '${ sessionScope.roomInfo.rt_Name }', //결제창에서 보여질 이름
+			name : '${ sessionScope.roomInfo[0].rt_Name }', //결제창에서 보여질 이름
 			pg : '',
 			method : '', //결제수단, 입력하지 않으면 결제수단 선택부터 화면이 시작합니다.
 			show_agree_window : 0, // 부트페이 정보 동의 창 보이기 여부
 			items : [ {
-				item_name : '${ sessionScope.roomInfo.rt_Name }', //상품명
+				item_name : '${ sessionScope.roomInfo[0].rt_Name }', //상품명
 				qty : 1, //수량
 				unique : '${ sessionScope.rsvCheck.rsvNo }', //해당 상품을 구분짓는 primary key
 				price : '${ sessionScope.rsvCheck.stayPrice }', //상품 단가

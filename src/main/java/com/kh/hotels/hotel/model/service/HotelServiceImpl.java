@@ -15,6 +15,7 @@ import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 @Service
@@ -119,6 +120,51 @@ public class HotelServiceImpl implements HotelService{
 	@Override
 	public int selectRoomType(String rsvNo) {
 		return hd.selectRoomType(sqlSession, rsvNo);
+	}
+
+	@Override
+	public ArrayList<RoomInfo> selectFile(int roomType) {
+		return hd.selectFile(sqlSession, roomType);
+	}
+
+	@Override
+	public int insertPayment(ReservationCheck rsvCheck) {
+		return hd.insertPayment(sqlSession, rsvCheck);
+	}
+
+	@Override
+	public int insertStay(ReservationCheck rsvCheck) {
+		return hd.insertStay(sqlSession, rsvCheck);
+	}
+
+	@Override
+	public int selectStayNo(String rsvNo) {
+		return hd.selectStayNo(sqlSession, rsvNo);
+	}
+
+	@Override
+	public int insertSvcUseHis(ReservationCheck rsvCheck) {
+		return hd.insertSvcUseHis(sqlSession, rsvCheck);
+	}
+
+	@Override
+	public int insertStayUse(ReservationCheck rsvCheck) {
+		return hd.insertStayUse(sqlSession, rsvCheck);
+	}
+
+	@Override
+	public int insertMemberHis(ReservationCheck rsvCheck) {
+		return hd.insertMemberHis(sqlSession, rsvCheck);
+	}
+
+	@Override
+	public int insertReservationHis(ReservationCheck rsvCheck) {
+		return hd.insertReservationHis(sqlSession, rsvCheck);
+	}
+
+	@Override
+	public ArrayList<Prc> selectRoomPrice(int roomType) {
+		return hd.selectRoomPrice(sqlSession, roomType);
 	}
 
 }

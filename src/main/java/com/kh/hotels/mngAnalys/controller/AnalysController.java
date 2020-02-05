@@ -11,14 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.hotel.model.service.HotelService;
 import com.kh.hotels.mngAnalys.model.service.AnalysService;
 import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
+import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 import com.kh.hotels.mngStay.model.vo.Stay;
 
 @Controller
 public class AnalysController {
 	@Autowired
 	private AnalysService as;
+	@Autowired
+	private HotelService hs;
+	
 
 	// 매출 상세
 	@RequestMapping("viewDetailList.an")
@@ -83,6 +88,16 @@ public class AnalysController {
 		// 예약, 대실 내역 전체 조회
 		ArrayList<SalesDetail> dailyRsvList = as.selectRsvList(map);
 		ArrayList<Stay> dailyStayList = as.selectStayList(map);
+		ArrayList<RoomInfo> roomList = hs.selectRoomList();
+		
+		ArrayList<String> RoomList = new ArrayList<>();
+		for(int i = 0; i < roomList.size(); i++) {
+			RoomList.add(i, "'" + roomList.get(i).getRt_Name() + "'");
+		}
+		
+		System.out.println("RoomList : " + RoomList);
+		
+		mv.addObject("RoomList", RoomList);
 		
 		// 일별 객실 매출 조회
 		int dailyRsvSales = 0;

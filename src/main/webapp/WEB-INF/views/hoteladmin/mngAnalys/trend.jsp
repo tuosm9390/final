@@ -249,7 +249,6 @@ input[type=text] {
 				<c:set var="standardprice" value="0"/>
 				<c:set var="suiteprice" value="0"/>
 				<c:forEach var="list" items="${ list }">
-					${ totalprice } += ${ list.price }
 					<c:if test="${ list.rtName eq '디럭스' }">
 						${ deluxeprice } = ${ list.price }
 					</c:if>
@@ -262,6 +261,7 @@ input[type=text] {
 					<c:if test="${ list.rtName eq '스위트' }">
 						${ suiteprice } = ${ list.price }
 					</c:if>
+					${ totalprice } += ${ list.price }
 				</c:forEach>
 				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
@@ -388,17 +388,6 @@ input[type=text] {
 			$(this).prevAll().css({"background":"white", "color":"#3498DB"});
 		});
 		
-// 		$("#total").click(function(){
-// 			$(".movetotal").click();
-// 		});
-		
-// 		$("#daily").click(function(){
-// 			$(".movedaily").click();
-// 		});
-// 		$("#monthly").click(function(){
-// 			$(".movemonthly").click();
-// 		});
-		
 		// 일별 매출 차트
 		chart1 = {
 			'legend': {
@@ -457,6 +446,22 @@ input[type=text] {
 		     }
 		});
 		
+		// 일별지불 (고객)
+		chart2 = {
+			'dataset':{
+				title: 'Web accessibility status',
+				values:[69083116, 1100000, 1100000, 101100000],
+				colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+				fields: ['신용카드', '현금', '계좌이체', '후불', '환불'],
+			},
+			'donut_width' : 50,
+			'core_circle_radius':70,
+			'chartDiv': 'chartArea2',
+			'chartType': 'donut',
+			'chartSize': {width:700, height:400}
+		};
+		Nwagon.chart(chart2);
+		
 		$("#dailySalesCst").datepicker({
 			autoClose : true,
 		});
@@ -511,8 +516,6 @@ input[type=text] {
 	  						}
 	  					});
 	  					
-	  					
-	  					
 	  					$("#chartArea3").children().remove();
 	  					$(".deluxe-price").children().remove();
 	  					$(".deluxe-price").append("<label>" + deluxe + "</label>");
@@ -546,60 +549,51 @@ input[type=text] {
 	  			});
 		     }
 		});
-		$("#dailySpendStrg").datepicker({
-			autoClose : true,
-		});
-		$("#monthlySalesPerRoomType").datepicker({
-			autoClose : true,
-		});
 		
-		chart2 = {
+		// 일별지불(재고)
+		chart4 = {
 			'dataset':{
 				title: 'Web accessibility status',
 				values:[69083116, 1100000, 1100000, 101100000],
 				colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
-				fields: ['신용카드', '현금', '계좌이체', '후불', '환불'],
+				fields: ['수리', '비품구입', '소모품구입', '기타'],
 			},
 			'donut_width' : 50,
 			'core_circle_radius':70,
-			'chartDiv': 'chartArea2',
+			'chartDiv': 'chartArea4',
 			'chartType': 'donut',
 			'chartSize': {width:700, height:400}
 		};
-		Nwagon.chart(chart2);
-			
-		chart4 = {
-				'dataset':{
-					title: 'Web accessibility status',
-					values:[69083116, 1100000, 1100000, 101100000],
-					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
-					fields: ['수리', '비품구입', '소모품구입', '기타'],
-				},
-				'donut_width' : 50,
-				'core_circle_radius':70,
-				'chartDiv': 'chartArea4',
-				'chartType': 'donut',
-				'chartSize': {width:700, height:400}
-			};
-			Nwagon.chart(chart4);
+		Nwagon.chart(chart4);
 		
+		$("#dailySpendStrg").datepicker({
+			autoClose : true,
+		});
+		
+		
+		// 월별 객실 타입별 매출
 		chart5 = {
-				'legend': {
-					names: ['스위트더블', '스위트 패밀리', '디럭스 트윈', '디럭스 더블', '스탠다드'],
-				},
-				'dataset': {
-					title: 'Playing time per day',
-					values: [1840000, 0, 200000, 240000, 80000],
-					colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
-				},
-				'chartDiv': 'chartArea5',
-				'chartType': 'column',
-				'chartSize': { width: 1200, height: 300 },
-				'maxValue': 2000000,
-				'increment': 200000
-			};
-			Nwagon.chart(chart5);
-			
+			'legend': {
+				names: ${RoomList},
+			},
+			'dataset': {
+				title: 'Playing time per day',
+				values: [1840000, 0, 200000, 240000],
+				colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
+			},
+			'chartDiv': 'chartArea5',
+			'chartType': 'column',
+			'chartSize': { width: 1200, height: 300 },
+			'maxValue': 2000000,
+			'increment': 200000
+		};
+		Nwagon.chart(chart5);
+		
+		$("#monthlySalesPerRoomType").datepicker({
+			autoClose : true,
+		});
+		
+		// 탭 클릭시 이동
 		function fnMove(seq){
 	        var offset = $(".div" + seq).offset();
 	        $('html, section').animate({scrollTop : offset.top}, 400);

@@ -10,6 +10,7 @@ import com.kh.hotels.mngClient.model.vo.Ans;
 import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 public interface HotelService {
@@ -49,4 +50,22 @@ public interface HotelService {
 	List<Que> selectQnAList(Map<String, Object> map) throws QnASelectListException;
 
 	int selectRoomType(String rsvNo);
+
+	ArrayList<RoomInfo> selectFile(int roomType);
+
+	int insertPayment(ReservationCheck rsvCheck);
+
+	int insertStay(ReservationCheck rsvCheck);
+
+	int selectStayNo(String rsvNo);
+
+	int insertSvcUseHis(ReservationCheck rsvCheck);
+
+	int insertStayUse(ReservationCheck rsvCheck);
+
+	int insertMemberHis(ReservationCheck rsvCheck);
+
+	int insertReservationHis(ReservationCheck rsvCheck);
+
+	ArrayList<Prc> selectRoomPrice(int roomType);
 }

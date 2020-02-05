@@ -74,6 +74,17 @@
 		<result property="acontent" column="acontent" />
 		<result property="adate" column="adate" />
 	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.Prc" id="PrcResultSet">
+		<id property="rpNo" column="rp_No" />
+		<result property="rtNo" column="rt_No" />
+		<result property="rtName" column="rt_Name" />
+		<result property="termType" column="term_Type" />
+		<result property="dayType" column="day_Type" />
+		<result property="stayType" column="stay_Type" />
+		<result property="price" column="price" />
+		<result property="regDate" column="reg_Date" />
+	</resultMap>
 
 	<!-- 문의 내용 갯수 조회 쿼리 -->
 	<select id="selectListCount" resultType="_int" parameterType="java.util.HashMap">
@@ -109,39 +120,54 @@
 	
 	<!-- 객실 유형 갯수 조회 쿼리 -->
 	<select id="selectRoomList" resultType="java.util.ArrayList" resultMap="RoomInfoResultSet">
-		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER, LIMITPRC, A.FILE_PATH, A.FILE_LEVEL
+		SELECT STD_PER, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER, A.FILE_PATH, A.FILE_LEVEL
 		FROM ROOM R
 		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
 		FULL JOIN ATTACH A ON(R.RT_NO = A.RT_NO)
 		WHERE A.FILE_LEVEL = 1
-		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS, RT_NAME,
-		MINPER, MAXPER, LIMITPRC, A.FILE_PATH, A.FILE_LEVEL
+		GROUP BY R.RT_NO, STD_PER, RM_STATUS, RT_NAME,
+		MINPER, MAXPER, A.FILE_PATH, A.FILE_LEVEL
 		ORDER BY RT_NO
 	</select>
 
 	<!-- 객실 정보 조회용 쿼리 -->
 	<select id="selectRoom" resultType="java.util.ArrayList" resultMap="RoomInfoResultSet">
-		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER, LIMITPRC, A.FILE_PATH, A.FILE_LEVEL
+		SELECT STD_PER, RM_OPTION, R.RT_NO, RM_STATUS, RT_NAME, MINPER, MAXPER, LIMITPRC
 		FROM ROOM R
 		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
 		LEFT JOIN ATTACH A ON(R.RT_NO = A.RT_NO)
 		WHERE R.RT_NO = #{roomType}
 		GROUP BY R.RT_NO, STD_PER, RM_OPTION, RM_STATUS, RT_NAME,
-		MINPER, MAXPER, LIMITPRC, A.FILE_PATH, A.FILE_LEVEL
+		MINPER, MAXPER, LIMITPRC
+	</select>
+	
+	<!-- 객실 사진 조회용 쿼리 -->
+	<select id="selectFile" resultType="java.util.ArrayList" resultMap="RoomInfoResultSet">
+		SELECT A.FILE_PATH, A.FILE_LEVEL
+		FROM ROOM R
+		LEFT JOIN ATTACH A ON(R.RT_NO = A.RT_NO)
+		WHERE R.RT_NO = #{roomType}
+		GROUP BY A.FILE_PATH, A.FILE_LEVEL
 		ORDER BY A.FILE_LEVEL ASC
 	</select>
 	
 	<!-- 객실 유형별 객실 번호 조회용 쿼리 -->
 	<select id="selectRoomNoList" resultType="RoomInfo" resultMap="RoomInfoResultSet">
-		SELECT RM_NO
-		FROM ROOM
-		WHERE RT_NO = #{roomType}
-		MINUS
-		SELECT RSV.RM_NO
-		FROM RSV
-		LEFT JOIN ROOM ON (RSV.RM_NO = ROOM.RM_NO)
-		WHERE RT_NO = #{roomType}
-		AND CHECKOUT > SYSDATE
+		<![CDATA[
+			SELECT RM_NO
+			FROM ROOM
+			WHERE RT_NO = #{roomType}
+			MINUS
+			SELECT RSV.RM_NO
+			FROM RSV
+			LEFT JOIN ROOM ON (RSV.RM_NO = ROOM.RM_NO)
+			WHERE RT_NO = #{roomType}
+			AND CHECKOUT > SYSDATE
+			AND CHECKIN < SYSDATE
+			MINUS
+			SELECT RM_NO
+			FROM BROKEN_HIS
+		]]>
 	</select>
 	
 	<select id="selectRoomType" resultType="_int">
@@ -150,6 +176,15 @@
 		WHERE RM_NO = (SELECT RM_NO
 		               FROM RSV
 		               WHERE RSV_NO = #{rsvNo})
+	</select>
+	
+	<!-- 가격 정보 조회용 쿼리 -->
+	<select id="selectRoomPrice" resultMap="PrcResultSet" resultType="java.util.ArrayList">
+		SELECT RT.RT_NO AS RT_NO, RT.RT_NAME AS RT_NAME, TERM_TYPE, DAY_TYPE, PRICE
+		FROM ROOM_TYPE RT
+		LEFT JOIN PRC P ON (RT.RT_NO = P.RT_NO)
+		WHERE RT.RT_NO = #{roomType}
+		AND STAY_TYPE = 'STAY'
 	</select>
 	
 	<!-- 예약 정보 조회용 쿼리 -->
@@ -183,12 +218,53 @@
 		#{stayPrice}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), 'OK', 'ONLINE', #{adult}, #{child}, #{checkInTime}, #{rsvReq}, #{rsvOption})
 	</insert>
 	
+	<insert id="insertReservationHis" parameterType="ReservationCheck">
+		INSERT INTO RSV_HIS
+		VALUES(#{rsvNo}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), 'ALL', 'NONE', 'ALL', 'INSERT')
+	</insert>
+	
 	<!-- 서비스 입력 쿼리 -->
 	<insert id="insertBreakfast" parameterType="ReservationCheck">
 		INSERT INTO
 		SVC_USE (SVC_CODE, USE_CNT, USE_STATUS, REG_DATE, SVC_NO, RSV_NO)
-		VALUES('BREAKFAST', TO_NUMBER(#{adult}) + TO_NUMBER(#{child}), 'Y', TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), SEQ_SVC_NO.NEXTVAL, #{rsvNo})
+		VALUES('BF', TO_NUMBER(#{adult}) + TO_NUMBER(#{child}), 'Y', TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), SEQ_SVC_NO.NEXTVAL, #{rsvNo})
+		<selectKey keyProperty="num" resultType="_int" order="AFTER">
+			SELECT SEQ_SVC_NO.CURRVAL
+			FROM DUAL
+		</selectKey>
 	</insert>
+	
+	<insert id="insertSvcUseHis" parameterType="ReservationCheck">
+		INSERT INTO SVC_USE_HIS
+		VALUES(#{num}, 'ALL', 'NONE', 'ALL', TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), 'INSERT')
+	</insert>
+	
+	<!-- stay 입력 쿼리 -->
+	<insert id="insertStay" parameterType="ReservationCheck">
+		INSERT INTO STAY
+		VALUES (SEQ_STAY_NO.NEXTVAL, #{rmNo}, #{mno}, #{checkIn}, #{checkOut},
+		'N', 'STAY', #{stayPrice}, #{stayPrice}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), #{rsvNo},
+		TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), NULL, TO_NUMBER(#{adult}) + TO_NUMBER(#{child}))
+		<selectKey keyProperty="num" resultType="_int" order="AFTER">
+			SELECT SEQ_STAY_NO.CURRVAL
+			FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertStayHis" parameterType="ReservationCheck">
+		INSERT ALL INTO STAY_HIS
+		VALUES(#{num}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), 'ALL', 'NONE', 'ALL', 'INSERT')
+		INTO STAY_REQ_HIS
+		VALUES(#{num}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), #{rsvReq}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), DEFAULT)
+		SELECT * FROM DUAL
+	</insert>
+	
+	<!-- Payment 입력 쿼리 -->
+	<insert id="insertPayment" parameterType="ReservationCheck">
+		INSERT INTO PAYMENT
+		VALUES (SEQ_PNO.NEXTVAL, 'CARD', #{stayPrice}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'),
+		'DONE', TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), 'Y', #{rsvNo}, NULL)
+	</insert>	
 	
 	<!-- 예약정보 확인 / 예약 멤버 조회 쿼리 -->
 	<select id="selectMember" resultType="Member" resultMap="Member" parameterType="ReservationCheck">
@@ -207,11 +283,15 @@
 		NULL)
 	</insert>
 	
+	<insert id="insertMemberHis" parameterType="ReservationCheck">
+		INSERT INTO MEMBER_HIS
+		VALUES(#{mno}, 'ALL', '1', DEFAULT, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), 'INSERT')
+	</insert>
+	
 	<insert id="insertQnAMember" parameterType="Member">
 		INSERT INTO MEMBER
 		VALUES(SEQ_MNO.NEXTVAL, #{userName}, NULL,
-		#{email}, 'Y','CLIENT',
-		NULL)
+		#{email}, 'Y','CLIENT', NULL)
 	</insert>
 
 	<select id="selectQnAMember" resultType="Member" resultMap="Member" parameterType="Member">
