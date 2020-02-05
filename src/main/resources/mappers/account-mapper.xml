@@ -29,6 +29,11 @@
 	<select id="selectAccountList" resultMap="resultSetConn">
 		SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD FROM CONN
 	</select>
+	
+	<select id="selectAccDetailList" resultMap="resultSetConn">
+		SELECT BANK_CODE,BANK_NAME,ACCOUNT,ACC_NAME,ACC_MEMO FROM CONN WHERE CN_CODE=#{cnCode}
+	</select>
+	
 </mapper>
 
  

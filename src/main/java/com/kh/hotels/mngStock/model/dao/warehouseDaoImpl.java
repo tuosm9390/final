@@ -45,4 +45,10 @@ public class warehouseDaoImpl implements warehouseDao{
 		return sqlSession.update("Strg.updateWarehouse", st);
 	}
 
+	@Override
+	public ArrayList<StrgArea> selectAreaList(SqlSessionTemplate sqlSession,String strgNo) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("Strg.selectStrgAreaList",strgNo);
+	}
+
 }

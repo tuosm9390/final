@@ -18,6 +18,8 @@ public interface warehouseService {
 
 	ArrayList<StrgArea> detailList(String strgNo);
 
-	int updateWarehouse(Model m, Strg st); 
+	int updateWarehouse(Model m, Strg st);
+
+	ArrayList<StrgArea> selectAreaList(String strgNo); 
 
 }

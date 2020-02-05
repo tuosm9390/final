@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.vo.Conn;
+import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -81,6 +82,18 @@ public class StockDaoImpl implements StockDao{
 	public int deleteStock(SqlSessionTemplate sqlSession, int check) {
 		// TODO Auto-generated method stub
 		return sqlSession.update("Stock.deleteStock",check);
+	}
+
+	@Override
+	public ArrayList<Item> selectRmNoList(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("Stock.selectRmNoList");
+	}
+
+	@Override
+	public int insertStockHis(SqlSessionTemplate sqlSession, Model m, Stock st) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("Stock.insertStockHis",st);
 	}
 
 

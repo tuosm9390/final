@@ -11,4 +11,6 @@ public interface AccountService {
 
 	ArrayList<Conn> selectAccountList(PageInfo pi);
 
+	ArrayList<Conn> selectDetailList(String cnCode);
+
 }

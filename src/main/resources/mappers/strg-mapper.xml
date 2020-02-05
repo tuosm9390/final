@@ -19,6 +19,13 @@
 		<result property="iName" column="INAME" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngStock.model.vo.StrgArea" id="strgArea">
+		<id property="strgNo" column="STRG_NO" />
+		<result property="areaNo" column="AREA_NO" />
+		<result property="areaName" column="AREA_NAME" />
+	</resultMap>
+	
+	
 	<insert id="insertWarehouse" parameterType="Strg">
 		INSERT INTO STRG VALUES(#{strgNo},#{strgName},#{strgStatus},#{strgSite})
 	</insert>
@@ -64,6 +71,11 @@
 		SET STRG_NAME=#{strgName},STRG_STATUS=#{strgStatus},STRG_SITE=#{strgSite}
 		WHERE STRG_NO=#{strgNo}
 	</update>
+	
+	<select id="selectStrgAreaList" resultMap="strgArea">
+	SELECT * FROM STRG_AREA
+    WHERE STRG_NO=#{strgNo}
+	</select>
 </mapper>
 
  

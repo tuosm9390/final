@@ -59,6 +59,17 @@
 		<result property="accMemo" column="ACC_MEMO" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngRooms.model.voEtc.Room" id="resultRoom">
+		<id property="rmNo" column="RM_NO" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="stdPer" column="STD_PER" />
+		<result property="rmOption" column="RM_OPTION" />
+		<result property="floor" column="FLOOR" />
+		<result property="rtNo" column="RT_NO" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="rmStatus" column="RM_STATUS" />
+	</resultMap>
+	
 	
 	<!-- 리스트카운트 -->
 	<select id="selectListCount" resultType="_int">
@@ -85,13 +96,18 @@
 	<insert id="insertStock">
 		INSERT INTO ITEM 
 		VALUES(SEQ_INO.NEXTVAL,#{iName},#{up},#{vat},#{vos},#{mfg},DEFAULT,DEFAULT,DEFAULT,DEFAULT,#{typeNo},#{cnCode},NULL,NULL,NULL,NULL,#{unit})
+		<selectKey keyProperty="ino" resultType="_int" order="AFTER">SELECT SEQ_INO.CURRVAL FROM DUAL</selectKey>
 	</insert>
 	
+	<insert id="insertStockHis">
+		INSERT INTO ITEM_HIS
+		VALUES(#{ino},TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'),'ALL','NONE','ALL','INSERT')
+	</insert>
 	
 	<!-- 물품 디테일 -->
 	
 	<select id="selectStockDetailList" resultMap="resultSetStock">
-		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.UNIT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM AS RM_NO,T.TYPE,I.AMOUNT
+		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.UNIT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM AS RM_NO,T.TYPE,I.AMOUNT,C.CN_CODE
 		FROM ITEM I
 		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
 		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
@@ -99,6 +115,7 @@
 		LEFT JOIN STRG_AREA A ON (A.AREA_NO = I.AREA_NO)
 		LEFT JOIN STRG S ON (A.STRG_NO = S.STRG_NO)
         WHERE I.INAME =#{iName}
+        AND I.ITEM_STATUS = 'N'
 	</select>
 	
 
@@ -145,6 +162,8 @@
 		JOIN ITEM USING(CN_CODE)
 		JOIN ITEM_TYPE USING(TYPE_NO)
 		WHERE TYPE_NO =#{typeNo}
+		GROUP BY CN_NAME,CN_CODE
+        ORDER BY CN_NAME ASC
 	</select>
 	
 	<update id="deleteStock">
@@ -152,6 +171,10 @@
 		SET ITEM_STATUS = 'Y'
 		WHERE INO = #{check}
 	</update>
+	
+	<select id="selectRmNoList" resultMap="resultRoom">
+	SELECT RM_NO,RM_NUM FROM ROOM
+	</select>
 </mapper>
 
  

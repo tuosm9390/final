@@ -34,7 +34,7 @@
 	}
 	#stockTb{
 	width: 1000px;
-	height: 380px;
+	height: 358px;
 	border-collapse: collapse;
 	border: 1px solid lightgray;
 	}
@@ -251,6 +251,8 @@ width:1000px;
 		<div class="btns"><button id="addCategorys">품목추가</button></div>
 	
 	<!-- ddddddddddddddddddddddddddd  -->
+	
+	
 	<!-- 페이저 시작 -->
 			<!-- 페이징 영역 시작 -->
 			<div id="pager_wrap" align="center">
@@ -294,7 +296,7 @@ width:1000px;
 					</c:if>
 				</ul>
 			</div>
-
+		
 			<!-- 페이징 영역 종료 -->
 	
 	</section>
@@ -333,10 +335,10 @@ width:1000px;
 						$("#stockTbb").empty();
 						$("#stockTbb").append("<tbody id='detailBody'></tbody>")
 						if(data.stockDetailList[0].type=="EQUIP"){
-							$("#detailBody").append("<tr><th style='display:none'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
+							$("#detailBody").append("<tr><th class='hide'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
 							"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
 						}else{
-							$("#detailBody").append("<tr><th style='display:none'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
+							$("#detailBody").append("<tr><th class='hide'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
 						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
 						}
 						for(var i=0;i<data.stockDetailList.length;i++){
@@ -354,24 +356,24 @@ width:1000px;
 									
 							if(data.stockDetailList[0].type=="EQUIP"){
 							$("#detailBody").append(
-									"<tr><td style='display:none'><input type='checkbox' name='checkRow'></td><td>"+
+									"<tr><td class='hide'><input type='checkbox' name='checkRow'></td><td>"+
 									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
 									data.stockDetailList[i].amount+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
 									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
-									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
+									data.stockDetailList[i].cnName+"<input type='text' value='"+data.stockDetailList[i].cnCode+"' hidden='hidden' id='cnCode"+data.stockDetailList[i].ino+"'></td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
 									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
 							}else{
 								$("#detailBody").append(
-									"<tr><td style='display:none'><input type='checkbox' name='checkRow'></td><td>"+
+									"<tr><td class='hide'><input type='checkbox' name='checkRow'></td><td>"+
 									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
 									data.stockDetailList[i].amount+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
 									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
-									data.stockDetailList[i].cnName+"</td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
+									data.stockDetailList[i].cnName+"<input type='text' value='"+data.stockDetailList[i].cnCode+"' hidden='hidden' id='cnCode"+data.stockDetailList[i].ino+"'></td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
 									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
 							}
-							
+						
 							//디테일전체체크박스
 							
 							$("#checkDetail").change(function(){
@@ -388,6 +390,8 @@ width:1000px;
 					               $("#checkDetail").prop("checked", false);
 					            }
 					         });
+					         
+				
 					         
 						}
 					

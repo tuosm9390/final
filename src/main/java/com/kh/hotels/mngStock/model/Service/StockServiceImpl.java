@@ -10,11 +10,13 @@ import org.springframework.ui.Model;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.dao.StockDao;
 import com.kh.hotels.mngStock.model.vo.Conn;
+import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.StockDetail;
 import com.kh.hotels.mngStock.model.vo.Strg;
+import com.kh.hotels.mngStock.model.vo.StrgArea;
 
 
 @Service
@@ -32,8 +34,20 @@ public class StockServiceImpl implements StockService{
 
 	@Override
 	public int insertStock(Model m, Stock st) {
-		// TODO Auto-generated method stub
-		return sd.insertStock(sqlSession,m,st);
+		int result=0;
+		
+		
+		int result1 = sd.insertStock(sqlSession,m,st);
+		
+		int result2 = sd.insertStockHis(sqlSession,m,st);
+		
+		if(result1 > 0 && result2 > 0 ) {
+			result = 1;
+		}else {
+			result = 0;
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -83,6 +97,18 @@ public class StockServiceImpl implements StockService{
 		// TODO Auto-generated method stub
 		return sd.deleteStock(sqlSession,check);
 	}
+
+	@Override
+	public ArrayList<Item> selectRmNoList() {
+		// TODO Auto-generated method stub
+		return sd.selectRmNoList(sqlSession);
+	}
+
+
+
+
+
+	
 
 
 	
