@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HotelsCompile</title>
+<title>Hotels Boutique</title>
 <style>
 /* div설정 */
 .room-img{

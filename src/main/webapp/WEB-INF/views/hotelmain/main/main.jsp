@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HotelsCompile</title>
+<title>Hotels Boutique</title>
 <style>
 /* 좌우 방향 버튼 */
 .carousel-control{
@@ -38,19 +38,19 @@
 		      </div>
 		
 		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
+		        <img src="${ contextPath }/resources/images/room1-2.png" style="width: 100%; height: 720px;">
 		      </div>
 		    
 		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
+		        <img src="${ contextPath }/resources/images/room1-5.png" style="width: 100%; height: 720px;">
 		      </div>
 		      
 		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
+		        <img src="${ contextPath }/resources/images/room2-2.png" style="width: 100%; height: 720px;">
 		      </div>
 		      
 		      <div class="item">
-		        <img src="${ contextPath }/resources/images/hotelmain.png" style="width: 100%; height: 720px;">
+		        <img src="${ contextPath }/resources/images/room3-1.png" style="width: 100%; height: 720px;">
 		      </div>
 		    </div>
 		

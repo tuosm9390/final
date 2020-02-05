@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HotelsCompile</title>
+<title>Hotels Boutique</title>
 <style>
 .site-outer-box {
 	display: inline-flex;
@@ -79,7 +79,7 @@
 		<div class="site-outer-box">
 			<!-- 좌측 이미지 -->
 			<div class="reservation-img">
-				<c:forEach var="filePath" items="${ filePathList }" varStatus="st">
+				<c:forEach var="filePath" items="${ sessionScope.filePathList }" varStatus="st">
 					<div class="reservation-img-item">
 						<img src="${ contextPath }${ filePath }" style="width: 100%; height: 100%;">
 					</div>

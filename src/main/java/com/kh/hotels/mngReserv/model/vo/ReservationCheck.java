@@ -26,4 +26,5 @@ public class ReservationCheck {
 	private int child; // 소인인원
 	private String rsvReq; // 요청사항
 	private String rsvOption; // 조식옵션
+	private int num;
 }

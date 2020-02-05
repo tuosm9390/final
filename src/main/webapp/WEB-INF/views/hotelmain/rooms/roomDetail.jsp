@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HotelsCompile</title>
+<title>Hotels Boutique</title>
 <style>
 /* 좌우 방향 버튼 */
 .carousel-control {
@@ -187,6 +187,8 @@ input[type=text] {
 		<!-- 중앙 예약메뉴 -->
 		<div id="reservationMenu" class="reservation">
 			<form id="reservationForm" action="reservation.hmain" method="post">
+			<input type="hidden" id="roomType" name="roomType" value="${ roomType }">
+			<input type="hidden" id="roomNo" name="roomNo">
 			<div class="reservation-box">
 				<div class="reservation-text">
 					ROOM <br>
@@ -227,7 +229,7 @@ input[type=text] {
 							<td>
 								<select id="adult" name="adult">
 									<option value="0" selected>0</option>
-									<c:forEach var="i" begin="1" end="${ sessionScope.roomInfo.maxPer }">
+									<c:forEach var="i" begin="1" end="${ roomInfo[0].maxPer }">
 									<option value="${ i }">${ i }</option>
 									</c:forEach>
 								</select>
@@ -242,7 +244,7 @@ input[type=text] {
 							<td>
 								<select id="child" name="child">
 									<option value="0" selected>0</option>
-									<c:forEach var="i" begin="1" end="${ sessionScope.roomInfo.maxPer - 1 }">
+									<c:forEach var="i" begin="1" end="${ roomInfo[0].maxPer - 1 }">
 									<option value="${ i }">${ i }</option>
 									</c:forEach>
 								</select>
@@ -273,17 +275,16 @@ input[type=text] {
 			<!-- 우측 내용 -->
 			<div class="detail-text">
 				<p
-					style="font-style: normal; font-weight: bold; font-size: 36px; line-height: 42px; text-decoration-line: underline;">${sessionScope.roomInfo.rt_Name}</p>
+					style="font-style: normal; font-weight: bold; font-size: 36px; line-height: 42px; text-decoration-line: underline;">${roomInfo[0].rt_Name}</p>
 				<div style="border: 1px solid black; width: 100%; height: 0;"></div>
 				
 				<br>
-				<p style="font-style: normal; font-weight: bold; font-size: 16px; line-height: 19px;">프렌치
-					모던 스타일 객실과 별도의 작은 정원 테라스</p>
+				<p style="font-style: normal; font-weight: bold; font-size: 16px; line-height: 19px;">Introduce by Room</p>
 
 				<ul class="room-item">
-				<c:forTokens items="${ sessionScope.roomInfo.rm_Option }" var="option" delims=",">
-					<li>${ option }</li>
-				</c:forTokens>
+				<c:forEach items="${ roomInfo }" var="option" varStatus="st">
+					<li>${ roomInfo[st.index].rm_Option }</li>
+				</c:forEach>
 				</ul>
 			</div>
 			<!-- 우측 내용 끝 -->
@@ -326,11 +327,35 @@ input[type=text] {
 		});
 
 		$("#reservation-btn").click(function() {
+			checkIn = $("#checkIn").val();
+			checkOut = $("#checkOut").val();
+			roomType = $("#roomType").val();
+			roomNo = $("#roomNo");
+			
 			if($("#checkIn").val() != "" && $("#checkOut").val() != ""){
-				if(Number($("#adult").val()) >= 1 && (Number($("#adult").val()) + Number($("#child").val())) <= Number('${roomInfo.maxPer}')){
-					$("#reservationForm").submit();
+				if(Number($("#adult").val()) >= 1 &&
+						(Number($("#adult").val()) + Number($("#child").val())) <= Number('${roomInfo[0].maxPer}')){
+					$.ajax({
+						url : "selectRoomNo.hmain",
+						data : {
+							roomType : roomType,
+							checkIn : checkIn,
+							checkOut : checkOut
+							},
+						success:function(data){
+							if(data.roomNo != null){
+								roomNo.val(Number(data.roomNo));
+								$("#reservationForm").submit();
+							} else {
+								alert("예약 가능한 객실이 없습니다.");
+							}
+						},
+						error:function(data){
+							console.log(data);
+						}
+					});
 				} else {
-					alert("인원은 성인 최소 1명이상, 최대 ${roomInfo.maxPer}명 입니다.");
+					alert("인원은 성인 최소 1명이상, 최대 ${roomInfo[0].maxPer}명 입니다.");
 				};
 			} else {
 				alert("체크인 체크아웃날짜를 선택해주세요");

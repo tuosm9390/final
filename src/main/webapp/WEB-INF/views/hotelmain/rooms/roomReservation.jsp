@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HotelsCompile</title>
+<title>Hotels Boutique</title>
 <style>
 .site-outer-box {
 	display: inline-flex;
@@ -150,19 +150,17 @@
 				<fmt:parseNumber var="startDate_N" value="${startDate_D.time/(1000*60*60*24)}" integerOnly="true"/>
 				<fmt:parseNumber var="endDate_N" value="${endDate_D.time/(1000*60*60*24)}" integerOnly="true"/>
 				
-				<form action="reservationPay.hmain?roomType=${ sessionScope.roomInfo.rt_No }" method="post" id="reservationInfo">
+				<form action="reservationPay.hmain?roomType=${ sessionScope.roomInfo[0].rt_No }" method="post" id="reservationInfo">
+					<input type="hidden" name="roomNo" id="roomNo" value="${ sessionScope.rsv.rmNo }">
 					<table class="reservation-table" width="90%">
 						<tr>
 							<td colspan="4"><li>숙박 일정</li></td>
 							<td colspan="2" rowspan="2" style="width: 40%;">
 								<ul class="reservation-price">
-									<li><div class="name">객실요금</div><div class="value">
-									<fmt:parseNumber var="price" value="${ sessionScope.roomInfo.limitPrc * (endDate_N - startDate_N) }" integerOnly="true"/>${ price }원</div></li>
-									<li><div class="name">봉사료</div><div class="value">
-									<fmt:parseNumber var="vt" value="${ price / 10 }" integerOnly="true"/>${ vt }원</div></li>
-									<li><div class="name">요금 합계</div><div class="value">
-									<fmt:parseNumber var="total" value="${ price * 1.1 }" integerOnly="true"/>${ total }원</div>
-									<input type="hidden" name="stayPrice" value="${ total }"></li>
+									<li><div class="name">객실요금</div><div class="roomPrice-value value"></div></li>
+									<li><div class="name">봉사료</div><div class="vlt-value value"></div></li>
+									<li><div class="name">요금 합계</div><div class="total-value value"></div>
+									<input type="hidden" name="stayPrice" id="stayPrice"></li>
 								</ul>
 							</td>
 						</tr>
@@ -379,6 +377,55 @@
 				};
 			});
 		});
+		
+		
+		// 숙박기간
+		var list = ${(endDate_N - startDate_N)};
+		// 체크인날짜
+		var startDateD = '${sessionScope.rsv.checkIn}';
+		var startDate = new Date(startDateD.substring(0, 4), (startDateD.substring(5, 7) * 1 - 1), startDateD.substring(8, 10));
+		// 체크아웃날짜
+		var endDateD = '${sessionScope.rsv.checkOut}';
+		var endDate = new Date(endDateD.substring(0, 4), (endDateD.substring(5, 7) * 1 - 1), endDateD.substring(8, 10));
+		var roomprice = JSON.parse('${roomprice}');
+		console.log(roomprice);
+		
+		
+		var feedayscnt = ${(endDate_N - startDate_N)};
+		var totalFee = 0;
+		for (var i = 0; i < feedayscnt; i++) {
+			var feedate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
+			totalFee = detailModalFee(feedate, totalFee); //숙박이니까 STAY
+			if(i == (feedayscnt - 1)){
+				$(".roomPrice-value").append(Math.floor(totalFee));
+				$(".vlt-value").append(Math.floor(totalFee / 10));
+				$(".total-value").append(Math.floor(totalFee * 1.1));
+				$("#stayPrice").val(Math.floor(totalFee * 1.1));
+			}
+		}
+
+        function detailModalFee(feedate, totalFee) {
+			var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
+			var feeday = week[feedate.getDay()];
+			var termType;
+			if ((feedate.getMonth()) == 1
+					|| (feedate.getMonth()) == 2
+					|| (feedate.getMonth()) == 7
+					|| (feedate.getMonth()) == 8
+					|| (feedate.getMonth()) == 12) {
+				termType = "SEASON";
+			} else {
+				termType = "OFFSEASON";
+			}
+			
+			for (var i = 0; i < roomprice.length; i++) {
+				if (roomprice[i].dayType == feeday && roomprice[i].termType == termType) {
+					totalFee += roomprice[i].price;
+				}
+			}
+			
+			return totalFee;
+        }
 	</script>
 </body>
 </html>
