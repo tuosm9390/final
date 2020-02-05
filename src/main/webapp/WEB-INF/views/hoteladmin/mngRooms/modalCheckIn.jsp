@@ -74,8 +74,8 @@
 }
 
 #ciCancelBtn, #rsvCancelBtn {
-	margin-top: 20px;
-	margin-left: 10px;
+	margin-top: 25px;
+	margin-left: 20px;
 	width: 100px;
 	height: 30px;
 	border: 1px solid red;
@@ -209,7 +209,7 @@ select[name=selRoomType], select[name=selRoomNum] {
 	display: inline-flex;
 	width: 390px;
 	height: 50px;
-	margin-top: 160px;
+	margin-top: 165px;
 }
 
 #checkoutBtn, #mdSaveBtn {
@@ -339,7 +339,7 @@ input[name=svcFee], input[name=svcTot] {
 	border: none;
 }
 
-#svcDelBtn {
+.svcDelBtn {
 	width: 20px;
 	height: 20px;
 	font-size: 15px;
@@ -523,9 +523,9 @@ input[type=number]:disabled {
 		<!-- 고객정보 모달 -->
 		<div class="modal_content1">
 			<div class="statusNo">
-				<div class="statusColor mediumseagreen"></div>
-				<h1>　입실</h1>&nbsp;<h1 class="staycode"></h1>
-				<button type="button" id="ciCancelBtn">× 입실취소</button>
+				<div class="statusColor"></div>
+				<h1 id="modalStt">　입실</h1>&nbsp;<h3 class="staycode" id="staycode" style="margin-top:25px;"></h3>
+				<button type="button" id="ciCancelBtn">× NO-SHOW</button>
 				<button type="button" id="rsvCancelBtn">× 예약취소</button>
 			</div>
 			<!-- 예약정보 section -->
@@ -556,8 +556,8 @@ input[type=number]:disabled {
 						<td>입실일자</td>
 						<td><!-- <input type="text" name="checkinTime" id="checkIn"> -->
 							<select name="stayDay">
-								<c:forEach var="day" begin="0" end="30">
-									<option>${ day }</option>
+								<c:forEach var="day" begin="0" end="365">
+									<option value="${ day }">${ day }</option>
 								</c:forEach>
 						</select> 박</td>
 					</tr>
@@ -655,7 +655,7 @@ input[type=number]:disabled {
 							<td width="10%"><input type="number" name="svcCnt" min="0" placeholder="수량" onchange="selSvcCnt(this.id)"></td>
 							<td width="15%"><input type="number" name="svcFee" placeholder="가격" disabled></td>
 							<td width="15%"><input type="number" name="svcTot" placeholder="합계" disabled></td>
-							<td width="8%"><button id="svcDelBtn" onclick="svcDelBtn(this)" type="button">×</button></td>
+							<td width="8%"><button class="svcDelBtn" onclick="doSvcDelBtn(this);" type="button">×</button></td>
 						</tr>
 					</table>
 				</div>
@@ -695,7 +695,7 @@ input[type=number]:disabled {
 				</div>
 			</div>
 
-			<div class="totalPrice mediumseagreen">
+			<div class="totalPrice">
 				<table>
 					<tr>
 						<td width="20%"><h1 style="margin-left:20px;">잔액</h1></td>
@@ -801,6 +801,34 @@ input[type=number]:disabled {
 				$("#personCnt option").remove();
 				$("#insertClient").text('추가');
 				$(".findClientList").hide();
+				$("#payRfd").prop("disabled", false).css("background-color", "white");
+				
+				$("#totalRoom").text('0');
+				$("#totalSvc").text('0');
+				$("#totalPrc").text('0');
+				$("#chargePrc").text('0');
+				$("#totalVlt").text('0');
+				$("#payCard").val(0);
+				$("#payCash").val(0);
+				$("#payAcc").val(0);
+				$("#payRfd").val(0);
+				
+				$("#checkinBtn").hide();
+				$(".infoBtnSec").hide();
+				$("#ciCancelBtn").hide();
+				$("#rsvCancelBtn").hide();
+				
+				$(".statusColor").removeClass('mediumseagreen');
+				$(".totalPrice").removeClass('mediumseagreen');
+				$(".statusColor").removeClass('lightsteelblue');
+				$(".totalPrice").removeClass('lightsteelblue');
+				$(".statusColor").removeClass('mediumseagreen');
+				$(".totalPrice").removeClass('mediumseagreen');
+				$(".statusColor").removeClass('gold');
+				$(".totalPrice").removeClass('gold');
+				
+				$("#rentYN").prop('checked', false);
+				
 				$(".modal").fadeOut();
 			});
 			
@@ -856,7 +884,7 @@ input[type=number]:disabled {
 		});
 		
 		var svctotprc = 0;
-		function svcDelBtn(data) {
+		function doSvcDelBtn(data) {
 			svctotprc -= $(data).parent().parent().children().eq(4).children().val();
 			$(data).parent().parent().remove();
 			$("#totalSvc").text(svctotprc.toLocaleString());
@@ -930,6 +958,10 @@ input[type=number]:disabled {
 			$(".findClientList").hide();
 			$(".findClientList div").remove();
 		});
+//		.focusout(function(){
+//			$(".findClientList").hide();
+//			$(".findClientList div").remove();
+//		});
 		
 		function findClientClk(thisEl) {
 			$(".findClientList").hide();
@@ -949,10 +981,12 @@ input[type=number]:disabled {
 			var rmType = $(this).val();
 			var cnt = 0;
 			var stdPer = 0;
+			var rtNo;
 			for(var i = 0; i < roomlist.length; i++) {
 				if(roomlist[i].rtName != rmType) {
 					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
 				} else {
+					rtNo = roomlist[i].rtNo;
 					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
 					stdPer = roomlist[i].stdPer;
 					if($("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop('disabled')) {
@@ -971,6 +1005,14 @@ input[type=number]:disabled {
 			for(var i = 1; i <= stdPer; i++) {
 				$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
 			}
+			
+			var sttday = new Date($("#checkIn").val().substring(0,4), $("#checkIn").val().substring(5,7) - 1, $("#checkIn").val().substring(8,10));
+			var endday = new Date($("#checkOut").val().substring(0,4), $("#checkOut").val().substring(5,7) - 1, $("#checkOut").val().substring(8,10));
+			if($("#checkOut").val() == '') {
+				endday = sttday;
+			}
+			var perday = (endday - sttday) / 1000 / 60 / 60 / 24;
+			changeModalFee(rtNo, sttday, endday, perday);
 		});
 		
 		$("#clientEmail").keyup(function(event){
@@ -990,6 +1032,14 @@ input[type=number]:disabled {
 			$("#checkinModal").attr("action", "insertCI.ro");
 			$("#checkinModal").submit();
 		}
+		
+		//예약취소 버튼
+		$("#rsvCancelBtn").click(function(){
+			var rsvNo = $("#staycode").text();
+			if(window.confirm("[ " + rsvNo + " ] 해당 예약을 취소하시겠습니까?")) {
+				location.href = "cancelReserv.ro?rsvNo=" + rsvNo;
+			}
+		});
 	</script>
 </body>
 </html>

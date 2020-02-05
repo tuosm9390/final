@@ -18,6 +18,7 @@ import com.kh.hotels.mngRooms.model.exception.UpdateRoomException;
 import com.kh.hotels.mngRooms.model.service.RoomsService;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
+import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
@@ -197,6 +198,40 @@ public class RoomsController {
 		}
 		mv.setViewName("jsonView");
 		
+		return mv;
+	}
+	
+	@RequestMapping("ajxSelectRsvInfo.ro")
+	public ModelAndView ajxSelectRsvInfo(ModelAndView mv, String rsvNo) {
+		ModalClient info = rs.ajxSelectRsvInfo(rsvNo);
+		ArrayList<ModalClient> svcInfo = rs.ajxSelectRsvSvc(rsvNo);
+		ArrayList<ModalClient> payInfo = rs.ajxSelectRsvPay(rsvNo);
+		
+		mv.addObject("stayInfo", info);
+		mv.addObject("staySvc", svcInfo);
+		mv.addObject("stayPay", payInfo);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	 
+	
+	@RequestMapping("ajxSelectStayInfo.ro")
+	public ModelAndView ajxSelectStayInfo(ModelAndView mv, String stayNo) {
+		ModalClient info = rs.ajxSelectStayInfo(Integer.parseInt(stayNo));
+		ArrayList<ModalClient> svcInfo = rs.ajxSelectStaySvc(Integer.parseInt(stayNo));
+		ArrayList<ModalClient> payInfo = rs.ajxSelectStayPay(Integer.parseInt(stayNo));
+		
+		mv.addObject("stayInfo", info);
+		mv.addObject("staySvc", svcInfo);
+		mv.addObject("stayPay", payInfo);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	
+	@RequestMapping("cancelReserv.ro")
+	public ModelAndView cancelReserv(ModelAndView mv, String rsvNo) {
+		mv.setViewName("redirect:view.ro");
 		return mv;
 	}
 

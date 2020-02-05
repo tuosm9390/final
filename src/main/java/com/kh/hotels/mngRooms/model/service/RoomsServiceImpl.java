@@ -14,6 +14,7 @@ import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.exception.UpdateRoomException;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
+import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
@@ -181,6 +182,36 @@ public class RoomsServiceImpl implements RoomsService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public ModalClient ajxSelectStayInfo(int stayNo) {
+		return rd.ajxSelectStayInfo(sqlSession, stayNo);
+	}
+
+	@Override
+	public ArrayList<ModalClient> ajxSelectStaySvc(int stayNo) {
+		return rd.ajxSelectStaySvc(sqlSession, stayNo);
+	}
+
+	@Override
+	public ArrayList<ModalClient> ajxSelectStayPay(int stayNo) {
+		return rd.ajxSelectStayPay(sqlSession, stayNo);
+	}
+
+	@Override
+	public ModalClient ajxSelectRsvInfo(String rsvNo) {
+		return rd.ajxSelectRsvInfo(sqlSession, rsvNo);
+	}
+
+	@Override
+	public ArrayList<ModalClient> ajxSelectRsvSvc(String rsvNo) {
+		return rd.ajxSelectRsvSvc(sqlSession, rsvNo);
+	}
+
+	@Override
+	public ArrayList<ModalClient> ajxSelectRsvPay(String rsvNo) {
+		return rd.ajxSelectRsvPay(sqlSession, rsvNo);
 	}
 
 }
