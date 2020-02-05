@@ -12,11 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.hotels.hotel.controller.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngApproval.model.service.ApprovalService;
+import com.kh.hotels.mngApproval.model.vo.OrderRequest;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
@@ -182,7 +185,7 @@ public class ApproveController {
 	}
 	
 	@RequestMapping("joinDocumentApproval.ap")
-	public String goJoinApproval(HttpServletRequest request, String userDept, String userAuth, String userMno, Model model) {
+	public String goJoinApproval( HttpServletRequest request, @RequestParam("userDept") int userDept, @RequestParam("userAuth") String userAuth, @RequestParam("userMno") int userMno, Model model) {
 		System.out.println("userDept : " + userDept);
 		System.out.println("userAuth : " + userAuth);
 		System.out.println("mno : " + userMno);
@@ -199,18 +202,20 @@ public class ApproveController {
 		
 		PartiReport member = new PartiReport();
 		
-		int userDeptNum = Integer.parseInt(userDept);
-		int mno = Integer.parseInt(userMno);
+		/*
+		 * int userDeptNum = Integer.parseInt(userDept); int mno =
+		 * Integer.parseInt(userMno);
+		 */
 		
 		member.setAuth(userAuth);
-		member.setDeptNo(userDeptNum);
-		member.setMno(mno);
+		member.setDeptNo(userDept);
+		member.setMno(userMno);
 		
 		
 		
 		try {
 			
-			int listCount = as.getPartiApproveListCount(mno);
+			int listCount = as.getPartiApproveListCount(userMno);
 
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 
@@ -220,11 +225,13 @@ public class ApproveController {
 			
 			ArrayList<HashMap<String, Object>> list = null;
 			
-			if(userDeptNum == 2) {
+			if(userDept == 2) {
 				list = as.selectPartiApproveList(member, pi);
 				
-			}else if(userDeptNum == 3){
+			}else if(userDept == 3){
 				
+			}else {
+				list = as.selectPartiApproveAll(member, pi);
 			}
 			
 			for(int i = 0; i < list.size(); i++) {
@@ -304,8 +311,15 @@ public class ApproveController {
 		
 	}
 	@RequestMapping("writeOrderApprove.ap")
-	public String goWriteOrderApprove() {
-
+	public String goWriteOrderApprove(HttpServletRequest request, Model m) {
+		
+		
+		ArrayList<HashMap<String, Object>> list = as.selectOrderInfo();
+		ArrayList<HashMap<String, Object>> listDocu = as.selectOrderDocu();
+		
+		m.addAttribute("list", list);
+		m.addAttribute("listDocu", listDocu);
+		
 		return "hoteladmin/mngApprove/writeApprove/writerOrderApprove";
 	}
 	@RequestMapping("allApproveDetail.ap")
@@ -320,13 +334,15 @@ public class ApproveController {
 	}
 	@GetMapping("allApproveModal.ap")
 	public ModelAndView showAllApproveModal(HttpServletRequest request, ModelAndView mv, int rptNo, String type) {
-
+		
 		if(type.equals("구매 요청서")) {
+			System.out.println("type : " + type );
 			try {
 				type = "";
 				type = "PURCHASE";
 				List<HashMap<String, Object>> list = as.selectApprovePurDetail(rptNo, type);
-
+				//list.get(0).put("DNAME", value)
+				
 				for(int i = 0; i < list.size(); i++) {
 					if(list.get(i).get("ITYPE").equals("EQUIP")) {
 						list.get(i).put("ITYPE","비품");
@@ -423,33 +439,30 @@ public class ApproveController {
 	}
 	@RequestMapping("insertPurchase.ap")
 	public String insertPurchase(HttpServletRequest request, Model m, String docno, String rptDate, 
-			String sname, String mname, String smno, String title, String content, String type, String cname, String iname, String mfg, String vosprice, String amount,
+			String sname, String mname, String title, String content, String type, String cname, String iname, String mfg, String vosprice, String amount,
 			String price, String totPrice, String ino, Model model ) {
 
-
-		System.out.println("처음넘어오는 리스트 : " + ino);
 		
-		/*
-		 * System.out.println("docno : " + docno); System.out.println("rptDate : " +
-		 * rptDate); System.out.println("sname : " + sname);
-		 * System.out.println("smno : " + smno); System.out.println("title : " + title);
-		 * System.out.println("content : " + content); System.out.println("type : " +
-		 * type); System.out.println("mmno : " + mname); System.out.println("smno : " +
-		 * smno);
-		 * 
-		 * System.out.println("cname : " + cname); System.out.println("iname : " +
-		 * iname); System.out.println("mfg : " + mfg); System.out.println("vosPrice : "
-		 * + vosprice); System.out.println("amount : " + amount);
-		 * System.out.println("price : " + price); System.out.println("totPrice : " +
-		 * totPrice); System.out.println("ino : " + ino);
-		 */
+		int count = sname.indexOf("(");
+		int countStart = count+1;
+		int countEnd = sname.indexOf(")");
+		
+		String stfId = sname.substring(countStart, countEnd);
+		String ssName = sname.substring(0, count);
+		
+		System.out.println("stfId : " + stfId);
+		System.out.println("count : " + count);
+		System.out.println("countEnd : " + countEnd);
+		System.out.println("ssName : " + ssName);
+		
+		
+
 
 		ArrayList<PurRequest> pRequestList = new ArrayList<>();
 
 		//int docNo = Integer.parseInt(docno);
 
 		int mno = Integer.parseInt(mname); 
-		int sno = Integer.parseInt(smno);
 		int docNo = Integer.parseInt(docno);
 		int totalPrice = Integer.parseInt(totPrice);
 		
@@ -495,13 +508,13 @@ public class ApproveController {
 			pRequest.setDeptname("구매팀"); 
 			pRequest.setMmno(mno);
 			pRequest.setRptDate(rptDate); 
-			pRequest.setSmno(sno);
-			pRequest.setSname(sname); 
+			pRequest.setSname(ssName); 
 			pRequest.setTitle(title);
 			pRequest.setContent(content);
 			pRequest.setType(type);
 			pRequest.setDocno(docNo);
 			pRequest.setTotPrice(totPrice);
+			pRequest.setStfId(stfId);
 			pRequestList.add(pRequest);
 			System.out.println("for문안 pRequestList : " + pRequestList);
 		}
@@ -509,7 +522,7 @@ public class ApproveController {
 		
 		
 		
-		System.out.println("중간pRequestList : " + pRequestList);
+		//System.out.println("중간pRequestList : " + pRequestList);
 		try {
 			System.out.println("pRequestList : " + pRequestList);
 			int result = as.insertList(pRequestList);
@@ -526,6 +539,119 @@ public class ApproveController {
 		
 
 	}
+	@RequestMapping("insertOrder.ap")
+	public String insertOrderApprove(HttpServletRequest request, Model m, String docuNos, String rptDate, 
+			String sname, String mname, String title, String content, String type, String cname, String iname, String mfg, String vos, String amount,
+			String price, String totPrice, String ino, String dnum, String docno) {
+		
+		System.out.println("sname : " + sname);
+		System.out.println("rptDate : " + rptDate);
+		System.out.println("mname : " + mname);
+		System.out.println("title : " + title);
+		System.out.println("content : " + content);
+		System.out.println("type : " + type);
+		System.out.println("cname : " + cname);
+		System.out.println("iname : " + iname);
+		System.out.println("mfg : " + mfg);
+		System.out.println("vos : " + vos);
+		System.out.println("amount : " + amount);
+		System.out.println("price : " + price);
+		System.out.println("totPrice : " + totPrice);
+		System.out.println("ino : " + ino);
+		System.out.println("docuNos : " + docuNos);
+		System.out.println("docno : " + docno);
+		
+		OrderRequest oRequest = new OrderRequest();
+		
+		ArrayList<OrderRequest> oRequestList = new ArrayList<>();
+		
+		System.out.println("cname.length : " + cname.length());
+		
+		int docNo = Integer.parseInt(docno);
+		int mno = Integer.parseInt(mname);
+		
+		oRequest.setPurDocuno(docNo);
+		oRequest.setDeptname("구매팀"); 
+		oRequest.setMmno(mno);
+		oRequest.setRptDate(rptDate); 
+		oRequest.setTitle(title);
+		oRequest.setContent(content);
+		oRequest.setDocno(docNo);
+		oRequest.setTotPrice(totPrice);
+		oRequest.setStfId(sname);
+		
+		
+		
+		if(cname.contains(",")) {
+			String[] typeR = type.split(",");
+			String[] cnameR = cname.split(",");
+			String[] mfgR = mfg.split(",");
+			String[] inameR = iname.split(",");
+			String[] vosR = vos.split(",");
+			String[] amountR = amount.split(",");
+			String[] priceR = price.split(",");
+			String[] inoR = ino.split(",");
+			//int docnNo = Integer.parseInt(docuNos);
+			int vos2[] = new int[cnameR.length];
+			int amount2[] = new int[cnameR.length];
+			int price2[] = new int[cnameR.length];
+			int ino2[] = new int[cnameR.length];
+			
+			System.out.println("cnameR : " + cnameR.length);
+
+			for(int j = 0; j < cnameR.length; j++) {
+				oRequest = new OrderRequest();
+				vos2[j] = Integer.parseInt(vosR[j]);
+				amount2[j] = Integer.parseInt(amountR[j]);
+				price2[j] = Integer.parseInt(priceR[j]);
+				ino2[j] = Integer.parseInt(inoR[j]);
+				oRequest.setType(typeR[0]);
+				oRequest.setVosprice(vos2[j]);
+				oRequest.setAmount(amount2[j]);
+				oRequest.setPrice(price2[j]);
+				oRequest.setIno(ino2[j]);
+				oRequest.setCname(cnameR[j]);
+				oRequest.setIname(inameR[j]);
+				oRequest.setMfg(mfgR[j]);
+				oRequestList.add(oRequest);
+				System.out.println("for문안 pRequestList : " + oRequest);
+			}
+			
+			//pRequestList = as.insertOrderList(pRequestList);
+			
+			int result = as.insertOrderList(oRequest);
+			
+			
+		}else {
+			
+		}
+				
+				
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return null;
+		
+	}
+	
+
 
 	
 	@GetMapping("itemType.ap")
@@ -551,12 +677,13 @@ public class ApproveController {
 
 	}
 	@GetMapping("itemName.ap")
-	public ModelAndView itemName(HttpServletRequest request, ModelAndView mv, String mfg, String cname) {
+	public ModelAndView itemName(HttpServletRequest request, ModelAndView mv, String mfg, String cname, String type) {
 
 		List<String> list = new ArrayList();
 		PurRequest pRequest = new PurRequest();
 		pRequest.setCname(cname);
 		pRequest.setMfg(mfg);
+		pRequest.setType(type);
 
 
 		try {
@@ -582,11 +709,11 @@ public class ApproveController {
 
 	//제조사 찾기
 	@GetMapping("madeComName.ap")
-	public ModelAndView madeComName(HttpServletRequest request, ModelAndView mv, String value) {
+	public ModelAndView madeComName(HttpServletRequest request, ModelAndView mv, String value, String type) {
 
 		List<String> list;
 		try {
-			list = as.selectMadeComName(value);
+			list = as.selectMadeComName(value, type);
 
 			mv.addObject("list", list);
 			mv.setViewName("jsonView");
@@ -781,6 +908,9 @@ public class ApproveController {
 	public ModelAndView partiCateFilter(ModelAndView mv, String cate, String scurrentPage, String mno) {
 		System.out.println("넘어오니???");
 		int currentPage = 1;
+		
+		int mmno = 0;
+		
 		String category = "";
 		
 		if(cate.equals("진행중")) {
@@ -809,12 +939,30 @@ public class ApproveController {
 			partiReportList = as.selectPartiApproveFilter(pi, category, mno);
 		}else {
 			
-			/*
-			 * listCount = as.getPartiApproveListCount(mno); pi =
-			 * Pagination.getPageInfo(currentPage, listCount); partiReportList =
-			 * as.selectPartiApproveList(pi, mno);
-			 */
-			 
+			mmno = Integer.parseInt(mno);
+			
+			  listCount = as.getPartiApproveListCount(mmno); 
+			  pi = Pagination.getPageInfo(currentPage, listCount); 
+			  partiReportList = as.selectPartiApproveList(mmno, pi);
+		}
+		
+		for(int i = 0; i < partiReportList.size(); i++) {
+			if(partiReportList.get(i).get("RPSTATUS").equals("WAIT")) {
+				partiReportList.get(i).put("RPSTATUS", "진행중");
+			}else if(partiReportList.get(i).get("RPSTATUS").equals("APPR")) {
+				partiReportList.get(i).put("RPSTATUS", "승인");
+			}else {
+				partiReportList.get(i).put("RPSTATUS", "반려");
+			}
+		}
+		for(int i = 0; i < partiReportList.size(); i++) {
+			if(partiReportList.get(i).get("RPTYPE").equals("PURCHASE")) {
+				partiReportList.get(i).put("RPTYPE", "구매 요청서");
+			}else if(partiReportList.get(i).get("RPTYPE").equals("ORDER")) {
+				partiReportList.get(i).put("RPTYPE", "발주 요청서");
+			}else {
+				partiReportList.get(i).put("RPTYPE", "수리 요청서");
+			}
 		}
 		
 		
@@ -823,6 +971,75 @@ public class ApproveController {
 		mv.setViewName("jsonView");
 		
 		
+		
+		
+		return mv;
+	}
+	
+	@RequestMapping("approveYn.ap")
+	public String updateApproveStatus(HttpServletRequest request, String status, String dateString, String mno,
+									RedirectAttributes redirect, String deptNo, String authNo, String docuN) {
+		
+		System.out.println("들어오니??");
+		
+		//int rptno = Integer.parseInt(rptNo);
+		int mmno = Integer.parseInt(mno);
+		System.out.println("1");
+		int deptno = Integer.parseInt(deptNo);
+		System.out.println("2");
+		int docuNum = Integer.parseInt(docuN);
+		System.out.println("3");
+		
+	
+		
+		//System.out.println("rptno : " + rptno);
+		System.out.println("docuN : " + docuN);
+		System.out.println("mno : " + mmno);
+		System.out.println("status : " + status);
+		System.out.println("dateString : " + dateString);
+		
+		
+		Report report = new Report();
+		
+		//report.setRptNo(rptno);
+		report.setDocNo(docuNum);
+		report.setRptStatus(status);
+		report.setApprDate(dateString);
+		
+		System.out.println("report : " + report);
+		
+		int result = as.updateApproveStatus(report);
+		
+		
+		  redirect.addAttribute("userMno",mmno); 
+		  redirect.addAttribute("userDept", deptno);
+		  redirect.addAttribute("userAuth",authNo );
+		 
+		
+		System.out.println("결과 : " + result);
+		
+		return "redirect:joinDocumentApproval.ap";
+	}
+	@RequestMapping("selectOrderInfo.ap")
+	public ModelAndView OrderInfo(ModelAndView mv, int dnum) {
+		
+		System.out.println("dnum : " + dnum);
+		
+		
+		
+		ArrayList<HashMap<String, Object>> list = as.selectOrderList(dnum);
+		System.out.println("list : " + list);
+		
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).get("ITYPE").equals("EQUIP")){
+				list.get(i).put("ITYPE", "비품");
+			}else {
+				list.get(i).put("ITYPE", "비품");
+			}
+		}
+		
+		mv.addObject("list", list);
+		mv.setViewName("jsonView");
 		
 		
 		return mv;

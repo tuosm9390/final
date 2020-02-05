@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
+import com.kh.hotels.mngApproval.model.vo.OrderRequest;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
@@ -41,7 +42,7 @@ public interface ApprovalService {
 	List<String> selectConnName(String value) throws ReportException;
 
 
-	List<String> selectMadeComName(String value) throws ReportException;
+	List<String> selectMadeComName(String value, String type) throws ReportException;
 
 
 	List<Integer> selectVosEquip(PurVos pv);
@@ -66,6 +67,18 @@ public interface ApprovalService {
 	int getListCountPartiFilter(String category, String mno);
 
 	ArrayList<HashMap<String, Object>> selectPartiApproveFilter(PageInfo pi, String category, String mno);
+
+	int updateApproveStatus(Report report);
+
+	ArrayList<HashMap<String, Object>> selectPartiApproveAll(PartiReport member, PageInfo pi);
+
+	ArrayList<HashMap<String, Object>> selectOrderInfo();
+
+	ArrayList<HashMap<String, Object>> selectOrderDocu();
+
+	ArrayList<HashMap<String, Object>> selectOrderList(int dnum);
+
+	int insertOrderList(OrderRequest oRequest);
 
 	
 	

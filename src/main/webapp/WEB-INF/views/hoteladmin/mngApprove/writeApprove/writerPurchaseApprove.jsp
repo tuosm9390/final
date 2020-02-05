@@ -231,12 +231,10 @@ textarea {
                   <select id="receiver" name="sname">
                      <option selected disabled hidden>수신자를 선택하세요</option>
                      <c:forEach var="b" items="${list }">
-                     <option><c:out value="${b. NAME}"/></option>
+                 
+                     <option><c:out value="${b. NAME}"/> (<c:out value="${b.STF_ID}"/>)</option>
                      </c:forEach>
                   </select>
-                  <c:forEach var="c" items="${list }">
-                  <input type="hidden" value="${c.SMNO }" name="smno">
-                  </c:forEach>
                </td>
                
             </tr>
@@ -337,317 +335,325 @@ textarea {
 <script>
    
    
-   var cntTable = "";
-   
-   $(document).ready(function(){
-      //var docuNum = 
-      var now = new Date();
-       var year = now.getFullYear();
-       var month = now.getMonth() + 1;    //1월이 0으로 되기때문에 +1을 함.
+var cntTable = "";
 
-       if((month + "").length < 2){        //2자리가 아니면 0을 붙여줌.
-           month = "0" + month;
-       }
-        // ""을 빼면 year + month (숫자+숫자) 됨.. ex) 2018 + 12 = 2030이 리턴됨.
-       var today = ""+year + month; 
-      var random = Math.floor(Math.random() * 1000) + 1;
-      var docuNum = today.concat(random);
-      //var docuNum = 
-      
-      
-      
-      //$(".tbl tr").children().find(".txt_docu").val(docuNum);
-      //$(".txt_docu").text(docuNum);
-            
-      startDate();
-      $(".tbl tr:nth-child(2)").children().eq(1).find("#docuNo").val(docuNum);
-      //$(this).itemPur(cntTable);
-      
-      var plus = 1;
-      
-      $("#btn").click(function(){
-         var tblCount = $(".payTbl.purchase tr").length;
-         var lprice = (tblCount-1);
+$(document).ready(function(){
+   //var docuNum = 
+   var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;    //1월이 0으로 되기때문에 +1을 함.
+
+    if((month + "").length < 2){        //2자리가 아니면 0을 붙여줌.
+        month = "0" + month;
+    }
+     // ""을 빼면 year + month (숫자+숫자) 됨.. ex) 2018 + 12 = 2030이 리턴됨.
+    var today = ""+year + month; 
+   var random = Math.floor(Math.random() * 1000) + 1;
+   var docuNum = today.concat(random);
+   //var docuNum = 
+   
+   
+   
+   //$(".tbl tr").children().find(".txt_docu").val(docuNum);
+   //$(".txt_docu").text(docuNum);
          
-         var totalCount = "";
-         var totalPrice = "";
-         for(var i = 0; i < lprice; i++) {
-            if(i == 0) {
-               totalPrice = $(".payTbl.purchase tr").eq(i+1).children().find('.totalPrice').val()*1;
-            }else {
-               totalPrice += $(".payTbl.purchase tr").eq(i+1).children().find('.totalPrice').val()*1;
-            }
+   startDate();
+   $(".tbl tr:nth-child(2)").children().eq(1).find("#docuNo").val(docuNum);
+   //$(this).itemPur(cntTable);
+   
+   var plus = 1;
+   
+   $("#btn").click(function(){
+      var tblCount = $(".payTbl.purchase tr").length;
+      var lprice = (tblCount-1);
+      
+      var totalCount = "";
+      var totalPrice = "";
+      for(var i = 0; i < lprice; i++) {
+         if(i == 0) {
+            totalPrice = $(".payTbl.purchase tr").eq(i+1).children().find('.totalPrice').val()*1;
+         }else {
+            totalPrice += $(".payTbl.purchase tr").eq(i+1).children().find('.totalPrice').val()*1;
+         }
+         
+      }
+         
+      $(".payTbl.Area tr").children().find("#txtLong_price").val(totalPrice);
+      
+      
+      
+      
+      
+   
+   
+   }) 
+      
+      $("#plusBtn2").click(function() {
+         
+         cntTable = $(".payTbl.purchase tr").length;
+               
+               
+         var plusType = "";
+         if(type == "EQUIP") {
+            plusType = "비품";
             
          }
-            
-         $(".payTbl.Area tr").children().find("#txtLong_price").val(totalPrice);
+         var tblVal = $(".payTbl.purchase tr:nth-child(2)").children().eq(0).find('select').val();
          
          
-         
-         
-         
-      
-      
-      }) 
-         
-         $("#plusBtn2").click(function() {
-            
-            cntTable = $(".payTbl.purchase tr").length;
-                  
-                  
-            var plusType = "";
-            if(type == "EQUIP") {
-               plusType = "비품";
+            if(tblVal == null) {
+               var plusTable = "<tr class='insertArea'>";
+               plusTable += "<td></td>"
+               plusTable += "<td> <select class='noTxt' name='cname'><option selected disabled hidden>선택해주세요</option></select></td>"
+               plusTable += "<td> <select class='anoTxt_name' name='iname'><option selected disabled hidden>선택해주세요</option></select></td>"
+               plusTable += "<td><select class='anoTxt_amount' name='mfg'><option selected disabled hidden>선택해주세요</option></select></td>"
+               
+               plusTable += "<td><input type='text' name='vosprice' class='vos'><input type='hidden' name='ino' class='ino'></td>"
+               plusTable += "<td><input type='text' class='anoTxt_price' placeholder='수량' name='amount'></td>"
+               plusTable += "<td><input type='text' name='price' class='totalPrice'></td>"
+               plusTable += "</tr>"
+               var n = $(".payTbl.purchase");
+               
+               n.append(plusTable);
+            }else {
+               /* console.log("option1 : " + option1);
+               console.log("이거다진짜 : " + (cntTable-1));
+               var plusTable = "<tr class='insertArea'>";
+               plusTable += "<td> <select class='anoTxt_cate'><option selected disabled value="+ plusType +">" + plusType + "</td>"
+               plusTable += option2;
+               plusTable += "<td> <select class='anoTxt_name'><option selected disabled hidden>선택해주세요</option></select></td>"
+               plusTable += "<td><select class='anoTxt_amount'><option selected disabled hidden>선택해주세요</option></select></td>"
+               plusTable += "<td></td>"
+               plusTable += "<td><input type='text' class='anoTxt_price' placeholder='금액'></td>"
+               plusTable += "<td></td>"
+               plusTable += "</tr>"
+               var n = $(".payTbl.purchase");
+               n.append(plusTable); */
+               //anoTxt_price, vos, totalPrice
+               var tblVal2 = "";
+               if(tblVal == "EQUIP") {
+                  tblVal2 = "비품";
+               }else {
+                  tblVal2 = "소모품";
+               }
+               
+               var tblClone =  $(".payTbl.purchase tr:nth-child(2)").clone();
+               
+               //tblClone.children().eq(0).find('.anoTxt_cate').text(tblVal2);
+               tblClone.children().eq(0).find('select').replaceWith(tblVal2);
+               //tblClone.children().eq(0).find('select').
+               tblClone.children().eq(0).css({'text-align':'center','font-weight':'nomal', 'font-size':'13px'})
+               tblClone.children().eq(5).find('input').val("");
+               tblClone.children().eq(6).find('input').val("");
+               tblClone.children().eq(4).find('input').val("");
+               $(".payTbl.purchase").append(tblClone);
+               
                
             }
-            var tblVal = $(".payTbl.purchase tr:nth-child(2)").children().eq(0).find('select').val();
-            
-            
-               if(tblVal == null) {
-                  var plusTable = "<tr class='insertArea'>";
-                  plusTable += "<td></td>"
-                  plusTable += "<td> <select class='noTxt' name='cname'><option selected disabled hidden>선택해주세요</option></select></td>"
-                  plusTable += "<td> <select class='anoTxt_name' name='iname'><option selected disabled hidden>선택해주세요</option></select></td>"
-                  plusTable += "<td><select class='anoTxt_amount' name='mfg'><option selected disabled hidden>선택해주세요</option></select></td>"
-                  
-                  plusTable += "<td><input type='text' name='vosprice' class='vos'><input type='hidden' name='ino' class='ino'></td>"
-                  plusTable += "<td><input type='text' class='anoTxt_price' placeholder='수량' name='amount'></td>"
-                  plusTable += "<td><input type='text' name='price' class='totalPrice'></td>"
-                  plusTable += "</tr>"
-                  var n = $(".payTbl.purchase");
-                  
-                  n.append(plusTable);
-               }else {
-                  /* console.log("option1 : " + option1);
-                  console.log("이거다진짜 : " + (cntTable-1));
-                  var plusTable = "<tr class='insertArea'>";
-                  plusTable += "<td> <select class='anoTxt_cate'><option selected disabled value="+ plusType +">" + plusType + "</td>"
-                  plusTable += option2;
-                  plusTable += "<td> <select class='anoTxt_name'><option selected disabled hidden>선택해주세요</option></select></td>"
-                  plusTable += "<td><select class='anoTxt_amount'><option selected disabled hidden>선택해주세요</option></select></td>"
-                  plusTable += "<td></td>"
-                  plusTable += "<td><input type='text' class='anoTxt_price' placeholder='금액'></td>"
-                  plusTable += "<td></td>"
-                  plusTable += "</tr>"
-                  var n = $(".payTbl.purchase");
-                  n.append(plusTable); */
-                  //anoTxt_price, vos, totalPrice
-                  var tblVal2 = "";
-                  if(tblVal == "EQUIP") {
-                     tblVal2 = "비품";
-                  }else {
-                     tblVal2 = "소모품";
-                  }
-                  
-                  var tblClone =  $(".payTbl.purchase tr:nth-child(2)").clone();
-                  
-                  //tblClone.children().eq(0).find('.anoTxt_cate').text(tblVal2);
-                  tblClone.children().eq(0).find('select').replaceWith(tblVal2);
-                  //tblClone.children().eq(0).find('select').
-                  tblClone.children().eq(0).css({'text-align':'center','font-weight':'nomal', 'font-size':'13px'})
-                  tblClone.children().eq(5).find('input').val("");
-                  tblClone.children().eq(6).find('input').val("");
-                  tblClone.children().eq(4).find('input').val("");
-                  $(".payTbl.purchase").append(tblClone);
-                  
-                  
-               }
-            
-            
-                  
-               })
+         
+         
+               
+            })
+   
+         
+   function preWatch() {
       
-            
-      function preWatch() {
-         
-      }
-         
+   }
+      
+
+      
+   
+})
+//onload끝   
 
          
-      
-   })
-   //onload끝   
+
+
+
+/* 1 */
+var cnName = "";
+var type = "";
+var iname = "";
+var madeComName = "";
+var option1 = "<td><select>";
+var option2 = "";
+
+$(document).on("change", ".anoTxt_cate", function() {
+   var value = $(this).val();
+   type = value;
    
+   
+   
+   var idx1 = $(this).parent("td").parent("tr").index();
+   var cntTable = $(".payTbl.purchase").children().length;
+   
+   
+   //select박스 변경시 전체 리셋
+   
+   /* $(".noTxt").find("option:not(:first-child)").remove();
+   $(".noTxt").append($("<option selected disalbed hidden>선택 해주세요</option>")); 
+   $(".anoTxt_name").find("option:not(:first-child)").remove();
+   $(".anoTxt_name").append($("<option selected disalbed hidden>선택 해주세요</option>"));
+   $(".anoTxt_amount").find("option:not(:first-child)").remove();
+   $(".anoTxt_amount").append($("<option selected disalbed hidden>선택 해주세요</option>")); */
+   
+    $(".payTbl.purchase").children().find('.noTxt').find("option:not(:first-child)").remove();
+    $(".payTbl.purchase").children().find('.noTxt').append($("<option selected disalbed hidden>선택 해주세요</option>"));
+   $(".payTbl.purchase").children().find('.anoTxt_name').find("option:not(:first-child)").remove();
+    $(".payTbl.purchase").children().find('.anoTxt_name').append($("<option selected disalbed hidden>선택 해주세요</option>"));
+   $(".payTbl.purchase").children().find('.anoTxt_amount').find("option:not(:first-child)").remove(); 
+    $(".payTbl.purchase").children().find('.anoTxt_amount').append($("<option selected disalbed hidden>선택 해주세요</option>"));
+   /*  */
+   var tblVal = $(".payTbl.purchase tr:nth-child(2)").children().eq(0).find('select').val();
+    $( ".payTbl.purchase tr:nth-child(n+3)").remove();
+   
+   /* 여기부터 */
+   /* console.log("tblVal : " + tblVal);
+   if(tblVal == null) {
+      console.log("null입니다");
+   }else {
+      
+   }
+   
+   
+   
+    /* $(".payTbl.purchase tr:not(:first-child)").children().eq(4).text(""); 
+   $(".payTbl.purchase tr:not(:first-child)").children().eq(5).find('.anoTxt_price').val("");
+   $(".payTbl.purchase tr:not(:first-child)").children().eq(6).text(""); 
+   $(".payTbl.purchase tr").children().find('.vos').text("");  */ 
+   
+   
+   
+   $.ajax({
+      url:"itemType.ap",
+      type:"get",
+      data:{
+         value:value
+      },
+      success:function(data) {
+         //console.log(data.value);
+         //console.log(data.value.length);
+         
+         
+         //$("#anoTxt_cate")
+         var option = "";
+         for(var i = 0; i < data.value.length; i++) {
+            if(i == (data.value.length-1)) {
+               var option = $("<option>" + data.value[i].CN_NAME + "</option></select>");
+               //option2 =$("<option>" + data.value[i].CN_NAME + "</option>")
+               //option1 = option1.append(option);
+            }else {
+               var option = $("<option>" + data.value[i].CN_NAME + "</option>");
+               //option2 =$("<option>" + data.value[i].CN_NAME + "</option>")
+               //option1 = option1.append(option);
+            }
             
-   
-   
-   
-   /* 1 */
-   var cnName = "";
-   var type = "";
-   var iname = "";
-   var madeComName = "";
-   var option1 = "<td><select>";
-   var option2 = "";
-   
-   $(document).on("change", ".anoTxt_cate", function() {
-      var value = $(this).val();
-      type = value;
-      
-      
-      
-      var idx1 = $(this).parent("td").parent("tr").index();
-      var cntTable = $(".payTbl.purchase").children().length;
-      
-      
-      //select박스 변경시 전체 리셋
-      
-      /* $(".noTxt").find("option:not(:first-child)").remove();
-      $(".noTxt").append($("<option selected disalbed hidden>선택 해주세요</option>")); 
-      $(".anoTxt_name").find("option:not(:first-child)").remove();
-      $(".anoTxt_name").append($("<option selected disalbed hidden>선택 해주세요</option>"));
-      $(".anoTxt_amount").find("option:not(:first-child)").remove();
-      $(".anoTxt_amount").append($("<option selected disalbed hidden>선택 해주세요</option>")); */
-      
-       $(".payTbl.purchase").children().find('.noTxt').find("option:not(:first-child)").remove();
-       $(".payTbl.purchase").children().find('.noTxt').append($("<option selected disalbed hidden>선택 해주세요</option>"));
-      $(".payTbl.purchase").children().find('.anoTxt_name').find("option:not(:first-child)").remove();
-       $(".payTbl.purchase").children().find('.anoTxt_name').append($("<option selected disalbed hidden>선택 해주세요</option>"));
-      $(".payTbl.purchase").children().find('.anoTxt_amount').find("option:not(:first-child)").remove(); 
-       $(".payTbl.purchase").children().find('.anoTxt_amount').append($("<option selected disalbed hidden>선택 해주세요</option>"));
-      /*  */
-      var tblVal = $(".payTbl.purchase tr:nth-child(2)").children().eq(0).find('select').val();
-       $( ".payTbl.purchase tr:nth-child(n+3)").remove();
-      
-      /* 여기부터 */
-      /* console.log("tblVal : " + tblVal);
-      if(tblVal == null) {
-         console.log("null입니다");
-      }else {
+            
+            
+            //$(".noTxt").append(option);
+            for(var j = 0; j < idx1; j++) {
+               $(".payTbl.purchase").children().eq(j+1).find('.noTxt').append(option);
+               
+               //console.log("여기요 : " + option1);
+            }
+            //$(".payTbl.purchase").children().eq(idx1).find('.noTxt').append(option);
+            //$(".payTbl.purchase").find("tr").eq(idx1).find(".anoTxt_name").append(option);
+         }
+         
+         
+      },
+      error:function(data) {
          
       }
       
+   })
+})
+/* 2 */
+var notax = "";
+$(document).on("change", ".noTxt", function() {
+   var value = $(this).val();
+   notax = value;
+   var idx4 = $(this).parent("td").parent("tr").index();
+   console.log(idx4);
+   // $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').find("option:not(:first-child)").find("option").remove();
+    $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').append($("<option selected disabled hidden>선택 해주세요</option>"));
+    $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').find("option:not(:first-child)").find("option").remove();
+    $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_amount').append($("<option selected disabled hidden>선택 해주세요</option>"));
+   
+    
+   $.ajax({
+      url:"madeComName.ap",
+      type:"get",
+      data:{
+         value:value,
+         type:type
+      },
+      success:function(data){
+     	 console.log(data.list);
+     	
+             $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').find("option").remove();
+             $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').append($("<option selected disabled hidden>선택 해주세요</option>"));
+         for(var i = 0; i < data.list.length; i++) {
+            option = $("<option>" + data.list[i].MFG + "</option>");
+            //madeComName = data.list[i].MFG;
+            
+            
+            //$(".anoTxt_amount").append(option);
+            //$(".payTbl.purchase").find("tr").eq(idx).find(".anoTxt_amount").append(option);
+            
+            $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').append(option);
+            var option = "";
+         }
+         console.log(madeComName);
+      },
+      error:function(data) {
+         
+      }
+   })
+})
+/* 3 */
+$(document).on("change", ".anoTxt_name", function() {
+   var value = $(this).val();
+   madeComName = value;
       
       
-       /* $(".payTbl.purchase tr:not(:first-child)").children().eq(4).text(""); 
-      $(".payTbl.purchase tr:not(:first-child)").children().eq(5).find('.anoTxt_price').val("");
-      $(".payTbl.purchase tr:not(:first-child)").children().eq(6).text(""); 
-      $(".payTbl.purchase tr").children().find('.vos').text("");  */ 
+      var idx2 = $(this).closest('tr').prevAll().length;
+      var tr2 = $(this).closest('tr').prevAll();
+      //$(".anoTxt_name").find("option:not(:first-child)").remove();
+      //$(".anoTxt_name").append($("<option selected disalbed hidden>선택 해주세요</option>"));
+       
+
+      //송기준 여기!!!!
+      $(".payTbl.purchase tr").eq(idx2).children().find('option:not(:first-child)').find("option").remove();
+      $(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').find("option").remove();
+      $(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append($("<option selected disabled hidden>선택 해주세요</option>"));
+      //$(".noTxt").append($("<option selected disalbed hidden>선택 해주세요</option>")); 
       
-      
-      
+      //$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_name').find("option").remove();
+      //$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_name').append($("<option selected disabled hidden>선택 해주세요</option>"));
+      //select박스 변경시 전체 리셋
+      console.log(type);
       $.ajax({
-         url:"itemType.ap",
+         url:"itemName.ap",
          type:"get",
          data:{
-            value:value
+            mfg:value,
+            cname:notax,
+            type:type
          },
          success:function(data) {
-            //console.log(data.value);
-            //console.log(data.value.length);
-            
-            
-            //$("#anoTxt_cate")
-            var option = "";
-            for(var i = 0; i < data.value.length; i++) {
-               if(i == (data.value.length-1)) {
-                  var option = $("<option>" + data.value[i].CN_NAME + "</option></select>");
-                  //option2 =$("<option>" + data.value[i].CN_NAME + "</option>")
-                  //option1 = option1.append(option);
-               }else {
-                  var option = $("<option>" + data.value[i].CN_NAME + "</option>");
-                  //option2 =$("<option>" + data.value[i].CN_NAME + "</option>")
-                  //option1 = option1.append(option);
-               }
-               
-               
-               
-               //$(".noTxt").append(option);
-               for(var j = 0; j < idx1; j++) {
-                  $(".payTbl.purchase").children().eq(j+1).find('.noTxt').append(option);
-                  
-                  //console.log("여기요 : " + option1);
-               }
-               //$(".payTbl.purchase").children().eq(idx1).find('.noTxt').append(option);
-               //$(".payTbl.purchase").find("tr").eq(idx1).find(".anoTxt_name").append(option);
-            }
-            
-            
-         },
-         error:function(data) {
-            
-         }
-         
-      })
-   })
-   /* 2 */
-   var notax = "";
-   $(document).on("change", ".noTxt", function() {
-      var value = $(this).val();
-      notax = value;
-      var idx4 = $(this).parent("td").parent("tr").index();
-      console.log(idx4);
-      // $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').find("option:not(:first-child)").find("option").remove();
-       $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').append($("<option selected disabled hidden>선택 해주세요</option>"));
-       $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').find("option:not(:first-child)").find("option").remove();
-       $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_amount').append($("<option selected disabled hidden>선택 해주세요</option>"));
-      
-       
-      $.ajax({
-         url:"madeComName.ap",
-         type:"get",
-         data:{
-            value:value
-         },
-         success:function(data){
+            //console.log($(".payTbl.purchase tr").eq(1).children().eq(3).find('.anoTxt_amount').find('option:').text());
             for(var i = 0; i < data.list.length; i++) {
-                $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').find("option").remove();
-                $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').append($("<option selected disabled hidden>선택 해주세요</option>"));
-               var option = $("<option>" + data.list[i].MFG + "</option>");
-               madeComName = data.list[i].MFG;
-               
-               //$(".anoTxt_amount").append(option);
-               //$(".payTbl.purchase").find("tr").eq(idx).find(".anoTxt_amount").append(option);
-               
-               $(".payTbl.purchase tr").eq(idx4).children().find('.anoTxt_name').append(option);
+                console.log(compare);
+                     var option = $("<option>" + data.list[i].iname + "</option>");
+                     
+                  
+               $(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append(option);
                
             }
-         },
-         error:function(data) {
             
-         }
-      })
-   })
-   /* 3 */
-   $(document).on("change", ".anoTxt_name", function() {
-      var value = $(this).val();
-         
-         
-         var idx2 = $(this).closest('tr').prevAll().length;
-         var tr2 = $(this).closest('tr').prevAll();
-         //$(".anoTxt_name").find("option:not(:first-child)").remove();
-         //$(".anoTxt_name").append($("<option selected disalbed hidden>선택 해주세요</option>"));
-          
-
-         //송기준 여기!!!!
-         $(".payTbl.purchase tr").eq(idx2).children().find('option:not(:first-child)').find("option").remove();
-         $(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').find("option").remove();
-         $(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append($("<option selected disabled hidden>선택 해주세요</option>"));
-         //$(".noTxt").append($("<option selected disalbed hidden>선택 해주세요</option>")); 
-         
-         //$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_name').find("option").remove();
-         //$(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_name').append($("<option selected disabled hidden>선택 해주세요</option>"));
-         //select박스 변경시 전체 리셋
-         $.ajax({
-            url:"itemName.ap",
-            type:"get",
-            data:{
-               mfg:value,
-               cname:notax
-            },
-            success:function(data) {
-               //console.log($(".payTbl.purchase tr").eq(1).children().eq(3).find('.anoTxt_amount').find('option:').text());
-               for(var i = 0; i < data.list.length; i++) {
-                   console.log(compare);
-                        var option = $("<option>" + data.list[i].iname + "</option>");
-                        
-                     
-                  $(".payTbl.purchase tr").eq(idx2).children().find('.anoTxt_amount').append(option);
-                  
-               }
-               
-               for(var j = 1; j < idx2; j++) {
-                  var compare = $(".payTbl.purchase tr").eq(j).children().eq(3).find('.anoTxt_amount').val();
+            for(var j = 1; j < idx2; j++) {
+               var compare = $(".payTbl.purchase tr").eq(j).children().eq(3).find('.anoTxt_amount').val();
 	               $(".payTbl.purchase tr").eq(idx2).children().eq(3).find('.anoTxt_amount option').each(function() {
 	            	   console.log($(this).val() == compare);
 	            	   console.log($(this).val());
@@ -655,166 +661,172 @@ textarea {
 	            		   console.log($(this).remove())
 	            	   }
 	               });
-               }
-               
-            },
-            error:function(data) {
-               
-            }
-            
-         })
-      });
-      
-     /* $(".payTbl.purchase tr").children().find(".anoTxt_amount").click(function(){
-      console.log("클릭되었습니다.");
-      var idx = $(this).parent("td").parent("tr").index();
-      var thisVal = $(this).val();
-      console.log(thisVal);
-      for(var i = 0; i < idx; i++) {
-     	 var compare = $(".payTbl.purchase tr").eq(i+1).children().eq(3).find('.anoTxt_amount').val();
-      	
-     	 if(thisVal == compare) {
-     		 thisVal.remove();
-     	 }
-     	 
-      }
-     // console.log(compare);
-      
-       $(this).find('option').each(function(){
-            
-      }); 
-   
-         
-         
-      
-   });   */
-      
-      
-   /* 4 */
-    $(document).on("change", ".anoTxt_amount", function() {
-	   console.log("선택되었습니다.");
-      var option2 = "";
-      var iname = $(this).val();
-      var con = $(this).parent().eq(4).text();
-      var idx = $(this).parent("td").parent("tr").index();
-      
-      for(var i = 0; i < idx; i++) {
-         
-      var compare = $(".payTbl.purchase tr").eq(i+1).children().eq(3).find('.anoTxt_amount').val();
-      var now = $(this).val();
-      //console.log(now);
-     // console.log(now);
-       if(now == compare) {
-         console.log(now);
-      } 
-      
-     // console.log(iname);
-      
-      }
-      
-      
-      
-      $.ajax({
-         url:"selectVos.ap",
-         type:"get",
-         data:{
-            type:type,
-            cnName:notax,
-            iname:iname,
-            madeComName:madeComName
-         },
-         success:function(data) {
-               
-            for(var i = 0; i < data.list.length; i++) {
-               var test = data.list[i].VOS.toString();
-               console.log(data.list[i].INO);
-               $(".payTbl.purchase tr").eq(idx).children().eq(4).find('.vos').val(test);
-               
-               option2 = $("<input type='hidden' name='ino' value='" + data.list[i].INO + "'>")
-            
-               $(".payTbl.purchase tr").eq(idx).children().eq(4).find('.ino').val(data.list[i].INO);
             }
             
          },
          error:function(data) {
             
          }
+         
       })
+   });
    
+  /* $(".payTbl.purchase tr").children().find(".anoTxt_amount").click(function(){
+   console.log("클릭되었습니다.");
+   var idx = $(this).parent("td").parent("tr").index();
+   var thisVal = $(this).val();
+   console.log(thisVal);
+   for(var i = 0; i < idx; i++) {
+  	 var compare = $(".payTbl.purchase tr").eq(i+1).children().eq(3).find('.anoTxt_amount').val();
+   	
+  	 if(thisVal == compare) {
+  		 thisVal.remove();
+  	 }
+  	 
+   }
+  // console.log(compare);
+   
+    $(this).find('option').each(function(){
+         
    }); 
-   
-   
-   $(document).on("keyup", ".anoTxt_price" , function(){
-      var idx = $(this).parents("tr").index();
-      //var count = $(this).val();
-      //var vos = $(".anoTxt_amount").parents("tr").find("td:nth-child(5)").text();
-      var count = $(".payTbl.purchase").find("tr").eq(idx).children().find(".anoTxt_price").val();
-      var vos = $(".payTbl.purchase").find("tr").eq(idx).children().find(".vos").val();
-      
-      
-      
-      $(".payTbl.purchase tr").eq(idx).find("td:nth-child(7)").find(".totalPrice").val((count * vos));
-      
-   })
-   
-   
-   
-   //서큐일시 구하기
-     var dateString = ""; 
-   function startDate() {
-      //console.log("하이");
-      var date;
-       date = setInterval(function () { 
-             
-            dateString = "";
-               var newDate = new Date(); 
 
-               //String.slice(-2) : 문자열을 뒤에서 2자리만 출력한다. (문자열 자르기) 
-               dateString += newDate.getFullYear() + "/"; 
-               dateString += ("0" + (newDate.getMonth() + 1)).slice(-2) + "/"; //월은 0부터 시작하므로 +1을 해줘야 한다. 
-               dateString += ("0" + newDate.getDate()).slice(-2) + " "; 
-               dateString += ("0" + newDate.getHours()).slice(-2) + ":"; 
-               dateString += ("0" + newDate.getMinutes()).slice(-2) + ":"; 
-               dateString += ("0" + newDate.getSeconds()).slice(-2);
-               //document.write(dateString); 문서에 바로 그릴 수 있다. 
-              //console.log(dateString);
-           }, 1000);
-       
+      
+      
+   
+});   */
+   
+   
+/* 4 */
+ $(document).on("change", ".anoTxt_amount", function() {
+	   console.log("선택되었습니다.");
+   var option2 = "";
+   var iname = $(this).val();
+   var con = $(this).parent().eq(4).text();
+   var idx = $(this).parent("td").parent("tr").index();
+   
+   for(var i = 0; i < idx; i++) {
+      
+   var compare = $(".payTbl.purchase tr").eq(i+1).children().eq(3).find('.anoTxt_amount').val();
+   var now = $(this).val();
+   //console.log(now);
+  // console.log(now);
+    if(now == compare) {
+      console.log(now);
+   } 
+   
+  // console.log(iname);
+   
+   }
+   console.log("----------------")
+   console.log(madeComName)
+   console.log(type)
+   console.log(notax)
+   console.log(iname)
+   console.log("----------------")
+   
+   
+   $.ajax({
+      url:"selectVos.ap",
+      type:"get",
+      data:{
+         type:type,
+         cnName:notax,
+         iname:iname,
+         madeComName:madeComName
+      },
+      success:function(data) {
+            
+         for(var i = 0; i < data.list.length; i++) {
+            var test = data.list[i].VOS.toString();
+            console.log(data.list[i].INO);
+            $(".payTbl.purchase tr").eq(idx).children().eq(4).find('.vos').val(test);
+            
+            option2 = $("<input type='hidden' name='ino' value='" + data.list[i].INO + "'>")
+         
+            $(".payTbl.purchase tr").eq(idx).children().eq(4).find('.ino').val(data.list[i].INO);
+         }
+         
+      },
+      error:function(data) {
+         
+      }
+   })
+
+}); 
+
+
+$(document).on("keyup", ".anoTxt_price" , function(){
+   var idx = $(this).parents("tr").index();
+   //var count = $(this).val();
+   //var vos = $(".anoTxt_amount").parents("tr").find("td:nth-child(5)").text();
+   var count = $(".payTbl.purchase").find("tr").eq(idx).children().find(".anoTxt_price").val();
+   var vos = $(".payTbl.purchase").find("tr").eq(idx).children().find(".vos").val();
+   
+   
+   
+   $(".payTbl.purchase tr").eq(idx).find("td:nth-child(7)").find(".totalPrice").val((count * vos));
+   
+})
+
+
+
+//서큐일시 구하기
+  var dateString = ""; 
+function startDate() {
+   //console.log("하이");
+   var date;
+    date = setInterval(function () { 
+          
+         dateString = "";
+            var newDate = new Date(); 
+
+            //String.slice(-2) : 문자열을 뒤에서 2자리만 출력한다. (문자열 자르기) 
+            dateString += newDate.getFullYear() + "/"; 
+            dateString += ("0" + (newDate.getMonth() + 1)).slice(-2) + "/"; //월은 0부터 시작하므로 +1을 해줘야 한다. 
+            dateString += ("0" + newDate.getDate()).slice(-2) + " "; 
+            dateString += ("0" + newDate.getHours()).slice(-2) + ":"; 
+            dateString += ("0" + newDate.getMinutes()).slice(-2) + ":"; 
+            dateString += ("0" + newDate.getSeconds()).slice(-2);
+            //document.write(dateString); 문서에 바로 그릴 수 있다. 
+           //console.log(dateString);
+        }, 1000);
+    
+   
+}
+
+
+
+   /* insert하기 */
+   function insertPur() {
+       clearInterval(startDate());
+      
+      $(".tbl tr:nth-child(4)").children().eq(1).find("#txt").val(dateString);
+      
+      
+      $("#submit").attr("type","submit");
+      
+      var cnt = $(".payTbl.purchase tr:not(:first)").length;
+      if($("#txtLong").val() == "" || $("#content").val() == "" || $("#noTxt").val() == "" ||
+            $("#anoTxt_cate").val() == "" || $("#anoTxt_name").val() == "" || $("#anoTxt_amount").val() == "" || 
+            $("#anoTxt_vos").val() == "" || $("#anoTxt_price").val() == "" || $(".payTbl.purchase tr:not(:first) td").find('input').val() == "") {
+         alert("내용을 채워주세요!");
+      }
+      var p = $(".payTbl.purchase tr:not(:first)").find('input').val();
+   
+   
+          
+          
+          
       
    }
    
    
-   
-      /* insert하기 */
-      function insertPur() {
-          clearInterval(startDate());
-         
-         $(".tbl tr:nth-child(4)").children().eq(1).find("#txt").val(dateString);
-         
-         
-         $("#submit").attr("type","submit");
-         
-         var cnt = $(".payTbl.purchase tr:not(:first)").length;
-         if($("#txtLong").val() == "" || $("#content").val() == "" || $("#noTxt").val() == "" ||
-               $("#anoTxt_cate").val() == "" || $("#anoTxt_name").val() == "" || $("#anoTxt_amount").val() == "" || 
-               $("#anoTxt_vos").val() == "" || $("#anoTxt_price").val() == "" || $(".payTbl.purchase tr:not(:first) td").find('input').val() == "") {
-            alert("내용을 채워주세요!");
-         }
-         var p = $(".payTbl.purchase tr:not(:first)").find('input').val();
-      
-      
-             
-             
-             
-         
-      }
-      
-      
-   
-   
-   var iname = "";
-   var madeComName = "";
-   //민석 
+
+
+var iname = "";
+var madeComName = "";
+//민석 
+
    
       
    

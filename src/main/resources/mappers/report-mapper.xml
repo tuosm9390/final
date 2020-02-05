@@ -20,7 +20,7 @@
 		<result property="cname" column="CN_NAME"></result>
 		<result property="iname" column="INAME"></result>
 		<result property="mfg" column="MFG"></result>
-		<result property="vos" column="VOS"></result>
+		<result property="vosprice" column="VOS"></result>
 	</resultMap>
 
 	<resultMap type="com.kh.hotels.mngApproval.model.vo.Report"
@@ -145,7 +145,7 @@
 		"AMOUNT",IT.LCATEGORY AS "LCATEGORY",
 		I.VOS AS "VOS", PE.TOT_PRICE AS
 		"TPRICE", PE.PUR_RSN AS "PRSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
-		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG"
+		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG", R.RPT_NO AS "RPT_NO"
 		FROM
 		REPORT R, PUR_REQ PE, MEMBER M, ITEM I,
 		DEPT D, STAFF ST,
@@ -294,21 +294,23 @@
 		resultMap="purRequestResultSet">
 		SELECT INAME, INO
 		FROM (SELECT INAME, MAX(INO) AS "INO"
-		FROM
-		CONN C
+		FROM CONN C
 		JOIN ITEM I ON(C.CN_CODE = I.CN_CODE)
+        JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
 		WHERE MFG = #{mfg}
-		AND
-		CN_NAME = #{cname}
+		AND CN_NAME = #{cname}
+        AND TYPE = #{type}
 		GROUP BY INAME)
 	</select>
-	<select id="selectMadeComName" parameterType="String"
+	<select id="selectMadeComName" parameterType="PurRequest"
 		resultType="java.util.HashMap">
 		SELECT DISTINCT MFG
 		FROM ITEM I
 		JOIN CONN C ON(I.CN_CODE =
 		C.CN_CODE)
-		WHERE C.CN_NAME = #{value}
+        JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
+		WHERE C.CN_NAME = #{cname}
+        AND IT.TYPE = #{type}
 	</select>
 	<select id="selectVosPrice" resultType="java.util.HashMap"
 		parameterType="String">
@@ -341,6 +343,13 @@
 		DEFAULT, DEFAULT, #{docno},
 		'PURCHASE')
 	</select>
+	
+	<select id="selectsmno" parameterType="String" resultType="_int">
+		SELECT MNO
+		FROM STAFF 
+		WHERE STF_ID = #{stfId}
+	</select>
+	
 	<!-- rptno가져오기 -->
 	<select id="selectRptNo" parameterType="_int" resultType="_int">
 		SELECT
@@ -475,6 +484,105 @@
 		ORDER BY RPT_NO ASC)
 		ORDER BY RNUM DESC
 	</select>
+	<select id="updateApproveStatus" resultType="_int">
+		UPDATE REPORT
+		SET RPT_STATUS = #{rptStatus},
+	    	APPR_DATE = #{apprDate}
+	    WHERE DOC_NO = #{docNo}
+	</select>
+	
+	<select id="selectPariApproveAllList" parameterType="PartiReport" resultType="java.util.HashMap">
+		SELECT ROWNUM RNUM,
+		RPT_NO, RMNO, MNAME, RPTDATE, RCEIVER, SNAME, RPTITLE,
+		RPSTATUS,
+		APPDATE, DOCNO, RPTYPE
+		FROM(
+		SELECT
+		R.RPT_NO AS "RPT_NO", R.MNO AS
+		"RMNO", M.NAME "MNAME", R.RPT_DATE AS
+		"RPTDATE", R.RECEIVER AS
+		"RCEIVER", S.NAME AS "SNAME",
+		R.RPT_TITLE AS
+		"RPTITLE", R.RPT_STATUS AS
+		"RPSTATUS", R.APPR_DATE AS "APPDATE",
+		R.DOC_NO AS "DOCNO", R.RPT_TYPE
+		AS "RPTYPE"
+		FROM REPORT R, MEMBER M,
+		(SELECT MNO, NAME
+		FROM MEMBER
+		WHERE
+		MNO IN (SELECT DISTINCT RECEIVER
+		FROM REPORT)
+		) S
+		WHERE R.MNO = M.MNO
+		AND
+		R.RECEIVER = S.MNO
+        AND RECEIVER = #{mno}
+		ORDER BY RPT_NO ASC)
+		ORDER BY RNUM DESC
+	</select>
+	<select id="selectOrderInfo" resultType="java.util.HashMap">
+		SELECT NAME, STF_ID
+		FROM MEMBER M
+		JOIN STAFF S ON(M.MNO = S.MNO)
+		WHERE S.STF_ID = 'master'
+	</select>
+	<select id="selectOrderDocu" resultType="java.util.HashMap">
+		SELECT DISTINCT DOC_NO
+		FROM REPORT R
+		JOIN PUR_REQ P ON(R.RPT_NO = P.RPT_NO)
+		WHERE P.RPT_NO NOT IN (SELECT PURRPT_NO
+		                   FROM ORDER_REQ 
+		                   )
+
+	</select>
+	<select id="selectOrderList" parameterType="_int" resultType="java.util.HashMap">
+		SELECT R.DOC_NO AS "DOCNO", D.DEPT_NAME AS "DNAME", M.NAME
+		AS "MNAME", R.RPT_DATE AS "RDATE", S.NAME AS "SNAME",
+		RPT_TITLE AS
+		"RTITLE", ROWNUM RNUM, I.INAME AS "INAME", PE.AMOUNT AS
+		"AMOUNT",IT.LCATEGORY AS "LCATEGORY",
+		I.VOS AS "VOS", PE.TOT_PRICE AS
+		"TPRICE", PE.PUR_RSN AS "PRSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
+		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG", R.RPT_NO AS "RPT_NO", I.INO AS "INO"
+		FROM
+		REPORT R, PUR_REQ PE, MEMBER M, ITEM I,
+		DEPT D, STAFF ST,
+		ITEM_TYPE IT,
+		CONN C, (SELECT
+		MNO, NAME
+		FROM MEMBER
+		WHERE MNO IN
+		(SELECT DISTINCT
+		RECEIVER
+		FROM REPORT)
+		) S
+		WHERE R.MNO = M.MNO
+		AND
+		R.RECEIVER = S.MNO
+		AND
+		M.MNO = ST.MNO
+		AND I.CN_CODE = C.CN_CODE
+		AND ST.DEPT_NO = D.DEPT_NO
+		AND
+		R.RPT_NO =
+		PE.RPT_NO
+		AND
+		PE.INO = I.INO
+		AND I.TYPE_NO = IT.TYPE_NO
+		AND
+		R.DOC_NO = #{dnum}
+		
+	</select>
+	
+	<select id="insertOrderList" parameterType="PurRequest" resultType="_int">
+		INSERT INTO REPORT VALUES(SEQ_RPT_NO.NEXTVAL, #{mmno}, #{rptDate}, #{smno}, #{title}, DEFAULT, DEFAULT, #{docno}, 'ORDER')
+	</select>
+	
+	<select id="insertOrderList2" parameterType="PurRequest" resultType="_int">
+		INSERT INTO ORDER_REQ VALUES()
+	</select>
+	
 	
 </mapper>
   

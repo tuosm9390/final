@@ -129,10 +129,15 @@ public class ApprovalDaoImpl implements ApprovalDao{
 
 
 	@Override
-	public List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value) {
+	public List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value, String type) {
 		
+		PurRequest pRequest = new PurRequest();
+		pRequest.setType(type);
+		pRequest.setCname(value);
+		System.out.println("type : " + type );
+		System.out.println("value : " + value);
 		
-		return (List)sqlSession.selectList("Report.selectMadeComName", value);
+		return (List)sqlSession.selectList("Report.selectMadeComName", pRequest);
 	}
 
 	@Override
@@ -155,10 +160,22 @@ public class ApprovalDaoImpl implements ApprovalDao{
 	public int insertPurchase(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList) {
 		
 		int result = 0;
+		int result2 = 0;
+		String stfId = pRequestList.get(0).getStfId();
 		
+		result2 = sqlSession.selectOne("Report.selectsmno", stfId);
+		pRequestList.get(0).setSmno(result2);
+		
+		System.out.println("pRequestList : " + pRequestList);
+		
+		System.out.println("result2 : " + result2);
+		
+		if(result2 > 0) {
 		
 		 result = sqlSession.insert("Report.insertPurchaseApproveList",pRequestList.get(0)); 
-		 
+		}
+		System.out.println("result : " + result);
+		
 		 return result;
 	}
 
@@ -318,6 +335,89 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectPartiFilterList", pr, rowBounds);
 		
 		return list;
+	}
+
+	@Override
+	public int updateApproveStatus(SqlSessionTemplate sqlSession, Report report) {
+		
+		int result = sqlSession.update("Report.updateApproveStatus", report);
+		
+		
+		return result;
+	}
+
+	@Override
+	public int updateApprovePurRequest(SqlSessionTemplate sqlSession, Report report) {
+		
+		int result = sqlSession.update("Report.updateApprovePurchase", report);
+		
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPartiApproveAll(SqlSessionTemplate sqlSession, PartiReport member,
+			PageInfo pi) {
+		
+	ArrayList<HashMap<String, Object>> list = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		list = (ArrayList)sqlSession.selectList("Report.selectPariApproveAllList", member, rowBounds);
+		
+		System.out.println("daoList : " + list);
+		
+		return list;
+		
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectOrderInfo(SqlSessionTemplate sqlSession) {
+		
+		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectOrderInfo");
+		
+		System.out.println("list : " + list);
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectOrderDocu(SqlSessionTemplate sqlSession) {
+		
+		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectOrderDocu");
+		
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectOrderList(SqlSessionTemplate sqlSession, int dnum) {
+		
+		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectOrderList", dnum);
+		
+		System.out.println("daolist : " + list);
+		return list;
+	}
+
+	@Override
+	public int insertOrderList(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList) {
+		
+		int result = sqlSession.insert("Report.insertOrderList", pRequestList);
+		
+		System.out.println("Report에 insert하기 result : " + result);
+		
+		return result;
+	}
+
+	@Override
+	public int insertOrderList2(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList) {
+		
+		int result = sqlSession.insert("Report.insertOrderList2", pRequestList);
+		
+		
+		return 0;
 	}
 
 	
