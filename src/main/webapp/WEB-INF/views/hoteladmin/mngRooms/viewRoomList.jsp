@@ -497,7 +497,8 @@ input[type=checkbox] {
 						} else {
 							reservname = roomlist[r].reservname;
 						}
-						$("#roomBox" + roomlist[r].rmNo).attr("onclick", "goReserv(" + roomlist[r].rsvNo + ")");
+						$("#roomBox" + roomlist[r].rmNo).find(".statusBox").children().not(":first-child").attr("onclick", "goReserv(" + roomlist[r].rsvNo + ")");
+						$("#roomBox" + roomlist[r].rmNo).find(".detailBox").attr("onclick", "goReserv(" + roomlist[r].rsvNo + ")");
 						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(reservname);
 						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
 						$("#roomBox" + roomlist[r].rmNo).children(".reservRoom").css({"display":"block"});
@@ -512,6 +513,8 @@ input[type=checkbox] {
 						} else {
 							stayname = roomlist[r].sname;
 						}
+						$("#roomBox" + roomlist[r].rmNo).find(".statusBox").children().not(":first-child").attr("onclick", "goStay(" + roomlist[r].stayNo + ")");
+						$("#roomBox" + roomlist[r].rmNo).find(".detailBox").attr("onclick", "goStay(" + roomlist[r].stayNo + ")");
 						$("#roomBox" + roomlist[r].rmNo).find(".clientName").text(stayname);
 						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
 						$("#roomBox" + roomlist[r].rmNo).children(".fullRoom").css({"display":"block"});
@@ -538,6 +541,8 @@ input[type=checkbox] {
 						};
 						var realCI = dateConvert(roomlist[r].realCI);
 						CountDownTimer(realCI, roomlist[r].rmNo);
+						$("#roomBox" + roomlist[r].rmNo).find(".statusBox").children().not(":first-child").attr("onclick", "goLent(" + roomlist[r].stayNo + ")");
+						$("#roomBox" + roomlist[r].rmNo).find(".detailBox").attr("onclick", "goLent(" + roomlist[r].stayNo + ")");
 						$("#roomBox" + roomlist[r].rmNo).children(".emptyRoom").css({"display":"none"});
 						$("#roomBox" + roomlist[r].rmNo).children(".rentRoom").css({"display":"block"});
 					}
@@ -551,7 +556,8 @@ input[type=checkbox] {
 					//고장 객실상태 표시
 					if(roomlist[r].brkRsn != "") {
 						$("#roomBox" + roomlist[r].rmNo).children(".statusBox").removeClass("lightgrey").addClass("darkgray");
-						$("#roomBox" + roomlist[r].rmNo).attr("onclick", "goBroken(" + roomlist[r].rmNo + ")");
+						$("#roomBox" + roomlist[r].rmNo).find('.statusBox').children().not(':first-child').attr("onclick", "goBroken(" + roomlist[r].rmNo + ")");
+						$("#roomBox" + roomlist[r].rmNo).find('.detailBox').attr("onclick", "goBroken(" + roomlist[r].rmNo + ")");
 						stBroken++;
 						if(roomlist[r].brkRsn.length > 10) {
 							var brokenRsn = roomlist[r].brkRsn.substring(0, 10);
@@ -754,7 +760,6 @@ input[type=checkbox] {
 			//개별 객실 정비/미정비 변경
 			function changeCleanStt(rmNo) {
 				var thisEl = $("#roomBox" + rmNo).find('.statusBox').children().eq(0);
-				console.log(thisEl);
 				if(thisEl.hasClass("stNoClean")) {
 					//미정비 -> 정비
 					if(window.confirm("[ 미정비 → 정비 ] 정비상태를 변경하시겠습니까?")) {
@@ -809,7 +814,6 @@ input[type=checkbox] {
 				$(this).hide();
 				$("#changeFilterA").show();
 				var tempFloor = $(".roomBox").find("input[name=floor]").eq(0).val();
-				console.log(tempFloor);
 				$(".roomBox").find("input[name=floor]").each(function(){
 					if($(this).val() != tempFloor) {
 						tempFloor = $(this).val();
@@ -827,6 +831,10 @@ input[type=checkbox] {
 			
 			//모달1 : 공실 [ 입실 ] 버튼 클릭
 			function goRoom(rmNo) {
+				$("#modalStt").text('　입실');
+				$(".statusColor").addClass('mediumseagreen');
+				$(".totalPrice").addClass('mediumseagreen');
+				
 				function namecntfunc(n, width) {
 					  n = n + '';
 					  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
@@ -904,7 +912,6 @@ input[type=checkbox] {
 				$("select[name=stayDay]").change(function(){
 					if(endfeeday == 0) {
 						endfeeday = $("#checkOut").val();
-						console.log(endfeeday);
 					}
 					if($(this).val() != 0) {
 						$("#rentYN").prop("checked", false);
@@ -936,19 +943,29 @@ input[type=checkbox] {
 								cnt++;
 							}
 						}
+						
 					}
 				}
 				for(var i = 1; i <= stdPer; i++) {
 					$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
 				}
 				
+				//요금상세 부분 설정
+				detailModalFee(new Date().format('yyyy-MM-dd'), 'LENT', 0);
+				
 				//요금상세 부분 설정 함수
 				function detailModalFee(feedate, data, totalFee) {
 					var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
 					var feedateD = new Date(feedate.substring(0,4), (feedate.substring(5,7) * 1 - 1), feedate.substring(8,10));
 					var feeday = week[feedateD.getDay()];
+					var termType;
+					if((feedate.substring(5,7) * 1) == 1 || (feedate.substring(5,7) * 1) == 2 || (feedate.substring(5,7) * 1) == 7 || (feedate.substring(5,7) * 1) == 8 || (feedate.substring(5,7) * 1) == 12) {
+						termType = "SEASON";
+					} else {
+						termType = "OFFSEASON";
+					}
 					for(var i = 0; i < roomprice.length; i++) {
-						if(roomprice[i].rtNo == rtNo && roomprice[i].dayType == feeday && roomprice[i].stayType == data) {
+						if(roomprice[i].rtNo == rtNo && roomprice[i].dayType == feeday && roomprice[i].stayType == data && roomprice[i].termType == termType) {
 							var dayfee = roomprice[i].price.toLocaleString();
 							totalFee += roomprice[i].price;
 							$(".feeDetailSec table").append("<tr><td>" + feedate.substring(5) + "</td><td>" + dayfee + "</td></tr>");
@@ -960,9 +977,6 @@ input[type=checkbox] {
 					
 					return totalFee;
 				}
-				
-				//요금상세 부분 설정
-				detailModalFee(new Date().format('yyyy-MM-dd'), 'LENT', 0);
 				
 				//객실요금상세 동적 변화
 				function changeModalFee(sttfeeday, endfeeday) {
@@ -982,21 +996,344 @@ input[type=checkbox] {
 				}
 				
 				$(".modal").fadeIn();
+				
 			}
+			
 			
 			
 			
 			//모달2 : 예약 [ 입실대기 ] 객실 클릭
 			function goReserv(rsvNo) {
+				$(".statusColor").addClass('lightsteelblue');
+				$(".totalPrice").addClass('lightsteelblue');
+				$("#modalStt").text('　예약');
+				$("#staycode").text(rsvNo);
+				$("#checkinBtn").show();
+				
+				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
+				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
+				
+				$.ajax({
+					url:"ajxSelectRsvInfo.ro",
+					type:"post",
+					data:{rsvNo:rsvNo},
+					success:function(data) {
+						$("#clientName").val(data.stayInfo.clientName);
+						$("#insertClient").text(data.stayInfo.clientNo);
+						$("#clientPhone").val(data.stayInfo.clientPhone);
+						$("#clientEmail").val(data.stayInfo.clientEmail);
+						
+						var noshowCutline = (data.stayInfo.timeCI.substring(0,2) * 1) + ruleInfo.noshowUnit;
+						var timeGap = noshowCutline - (new Date().getHours());
+						if(timeGap > 0) {
+							$("#rsvCancelBtn").show();
+						} else {
+							$("#ciCancelBtn").show();
+						}
+						
+						$("#checkIn").val(data.stayInfo.scheckin);
+						var sttday = new Date(data.stayInfo.scheckin.substring(0,4), data.stayInfo.scheckin.substring(5,7) - 1, data.stayInfo.scheckin.substring(8,10));
+						$("#checkOut").val(data.stayInfo.scheckout);
+						var endday = new Date(data.stayInfo.scheckout.substring(0,4), data.stayInfo.scheckout.substring(5,7) - 1, data.stayInfo.scheckout.substring(8,10));
+						$("select[name=stayDay] option[value='" + data.stayInfo.stayDays + "']").prop('selected', true);
+						
+						$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
+						$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
+						
+						
+						var stdPer = data.stayInfo.stdPer;
+						var maxPer = data.stayInfo.maxPer;
+						var rmType = data.stayInfo.roomType;
+						for(var i = 0; i < roomlist.length; i++) {
+							if(roomlist[i].rtName != rmType) {
+								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
+							} else {
+								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+							}
+						}
+						for(var i = 1; i <= stdPer; i++) {
+							if(i == data.stayInfo.stayPer) {
+								$("#personCnt").append("<option value='" + i + "' selected>" + i + "</option>");
+							} else {
+								$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
+							}
+						}
+						
+						var perday = ((endday.getTime() - sttday.getTime()) / 1000 / 60 / 60/ 24);
+						changeModalFee(data.stayInfo.rtNo, sttday, endday, perday);
+						
+						var tempSvcTotal = 0;
+						for(var i = 0; i < data.staySvc.length; i++) {
+							var tempSvc = $(".svcTR").clone();
+							tempSvc.attr('class', 'useSvc').css({'display':'table-row', 'width':'100%'});
+							tempSvc.children().eq(0).text(data.staySvc[i].svcDate);
+							tempSvc.find('select').attr('disabled', 'disabled');
+							tempSvc.find('select option[value="' + data.staySvc[i].svcCode + '"]').prop("selected", true);
+							tempSvc.find('input[type=number]').eq(0).attr('readonly', 'readonly').val(data.staySvc[i].useCnt);
+							tempSvc.children().eq(3).children().attr('type', 'text').css("background-color", "white").val(data.staySvc[i].svcPrice.toLocaleString());
+							tempSvc.children().eq(4).children().attr('type', 'text').css("background-color", "white").val((data.staySvc[i].useCnt * data.staySvc[i].svcPrice).toLocaleString());
+							tempSvcTotal += data.staySvc[i].useCnt * data.staySvc[i].svcPrice;
+							tempSvc.find('button').remove();
+							$(".svcDetailSec table").append(tempSvc);
+						}
+						$("#totalSvc").text(tempSvcTotal.toLocaleString());
+						
+						console.log(data.stayPay);
+						for(var i = 0; i < data.stayPay.length; i++) {
+							switch(data.stayPay[i].payWay) {
+							case "CARD" : $("#payCard").val($("#payCard").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "CASH" : $("#payCash").val($("#payCash").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "ACCOUNT" : $("#payAcc").val($("#payAcc").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "REFUND" : $("#payRfd").val($("#payRfd").val() * 1 + data.stayPay[i].paymentFee); break;
+							}
+							
+							if(i == data.stayPay.length - 1) {
+								$("#lastPayDay").text(data.stayPay[i].payDate);
+							}
+						}
+						
+						changeTotalPrcTxt();
+						
+					},
+					error:function(error, status) {
+						alert("SYSTEM ERROR!");
+					}
+				});
+				
 				$(".modal").fadeIn();
 			}
 			
 			
+			
 			//모달3 : [ 대실 ] 객실 클릭
+			function goLent(stayNo) {
+				$(".statusColor").addClass('gold');
+				$(".totalPrice").addClass('gold');
+				$("#staycode").text('　　');
+				$(".infoBtnSec").show();
+				$("#rentYN").prop('checked', true);
+				
+				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
+				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
+				
+				$.ajax({
+					url:"ajxSelectStayInfo.ro",
+					type:"post",
+					data:{stayNo:stayNo},
+					success:function(data) {
+						$("#modalStt").text('　' + data.stayInfo.rmNum + ' (대실)');
+						$("#clientName").val(data.stayInfo.clientName);
+						$("#insertClient").text(data.stayInfo.clientNo);
+						$("#clientPhone").val(data.stayInfo.clientPhone);
+						$("#clientEmail").val(data.stayInfo.clientEmail);
+						
+						$("#checkIn").val(data.stayInfo.scheckin);
+						var sttday = new Date(data.stayInfo.scheckin.substring(0,4), data.stayInfo.scheckin.substring(5,7) - 1, data.stayInfo.scheckin.substring(8,10));
+						$("#checkOut").val(data.stayInfo.scheckout);
+						var endday = new Date(data.stayInfo.scheckout.substring(0,4), data.stayInfo.scheckout.substring(5,7) - 1, data.stayInfo.scheckout.substring(8,10));
+						$("select[name=stayDay] option[value='" + data.stayInfo.stayDays + "']").prop('selected', true);
+						
+						$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
+						$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
+						
+						
+						var stdPer = data.stayInfo.stdPer;
+						var maxPer = data.stayInfo.maxPer;
+						var rmType = data.stayInfo.roomType;
+						for(var i = 0; i < roomlist.length; i++) {
+							if(roomlist[i].rtName != rmType) {
+								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
+							} else {
+								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+							}
+						}
+						for(var i = 1; i <= stdPer; i++) {
+							if(i == data.stayInfo.stayPer) {
+								$("#personCnt").append("<option value='" + i + "' selected>" + i + "</option>");
+							} else {
+								$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
+							}
+						}
+						
+						var perday = ((endday.getTime() - sttday.getTime()) / 1000 / 60 / 60/ 24);
+						changeModalFee(data.stayInfo.rtNo, sttday, endday, perday);
+						
+						var tempSvcTotal = 0;
+						for(var i = 0; i < data.staySvc.length; i++) {
+							var tempSvc = $(".svcTR").clone();
+							tempSvc.attr('class', 'useSvc').css({'display':'table-row', 'width':'100%'});
+							tempSvc.children().eq(0).text(data.staySvc[i].svcDate);
+							tempSvc.find('select').attr('disabled', 'disabled');
+							tempSvc.find('select option[value="' + data.staySvc[i].svcCode + '"]').prop("selected", true);
+							tempSvc.find('input[type=number]').eq(0).attr('readonly', 'readonly').val(data.staySvc[i].useCnt);
+							tempSvc.children().eq(3).children().attr('type', 'text').css("background-color", "white").val(data.staySvc[i].svcPrice.toLocaleString());
+							tempSvc.children().eq(4).children().attr('type', 'text').css("background-color", "white").val((data.staySvc[i].useCnt * data.staySvc[i].svcPrice).toLocaleString());
+							tempSvcTotal += data.staySvc[i].useCnt * data.staySvc[i].svcPrice;
+							tempSvc.find('button').remove();
+							$(".svcDetailSec table").append(tempSvc);
+						}
+						$("#totalSvc").text(tempSvcTotal.toLocaleString());
+						
+						for(var i = 0; i < data.stayPay.length; i++) {
+							switch(data.stayPay[i].payWay) {
+							case "CARD" : $("#payCard").val($("#payCard").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "CASH" : $("#payCash").val($("#payCash").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "ACCOUNT" : $("#payAcc").val($("#payAcc").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "REFUND" : $("#payRfd").val($("#payRfd").val() * 1 + data.stayPay[i].paymentFee); break;
+							}
+							
+							if(i == data.stayPay.length - 1) {
+								$("#lastPayDay").text(data.stayPay[i].payDate);
+							}
+						}
+						
+						changeTotalPrcTxt();
+						
+					},
+					error:function(error, status) {
+						alert("SYSTEM ERROR!");
+					}
+				});
+				
+				$(".modal").fadeIn();
+			}
 			
 			
 			
 			//모달4 : [ 투숙 ] 객실 클릭
+			function goStay(stayNo) {
+				$(".statusColor").addClass('mediumseagreen');
+				$(".totalPrice").addClass('mediumseagreen');
+				$("#staycode").text('　　');
+				$(".infoBtnSec").show();
+				
+				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
+				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
+				
+				$.ajax({
+					url:"ajxSelectStayInfo.ro",
+					type:"post",
+					data:{stayNo:stayNo},
+					success:function(data) {
+						$("#modalStt").text('　' + data.stayInfo.rmNum + ' (재실)');
+						$("#clientName").val(data.stayInfo.clientName);
+						$("#insertClient").text(data.stayInfo.clientNo);
+						$("#clientPhone").val(data.stayInfo.clientPhone);
+						$("#clientEmail").val(data.stayInfo.clientEmail);
+						
+						$("#checkIn").val(data.stayInfo.scheckin);
+						var sttday = new Date(data.stayInfo.scheckin.substring(0,4), data.stayInfo.scheckin.substring(5,7) - 1, data.stayInfo.scheckin.substring(8,10));
+						$("#checkOut").val(data.stayInfo.scheckout);
+						var endday = new Date(data.stayInfo.scheckout.substring(0,4), data.stayInfo.scheckout.substring(5,7) - 1, data.stayInfo.scheckout.substring(8,10));
+						$("select[name=stayDay] option[value='" + data.stayInfo.stayDays + "']").prop('selected', true);
+						
+						$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
+						$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
+						
+						
+						var stdPer = data.stayInfo.stdPer;
+						var maxPer = data.stayInfo.maxPer;
+						var rmType = data.stayInfo.roomType;
+						for(var i = 0; i < roomlist.length; i++) {
+							if(roomlist[i].rtName != rmType) {
+								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
+							} else {
+								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+							}
+						}
+						for(var i = 1; i <= stdPer; i++) {
+							if(i == data.stayInfo.stayPer) {
+								$("#personCnt").append("<option value='" + i + "' selected>" + i + "</option>");
+							} else {
+								$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
+							}
+						}
+						
+						var perday = ((endday.getTime() - sttday.getTime()) / 1000 / 60 / 60/ 24);
+						changeModalFee(data.stayInfo.rtNo, sttday, endday, perday);
+						
+						var tempSvcTotal = 0;
+						for(var i = 0; i < data.staySvc.length; i++) {
+							var tempSvc = $(".svcTR").clone();
+							tempSvc.attr('class', 'useSvc').css({'display':'table-row', 'width':'100%'});
+							tempSvc.children().eq(0).text(data.staySvc[i].svcDate);
+							tempSvc.find('select').attr('disabled', 'disabled');
+							tempSvc.find('select option[value="' + data.staySvc[i].svcCode + '"]').prop("selected", true);
+							tempSvc.find('input[type=number]').eq(0).attr('readonly', 'readonly').val(data.staySvc[i].useCnt);
+							tempSvc.children().eq(3).children().attr('type', 'text').css("background-color", "white").val(data.staySvc[i].svcPrice.toLocaleString());
+							tempSvc.children().eq(4).children().attr('type', 'text').css("background-color", "white").val((data.staySvc[i].useCnt * data.staySvc[i].svcPrice).toLocaleString());
+							tempSvcTotal += data.staySvc[i].useCnt * data.staySvc[i].svcPrice;
+							tempSvc.find('button').remove();
+							$(".svcDetailSec table").append(tempSvc);
+						}
+						$("#totalSvc").text(tempSvcTotal.toLocaleString());
+						
+						for(var i = 0; i < data.stayPay.length; i++) {
+							switch(data.stayPay[i].payWay) {
+							case "CARD" : $("#payCard").val($("#payCard").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "CASH" : $("#payCash").val($("#payCash").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "ACCOUNT" : $("#payAcc").val($("#payAcc").val() * 1 + data.stayPay[i].paymentFee); break;
+							case "REFUND" : $("#payRfd").val($("#payRfd").val() * 1 + data.stayPay[i].paymentFee); break;
+							}
+							
+							if(i == data.stayPay.length - 1) {
+								$("#lastPayDay").text(data.stayPay[i].payDate);
+							}
+						}
+						
+						changeTotalPrcTxt();
+						
+					},
+					error:function(error, status) {
+						alert("SYSTEM ERROR!");
+					}
+				});
+				
+				$(".modal").fadeIn();
+			}
+			
+			
+			
+			//모달 객실요금 변경 함수
+			function changeModalFee(rtNo, sttfeeday, endfeeday, perday) {
+				if(perday == 0) {
+					$(".feeDetailSec tr").remove();
+					detailModalFee(rtNo, new Date().format('yyyy-MM-dd'), 'LENT', 0);
+				} else {
+					$(".feeDetailSec tr").remove();
+					var feedayscnt = $("select[name=stayDay]").val() * 1;
+					var totalFee = 0;
+					for(var i = 0; i < feedayscnt; i++) {
+						var tempday = new Date(sttfeeday.getFullYear(), sttfeeday.getMonth(), sttfeeday.getDate() + i);
+						var feeday = tempday.format('yyyy-MM-dd');
+						totalFee = detailModalFee(rtNo, feeday, 'STAY', totalFee);
+					}
+				}	
+			}
+			
+			function detailModalFee(rtNo, feedate, data, totalFee) {
+				var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
+				var feedateD = new Date(feedate.substring(0,4), (feedate.substring(5,7) * 1 - 1), feedate.substring(8,10));
+				var feeday = week[feedateD.getDay()];
+				var termType;
+				if((feedate.substring(5,7) * 1) == 1 || (feedate.substring(5,7) * 1) == 2 || (feedate.substring(5,7) * 1) == 7 || (feedate.substring(5,7) * 1) == 8 || (feedate.substring(5,7) * 1) == 12) {
+					termType = "SEASON";
+				} else {
+					termType = "OFFSEASON";
+				}
+				for(var i = 0; i < roomprice.length; i++) {
+					if(roomprice[i].rtNo == rtNo && roomprice[i].dayType == feeday && roomprice[i].stayType == data && roomprice[i].termType == termType) {
+						var dayfee = roomprice[i].price.toLocaleString();
+						totalFee += roomprice[i].price;
+						$(".feeDetailSec table").append("<tr><td>" + feedate.substring(5) + "</td><td>" + dayfee + "</td></tr>");
+					}
+				}
+				$("#totalRoom").text(totalFee.toLocaleString());
+				$("#totalVlt").text((totalFee * ruleInfo.serviceRate).toLocaleString());
+				changeTotalPrcTxt();
+				
+				return totalFee;
+			}
 			
 			
 			

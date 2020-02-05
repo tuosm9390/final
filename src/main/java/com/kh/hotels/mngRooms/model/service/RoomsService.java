@@ -9,6 +9,7 @@ import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.exception.UpdateRoomException;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
+import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
@@ -43,5 +44,17 @@ public interface RoomsService {
 	int ajxUpdateRoomStt(String nowStt, int rmNo) throws UpdateRoomException;
 
 	int ajxUpdateAllRoomStt(String nowStt, ArrayList<String> floorList);
+
+	ModalClient ajxSelectStayInfo(int stayNo);
+
+	ArrayList<ModalClient> ajxSelectStaySvc(int stayNo);
+
+	ArrayList<ModalClient> ajxSelectStayPay(int stayNo);
+
+	ModalClient ajxSelectRsvInfo(String rsvNo);
+
+	ArrayList<ModalClient> ajxSelectRsvSvc(String rsvNo);
+
+	ArrayList<ModalClient> ajxSelectRsvPay(String rsvNo);
 
 }

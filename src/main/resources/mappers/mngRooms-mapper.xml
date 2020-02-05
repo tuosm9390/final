@@ -83,6 +83,69 @@
 		<result property="brkStatus" column="BRK_STATUS" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.ModalClient" id="stayInfoSet">
+		<id property="stayNo" column="STAY_NO" />
+		<result property="scheckin" column="SCHECKIN" />
+		<result property="scheckout" column="SCHECKOUT" />
+		<result property="stayType" column="STAY_TYPE" />
+		<result property="chargePrice" column="PRICE" />
+		<result property="payPrice" column="PAYMENT" />
+		<result property="stayPer" column="STAY_PER" />
+		<result property="clientNo" column="MNO" />
+		<result property="clientName" column="NAME" />
+		<result property="clientPhone" column="PHONE" />
+		<result property="clientEmail" column="EMAIL" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="stdPer" column="STD_PER" />
+		<result property="roomType" column="RT_NAME" />
+		<result property="maxPer" column="MAXPER" />
+		<result property="svcNo" column="SVC_NO" />
+		<result property="svcName" column="SVC_NAME" />
+		<result property="svcPrice" column="SVC_PRICE" />
+		<result property="useCnt" column="USE_CNT" />
+		<result property="svcDate" column="REGDATE" />
+		<result property="pno" column="PNO" />
+		<result property="payWay" column="PWAY" />
+		<result property="paymentFee" column="PFEE" />
+		<result property="payDate" column="PAY_DATE" />
+		<result property="rmNo" column="RM_NO" />
+		<result property="stayDays" column="STAY_DAYS" />
+		<result property="rtNo" column="RT_NO" />
+		<result property="svcCode" column="SVC_CODE" />
+		<result property="realCI" column="REAL_CI" />
+	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.ModalClient" id="rsvInfoSet">
+		<id property="rsvNo" column="RSV_NO" />
+		<result property="scheckin" column="RCHECKIN" />
+		<result property="scheckout" column="RCHECKOUT" />
+		<result property="chargePrice" column="STAY_PRICE" />
+		<result property="payPrice" column="PAYMENT" />
+		<result property="stayPer" column="STAY_PER" />
+		<result property="clientNo" column="MNO" />
+		<result property="clientName" column="NAME" />
+		<result property="clientPhone" column="PHONE" />
+		<result property="clientEmail" column="EMAIL" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="stdPer" column="STD_PER" />
+		<result property="roomType" column="RT_NAME" />
+		<result property="maxPer" column="MAXPER" />
+		<result property="svcNo" column="SVC_NO" />
+		<result property="svcName" column="SVC_NAME" />
+		<result property="svcPrice" column="SVC_PRICE" />
+		<result property="useCnt" column="USE_CNT" />
+		<result property="svcDate" column="REGDATE" />
+		<result property="pno" column="PNO" />
+		<result property="payWay" column="PWAY" />
+		<result property="paymentFee" column="PFEE" />
+		<result property="payDate" column="PAY_DATE" />
+		<result property="rmNo" column="RM_NO" />
+		<result property="stayDays" column="PERIOD" />
+		<result property="rtNo" column="RT_NO" />
+		<result property="svcCode" column="SVC_CODE" />
+		<result property="timeCI" column="CI_TIME" />
+	</resultMap>
+	
 	<select id="viewRoomList" resultMap="roomListSet">
 		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
 		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
@@ -115,10 +178,6 @@
 	<select id="viewRoomPrice" resultMap="roomPriceSet">
 		SELECT *
 		FROM PRC
-		WHERE TERM_TYPE = CASE
-		                  WHEN EXTRACT(MONTH FROM (SYSDATE + 9 / (24) + 135 / (24 * 60 * 60))) IN (1, 2, 7, 8, 12) THEN 'SEASON'
-		                  ELSE 'OFFSEASON'
-		                  END
 	</select>
 
 	<select id="viewServiceList" resultMap="serviceSet">
@@ -252,4 +311,72 @@
 		               WHERE FLOOR IN
 		               <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>)
 	</update>
+	
+	<select id="ajxSelectStayInfo" parameterType="_int" resultMap="stayInfoSet">
+		SELECT S.STAY_NO, TO_CHAR(S.CHECKIN, 'YYYY-MM-DD') AS "SCHECKIN", TO_CHAR(S.CHECKOUT, 'YYYY-MM-DD') AS "SCHECKOUT", S.STAY_TYPE, S.PRICE, S.PAYMENT, S.STAY_PER,
+		       R.RM_NO, M.MNO, M.NAME, M.PHONE, M.EMAIL, R.RM_NUM, R.STD_PER, T.RT_NAME, T.MAXPER, (S.CHECKOUT - S.CHECKIN) AS "STAY_DAYS", T.RT_NO, S.REAL_CI
+		FROM STAY S
+		JOIN MEMBER M ON (S.MNO = M.MNO)
+		JOIN ROOM R ON (S.RM_NO = R.RM_NO)
+		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
+		WHERE S.STAY_STATUS = 'N'
+		AND S.STAY_NO = #{stayNo}
+		AND M.STATUS = 'Y'
+		AND M.TYPE = 'CLIENT'
+		AND R.RM_STATUS = 'Y'
+	</select>
+	
+	<select id="ajxSelectStaySvc" parameterType="_int" resultMap="stayInfoSet">
+		SELECT S.STAY_NO, C0.SVC_NO, C1.SVC_NAME, C1.SVC_PRICE, C0.USE_CNT, SUBSTR(C0.REG_DATE, 6, 5) AS "REGDATE", C0.REG_DATE, C1.SVC_CODE
+		FROM STAY S
+		JOIN SVC_USE C0 ON (S.STAY_NO = C0.STAY_NO)
+		JOIN SVC C1 ON (C0.SVC_CODE = C1.SVC_CODE)
+		WHERE S.STAY_STATUS = 'N'
+		AND S.STAY_NO = #{stayNo}
+		ORDER BY REG_DATE
+	</select>
+	
+	<select id="ajxSelectStayPay" parameterType="_int" resultMap="stayInfoSet">
+		SELECT S.STAY_NO, P.PNO, P.PWAY, P.PRICE AS "PFEE", P.PAY_DATE
+		FROM STAY S
+		LEFT JOIN PAYMENT P ON (S.STAY_NO = P.STAY_NO)
+		WHERE S.STAY_STATUS = 'N'
+		AND S.STAY_NO = #{stayNo}
+		ORDER BY PAY_DATE
+	</select>
+	
+	<select id="ajxSelectRsvInfo" parameterType="java.lang.String" resultMap="rsvInfoSet">
+		SELECT V.RSV_NO, TO_CHAR(V.CHECKIN, 'YYYY-MM-DD') AS "RCHECKIN", TO_CHAR(V.CHECKOUT, 'YYYY-MM-DD') AS "RCHECKOUT", V.STAY_PRICE, V.STAY_PRICE AS "PAYMENT",
+		       (V.ADULT + V.CHILD) AS "STAY_PER", V.CI_TIME,
+		       R.RM_NO, M.MNO, M.NAME, M.PHONE, M.EMAIL, R.RM_NUM, R.STD_PER, T.RT_NAME, T.MAXPER, (V.CHECKOUT - V.CHECKIN) AS "PERIOD", T.RT_NO
+		FROM RSV V
+		JOIN MEMBER M ON (V.MNO = M.MNO)
+		JOIN ROOM R ON (V.RM_NO = R.RM_NO)
+		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
+		WHERE V.RSV_STATUS = 'OK'
+		AND V.RSV_NO = #{rsvNo}
+		AND M.STATUS = 'Y'
+		AND M.TYPE = 'CLIENT'
+		AND R.RM_STATUS = 'Y'
+	</select>
+	
+	<select id="ajxSelectRsvSvc" parameterType="java.lang.String" resultMap="rsvInfoSet">
+		SELECT V.RSV_NO, C0.SVC_NO, C1.SVC_NAME, C1.SVC_PRICE, C0.USE_CNT, SUBSTR(C0.REG_DATE, 6, 5) AS "REGDATE", C0.REG_DATE, C1.SVC_CODE
+		FROM RSV V
+		JOIN SVC_USE C0 ON (V.RSV_NO = C0.RSV_NO)
+		JOIN SVC C1 ON (C0.SVC_CODE = C1.SVC_CODE)
+		WHERE V.RSV_STATUS = 'OK'
+		AND V.RSV_NO = #{rsvNo}
+		ORDER BY REG_DATE
+	</select>
+	
+	<select id="ajxSelectRsvPay" parameterType="java.lang.String" resultMap="rsvInfoSet">
+		SELECT V.RSV_NO, P.PNO, P.PWAY, P.PRICE AS "PFEE", P.PAY_DATE
+		FROM RSV V
+		LEFT JOIN PAYMENT P ON (V.RSV_NO = P.RSV_NO)
+		WHERE V.RSV_STATUS = 'OK'
+		AND V.RSV_NO = #{rsvNo}
+		ORDER BY PAY_DATE
+	</select>
+	
 </mapper>

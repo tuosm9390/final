@@ -8,6 +8,7 @@ import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
+import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
@@ -54,5 +55,17 @@ public interface RoomsDao {
 	int ajxUpdateAllRoomSttClean(SqlSessionTemplate sqlSession, ArrayList<String> floorList);
 
 	int ajxUpdateAllRoomSttNoClean(SqlSessionTemplate sqlSession, ArrayList<String> floorList);
+
+	ModalClient ajxSelectStayInfo(SqlSessionTemplate sqlSession, int stayNo);
+
+	ArrayList<ModalClient> ajxSelectStaySvc(SqlSessionTemplate sqlSession, int stayNo);
+
+	ArrayList<ModalClient> ajxSelectStayPay(SqlSessionTemplate sqlSession, int stayNo);
+
+	ModalClient ajxSelectRsvInfo(SqlSessionTemplate sqlSession, String rsvNo);
+
+	ArrayList<ModalClient> ajxSelectRsvSvc(SqlSessionTemplate sqlSession, String rsvNo);
+
+	ArrayList<ModalClient> ajxSelectRsvPay(SqlSessionTemplate sqlSession, String rsvNo);
 
 }

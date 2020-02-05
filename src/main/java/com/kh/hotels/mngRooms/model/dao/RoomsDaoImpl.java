@@ -11,6 +11,7 @@ import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
+import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
@@ -159,6 +160,36 @@ public class RoomsDaoImpl implements RoomsDao {
 	@Override
 	public int ajxUpdateAllRoomSttNoClean(SqlSessionTemplate sqlSession, ArrayList<String> floorList) {
 		return sqlSession.update("Rooms.ajxUpdateAllRoomSttNoClean", floorList);
+	}
+
+	@Override
+	public ModalClient ajxSelectStayInfo(SqlSessionTemplate sqlSession, int stayNo) {
+		return sqlSession.selectOne("Rooms.ajxSelectStayInfo", stayNo);
+	}
+
+	@Override
+	public ArrayList<ModalClient> ajxSelectStaySvc(SqlSessionTemplate sqlSession, int stayNo) {
+		return (ArrayList) sqlSession.selectList("Rooms.ajxSelectStaySvc", stayNo);
+	}
+
+	@Override
+	public ArrayList<ModalClient> ajxSelectStayPay(SqlSessionTemplate sqlSession, int stayNo) {
+		return (ArrayList) sqlSession.selectList("Rooms.ajxSelectStayPay", stayNo);
+	}
+
+	@Override
+	public ModalClient ajxSelectRsvInfo(SqlSessionTemplate sqlSession, String rsvNo) {
+		return sqlSession.selectOne("Rooms.ajxSelectRsvInfo", rsvNo);
+	}
+
+	@Override
+	public ArrayList<ModalClient> ajxSelectRsvSvc(SqlSessionTemplate sqlSession, String rsvNo) {
+		return (ArrayList) sqlSession.selectList("Rooms.ajxSelectRsvSvc", rsvNo);
+	}
+
+	@Override
+	public ArrayList<ModalClient> ajxSelectRsvPay(SqlSessionTemplate sqlSession, String rsvNo) {
+		return (ArrayList) sqlSession.selectList("Rooms.ajxSelectRsvPay", rsvNo);
 	}
 
 }
