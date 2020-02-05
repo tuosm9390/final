@@ -29,4 +29,10 @@ public class AccountServiceImpl implements AccountService{
 		return ad.selectAccountList(sqlSession,pi);
 	}
 
+	@Override
+	public ArrayList<Conn> selectDetailList(String cnCode) {
+		// TODO Auto-generated method stub
+		return ad.selectDetailList(sqlSession,cnCode);
+	}
+
 }

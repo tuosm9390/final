@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.mngRooms.model.voEtc.Room;
 import com.kh.hotels.mngStock.model.Service.warehouseService;
 import com.kh.hotels.mngStock.model.vo.SearchCondition;
 import com.kh.hotels.mngStock.model.vo.Strg;
@@ -107,6 +108,18 @@ public class warehouseController {
 		}else {
 			return "common/errorPage";
 		}
+	}
+	
+	@PostMapping("selectAreaList.war")
+	public ModelAndView selectAreaList(String strgNo,ModelAndView mv) {
+		
+		ArrayList<StrgArea> areaList = ws.selectAreaList(strgNo);
+		 
+		mv.setViewName("jsonView");
+		mv.addObject("areaList",areaList);
+		
+		return mv;
+		
 	}
 	
 }

@@ -10,6 +10,7 @@
 		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SearchStaff" alias="SearchStaff"/>
 		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SearchService" alias="SearchService"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Strg" alias="Strg"/>
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.StrgArea" alias="StrgArea"/>
 		<typeAlias type="com.kh.hotels.mngReserv.model.vo.Reservation" alias="Reservation"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Info" alias="Info"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Rule" alias="Rule"/>

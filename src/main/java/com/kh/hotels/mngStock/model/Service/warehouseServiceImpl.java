@@ -48,5 +48,11 @@ public class warehouseServiceImpl implements warehouseService{
 		// TODO Auto-generated method stub
 		return wd.updateWarehouse(sqlSession,m,st);
 	}
+
+	@Override
+	public ArrayList<StrgArea> selectAreaList(String strgNo) {
+		// TODO Auto-generated method stub
+		return wd.selectAreaList(sqlSession,strgNo);
+	}
 	
 }

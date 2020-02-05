@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
 	 .top-div{
 	width: 79%;
@@ -235,9 +237,32 @@ width:1000px;
 		}).mouseout(function(){
 			$(this).parent("tr").css({"background":"white"});
 		}).click(function(){
-			var bid = $(this).parent().children("td").eq(1).text();
+			var cnCode = $(this).parent().children("td").eq(1).text();
 			$(".modal").fadeIn();
-			console.log(bid);
+			
+			////이체정보ajax/////
+				$.ajax({
+					url:"selectDetail.ac",
+					type:"post",
+					data:{cnCode:cnCode},
+					success:function(data){
+						console.log(data);
+						$("#acTbody").empty();
+						
+						for(var i=0;i<data.accDetailList.length;i++){
+						$("#acTbody").append("<tr><td>"+data.accDetailList[i].bankCode+"</td><td>"+data.accDetailList[i].bankName+
+								"</td><td>"+data.accDetailList[i].account+"</td><td>"+data.accDetailList[i].accName+
+								"</td><td>"+data.accDetailList[i].accMemo+"</td></tr>");
+						
+						}
+					},
+					error:function(status){
+						console.log(status);
+					}
+					
+					
+				})
+			//////////
 		});
 	});
 	
@@ -249,5 +274,6 @@ width:1000px;
 		$(".modalEnroll").fadeIn();
 	});
 	</script>
+
 </body>
 </html>

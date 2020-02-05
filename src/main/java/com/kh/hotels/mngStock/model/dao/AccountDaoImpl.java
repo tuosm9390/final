@@ -25,4 +25,10 @@ public class AccountDaoImpl implements AccountDao{
 		return (ArrayList)sqlSession.selectList("Account.selectAccountList",null,rowBounds);
 	}
 
+	@Override
+	public ArrayList<Conn> selectDetailList(SqlSessionTemplate sqlSession, String cnCode) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("Account.selectAccDetailList",cnCode);
+	}
+
 }

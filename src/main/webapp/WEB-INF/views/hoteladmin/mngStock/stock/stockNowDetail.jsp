@@ -129,7 +129,6 @@
 				$(this).parent("tr").css({"background":"white"});
 			}).click(function(){
 				var bid = $(this).parent().children("td").eq(1).text();
-			
 				console.log(bid);
 			});
 		});
@@ -139,43 +138,146 @@
 		$("#detail-modify-btn").click(function(){
 			$("#detail-modify-btn").hide();
 			$("#detail-ok-btn").show();
-			
-			 var checkRow = "";
-			  $( "input[name='checkRow']:checked" ).each (function (){
+			$("#delete").hide();
+			$.ajax({
+				url:"updateStock.sto",
+				type:"post",
+				data:{},
+				success:function(data){
+					console.log(data);
+					
+			 	var checkRow = "";
+			    $( "input[name='checkRow']:checked" ).each(function(){
 			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
-			    $(this).parent().parent().children("td").eq(9).html("<input type='text' style='width:70px;'>");
-			    $(this).parent().parent().children("td").eq(10).html("<input type='text' style='width:70px;'>");
-			    $(this).parent().parent().children("td").eq(11).html("<input type='text' style='width:60px;'>");
-			  });
-			  checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
-			  $("#detailBody").children().children().eq(0).show();
-			  $("#detailBody").children().children().children().eq(0).show();
+			    var ix =$(this).parent().parent().children("td").eq(1).text();
 			  
-			console.log(checkRow);
+			    $(this).parent().parent().children("td").eq(9).html("<select id='STRG"+ix+"'><option value='창고명' hidden='hidden' style='width:100px;'>창고명</option></selcet>");
+			    $(this).parent().parent().children("td").eq(10).html("<select id='AREA"+ix+"'><option value='위치' hidden='hidden'>위치</option></selcet>");
+			    $(this).parent().parent().children("td").eq(11).html("<select id='RM_NO"+ix+"'><option value='객실번호' hidden='hidden'>객실번호</option></selcet>");
+			    checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
+			    
+			    console.log("ix : " + ix);
+			    
+			    //기본옵션
+			    $("#STRG"+ix+"").append("<option value='창고명'>창고명</option>");
+		    	$("#RM_NO"+ix+"").append("<option value='객실번호'>객실번호</option>");
+			    //정보에따른옵션
+			    for(var i=0;i<data.strgList.length;i++){
+			    	//StrgNo를넣어야함 
+			    	$("#STRG"+ix+"").append("<option value='"+data.strgList[i].strgNo+"'>"+data.strgList[i].strgName+"</option>")
+			    	//rmNo를 넣어야함
+			    	$("#RM_NO"+ix+"").append("<option value='"+data.rmNoList[i].rmNo+"'>"+data.rmNoList[i].rmNum+"</option>")
+			    }
+			    
+			    //창고명이 바뀔때//
+				$("#STRG"+ix+"").change(function(){
+						var strgNo = $(this).val();
+						var ino =  $(this).parent().parent().children("td").eq(1).text();
+						
+						 $.ajax({
+							url:"selectAreaList.war",
+							type:"post",
+							data:{strgNo:strgNo},
+							success:function(data){
+								console.log(data);
+					//		console.log($(this).val()+"아아아ㅏ앙") 
+								$("#AREA"+ix+"").empty();
+								console.log("ino  : " + ino);
+								//$("#stockTbb").
+								//$(".AREA").append("<option value='창고명'>창고명</option>")
+								//areaNo 넣기
+								 for(var i=0;i<data.areaList.length;i++){
+									 $("#AREA"+ix+"").append("<option value='"+data.areaList[i].areaNo+"'>"+data.areaList[i].areaName+"</option>")
+								 }
+								
+							},
+							error:function(status){
+								console.log(status);
+							}
+						}) 
+			  });
+						
+				});
+			  
+				},
+				error:function(status){
+					console.log(status);
+				}
+			});
+			
+			
+			  $(".hide input[type=checkbox]").attr('disabled',true);
+	    
 		});
       	
+		////////
+	
+		/////
 		
-		//수정완료버튼
+		////////////////////수정완료버튼///////////////////////////////////////////////////////
 		$("#detail-ok-btn").click(function(){
 			$("#detail-modify-btn").show();
 			$("#detail-ok-btn").hide();
+			$(".hide").show();
 			//체크값가져오기
-			 var checkRow = "";
-			  $( "input[name='checkRow']:checked" ).each (function (){
-			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
-			    $(this).parent().parent().children("td").eq(9).html("<input type='text' style='width:70px;'>");
-			    $(this).parent().parent().children("td").eq(10).html("<input type='text' style='width:70px;'>");
-			    $(this).parent().parent().children("td").eq(11).html("<input type='text' style='width:60px;'>");
+			var checkRow = "";
+			var itemList = new Array();
+			
+			  $("input[name='checkRow']:checked").each (function (){
+			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+",";
+			    
+			console.log( $(this).parent().parent().children("td").eq(1).text()+"테스트");    
+			var	 ino=$(this).parent().parent().children("td").eq(1).text()
+			var	amount=$(this).parent().parent().children("td").eq(3).text()
+			var	strgNo=$(this).parent().parent().children("td").eq(9).val()
+			var	areaNo=$(this).parent().parent().children("td").eq(10).val()
+			var      rmNo=$(this).parent().parent().children("td").eq(11).val()
+			
+			console.log("ino : " + ino+ "amount : "+amount+" strgNo : "+strgNo+" areaNo : "+areaNo+" rmNo : "+rmNo);
+		   
+		   
+			  //itemList 넘기는 ajax
+			  $.ajax({
+				 url:"updateStockOk.sto",
+				 type:"post", 
+				 dataType:"json",
+				 data:{
+					 	   ino:$(this).parent().parent().children("td").eq(1).text()*1,
+						amount:$(this).parent().parent().children("td").eq(3).text()*1,
+						strgNo:$(this).parent().parent().children("td").eq(9).val(),
+						
+						areaNo:$(this).parent().parent().children("td").eq(10).val(),
+					      rmNo:$(this).parent().parent().children("td").eq(11).val()
+						},
+			  	 success:function(data){
+			  		 console.log(data);
+			  	 },
+			  	 error:function(status){
+			  		 console.log(status);
+			  	 }
 			  });
+			  /////////
+			  
+			  });
+
+			  
 			  checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
 			console.log(checkRow);
-		})
+		});
 		
+		
+		
+		
+		
+		
+		
+		
+		//////////////////////////////////////////////////////////////////////////////////////
 		//삭제버튼클릭시
 		$("#delete").click(function(){
 			//체크값 가져오기
 			 var checkRow = "";
-			  $( "input[name='checkRow']:checked" ).each (function (){
+			  $( "input[name='checkRow']:checked" ).each(function(){
 			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
 			    $(this).parent().parent().children("td").eq(9).html("<input type='text' style='width:70px;'>");
 			    $(this).parent().parent().children("td").eq(10).html("<input type='text' style='width:70px;'>");
@@ -185,7 +287,7 @@
 			console.log(checkRow);
 			  
 			  if(checkRow==''){
-				  alert("삭제할 대상을 섡택하세요.");
+				  alert("삭제할 대상을 선택하세요.");
 				  return false
 			  }
 			  

@@ -92,7 +92,7 @@
 				<th>예금주명</th>
 				<th>비고</th>
 			</tr>
-			<c:forEach var="i" begin="1" end="15">
+			<tbody id="acTbody">
 				<tr>
 					<td>f</td>
 					<td>f</td>
@@ -100,7 +100,7 @@
 					<td>f</td>
 					<td>f</td>
 				</tr>
-			</c:forEach>
+			</tbody>
 		</table>
 	</div><!-- end -->
 	<div class="btnss"><button id="newac">신규</button></div> 

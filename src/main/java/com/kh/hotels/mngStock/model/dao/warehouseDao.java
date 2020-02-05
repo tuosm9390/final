@@ -20,5 +20,7 @@ public interface warehouseDao {
 	ArrayList<StrgArea> detailList(SqlSessionTemplate sqlSession, String strgNo);
 
 	int updateWarehouse(SqlSessionTemplate sqlSession, Model m, Strg st);
+
+	ArrayList<StrgArea> selectAreaList(SqlSessionTemplate sqlSession, String strgNo);
  
 }

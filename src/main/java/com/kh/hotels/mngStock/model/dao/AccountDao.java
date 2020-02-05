@@ -13,4 +13,6 @@ public interface AccountDao {
 
 	ArrayList<Conn> selectAccountList(SqlSessionTemplate sqlSession, PageInfo pi);
 
+	ArrayList<Conn> selectDetailList(SqlSessionTemplate sqlSession, String cnCode);
+
 }

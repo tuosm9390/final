@@ -11,22 +11,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngStock.model.Service.StockService;
+import com.kh.hotels.mngStock.model.Service.warehouseService;
 import com.kh.hotels.mngStock.model.vo.Conn;
+import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.Strg;
+import com.kh.hotels.mngStock.model.vo.StrgArea;
 
 @Controller
 public class StockController {
 	@Autowired
 	private StockService ss;
+	@Autowired
+	private warehouseService ws;
 	
 	@RequestMapping("selectStock.sto")
 	public String selectStockList(HttpServletRequest request, Model  m) {
@@ -64,8 +70,10 @@ public class StockController {
 		
 		System.out.println("con st : "+ st);
 		System.out.println("con m : "+ m);
-		
-		int result = ss.insertStock(m, st);
+		int result = 0;
+		for(int i=0;i<st.getUnit();i++) {
+			 result = ss.insertStock(m, st);			
+		}
 		
 		if(result>0) {
 			return "redirect:selectStock.sto";
@@ -180,10 +188,7 @@ public class StockController {
 		
 		int result = 0 ;
 		
-		
 		  String checkRowSplit[] = checkRow.split(",");
-		  
-		  
 		  
 		  for(int i = 0; i < checkRowSplit.length; i++) {
 			  int check = Integer.parseInt(checkRowSplit[i]);
@@ -197,5 +202,35 @@ public class StockController {
 			return "common/errorPage";
 		}
 		
+	}
+	
+	@PostMapping("updateStock.sto")
+	public ModelAndView updateStock(ModelAndView mv) {
+		
+		ArrayList<Strg> strgList = ws.selectList();
+		ArrayList<Item> rmNoList = ss.selectRmNoList(); 
+		
+	//	ArrayList<StrgArea> AreaList = ws.selectAreaList();
+		
+		mv.setViewName("jsonView");
+		mv.addObject("strgList",strgList);
+		mv.addObject("rmNoList",rmNoList);
+		System.out.println("rmNoList : "+ rmNoList);
+		System.out.println("strgList : "+ strgList);
+		//mv.addObject("AreaList",AreaList);
+		
+		return mv;
+	}
+	
+	@PostMapping("updateStockOk.sto")
+	public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,int strgNo,int areaNo,int rmNo) {
+	
+		System.out.println(ino);
+		System.out.println(amount);
+		System.out.println(strgNo);
+		System.out.println(areaNo);
+		System.out.println(rmNo);
+		
+		return mv;
 	}
 }

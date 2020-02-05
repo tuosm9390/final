@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
@@ -44,4 +46,18 @@ public class AccountController {
 			return "common/errorPage";
 		}
 	}
+	
+	@PostMapping("selectDetail.ac")
+	public ModelAndView selectDetail(String cnCode,ModelAndView mv) {
+		
+		ArrayList<Conn> accDetailList = as.selectDetailList(cnCode);
+		
+		mv.setViewName("jsonView");
+		mv.addObject("accDetailList",accDetailList);
+		
+		return mv;
+		
+	}
+	
+	
 }
