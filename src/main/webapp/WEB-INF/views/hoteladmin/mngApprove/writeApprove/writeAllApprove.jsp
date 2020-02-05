@@ -113,6 +113,9 @@
 					<col width="33%">
 				</colgroup>
 				<tr style="border-bottom:1px solid lightgray; height:70px;">
+				<input type="hidden" value="${sessionScope.loginUser.deptNo }" id="deptNo">
+				<input type="hidden" value="${sessionScope.loginUser.authNo }" id="authNo">
+				<input type="hidden" value="${sessionScope.loginUser.mno }" id="userMno">
 					<th>구매 요청서</th>
 					<th>발주 요청서</th>
 					<th>수리 요청서</th>
@@ -183,13 +186,38 @@
 			}) */
 				
 					$("#docuTit").children().eq(0).click(function(){
-						location.href="writePurchaseApprove.ap"
+						if($("#deptNo").val() == 2 && $("#authNo").val() == "AUTH1") {
+							
+							console.log($("#deptNo").val());
+							
+							location.href="writePurchaseApprove.ap";
+							
+						}else {
+							alert("작성하실 수 없습니다.");
+							return false;
+						}
 					});
 					$("#docuTit").children().eq(1).click(function(){
+						
+						if($("#deptNo").val() == 2 && $("#authNo").val() == "AUTH2") {
+							
 						location.href="writeOrderApprove.ap"
+						}else {
+							alert("작성하실 수 없습니다.");
+							return false;
+						}
+						
 					});
 					$("#docuTit").children().eq(2).click(function(){
+						
+						if($("deptNo").val() == 3 && $("#authNo").val() == "AUTH2") {
+							
 						location.href="writeFixApprove.ap"
+						}else {
+							alert("작성하실 수 없습니다.");
+							return false;
+						}
+						
 					});
 				
 				

@@ -39,7 +39,7 @@ public interface ApprovalDao {
 
 
 
-	List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value);
+	List<String> selectMadeComName(SqlSessionTemplate sqlSession, String value, String type);
 
 	List<Integer> selectVosPrice(SqlSessionTemplate sqlSession, PurVos pv);
 
@@ -74,5 +74,22 @@ public interface ApprovalDao {
 
 	ArrayList<HashMap<String, Object>> selectPartiApproveFilter(SqlSessionTemplate sqlSession, String category,
 			String mno, PageInfo pi);
+
+	int updateApproveStatus(SqlSessionTemplate sqlSession, Report report);
+
+	int updateApprovePurRequest(SqlSessionTemplate sqlSession, Report report);
+
+	ArrayList<HashMap<String, Object>> selectPartiApproveAll(SqlSessionTemplate sqlSession, PartiReport member,
+			PageInfo pi);
+
+	ArrayList<HashMap<String, Object>> selectOrderInfo(SqlSessionTemplate sqlSession);
+
+	ArrayList<HashMap<String, Object>> selectOrderDocu(SqlSessionTemplate sqlSession);
+
+	ArrayList<HashMap<String, Object>> selectOrderList(SqlSessionTemplate sqlSession, int dnum);
+
+	int insertOrderList(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
+
+	int insertOrderList2(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
 
 }

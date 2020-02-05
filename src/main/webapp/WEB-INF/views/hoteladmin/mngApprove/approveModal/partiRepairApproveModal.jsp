@@ -8,7 +8,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
-.modal {
+.modal_repair {
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -58,7 +58,7 @@
 	height:100%;
 }
 
-#tbl_modal {
+#tbl_modal_repair {
 	padding-top: 10px;
 	border: 1px solid black;
 	border-collapse: collapse;
@@ -67,16 +67,16 @@
 	height:auto;
 }
 
-#tbl_modal td {
+#tbl_modal_repair td {
 	height: 30px;
 	border: 1px solid black;
 }
 
-#tbl_modal td:last-child {
+#tbl_modal_repair td:last-child {
 	border-right: 0px;
 }
 
-#tbl_modal td:fisrt-child {
+#tbl_modal_repair td:fisrt-child {
 	border-left: 0px;
 }
 
@@ -142,14 +142,13 @@
 </style>
 </head>
 <body>
-	<div class="modal">
+	<div class="modal_repair">
 		<div class="modal_content">
 			<div class="titleBarplus">
-				<h1 style="text-align: left;">구매 요청서</h1>
+				<h1 style="text-align: left;">수리 요청서</h1>
 			</div>
 			<a class="btn_close_plus">×</a>
 
-			
 			
 			
 			<!-- 결재 승인/반려 버튼 -->
@@ -163,82 +162,67 @@
 			<!-- content 내용 -->
 			<div class="modal_content_real">
 				<div class="modalTbl">
-					<table id="tbl_modal">
+					<table id="tbl_modal_repair">
 						<colgroup>
 							<col width="10%">
-							<col width="10%">
-							<col width="25%">
-							<col width="15%">
-							<col width="20%">
-							<col width="20%">
+								<col width="12%">
+								<col width="25%">
+								<col width="27%">
+								<col width="13%">
+								<col width="13%">
 
 						</colgroup>
 						<tr>
 							<td>문서번호</td>
-							<td colspan="2">102020</td>
-							<td>부서장</td>
+							<td colspan="2" class="docuNum"></td>
+							<td >부서장</td>
 							<td colspan="2">총지배인</td>
 						</tr>
 						<tr>
 							<td>기안부서</td>
-							<td colspan="2">구매팀</td>
+							<td colspan="2"></td>
 							<td rowspan="2"></td>
 							<td rowspan="2" colspan="2"></td>
 						</tr>
 						<tr>
 							<td>기안자</td>
-							<td colspan="2">전세환</td>
+							<td colspan="2"></td>
 
 						</tr>
 						<tr>
 							<td>기안일</td>
-							<td colspan="2">SYSDATE</td>
+							<td colspan="2"></td>
 							<td rowspan="2" colspan="3"></td>
 
 						</tr>
 						<tr>
 							<td>수신자</td>
-							<td colspan="2">SYSDATE</td>
+							<td colspan="2"></td>
 
 
 
 						</tr>
 						<tr>
 							<td>제목</td>
-							<td colspan="5">구매 요청서</td>
+							<td colspan="5">수리 요청서</td>
 						</tr>
-						<tr style="background: lightgray;">
+						<tr style="background: lightgray;" class="repeatRepair">
 							<td>NO</td>
-							<td>항목</td>
-							<td>품목명</td>
-							<td>수량</td>
-							<td>공급가액</td>
+							<td>제품코드</td>
+							<td>제품명</td>
+							<td>수리 업체명</td>
 							<td>금액</td>
+							<td>수리사유</td>
 						</tr>
-						<tr>
-							<td>1</td>
-							<td>비품</td>
-							<td>LG 36인치 TV</td>
-							<td>2</td>
-							<td>1000000</td>
-							<td>2000000</td>
-						</tr>
+						
 						<tr>
 							<td colspan="2">총 금액</td>
-							<td colspan="4"><a style="float: right;">2000000 원</a></td>
+							<td colspan="4" id="totalPrice" style="text-align:right;"></td>
 						</tr>
 						<tr>
 							<td colspan="6" rowspan="6">
-								<div class="txtArea">
-									<a>아래와 같이 보고 하오니 검토후 재가 바랍니다.</a> <br>
-									<br>
-									<br>
-									<br> <a>-아 래-</a><br>
-									<br>
-									<br> <a>SYSDATE</a>&nbsp; <a>OOOO</a> <a>목적으로 하여</a>&nbsp;
-									<a>총금액 원</a> <a>사용을 결제하고자 하오니 <br>검토후 재기하여 주시기 바랍니다.
-									</a>
-
+								<div class="txtArea" id="content_repair">
+									
 								</div>
 							</td>
 						</tr>
@@ -259,7 +243,7 @@
 		$(document).ready(function() {
 				$(".btn_close_plus").click(function(){
 					
-					$(".modal").fadeOut();
+					$(".modal_repair").fadeOut();
 				})
 			
 			

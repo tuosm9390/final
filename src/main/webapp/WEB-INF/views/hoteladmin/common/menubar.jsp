@@ -331,12 +331,13 @@
 			console.log("클릭이요~~");
 			var userDept = $(".userDept").val();
 			var userAuth = $(".userAuth").val();
-			var mno = $(".userMno").val();
+			var userMno = $(".userMno").val();
 			console.log(userDept);
 			console.log(userAuth);
+			console.log(userMno);
 			
 			if(userDept == 1 || userAuth == 'AUTH2') {
-				location.href="joinDocumentApproval.ap?userDept=" + userDept + "&userAuth=" + userAuth + "&userMno=" + mno;
+				location.href="joinDocumentApproval.ap?userDept=" + userDept + "&userAuth=" + userAuth + "&userMno=" + userMno;
 			}else {
 				alert("조회하실 수 없습니다.");
 				return false;

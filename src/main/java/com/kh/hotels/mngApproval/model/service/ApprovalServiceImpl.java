@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hotels.mngApproval.model.dao.ApprovalDao;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
+import com.kh.hotels.mngApproval.model.vo.OrderRequest;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
@@ -149,8 +150,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 
 	@Override
-	public List<String> selectMadeComName(String value) throws ReportException {
-		List<String> list = ad.selectMadeComName(sqlSession, value);
+	public List<String> selectMadeComName(String value, String type) throws ReportException {
+		List<String> list = ad.selectMadeComName(sqlSession, value, type);
 		
 		if(list == null) {
 			throw new ReportException("에러");
@@ -325,6 +326,69 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return list;
 	}
+
+
+	@Override
+	public int updateApproveStatus(Report report) {
+		
+		int result = ad.updateApproveStatus(sqlSession, report);
+		
+		//int result2 = ad.updateApprovePurRequest(sqlSession, report);
+		
+		
+		return result;
+	}
+
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectPartiApproveAll(PartiReport member, PageInfo pi) {
+		
+		ArrayList<HashMap<String, Object>> list = ad.selectPartiApproveAll(sqlSession, member, pi);
+
+		return list;
+	}
+
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectOrderInfo() {
+		
+		ArrayList<HashMap<String, Object>> list = ad.selectOrderInfo(sqlSession);
+		
+		
+		return list;
+	}
+
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectOrderDocu() {
+		
+		ArrayList<HashMap<String, Object>> list = ad.selectOrderDocu(sqlSession);
+		
+		
+		return list;
+	}
+
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectOrderList(int dnum) {
+		
+		ArrayList<HashMap<String, Object>> list = ad.selectOrderList(sqlSession, dnum);
+		
+		
+		return list;
+	}
+
+
+	@Override
+	public int insertOrderList(OrderRequest oRequest) {
+		
+		//int result = ad.insertOrderList(sqlSession, oRequest)
+		
+		return 0;
+	}
+
+
+	
 }
 
 

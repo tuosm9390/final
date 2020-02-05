@@ -181,13 +181,17 @@
 							<td><c:out value="${b.RPTITLE }" /></td>
 							<td><c:out value="${b.RPTYPE }" /></td>
 							<td><c:out value="${b.MNAME }" /></td>
-							<c:set var="status" value="승인"/>
-							<c:if test="${b.RPSTATUS eq status }">
+							<c:choose>
+							<c:when test="${b.RPSTATUS eq '반려' }">
  								<td><c:out value="${b.SNAME }" /></td>
-							 </c:if>
-							 <c:if test="${b.RPSTATUS ne status }">
-							 	<td></td>
-							 </c:if> 
+							 </c:when>
+							 <c:when test="${b.RPSTATUS eq '승인' }">
+							 	<td><c:out value="${b.SNAME }" /></td>
+							 </c:when>
+							 <c:otherwise >
+							 <td></td>
+							 </c:otherwise> 
+							 </c:choose>
 							<td><c:out value="${b.RPSTATUS }" /></td>
 							<td><a>보기</a></td>
 						</tr>
@@ -461,7 +465,7 @@
 				 		var $ctr4 = "<td>" + reportList[i].RPTITLE + "</td>";
 				 		var $ctr5 = "<td>" + reportList[i].RPTYPE + "</td>";
 				 		var $ctr6 = "<td>" + reportList[i].MNAME + "</td>";
-				 		if(reportList[i].RPSTATUS == "승인") {
+				 		if(reportList[i].RPSTATUS == "승인" || reportList[i].RPSTATUS == "반려") {
 				 			var $ctr7 = "<td>" + reportList[i].RNAME + "</td>";
 				 		}else {
 				 			var $ctr7 = "<td></td>";
