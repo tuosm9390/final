@@ -31,4 +31,22 @@ public class AccountDaoImpl implements AccountDao{
 		return (ArrayList)sqlSession.selectList("Account.selectAccDetailList",cnCode);
 	}
 
+	@Override
+	public int insertAcc(SqlSessionTemplate sqlSession, Conn c) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("Account.insertAcc",c);
+	}
+
+	@Override
+	public int insertAccDetail(SqlSessionTemplate sqlSession, Conn c) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("Account.insertAccDetail",c);
+	}
+    
+	@Override
+	public int updateDetail(SqlSessionTemplate sqlSession, Conn c) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("Account.updateDetail",c);  
+	}
+
 }

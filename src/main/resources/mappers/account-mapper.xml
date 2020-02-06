@@ -5,7 +5,7 @@
   
 <mapper namespace="Account">
 	<resultMap type="com.kh.hotels.mngStock.model.vo.Conn" id="resultSetConn">
-		<result property="cnCode" column="CN_CODE" />
+		<id property="cnCode" column="CN_CODE" />
 		<result property="cnName" column="CN_NAME" />
 		<result property="ownerName" column="OWNER_NAME" />
 		<result property="cnPhone" column="CN_PHONE" />
@@ -14,26 +14,48 @@
 		<result property="cnStatus" column="CN_STATUS" />
 		<result property="cnAdd" column="CN_ADD" />
 		<result property="regDate" column="REG_DATE" />
-		<result property="bankCode" column="BANK_CODE" />
 		<result property="bankName" column="BANK_NAME" />
 		<result property="account" column="ACCOUNT" />
 		<result property="accName" column="ACC_NAME" />
 		<result property="accMemo" column="ACC_MEMO" />
+		<result property="cnManager" column="CN_MANAGER" />
 	</resultMap>
 	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*) FROM
-		(SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD FROM CONN)
+		(SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD,CN_MANAGER FROM CONN)
 	</select>
 	
 	<select id="selectAccountList" resultMap="resultSetConn">
-		SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD FROM CONN
+		SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD,CN_MANAGER FROM CONN
+		ORDER BY REG_DATE DESC
 	</select>
 	
 	<select id="selectAccDetailList" resultMap="resultSetConn">
-		SELECT BANK_CODE,BANK_NAME,ACCOUNT,ACC_NAME,ACC_MEMO FROM CONN WHERE CN_CODE=#{cnCode}
+		SELECT BANK_NAME,ACCOUNT,ACC_NAME,ACC_MEMO FROM CONN WHERE CN_CODE=#{cnCode}
 	</select>
 	
+	<insert id="insertAcc">
+		INSERT INTO CONN VALUES(#{cnCode},#{cnName},#{ownerName},#{cnPhone},#{cnEmail},#{cnItem},DEFAULT,#{cnAdd},TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'),NULL,NULL,NULL,NULL,#{cnManager})
+	</insert>
+	
+	<update id="insertAccDetail">
+		    UPDATE CONN 
+			SET BANK_NAME=#{bankName},
+			ACCOUNT = #{account},
+			ACC_NAME=#{accName},
+			ACC_MEMO=#{accMemo}
+			WHERE CN_CODE=#{cnCode}
+	</update>
+	
+	<update id="updateDetail">
+			UPDATE CONN 
+			SET BANK_NAME=#{bankName},
+			ACCOUNT = #{account},
+			ACC_NAME=#{accName},
+			ACC_MEMO=#{accMemo}
+			WHERE CN_CODE=#{cnCode}
+	</update>
 </mapper>
 
  

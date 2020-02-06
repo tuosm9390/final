@@ -35,4 +35,22 @@ public class AccountServiceImpl implements AccountService{
 		return ad.selectDetailList(sqlSession,cnCode);
 	}
 
+	@Override
+	public int insertAcc(Conn c) {
+		// TODO Auto-generated method stub
+		return ad.insertAcc(sqlSession,c);
+	}
+
+	@Override
+	public int insertDetailAcc(Conn c) {
+		// TODO Auto-generated method stub
+		return ad.insertAccDetail(sqlSession,c);
+	}
+
+	@Override
+	public int updateDetail(Conn c) {
+		// TODO Auto-generated method stub
+		return ad.updateDetail(sqlSession,c);
+	}
+    
 }

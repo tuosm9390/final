@@ -80,19 +80,19 @@
 	<header>
 	</header>
 	<div id="enrollDiv">
-	<form action="insertAcc.ac" >
+	<form action="insertAcc.ac" id="insertAcc" method="post">
 		<div class="bodyDiv">
-			<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px"  id="sam"></div>  </div>
-			<div>	<div class="same" id="ssam">상호(이름)</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-			<div>	<div class="same" id="ssam">대표자명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-			<div>	<div class="same" id="ssam">종목</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-			<div>	<div class="same" id="ssam">전화</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-			<div>	<div class="same" id="search"><label id="searchId">우편번호검색</label></div> <div class="same"><input type="text" class="space" style="width:100px" id="sample6_postcode"><input type="text" style="width: 380px;" id="sample6_address"></div>  </div>
-			<div>	<div class="same" id="address"><label id="addressDiv">주소</label></div>  <div class="same"><label style="margin-left:-33px;">상세주소</label><input type="text" style="width: 600px; " id="sample6_detailAddress"><input type="text" id="sample6_extraAddress" hidden="hidden"></div>  </div>
-			<div>	<div class="same" id="ssam">업체담당자</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div>
-			<div>	<div class="same" id="ssam">Email</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam"></div>  </div> 
+			<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px"  id="sam" name="cnCode"></div>  </div>
+			<div>	<div class="same" id="ssam">상호(이름)</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnName"></div>  </div>
+			<div>	<div class="same" id="ssam">대표자명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="ownerName"></div>  </div>
+			<div>	<div class="same" id="ssam">종목</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnItem"></div>  </div>
+			<div>	<div class="same" id="ssam">전화</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnPhone"></div>  </div>
+			<div>	<div class="same" id="search"><label id="searchId">우편번호검색</label></div> <div class="same"><input type="text" class="space" style="width:100px" id="sample6_postcode" name="cnAdd"><input type="text" style="width: 380px;" id="sample6_address" name="cnAdd"></div>  </div>
+			<div>	<div class="same" id="address"><label id="addressDiv">주소</label></div>  <div class="same"><label style="margin-left:-33px;">상세주소</label><input type="text" style="width: 600px; " id="sample6_detailAddress" name="cnAdd"><input type="text" id="sample6_extraAddress" hidden="hidden"></div>  </div>
+			<div>	<div class="same" id="ssam">업체담당자</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnManager"></div>  </div>
+			<div>	<div class="same" id="ssam">Email</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnEmail"></div>  </div> 
 		</div><!-- end -->
-		</form>
+		</form> 
 		<div class="btnx">
 		<button id="reBtn">다시작성</button>&nbsp;
 		<button id="enrollBtn">등록</button></div>
@@ -146,11 +146,13 @@
       }).open();
    	});
    	
+   	///거래처등록
    	$("#enrollBtn").click(function(){
    		
    		var address = $("#sample6_postcode").val()+","+$("#sample6_address").val()+","+$("#sample6_detailAddress").val();
    		
    		console.log(address);
+   		$("#insertAcc").submit();
    		
    	});
 </script>

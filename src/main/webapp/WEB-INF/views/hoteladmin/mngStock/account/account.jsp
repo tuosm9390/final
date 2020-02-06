@@ -121,6 +121,9 @@ width:1000px;
 #pager_wrap .pager_num.on a {
 	color: #fff;
 }
+#acTbody2 td input[type=text]{
+width: 150px;
+}
 </style>
 </head>
 <body>
@@ -129,6 +132,7 @@ width:1000px;
 	<jsp:include page="../../common/menubar.jsp"/>
 	<jsp:include page="../../common/productMenubar.jsp"/>
 	 <jsp:include page="../modal/mAccountDetail.jsp"/> 
+	 <jsp:include page="../modal/mAccountDetailEnroll.jsp"/> 
 	 <jsp:include page="../modal/mAccountEnroll.jsp"/> 
 </header>
 	<section id="sbody">
@@ -153,10 +157,10 @@ width:1000px;
 	<div id="purDivv">
 	<table id="Table">
 			<tr>
-				<th>No</th>
 				<th>거래처코드</th>
 				<th>거래처명</th>
 				<th>대표자명</th>
+				<th>담당자</th>
 				<th>전화번호</th>
 				<th>거래항목</th>
 				<th style="width:40px;">사용구분</th>
@@ -165,13 +169,13 @@ width:1000px;
 			</tr>
 			<c:forEach var="i" items="${accountList}">
 			<tr>
-				<td><c:out value=""/></td>
 				<td><c:out value="${i.cnCode }"/></td>
 				<td><c:out value="${i.cnName }"/></td>
-				<td><c:out value="${i.ownerName }"/></td>
-				<td><c:out value="${i.cnPhone }" /></td>
-				<td><c:out value="${i.cnItem }" /></td>
-				<td><c:out value="${i.cnStatus }" /></td>
+				<td><c:out value="${i.ownerName}"/></td>
+				<td><c:out value="${i.cnManager}"/></td>
+				<td><c:out value="${i.cnPhone }"/></td>
+				<td><c:out value="${i.cnItem }"/></td>
+				<td><c:out value="${i.cnStatus }"/></td>
 				<td><c:out value="확인"/></td>
 				<td><c:out value="${i.cnAdd }" /></td>
 			</tr>  
@@ -237,9 +241,10 @@ width:1000px;
 		}).mouseout(function(){
 			$(this).parent("tr").css({"background":"white"});
 		}).click(function(){
-			var cnCode = $(this).parent().children("td").eq(1).text();
+			var cnCode = $(this).parent().children("td").eq(0).text();
 			$(".modal").fadeIn();
-			
+			console.log("cnCOde : " + cnCode)
+			$("#cnCodee").val(cnCode);
 			////이체정보ajax/////
 				$.ajax({
 					url:"selectDetail.ac",
@@ -248,13 +253,27 @@ width:1000px;
 					success:function(data){
 						console.log(data);
 						$("#acTbody").empty();
-						
+						if(data.accDetailList !=''){
 						for(var i=0;i<data.accDetailList.length;i++){
-						$("#acTbody").append("<tr><td>"+data.accDetailList[i].bankCode+"</td><td>"+data.accDetailList[i].bankName+
+							console.log("aaa"+cnCode);
+						$("#acTbody").append("<tr><td hidden='hidden'><input type='text' id='cnCoder' value='"+cnCode+"' name='cnCode'></td><td>"+data.accDetailList[i].bankName+
 								"</td><td>"+data.accDetailList[i].account+"</td><td>"+data.accDetailList[i].accName+
 								"</td><td>"+data.accDetailList[i].accMemo+"</td></tr>");
-						
 						}
+						//$("#cnCoder").val(cnCode);
+						$("#newac2").show();
+						$("#newac").hide();
+						
+						
+					}else{
+						$("#acTbody").append("<tr><td hidden='hidden'><input type='text' id='cnCoder' value='"+cnCode+"' name='cnCode'></td></tr>")
+						$("#newac2").hide();
+						$("#newac").show();
+					//	$("#cnCoder").val(cnCode);
+					}
+						
+						
+						
 					},
 					error:function(status){
 						console.log(status);
@@ -273,7 +292,67 @@ width:1000px;
 	$("#print").click(function(){
 		$(".modalEnroll").fadeIn();
 	});
+	
+	
+	///이체정보추가!!//
+	$("#newac").click(function(){
+		$(".modalz").fadeIn();
+		
+		console.log($("#cnCoder").val()+"fkfkfkfk")
+	})
+	//이처정보수정//
+	$("#newac2").click(function(){
+		$("#acTbody2").empty();
+		$("#newac2").hide();
+		$(".btnss2").show();
+		$("#acTbody").hide();
+		$("#acTbody2").show();
+		var cnCodez = $("#cnCoder").val();
+	
+		$("#acTbody2").append("<tr><td hidden='hidden'><input type='text' id='cnCodex'></td><td><input type='text' name='bankName' id='bankName'></td><td><input type='text' id='account'></td><td><input type='text' id='accName'></td><td><input type='text' id='accMemo'></td></tr>")
+		//이체정보수정ajax
+		$.ajax({
+			url:"updateDetail.ac",
+			type:"post",
+			data:{
+				cnCode:cnCodez,
+				bankName:$("#bankName").val(),
+				account:$("#account").val(),
+				accName:$("#accName").val(),
+				accMemo:$("#accMemo").val()
+			},
+			success:function(data){
+				console.log(data);
+			},
+			error:function(status){
+				console.log(status);
+			}
+		});
+		////////////
+	})
+	
+	//////이체정보리스트 취소버튼
+	$("#cancel").click(function(){
+		$("#acTbody").show();
+		$("#acTbody2").hide();
+		$("#newac2").show();
+		$(".btnss2").hide();
+	})
+	//
+	
+	$("#ok").click(function(){
+		$("#updateDetail").submit();
+		console.log("////////////////////");
+		console.log($("#cnCodee").val())
+		console.log($("#cnCoder").val())
+		$("#cnCodex").val($("#cnCoder").val());
+		
+	})
+	
+	$(function(){
+	
+	})
 	</script>
-
+	
 </body>
 </html>

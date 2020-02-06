@@ -24,14 +24,17 @@
 	}
 	
 	#mainDiv{
-		height: 400px;
-		width: 1000px;
+		height: 73px;
+		width: 650px;
 		overflow-y:auto; 
-		border: 1px solid lightgray;
+		margin-left: -15px;
 	}
-	.btnss{
+	.btnss,.btnss2{
 	margin-top: 8px;
-	margin-left: 89%;
+	margin-left: 74.5%;
+	}
+	.sb{
+	display: inline-block;
 	}
 	.topbar{
 	display: inline-block;
@@ -39,7 +42,7 @@
 	}
 	#topDivv{
 	width: 1000px;
-	height: 30px;
+	
 	}
 	#hr{
 	border-bottom: 1px solid black;
@@ -53,15 +56,23 @@
 	#acDiv{
 	margin-left: 40px;
 	margin-top: 24px;
-	}
-	#newac,#topBtn{
-	color:white;
+ 	}
+ 	#newac,#newac2,#cancel,#ok{
+ 	color:white;
 	background : #3498DB;
 	border: 1px solid #3498DB;
-	box-sizing: border-box;
+	width: 68px;
 	height: 25px;
-	width: 60px;
-	}
+	font-weight: bold;
+	border-radius: 2px;
+ 	} 
+ 	#newac2{
+ 	margin-left: 76px;
+ 	}
+ 	#newac{
+ 		margin-left: 76px;
+ 	}
+	
 </style>
 </head>
 <body>
@@ -84,9 +95,9 @@
 	  
 	</div>
 	<div id="mainDiv" style="overflow: auto;">
+	<form action="updateDetail.ac" id="updateDetail" method="post">
 		<table id="TopTable">
 			<tr>
-				<th>은행코드</th>
 				<th>은행명</th>
 				<th>계좌번호</th>
 				<th>예금주명</th>
@@ -94,22 +105,30 @@
 			</tr>
 			<tbody id="acTbody">
 				<tr>
-					<td>f</td>
-					<td>f</td>
-					<td>f</td>
-					<td>f</td>
-					<td>f</td>
+					<td id="acCnName">f</td>
+					<td id="acAccount">f</td>
+					<td id="acCnName">f</td>
+					<td id="acMemo">f</td>
 				</tr>
 			</tbody>
+				<tbody id="acTbody2">
+				</tbody>
 		</table>
+		</form>
 	</div><!-- end -->
-	<div class="btnss"><button id="newac">신규</button></div> 
+	<div class="btnss"><button id="newac">신규</button><button id="newac2">수정</button></div>
+	<div class="btnss2"><button id="cancel">취소</button>&nbsp;&nbsp;<button id="ok">완료</button></div>
+	 
 	</div>
 	<footer>
 	
 	</footer>
 	<script>
-		
+ 	$(function(){
+		/* $("#newac").hide();
+		$("#newac2").hide(); */
+		$(".btnss2").hide();
+	}) 
 	</script>
 </body>
 </html>
