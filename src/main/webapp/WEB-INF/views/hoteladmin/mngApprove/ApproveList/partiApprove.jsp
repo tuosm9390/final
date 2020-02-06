@@ -216,13 +216,17 @@ solid
 							<td><c:out value="${b.RPTITLE }" /></td>
 							<td><c:out value="${b.RPTYPE }" /></td>
 							<td><c:out value="${b.MNAME }" /></td>
-							<c:set var="status" value="승인" />
-							<c:if test="${b.RPSTATUS eq status }">
-								<td><c:out value="${b.SNAME }" /></td>
-							</c:if>
-							<c:if test="${b.RPSTATUS ne status }">
-								<td></td>
-							</c:if>
+							<c:choose>
+							<c:when test="${b.RPSTATUS eq '반려' }">
+ 								<td><c:out value="${b.SNAME }" /></td>
+							 </c:when>
+							 <c:when test="${b.RPSTATUS eq '승인' }">
+							 	<td><c:out value="${b.SNAME }" /></td>
+							 </c:when>
+							 <c:otherwise >
+							 <td></td>
+							 </c:otherwise> 
+							 </c:choose>
 							<td><c:out value="${b.RPSTATUS }" /></td>
 							<td><a>보기</a></td>
 
@@ -334,15 +338,29 @@ solid
 			console.log(deptNo);
 			console.log(authNo);
 			
-			var docuN = $(".docuNum").text();
-			console.log(docuN);
 			
+			//총지배인
+			if(deptNo == 1) {
+				var docuN = $("#tbl_modal_order tr:first-child").children().eq(1).text();
+				console.log(docuN);
+				if (window.confirm("승인 하시겠습니까?") == true) {
+					
+					var rptNo = $("tbl_modal_order").find(".repeatOrder").children().eq(0).val();
+					var status = "APPR";
+					//console.log(rptNo);
+	
+					location.href = "approveYn.ap?status="
+							+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&docuN=" + docuN;
+	
+				} else {
+					return false;
+				}
 			
-			
+		}else {
+			var docuN = $(".tbl_modal.parti tr:first-child").children().eq(1).text();
 			if (window.confirm("승인 하시겠습니까?") == true) {
 				
-				var rptNo = $(".tbl_modal.parti").find(".repeat").children()
-						.eq(0).val();
+				var rptNo = $(".tbl_modal.parti").find(".repeat").children().eq(0).val();
 				var status = "APPR";
 				//console.log(rptNo);
 
@@ -352,20 +370,52 @@ solid
 			} else {
 				return false;
 			}
-
 		}
 
+	}
+
 		function reject() {
+		clearInterval(startDate());
+			
+			console.log(mno);
+			console.log(deptNo);
+			console.log(authNo);
+			
+			
+			//총지배인
+			if(deptNo == 1) {
+				var docuN = $("#tbl_modal_order tr:first-child").children().eq(1).text();
+				console.log(docuN);
+				if (window.confirm("반려 하시겠습니까?") == true) {
+					
+					var rptNo = $("tbl_modal_order").find(".repeatOrder").children().eq(0).val();
+					var status = "REJECT";
+					//console.log(rptNo);
+	
+					location.href = "approveYn.ap?status="
+							+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&docuN=" + docuN;
+	
+				} else {
+					return false;
+				}
+			
+		}else {
+			var docuN = $(".tbl_modal.parti tr:first-child").children().eq(1).text();
 			if (window.confirm("반려 하시겠습니까?") == true) {
-				var rptNo = $(".tbl_modal.parti").find(".repeat").children()
-						.eq(0).val();
+				
+				var rptNo = $(".tbl_modal.parti").find(".repeat").children().eq(0).val();
 				var status = "REJECT";
-				location.href = "approveYn.ap?rptNo=" + rptNo + "&status="
-						+ status + "&dateString=" + dateString;
+				//console.log(rptNo);
+
+				location.href = "approveYn.ap?status="
+						+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&docuN=" + docuN;
+
 			} else {
 				return false;
 			}
 		}
+
+	}
 		//승인 반려처리 끝
 
 		$(".tbl_tit").mouseenter(function() {
@@ -396,7 +446,7 @@ solid
 
 								$.each(data.list, function(index, list) {
 									$('#tbl_modal_order .tempOrder').after(
-											"<tr class='repeatOrder'><td>"
+											"<tr class='repeatOrder'><input type='hidden' value='" + list.RPT_NO + "'><td>"
 													+ list.ITYPE + "</td><td>"
 													+ list.CNAME + "</td><td>"
 													+ list.INAME + "</td><td>"
@@ -439,7 +489,7 @@ solid
 												data.list[0].RTITLE);
 								$("#tbl_modal_order #totalPrice").text(data.list[0].TPRICE + "원");
 								// console.log(list.PRSN)
-								$("#tbl_modal_order #content").text(data.list[0].ORSN);
+								$("#tbl_modal_order tr").find(".txtArea").text(data.list[0].ORSN);
 
 								$(".modal_order").fadeIn();
 
@@ -553,7 +603,7 @@ solid
 								console.log("들어오니?1");
 
 								$(".tbl_modal.parti tr:first-child").children()
-										.eq(1).text(data.list[0].DOCNO);
+								.eq(1).text(data.list[0].DOCNO);
 								if (data.list[0].RSTATUS == 'WAIT'
 										|| data.list[0].RSTATUS == 'REJECT') {
 									$(".tbl_modal.parti tr:nth-child(2)")

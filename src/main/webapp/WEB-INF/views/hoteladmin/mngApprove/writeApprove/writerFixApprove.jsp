@@ -102,27 +102,32 @@ textarea {
 }
 .anoTxt {
 	border-radius:3px;
-	height:17px;
+	height:25px;
 	border:1px solid lightgray;
 }
 .anoTxt_ino {
 	border-radius:3px;
-	height:17px;
+	height:20px;
 	border:1px solid lightgray;
 }
 .anoTxt_price {
 	border-radius:3px;
-	height:17px;
+	height:25px;
 	border:1px solid lightgray;
 }
 .anoTxt_iname {
 	border-radius:3px;
-	height:17px;
+	height:20px;
 	border:1px solid lightgray;
 }
 .anoTxt_cname {
 	border-radius:3px;
-	height:17px;
+	height:20px;
+	border:1px solid lightgray;
+}
+.anoTxt_rsn {
+	border-radius:3px;
+	height:20px;
 	border:1px solid lightgray;
 }
 #plusBtn4 {
@@ -170,7 +175,7 @@ textarea {
 }
 #totalPrice {
 	 width:60px;
-   height:35px;
+   height:30px;
    border-radius:2px;
    border:1px solid lightgray;
 }
@@ -273,8 +278,16 @@ textarea {
 					<td>1</td>
 					<td><input type="text" class="anoTxt_ino" style="text-align:center;" name="ino"></td>
 					<td><input type="text" class="anoTxt_iname" placeholder="제품명" readonly style="text-align:center;" name="iname"></td>
-					<td><input type="text" class="anoTxt_cname" placeholder="수리 업체명" style="text-align:center;" name="cnName"></td>
-					<td><input type="text" class="anoTxt_price" placeholder="금액" style="text-align:center;" name="price"></td>
+					<td>
+					<!-- <input type="text" class="anoTxt_price" placeholder="금액" style="text-align:center;" name="price"> -->
+					<select class="anoTxt_price" name="price">
+							<option selected disabled hidden>선택 해주세요</option>
+						</select>
+					<td>
+						
+						<input type="text" class="anoTxt_cname" placeholder="수리 업체명" style="text-align:center;" name="cnName"></td>
+					
+					</td>
 					<td><input type="text" class="anoTxt_rsn" placeholder="사유" style="text-align:center;" name="rsn"></td>
 				</tr>
 				

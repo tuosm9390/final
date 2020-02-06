@@ -67,6 +67,34 @@
 		<result property="auth" column="AUTH1"></result>
 	</resultMap>
 	
+	<resultMap id="OrderResultSet" type="OrderRequest">
+		<result property="reqNo" column="PURRPT_NO"></result>
+		<result property="rptNo" column="RPT_NO"></result>
+		<result property="ino" column="INO"></result>
+		<result property="cnCode" column="CN_CODE"></result>
+		<result property="amount" column="AMOUNT"></result>
+		<result property="totPrice" column="TOT_PRICE"></result>
+		<result property="orderRsn" column="ORDER_RSN"></result>
+		<result property="deptNo" column="DEPT_NO"></result>
+		<result property="mname" column="NAME"></result>
+		<result property="rptDate" column="RPT_DATE"></result>
+		<result property="sname" column="RECEIVER"></result>
+		<result property="title" column="RPT_TITLE"></result>
+		<result property="content" column="ORDER_RSN"></result>
+		<result property="type" column="RPT_TYPE"></result>
+		<result property="cname" column="CN_NAME"></result>
+		<result property="iname" column="INAME"></result>
+		<result property="mfg" column="MFG"></result>
+		<result property="vosprice" column="VOS"></result>
+		<result property="docno" column="DOC_NO"></result>
+		<result property="deptname" column="DEPT_NAME"></result>
+		<result property="smno" column="MNO"></result>
+		<result property="mno" column="MNO"></result>
+		<result property="stfId" column="STF_ID"></result>
+		<result property="purDocuno" column="DOC_NO"></result>
+		
+	</resultMap>
+	
 	
 
 
@@ -575,14 +603,38 @@
 		
 	</select>
 	
-	<select id="insertOrderList" parameterType="PurRequest" resultType="_int">
-		INSERT INTO REPORT VALUES(SEQ_RPT_NO.NEXTVAL, #{mmno}, #{rptDate}, #{smno}, #{title}, DEFAULT, DEFAULT, #{docno}, 'ORDER')
+	<select id="insertOrderList" parameterType="OrderRequest">
+		INSERT INTO REPORT VALUES(SEQ_RPT_NO.NEXTVAL, #{mno}, #{rptDate}, #{smno}, #{title}, DEFAULT, DEFAULT, #{docno}, 'ORDER')
 	</select>
 	
-	<select id="insertOrderList2" parameterType="PurRequest" resultType="_int">
-		INSERT INTO ORDER_REQ VALUES()
+	<select id="selectOrderRptNo" parameterType="OrderRequest" resultType="_int">
+		SELECT RPT_NO
+		FROM REPORT
+		WHERE DOC_NO = #{docno}
 	</select>
 	
+	<select id="selectPurRequestInfo" parameterType="_int" resultMap="OrderResultSet">
+		SELECT PR.RPT_NO, INO
+		FROM PUR_REQ PR
+        JOIN REPORT R ON(PR.RPT_NO = R.RPT_NO)
+		WHERE DOC_NO = #{docno}
+	</select>
+	<!-- orderRequest 수신자 mno 받아오기 -->
+	<select id="selectOrderSmno" parameterType="OrderRequest" resultType="_int">
+		SELECT MNO
+		FROM STAFF
+		WHERE STF_ID = #{stfId} 
+	</select>
+	
+	<select id="insertOrderResult" parameterType="OrderRequest">
+		INSERT INTO ORDER_REQ
+		VALUES(#{rptNo}, #{ino}, #{cnCode}, #{amount}, #{totPrice}, #{content}, #{purRptNo}, #{purIno})
+	</select>
+	<select id="selectCnCode" parameterType="OrderRequest" resultType="String">
+		SELECT CN_CODE
+		FROM CONN
+		WHERE CN_NAME = #{cname}
+	</select>
 	
 </mapper>
   

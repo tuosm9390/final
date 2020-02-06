@@ -7,6 +7,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
+import com.kh.hotels.mngApproval.model.vo.OrderRequest;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
@@ -88,8 +89,20 @@ public interface ApprovalDao {
 
 	ArrayList<HashMap<String, Object>> selectOrderList(SqlSessionTemplate sqlSession, int dnum);
 
-	int insertOrderList(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
+	int insertOrderList(SqlSessionTemplate sqlSession, ArrayList<OrderRequest> oRequestList);
 
-	int insertOrderList2(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
+
+	ArrayList<OrderRequest> selectPurRequestInfo(SqlSessionTemplate sqlSession, int docno);
+
+	int selectOrderRptNo(SqlSessionTemplate sqlSession, ArrayList<OrderRequest> oRequestList);
+
+	int selectOrderSmno(SqlSessionTemplate sqlSession, ArrayList<OrderRequest> oRequestList);
+
+	int insertFinalOrderRequest(SqlSessionTemplate sqlSession,
+			ArrayList<OrderRequest> oRequestList);
+
+	ArrayList<String> selectCnCode(SqlSessionTemplate sqlSession,
+			ArrayList<OrderRequest> oRequestList);
+
 
 }
