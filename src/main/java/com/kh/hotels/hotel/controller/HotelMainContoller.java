@@ -248,12 +248,6 @@ public class HotelMainContoller {
 						}
 					}
 				}
-				// insertStay
-//				int insertStay = hs.insertStay(rsvCheck);
-//				System.out.println("insertStay : " + rsvCheck.getNum());
-//				if(insertStay > 0) {
-//					int insertStayHis = hs.insertStayUse(rsvCheck);
-//					if(insertStayHis > 0) {
 				// insertPayment
 				int insertPayment = hs.insertPayment(rsvCheck);
 				System.out.println("insertPayment : " + insertPayment);

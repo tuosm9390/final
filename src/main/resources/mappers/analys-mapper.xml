@@ -26,6 +26,14 @@
 		<result property="rsvNo" column="rsv_No" />
 		<result property="rsvDate" column="rsv_Date" />
 	</resultMap>
+	
+	<resultMap type="com.kh.hotels.common.model.vo.Payment" id="PaymentResultSet">
+		<id property="pno" column="PNO" />
+		<result property="pway" column="PWAY" />
+		<result property="price" column="PRICE" />
+		<result property="payDate" column="PAY_DATE" />
+		<result property="payStatus" column="PAY_STATUS" />
+	</resultMap>
 
 	<select id="selectSalesDetailList" resultType="java.util.ArrayList" resultMap="SalesDetailResultSet">
 		SELECT RM.RM_NUM, RSV_NO, R.MNO, M.NAME, CHECKIN, CHECKOUT, STAY_PRICE, TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') AS RSV_DATE
@@ -62,7 +70,7 @@
 		LEFT JOIN ROOM_TYPE RT ON (RM.RT_NO = RT.RT_NO)
 		<choose>
 			<when test="Condition == 'view'">
-				WHERE TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') = SYSDATE
+				WHERE TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(SYSDATE)
 			</when>
 			<when test="Condition == 'dailySales'">
 				WHERE TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailySales}, 'YYYY-MM-DD')
@@ -83,7 +91,7 @@
 		WHERE STAY_TYPE = 'LENT'
 		<choose>
 			<when test="Condition == 'view'">
-				AND TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD') = SYSDATE
+				AND TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD') = TO_DATE(SYSDATE)
 			</when>
 			<when test="Condition == 'dailySales'">
 				AND TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailySales}, 'YYYY-MM-DD')
@@ -95,9 +103,60 @@
 		GROUP BY (TO_DATE(SUBSTR(REAL_CI, 0, 10), 'YYYY-MM-DD'), STAY_TYPE, RT.RT_NO, RT.RT_NAME)
 		ORDER BY RT.RT_NO
 	</select>
+	
+	<select id="selectMonthlyRsvList" resultType="java.util.ArrayList" resultMap="StayResultSet">
+		SELECT SUM(STAY_PRICE) AS PRICE, TO_DATE(SUBSTR(R.RSV_DATE, 0, 7), 'YYYY-MM') AS RSV_DATE, RT.RT_NO, RT.RT_NAME
+		FROM RSV R
+		LEFT JOIN ROOM RM ON (RM.RM_NO = R.RM_NO)
+		LEFT JOIN ROOM_TYPE RT ON (RM.RT_NO = RT.RT_NO)
+		<choose>
+			<when test="Condition == 'view'">
+				WHERE EXTRACT(MONTH FROM TO_DATE(SUBSTR(R.RSV_DATE, 0, 7), 'YYYY-MM')) = EXTRACT(MONTH FROM SYSDATE)
+        		AND EXTRACT(YEAR FROM TO_DATE(SUBSTR(R.RSV_DATE, 0, 7), 'YYYY-MM')) = EXTRACT(YEAR FROM SYSDATE)
+			</when>
+			<when test="Condition == 'monthlySalesPerRoomType'">
+				WHERE TO_DATE(SUBSTR(R.RSV_DATE, 0, 7), 'YYYY-MM') = TO_DATE(#{monthlySalesPerRoomType}, 'YYYY-MM')
+			</when>
+		</choose>
+        GROUP BY (TO_DATE(SUBSTR(R.RSV_DATE, 0, 7), 'YYYY-MM'), RT.RT_NO, RT.RT_NAME)
+        ORDER BY RT_NO
+	</select>
+	
+	<select id="selectMonthlyStayList" resultType="java.util.ArrayList" resultMap="StayResultSet">
+		SELECT SUM(PRICE) AS PRICE, TO_DATE(SUBSTR(REAL_CI, 0, 7), 'YYYY-MM') AS "DATE", RT.RT_NO, RT.RT_NAME
+		FROM STAY S
+		LEFT JOIN ROOM R ON (S.RM_NO = R.RM_NO)
+		LEFT JOIN ROOM_TYPE RT ON (R.RT_NO = RT.RT_NO)
+		WHERE STAY_TYPE = 'LENT'
+		<choose>
+			<when test="Condition == 'view'">
+				AND EXTRACT(MONTH FROM TO_DATE(SUBSTR(REAL_CI, 0, 7), 'YYYY-MM')) = EXTRACT(MONTH FROM SYSDATE)
+        		AND EXTRACT(YEAR FROM TO_DATE(SUBSTR(REAL_CI, 0, 7), 'YYYY-MM')) = EXTRACT(YEAR FROM SYSDATE)
+			</when>
+			<when test="Condition == 'monthlySalesPerRoomType'">
+				AND TO_DATE(SUBSTR(REAL_CI, 0, 7), 'YYYY-MM') = TO_DATE(#{monthlySalesPerRoomType}, 'YYYY-MM')
+			</when>
+		</choose>
+        GROUP BY (TO_DATE(SUBSTR(REAL_CI, 0, 7), 'YYYY-MM'), RT.RT_NO, RT.RT_NAME)
+        ORDER BY RT_NO
+	</select>
 
-
-
+	<!-- 일별 지불 (고객) -->
+	<select id="selectDailyPaymentList" resultType="java.util.ArrayList" resultMap="PaymentResultSet">
+		SELECT SUM(PRICE) AS PRICE, PWAY, TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM') AS PAY_DATE, PAY_STATUS
+		FROM PAYMENT
+		<choose>
+			<when test="Condition == 'view'">
+				WHERE EXTRACT(MONTH FROM TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM')) = EXTRACT(MONTH FROM SYSDATE)
+				AND EXTRACT(YEAR FROM TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM')) = EXTRACT(YEAR FROM SYSDATE)
+			</when>
+			<when test="Condition == 'dailySalesCst'">
+				WHERE EXTRACT(MONTH FROM TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM')) = TO_DATE(#{dailySalesCst}, 'YYYY-MM')
+			</when>
+		</choose>
+		GROUP BY (PWAY, TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM'), PAY_STATUS)
+		ORDER BY PWAY
+	</select>
 
 
 
