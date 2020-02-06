@@ -13,6 +13,7 @@ public class RuleInfo implements java.io.Serializable {
 	private int svcRate;
 	private String nsUnit;
 	private String ltUnit;
+	private int nsRate;
 	
 	private double serviceRate;
 	private int noshowUnit;

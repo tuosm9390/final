@@ -1,8 +1,6 @@
 package com.kh.hotels.mngRooms.model.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,6 +11,7 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
@@ -54,6 +53,11 @@ public class RoomsDaoImpl implements RoomsDao {
 			throw new RoomListException("Error : View RuleInfo Failed");
 		}
 		return ruleInfo;
+	}
+	
+	@Override
+	public Rfd viewRefundRate(SqlSessionTemplate sqlSession) {
+		return (Rfd) sqlSession.selectOne("Rooms.viewRefundRate");
 	}
 
 	@Override
@@ -190,6 +194,59 @@ public class RoomsDaoImpl implements RoomsDao {
 	@Override
 	public ArrayList<ModalClient> ajxSelectRsvPay(SqlSessionTemplate sqlSession, String rsvNo) {
 		return (ArrayList) sqlSession.selectList("Rooms.ajxSelectRsvPay", rsvNo);
+	}
+
+	@Override
+	public void cancelReservRSV(SqlSessionTemplate sqlSession, Rfd rfd) {
+		int result = sqlSession.update("Rooms.cancelReservRSV", rfd);
+		if(result > 0) {
+			sqlSession.update("Rooms.cancelReservRSVhis", rfd);
+		}
+	}
+
+	@Override
+	public void cancelReservSVC(SqlSessionTemplate sqlSession, Rfd rfd) {
+		sqlSession.update("Rooms.cancelReservSVC", rfd);
+		ArrayList<Integer> svcList = (ArrayList) sqlSession.selectList("Rooms.cancelReservFindSvc", rfd);
+		if(svcList.size() > 0) {
+			for(int i = 0; i < svcList.size(); i++) {
+				rfd.setSvcNo(svcList.get(i));
+				sqlSession.insert("Rooms.cancelReservSVChis", rfd);
+			}
+		}
+	}
+
+	@Override
+	public void cancelReservRFD(SqlSessionTemplate sqlSession, Rfd rfd) {
+		sqlSession.insert("Rooms.cancelReservRFD", rfd);
+	}
+
+	@Override
+	public void insertRsvCheckIn(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		int result1 = sqlSession.insert("Rooms.insertRsvCheckIn", checkIn);
+		if(result1 > 0) {
+			sqlSession.insert("Rooms.insertCIstayHis");
+		}
+	}
+
+	@Override
+	public void updateRsvPayment(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		sqlSession.update("Rooms.updateRsvPayment", checkIn);
+	}
+
+	@Override
+	public void updateRsvSvc(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		int result = sqlSession.update("Rooms.updateRsvSvc", checkIn);
+		if(result > 0) {
+			ArrayList<Integer> svcList = (ArrayList) sqlSession.selectList("Rooms.findRsvCISvc", checkIn);
+			if(svcList.size() > 0) {
+				for(int i = 0; i < svcList.size(); i++) {
+					checkIn.setSvcNo(svcList.get(i));
+					sqlSession.insert("Rooms.insertRsvSvcHis", checkIn);
+				}
+			}
+		}
+		
 	}
 
 }

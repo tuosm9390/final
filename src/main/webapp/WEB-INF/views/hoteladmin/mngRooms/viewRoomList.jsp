@@ -457,6 +457,7 @@ input[type=checkbox] {
 			var roomprice;
 			var svclist;
 			var ruleInfo;
+			var rfdRate;
 			var today;
 			
 			//onload
@@ -470,6 +471,7 @@ input[type=checkbox] {
 				roomprice = JSON.parse('${jsonList2}');
 				svclist = JSON.parse('${jsonList3}');
 				ruleInfo = JSON.parse('${jsonObject}');
+				rfdRate = JSON.parse('${jsonObject2}');
 				today = new Date().format('yyyy-MM-dd');
 				console.log(roomlist);
 				
@@ -1003,6 +1005,9 @@ input[type=checkbox] {
 			
 			
 			//모달2 : 예약 [ 입실대기 ] 객실 클릭
+			var reservPayDate;
+			var reservCheckinTime;
+			var selRoomNumm;
 			function goReserv(rsvNo) {
 				$(".statusColor").addClass('lightsteelblue');
 				$(".totalPrice").addClass('lightsteelblue');
@@ -1020,6 +1025,7 @@ input[type=checkbox] {
 					success:function(data) {
 						$("#clientName").val(data.stayInfo.clientName);
 						$("#insertClient").text(data.stayInfo.clientNo);
+						$("#clientNo").val(data.stayInfo.clientNo);
 						$("#clientPhone").val(data.stayInfo.clientPhone);
 						$("#clientEmail").val(data.stayInfo.clientEmail);
 						
@@ -1039,6 +1045,7 @@ input[type=checkbox] {
 						
 						$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
 						$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
+						selRoomNumm = data.stayInfo.rmNo;
 						
 						
 						var stdPer = data.stayInfo.stdPer;
@@ -1049,6 +1056,10 @@ input[type=checkbox] {
 								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
 							} else {
 								$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+							}
+							
+							if(roomlist[i].rsvNo == rsvNo) {
+								reservCheckinTime = roomlist[i].ciTime;
 							}
 						}
 						for(var i = 1; i <= stdPer; i++) {
@@ -1078,7 +1089,6 @@ input[type=checkbox] {
 						}
 						$("#totalSvc").text(tempSvcTotal.toLocaleString());
 						
-						console.log(data.stayPay);
 						for(var i = 0; i < data.stayPay.length; i++) {
 							switch(data.stayPay[i].payWay) {
 							case "CARD" : $("#payCard").val($("#payCard").val() * 1 + data.stayPay[i].paymentFee); break;
@@ -1089,9 +1099,9 @@ input[type=checkbox] {
 							
 							if(i == data.stayPay.length - 1) {
 								$("#lastPayDay").text(data.stayPay[i].payDate);
+								reservPayDate = data.stayPay[i].payDate;
 							}
 						}
-						
 						changeTotalPrcTxt();
 						
 					},
@@ -1106,12 +1116,14 @@ input[type=checkbox] {
 			
 			
 			//모달3 : [ 대실 ] 객실 클릭
+			var checkoutStayNo;
 			function goLent(stayNo) {
 				$(".statusColor").addClass('gold');
 				$(".totalPrice").addClass('gold');
 				$("#staycode").text('　　');
 				$(".infoBtnSec").show();
 				$("#rentYN").prop('checked', true);
+				checkoutStayNo = stayNo;
 				
 				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
 				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
@@ -1206,6 +1218,7 @@ input[type=checkbox] {
 				$(".totalPrice").addClass('mediumseagreen');
 				$("#staycode").text('　　');
 				$(".infoBtnSec").show();
+				checkoutStayNo = stayNo;
 				
 				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
 				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
@@ -1360,12 +1373,12 @@ input[type=checkbox] {
 						console.log("end : " + end + "/" + dateE + dayE);
 						$("#brkMno").text(brkRoom.userName);
 						$("#brkRsnTA").text(brkRoom.brkRsn);
+						$(".modalBroken").fadeIn();
 					},
 					error:function(error, status) {
 						alert("SYSTEM ERROR!");
 					}
 				});
-				$(".modalBroken").fadeIn();
 			}
 			
 			
@@ -1596,13 +1609,11 @@ input[type=checkbox] {
 	            var _hour = _minute * 60;
 	            var _day = _hour * 24;
 	            var timer2;
-	                console.log(ruleTime);
-	                console.log(nowTime);
 	
 	            function showAction() {
 	                var distance =  ruleTime - nowTime;
 	
-	                if (distance < 0) {
+	                if (distance <= 0) {
 	                    clearInterval(timer2);
 	                    $("#roomBox" + rmNo).find('.statusBox').css({"animation":"warnAct 1s infinite"});
 	                    return;

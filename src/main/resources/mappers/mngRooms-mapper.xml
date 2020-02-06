@@ -72,6 +72,8 @@
 		<result property="svcRate" column="SVC_RATE" />
 		<result property="nsUnit" column="NS_UNIT" />
 		<result property="ltUnit" column="LENT_UNIT" />
+		<result property="serviceRate" column="serviceRate" />
+		<result property="nsRate" column="NS_RATE" />
 	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngRooms.model.vo.BrokenRoom" id="brkRoomSet">
@@ -146,6 +148,16 @@
 		<result property="timeCI" column="CI_TIME" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.Rfd" id="refundInfoSet">
+		<id property="rfdNo" column="RFD_NO" />
+		<result property="termType" column="TERM_TYPE" />
+		<result property="dayType" column="DAY_TYPE" />
+		<result property="rfdDate" column="RFD_DATE" />
+		<result property="rfdRate" column="RFD_RATE" />
+		<result property="hname" column="HNAME" />
+		<result property="ltype" column="LTYPE" />
+	</resultMap>
+	
 	<select id="viewRoomList" resultMap="roomListSet">
 		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
 		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
@@ -162,7 +174,8 @@
 		           AND STAY_STATUS = 'N') S ON (R.RM_NO = S.RM_NO)
 		LEFT JOIN (SELECT *
 		           FROM RSV
-		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') = TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')) V ON (R.RM_NO = V.RM_NO)
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') = TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		           AND RSV_STATUS = 'OK') V ON (R.RM_NO = V.RM_NO)
 		LEFT JOIN MEMBER M1 ON (V.MNO = M1.MNO)
 		LEFT JOIN MEMBER M2 ON (S.MNO = M2.MNO)
         LEFT JOIN (SELECT RM_NO, BRK_BEGIN, BRK_END, BRK_RSN
@@ -187,11 +200,25 @@
 	</select>
 	
 	<select id="viewRuleInfo" resultMap="ruleInfoSet">
-		SELECT I.HNAME, N.NS_UNIT, C.SVC_RATE, B.LENT_UNIT
+		SELECT I.HNAME, N.NS_UNIT, N.NS_RATE, C.SVC_RATE, B.LENT_UNIT
 		FROM INFO I
 		JOIN NOSHOW N ON (I.HNAME = N.HNAME)
 		JOIN CAL C ON (I.HNAME = C.HNAME)
 		JOIN BASIC B ON (I.HNAME = B.HNAME)
+	</select>
+	
+	<select id="viewRefundRate" resultMap="refundInfoSet">
+		SELECT *
+		FROM RFD
+		WHERE TERM_TYPE = CASE
+		                    WHEN EXTRACT(MONTH FROM (SYSDATE + 9 / (24) + 135 / (24 * 60 * 60))) IN (1, 2, 7, 8, 12) THEN 'SEASON'
+		                    ELSE 'OFFSEASON'
+		                  END
+		AND DAY_TYPE = CASE
+		                WHEN TO_CHAR((SYSDATE + 9 / (24) + 135 / (24 * 60 * 60)), 'd') IN (1, 6, 7) THEN 'WEEKEND'
+		                ELSE 'WEEK'
+		               END
+		AND RFD_DATE = 0
 	</select>
 	
 	<select id="ajxFindClient" resultMap="memberSet" parameterType="java.lang.String">
@@ -262,6 +289,7 @@
 		WHERE B.RM_NO = #{rmNo}
 		AND TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
 		AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		AND BRK_STATUS = 'Y'
 	</select>
 	
 	<update id="ajxUpdateBrkStt" parameterType="_int">
@@ -270,6 +298,7 @@
 		WHERE RM_NO = #{rmNo}
 		AND TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
 		AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		AND BRK_STATUS = 'Y'
 	</update>
 	
 	<update id="ajxUpdateRoomClean" parameterType="_int">
@@ -378,5 +407,90 @@
 		AND V.RSV_NO = #{rsvNo}
 		ORDER BY PAY_DATE
 	</select>
+	
+	<update id="cancelReservRSV" parameterType="com.kh.hotels.mngRooms.model.vo.Rfd">
+		UPDATE RSV
+		<choose>
+		<when test="rfdType == 0">
+		SET RSV_STATUS = 'REFUND'
+		</when>
+		<when test="rfdType == 1">
+		SET RSV_STATUS = 'NOSHOW'
+		</when>
+		</choose>
+		WHERE RSV_NO = #{reservNo}
+	</update>
+	
+	<insert id="cancelReservRSVhis" parameterType="com.kh.hotels.mngRooms.model.vo.Rfd">
+		INSERT INTO RSV_HIS
+		<choose>
+		<when test="rfdType == 0">
+		VALUES (#{reservNo}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'RSV_STATUS', 'OK', 'REFUND', '예약취소')
+		</when>
+		<when test="rfdType == 1">
+		VALUES (#{reservNo}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'RSV_STATUS', 'OK', 'NOSHOW', '고객노쇼')
+		</when>
+		</choose>
+		
+	</insert>
+	
+	<update id="cancelReservSVC" parameterType="com.kh.hotels.mngRooms.model.vo.Rfd">
+		UPDATE SVC_USE
+		SET USE_STATUS = 'N'
+		WHERE RSV_NO = #{reservNo}
+	</update>
+	
+	<select id="cancelReservFindSvc" resultType="_int" parameterType="com.kh.hotels.mngRooms.model.vo.Rfd">
+		SELECT SVC_NO
+		FROM SVC_USE
+		WHERE RSV_NO = #{reservNo}
+	</select>
+	
+	<insert id="cancelReservSVChis" parameterType="com.kh.hotels.mngRooms.model.vo.Rfd">
+		INSERT INTO SVC_USE_HIS
+		<choose>
+		<when test="rfdType == 0">
+		VALUES (#{svcNo}, 'USE_STATUS', 'Y', 'N', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), '예약취소')
+		</when>
+		<when test="rfdType == 1">
+		VALUES (#{svcNo}, 'USE_STATUS', 'Y', 'N', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), '고객노쇼')
+		</when>
+		</choose>
+	</insert>
+	
+	<insert id="cancelReservRFD" parameterType="com.kh.hotels.mngRooms.model.vo.Rfd">
+		INSERT INTO PAYMENT
+		VALUES (SEQ_PNO.NEXTVAL, 'ACCOUNT', #{rfdMoney}, #{payDate}, 'REFUND', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'Y', #{reservNo}, NULL)
+	</insert>
+	
+	<insert id="insertRsvCheckIn" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO STAY
+		VALUES (SEQ_STAY_NO.NEXTVAL, #{selRoomNumm}, #{clientNo}, TO_DATE(#{checkinTime}, 'yyyy-MM-dd'),
+				TO_DATE(#{checkoutTime}, 'yyyy-MM-dd'), DEFAULT, #{lentYN}, #{totalPrc}, #{totalPay},
+				TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), #{rsvNo}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), NULL, #{personCnt})
+	</insert>
+	
+	<update id="updateRsvPayment" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		UPDATE PAYMENT
+		SET STAY_NO = SEQ_STAY_NO.CURRVAL, MOD_DATE = TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss')
+		WHERE RSV_NO = #{rsvNo}
+	</update>
+	
+	<update id="updateRsvSvc" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		UPDATE SVC_USE
+		SET STAY_NO = SEQ_STAY_NO.CURRVAL
+		WHERE RSV_NO = #{rsvNo}
+	</update> 
+	
+	<select id="findRsvCISvc" resultType="_int" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		SELECT SVC_NO
+		FROM SVC_USE
+		WHERE RSV_NO = #{rsvNo}
+	</select>
+	
+	<insert id="insertRsvSvcHis" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO SVC_USE_HIS
+		VALUES (#{svcNo}, 'STAY_NO', 'NULL', SEQ_STAY_NO.CURRVAL, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), '예약고객입실')
+	</insert>
 	
 </mapper>
