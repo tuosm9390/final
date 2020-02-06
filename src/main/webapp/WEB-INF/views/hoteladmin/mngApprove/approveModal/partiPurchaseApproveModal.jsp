@@ -137,6 +137,9 @@
 	background:forestgreen;
 	color:white;
 }
+.docuNum {
+	border:0px;
+}
 
 
 </style>
@@ -175,7 +178,7 @@
 						</colgroup>
 						<tr>
 							<td>문서번호</td>
-							<td colspan="2"></td>
+							<td colspan="2"><input type="text" class="docuNum"></td>
 							<td colspan="2">부서장</td>
 							<td colspan="2">총지배인</td>
 						</tr>

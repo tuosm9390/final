@@ -78,7 +78,7 @@ public interface ApprovalService {
 
 	ArrayList<HashMap<String, Object>> selectOrderList(int dnum);
 
-	int insertOrderList(OrderRequest oRequest);
+	int insertOrderList(ArrayList<OrderRequest> oRequestList);
 
 	
 	

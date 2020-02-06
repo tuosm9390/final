@@ -14,11 +14,13 @@ public class OrderRequest {
 	private String reqEnd;
 	private String reqStatus;
 	private int rptNo;
+	private int purRptNo;
+	private int purIno;
 	private int ino;
 	private String cnCode;
 	private int amount;
 	private String totPrice;
-	private String purRsn;
+	private String orderRsn;
 	private String deptNo;
 	private String mname;
 	private String rptDate;
@@ -35,7 +37,7 @@ public class OrderRequest {
 	private String deptname;
 	private String sinfo;
 	private int smno;
-	private int mmno;
+	private int mno;
 	private String stfId;
 	private int purDocuno;
 	

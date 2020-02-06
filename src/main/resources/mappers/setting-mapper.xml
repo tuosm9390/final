@@ -210,9 +210,9 @@
 		ORDER BY FLOOR
 	</select>
 	
-	<select id="selectRoomList" resultMap="roomListResultSet">
+	<!-- <select id="selectRoomList" resultMap="roomListResultSet">
 		
-	</select>
+	</select> -->
 </mapper>
 
 
