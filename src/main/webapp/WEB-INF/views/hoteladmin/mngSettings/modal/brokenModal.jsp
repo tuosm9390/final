@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.HashMap, java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -117,10 +118,15 @@
 	.floorRoomTable{
 		width:1040px;
 		border-collapse: collapse;
+		text-align:center;
 	}
 	.floorRoomTable th{
 		background-color: #f7f7f7;
 		color: #005B9E;
+		border: 1px solid lightgray;
+		height:30px;
+	}
+	.floorRoomTable tr{
 		border: 1px solid lightgray;
 		height:30px;
 	}
@@ -175,14 +181,14 @@
 						<table>
 							<tr>
 								<td width="50%"></td>
-								<td><input type="text" id="modalBrokenStart" name="modalBrokenStart"></td>
+								<td><input type="text" id="modalBrokenStart" name="modalBrokenStart" class="modalBrokenStart"></td>
 							</tr>
 						</table>
 						~
 						<table>
 							<tr>
 								<td width="50%"></td>
-								<td><input type="text" id="modalBrokenEnd" name="modalBrokenEnd"></td>
+								<td><input type="text" id="modalBrokenEnd" name="modalBrokenEnd" class="modalBrokenEnd"></td>
 							</tr>
 						</table>
 					</div>
@@ -191,29 +197,14 @@
 				<div class="floorArea">
 					<div class="floorTableArea">
 						<table class="floorTable">
-							<tr>
+							<tr class="floorTableThArea">
 								<th>층</th>
-							</tr>
-							<tr>
-								<td>전체층</td>
-							</tr>
-							<tr>
-								<td>2층</td>
-							</tr>
-							<tr>
-								<td>3층</td>
-							</tr>
-							<tr>
-								<td>4층</td>
-							</tr>
-							<tr>
-								<td>5층</td>
 							</tr>
 						</table>
 					</div>
 					<div class="floorRoomArea">
 						<table class="floorRoomTable" border="1">
-							<tr>
+							<tr class="thAreaBrokenModal">
 								<th width="10%"><input type="checkbox"></th>
 								<th width="20%">객실번호</th>
 								<th width="20%">객실타입</th>
@@ -226,8 +217,9 @@
 				<div class="brokenMemo">
 					<div class="brokenMemoContent">
 						<h3>고장사유</h3>
-						<input type="text">
-						<button class="addBroken">고장등록</button>
+						<input type="text" name="brokenResponse" class="brokenResponse">
+						<input type="hidden" name="staffMno" value="${ sessionScope.loginUser.mno }">
+						<button class="addBroken" type="submit" onclick="return addBrokenRoom();">고장등록</button>
 					</div>
 				</div>
 			</div>
@@ -242,6 +234,8 @@
 		});
 	//datepicker
 		$(function() {
+
+			
 			date = new Date();
 		
 			checkIn = $("#modalBrokenStart").datepicker({

@@ -58,4 +58,6 @@ public interface SettingDao {
 
 	ArrayList<Room> selectRoomList(SqlSessionTemplate sqlSession);
 
+	int insertBrokenRoom(SqlSessionTemplate sqlSession, BrokenRoom brokenRoom);
+
 }

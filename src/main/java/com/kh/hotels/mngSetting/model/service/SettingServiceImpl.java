@@ -176,6 +176,11 @@ public class SettingServiceImpl implements SettingService {
 		return roomList;
 	}
 
-	
+	@Override
+	public int insertBrokenRoom(BrokenRoom brokenRoom) {
+
+		return sd.insertBrokenRoom(sqlSession, brokenRoom);
+	}
+
 
 }
