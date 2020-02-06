@@ -7,7 +7,7 @@
 <title>MODAL</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
-.modal {
+.modalz {
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -15,16 +15,16 @@
 	top: 0;
 	left: 0;
 	background: rgba(0, 0, 0, 0.5);
-	z-index: 2;
+	z-index: 3;
 }
 
-.modal_content {
+.modal_contentz {
 	position: absolute;
 	left: 50%;
 	top: 45%;
 	transform: translate(-50%, -50%);
-	width:700px;
-	height:400px;
+	width:460px;
+	height:480px;
 	max-height: 600px;
 	background-color: white;
 	overflow: hidden;
@@ -50,16 +50,16 @@ color:darkgray;
 .btn_close:hover {
 cursor: pointer;
 }
-.btn_close_plus {
+.btn_close_plusz {
    position: absolute;
    top: -1%;
-   left: 95.5%;
+   left: 92.5%;
    font-size: 40px;
    float: right;
    color: white;
 }
 
-.btn_close_plus:hover {
+.btn_close_plusz:hover {
    cursor: pointer;
 }
 
@@ -78,15 +78,15 @@ cursor: pointer;
 </style>
 </head>
 <body>
-	<div class="modal">
-		<div class="modal_content">
+	<div class="modalz">
+		<div class="modal_contentz">
 		<div class="titleBarplus">
-            <h2>이체정보리스트</h2>
-            <a class="btn_close_plus">×</a>
+            <h2>이체정보등록</h2>
+            <a class="btn_close_plusz">×</a>
          </div>
 			
 			<div class="modal_content_real">
-				<jsp:include page="../account/accountDetail.jsp"/>
+				<jsp:include page="../account/accountDetailEnroll.jsp"/>
 				
 			</div>
 		</div>
@@ -94,11 +94,8 @@ cursor: pointer;
 
 	<script>
 		$(document).ready(function() {
-			$(".btn_close_plus").click(function() {
-				$(".modal").fadeOut();
-				$("#acTbody").show();
-				$("#acTbody2").hide();
-				$(".btnss2").hide();
+			$(".btn_close_plusz").click(function() {
+				$(".modalz").fadeOut();
 			});
 		});
 	</script>

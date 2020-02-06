@@ -223,7 +223,7 @@
 		FROM ROOM
 		ORDER BY FLOOR
 	</select>
-	
+
 	<select id="selectRoomList" resultMap="roomListResultSet">
 		SELECT R.RM_NO, R.RM_NUM, R.STD_PER, R.RM_OPTION, R.FLOOR, R.RT_NO, R.REG_DATE, R.RM_STATUS, RT.MAXPER, RT.MINPER, RT_NAME
 		FROM ROOM R
@@ -238,7 +238,7 @@
 	<select id="insertBrokenRoom" parameterType="BrokenRoom2">
 		INSERT INTO BROKEN_HIS(RM_NO, BRK_BEGIN, BRK_END, BRK_RSN, MNO, BRK_STATUS)
 		VALUES(#{rmNo}, TO_DATE(#{brkBegin}, 'YYYY-MM-DD'),TO_DATE(#{brkEnd}, 'YYYY-MM-DD'), #{brkRsn}, #{mno}, 'Y')
-
+    </select>
 </mapper>
 
 

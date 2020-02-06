@@ -15,4 +15,10 @@ public interface AccountDao {
 
 	ArrayList<Conn> selectDetailList(SqlSessionTemplate sqlSession, String cnCode);
 
+	int insertAcc(SqlSessionTemplate sqlSession, Conn c);
+
+	int insertAccDetail(SqlSessionTemplate sqlSession, Conn c);
+
+	int updateDetail(SqlSessionTemplate sqlSession, Conn c);
+
 }

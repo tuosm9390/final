@@ -18,10 +18,9 @@ public class Conn {
 	private String cnStatus;
 	private String cnAdd;
 	private String regDate;
-	private String bankCode;
 	private String bankName;
 	private String account;
 	private String accName;
 	private String accMemo;
-	
+	private String cnManager;
 }
