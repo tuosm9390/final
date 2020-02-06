@@ -16,6 +16,7 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
@@ -51,6 +52,11 @@ public class RoomsServiceImpl implements RoomsService {
 	public RuleInfo viewRuleInfo() throws RoomListException {
 		RuleInfo ruleInfo = rd.viewRuleInfo(sqlSession);
 		return ruleInfo;
+	}
+	
+	@Override
+	public Rfd viewRefundRate() {
+		return rd.viewRefundRate(sqlSession);
 	}
 
 	@Override
@@ -147,12 +153,8 @@ public class RoomsServiceImpl implements RoomsService {
 	}
 
 	@Override
-	public void ajxUpdateBrkStt(int rmNo) throws BrokenRoomException {
+	public void ajxUpdateBrkStt(int rmNo) {
 		int result = rd.ajxUpdateBrkStt(sqlSession, rmNo);
-		if(result > 0) {
-		} else {
-			throw new BrokenRoomException("Error : Insert Client Failed");
-		}
 	}
 
 	@Override
@@ -212,6 +214,28 @@ public class RoomsServiceImpl implements RoomsService {
 	@Override
 	public ArrayList<ModalClient> ajxSelectRsvPay(String rsvNo) {
 		return rd.ajxSelectRsvPay(sqlSession, rsvNo);
+	}
+
+	@Override
+	public void cancelReservRSV(Rfd rfd) {
+		rd.cancelReservRSV(sqlSession, rfd);
+	}
+
+	@Override
+	public void cancelReservSVC(Rfd rfd) {
+		rd.cancelReservSVC(sqlSession, rfd);
+	}
+
+	@Override
+	public void cancelReservRFD(Rfd rfd) {
+		rd.cancelReservRFD(sqlSession, rfd);
+	}
+
+	@Override
+	public void insertRsvCheckIn(CheckIn checkIn) {
+		rd.insertRsvCheckIn(sqlSession, checkIn);
+		rd.updateRsvPayment(sqlSession, checkIn);
+		rd.updateRsvSvc(sqlSession, checkIn);
 	}
 
 }

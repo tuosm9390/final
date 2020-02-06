@@ -525,6 +525,7 @@ input[type=number]:disabled {
 			<div class="statusNo">
 				<div class="statusColor"></div>
 				<h1 id="modalStt">　입실</h1>&nbsp;<h3 class="staycode" id="staycode" style="margin-top:25px;"></h3>
+				<input type="hidden" name="rsvNo" value="" id="rsvNo"> 
 				<button type="button" id="ciCancelBtn">× NO-SHOW</button>
 				<button type="button" id="rsvCancelBtn">× 예약취소</button>
 			</div>
@@ -583,6 +584,7 @@ input[type=number]:disabled {
 						<td>객실번호</td>
 						<td><select name="selRoomNum" id="selRoomNum">
 						</select></td>
+						<input type="hidden" name="selRoomNumm" id="selRoomNumm" value="">
 					</tr>
 				</table>
 			</div>
@@ -1029,15 +1031,58 @@ input[type=number]:disabled {
 
 		//체크인 등록 함수
 		function doCheckIn() {
-			$("#checkinModal").attr("action", "insertCI.ro");
-			$("#checkinModal").submit();
+			if($(".statusColor").hasClass('mediumseagreen')) {
+				$("#checkinModal").attr("action", "insertCI.ro");
+				$("#checkinModal").submit();
+			} else {
+				$("#rsvNo").val($("#staycode").text());
+				$("#selRoomNumm").val(selRoomNumm);
+				$("#checkinModal").attr("action", "insertRsvCI.ro");
+				$("#checkinModal").submit();
+			}
 		}
 		
 		//예약취소 버튼
 		$("#rsvCancelBtn").click(function(){
 			var rsvNo = $("#staycode").text();
-			if(window.confirm("[ " + rsvNo + " ] 해당 예약을 취소하시겠습니까?")) {
-				location.href = "cancelReserv.ro?rsvNo=" + rsvNo;
+			var termt; var dayt; var rfdr;
+			
+			switch(rfdRate.termType) {
+			case 'SEASON' : tert = '성수기'; break;
+			default : tert = '비수기'; break;
+			}
+			switch(rfdRate.dayType) {
+			case 'WEEK' : dayt = '주중'; break;
+			default : dayt = '주말'; break;
+			}
+			rfdr = rfdRate.rfdRate;
+			rfdp = parseInt($("#totalRoom").text().replace(/,/g , '')) * (rfdr / 100);
+			
+			if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 취소하시겠습니까?\n"
+							+ "환불금액 : " + rfdp + "원 (" + tert + " " + dayt + " 기준 " + rfdr +"% 환불)")) {
+				location.href = "cancelReserv.ro?rsvNo=" + rsvNo + "&rfdM=" + rfdp + "&payd=" + reservPayDate + "&rfdT=" + 0;
+			}
+		});
+		
+		//노쇼처리 버튼
+		$("#ciCancelBtn").click(function(){
+			var rsvNo = $("#staycode").text();
+			
+			rfdr = ruleInfo.nsRate;
+			rfdp = parseInt($("#totalRoom").text().replace(/,/g , '')) * ((100 - rfdr) / 100);
+			console.log(reservCheckinTime);
+			if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 노쇼처리 하시겠습니까?\n"
+							+ "체크인 예정시간 : " + reservCheckinTime + " | 노쇼 기준 시간 : " + (reservCheckinTime.substring(0,2) * 1 + ruleInfo.noshowUnit) +":00\n"
+							+ "환불 금액 : " + rfdp + "원 ( 노쇼고객 수수료 규정 : " + ruleInfo.nsRate + "% )")) {
+				location.href = "cancelReserv.ro?rsvNo=" + rsvNo + "&rfdM=" + rfdp + "&payd=" + reservPayDate + "&rfdT=" + 1;
+			}
+		});
+		
+		//퇴실처리 버튼
+		$("#checkoutBtn").click(function(){
+			if(window.confirm("해당 객실을 퇴실처리 하시겠습니까?")) {
+				console.log(checkoutStayNo);
+				location.href = "doCheckOut.ro?stayNo=" + checkoutStayNo;
 			}
 		});
 	</script>
