@@ -563,26 +563,20 @@ public class ApproveController {
 		
 		OrderRequest oRequest = new OrderRequest();
 		
-		ArrayList<OrderRequest> oRequestList = new ArrayList<>();
+		ArrayList<OrderRequest> oRequestList = null;
 		
 		System.out.println("cname.length : " + cname.length());
 		
-		int docNo = Integer.parseInt(docno);
+		int docuNo = Integer.parseInt(docuNos);
+		int docno2 = Integer.parseInt(docno);
 		int mno = Integer.parseInt(mname);
 		
-		oRequest.setPurDocuno(docNo);
-		oRequest.setDeptname("구매팀"); 
-		oRequest.setMmno(mno);
-		oRequest.setRptDate(rptDate); 
-		oRequest.setTitle(title);
-		oRequest.setContent(content);
-		oRequest.setDocno(docNo);
-		oRequest.setTotPrice(totPrice);
-		oRequest.setStfId(sname);
+	
 		
 		
 		
 		if(cname.contains(",")) {
+			oRequestList =  new ArrayList<OrderRequest>();
 			String[] typeR = type.split(",");
 			String[] cnameR = cname.split(",");
 			String[] mfgR = mfg.split(",");
@@ -598,6 +592,7 @@ public class ApproveController {
 			int ino2[] = new int[cnameR.length];
 			
 			System.out.println("cnameR : " + cnameR.length);
+			System.out.println("여기좀되라 : " + oRequestList);
 
 			for(int j = 0; j < cnameR.length; j++) {
 				oRequest = new OrderRequest();
@@ -613,41 +608,63 @@ public class ApproveController {
 				oRequest.setCname(cnameR[j]);
 				oRequest.setIname(inameR[j]);
 				oRequest.setMfg(mfgR[j]);
+				oRequest.setPurDocuno(docuNo);
+				oRequest.setDeptname("구매팀"); 
+				oRequest.setMno(mno);
+				oRequest.setRptDate(rptDate); 
+				oRequest.setTitle(title);
+				oRequest.setContent(content);
+				oRequest.setDocno(docno2);
+				oRequest.setTotPrice(totPrice);
+				oRequest.setStfId(sname);
 				oRequestList.add(oRequest);
-				System.out.println("for문안 pRequestList : " + oRequest);
+				System.out.println("for문안 pRequestList : " + oRequestList);
 			}
+			
+			System.out.println("controllerlist길이 : " + oRequestList.size());
 			
 			//pRequestList = as.insertOrderList(pRequestList);
 			
-			int result = as.insertOrderList(oRequest);
+			int result = as.insertOrderList(oRequestList);
 			
+			return "redirect:/documentApproval.ap";
 			
 		}else {
+			oRequest = new OrderRequest();
+			int vosR = Integer.parseInt(vos);
+			int amountR = Integer.parseInt(amount);
+			int priceR = Integer.parseInt(price);
+			int inoR = Integer.parseInt(ino);
 			
+			
+			
+			oRequest.setType(type);
+			oRequest.setVosprice(vosR);
+			oRequest.setAmount(amountR);
+			oRequest.setPrice(priceR);
+			oRequest.setIno(inoR);
+			oRequest.setCname(cname);
+			oRequest.setIname(iname);
+			oRequest.setMfg(mfg);
+			oRequestList.add(oRequest);
+			oRequest.setPurDocuno(docuNo);
+			oRequest.setDeptname("구매팀"); 
+			oRequest.setMno(mno);
+			oRequest.setRptDate(rptDate); 
+			oRequest.setTitle(title);
+			oRequest.setContent(content);
+			oRequest.setDocno(docno2);
+			oRequest.setTotPrice(totPrice);
+			oRequest.setStfId(sname);
+			
+			oRequestList.add(oRequest);
+			
+			//int result = as.insertOrderList(oRequestList);
+			
+			return null;
 		}
-				
-				
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return null;
 		
 	}
 	

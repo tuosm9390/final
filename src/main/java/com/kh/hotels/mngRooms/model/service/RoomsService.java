@@ -11,6 +11,7 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
@@ -24,6 +25,8 @@ public interface RoomsService {
 	ArrayList<ServiceList> viewServiceList() throws RoomListException;
 
 	RuleInfo viewRuleInfo() throws RoomListException;
+	
+	Rfd viewRefundRate();
 	
 	ArrayList<Member> ajxFindClient(String searchName);
 
@@ -39,7 +42,7 @@ public interface RoomsService {
 
 	BrokenRoom ajxFindBrokenHis(int rmNo) throws BrokenRoomException;
 
-	void ajxUpdateBrkStt(int rmNo) throws BrokenRoomException;
+	void ajxUpdateBrkStt(int rmNo);
 
 	int ajxUpdateRoomStt(String nowStt, int rmNo) throws UpdateRoomException;
 
@@ -56,5 +59,13 @@ public interface RoomsService {
 	ArrayList<ModalClient> ajxSelectRsvSvc(String rsvNo);
 
 	ArrayList<ModalClient> ajxSelectRsvPay(String rsvNo);
+
+	void cancelReservRSV(Rfd rfd);
+
+	void cancelReservSVC(Rfd rfd);
+
+	void cancelReservRFD(Rfd rfd);
+
+	void insertRsvCheckIn(CheckIn checkIn);
 
 }

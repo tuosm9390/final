@@ -167,6 +167,10 @@
 			MINUS
 			SELECT RM_NO
 			FROM BROKEN_HIS
+			MINUS
+			SELECT RM_NO
+			FROM STAY
+			WHERE STAY_STATUS = 'N'
 		]]>
 	</select>
 	

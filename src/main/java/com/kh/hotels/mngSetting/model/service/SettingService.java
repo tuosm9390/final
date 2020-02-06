@@ -51,6 +51,8 @@ public interface SettingService {
 
 	HashMap<String, Object> selectFloorList();
 
+	int insertBrokenRoom(BrokenRoom brokenRoom);
+
 
 
 }

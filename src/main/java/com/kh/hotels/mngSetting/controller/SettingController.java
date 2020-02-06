@@ -1,11 +1,14 @@
 package com.kh.hotels.mngSetting.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.common.model.vo.Svc;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
+import com.kh.hotels.mngRooms.model.voEtc.BrokenHistory;
 import com.kh.hotels.mngRooms.model.voEtc.Room;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 import com.kh.hotels.mngSetting.model.service.SettingService;
@@ -148,11 +152,29 @@ public class SettingController {
 	}
 	
 	@PostMapping("brokenAddRoomList.st")
-	public ModelAndView brokenAddRoomList(ModelAndView mv) {
+	public ModelAndView brokenAddRoomList(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) {
 		
 		HashMap<String, Object> roomList = ss.selectFloorList();
+
+		mv.addObject("roomList", roomList);
+		
+		mv.setViewName("jsonView");
 		
 		return mv;
+	}
+	
+	@RequestMapping("addBrokenRoom.st")
+	public String addBrokenRoom(BrokenRoom brokenRoom, Model model) {
+		
+		int result = ss.insertBrokenRoom(brokenRoom);
+		
+		if(result > 0) {
+			return "redirect:/goBrokenRoom.st";
+		}else {
+			model.addAttribute("msg", "고장객실 등록실패");
+			return "common/errorPage";
+		}
+		
 	}
 	
 	@RequestMapping("goServiceSetting.st")

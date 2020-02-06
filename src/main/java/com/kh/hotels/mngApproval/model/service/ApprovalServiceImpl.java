@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -379,12 +380,66 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 
+	
+
 	@Override
-	public int insertOrderList(OrderRequest oRequest) {
+	public int insertOrderList(ArrayList<OrderRequest> oRequestList) {
 		
-		//int result = ad.insertOrderList(sqlSession, oRequest)
+		System.out.println("oRequestList.length : " + oRequestList.size());
+		//발주요청 수신자 mno 받아오기
+		int smno = ad.selectOrderSmno(sqlSession, oRequestList);
+		oRequestList.get(0).setSmno(smno);
+		//발주요청 수신자 MNO넣기 끝
 		
-		return 0;
+		//REPORT에 정보 넣기
+		int result = ad.insertOrderList(sqlSession, oRequestList);
+		//Report에 정보넣기 끝
+		
+		
+		
+		//Report에 넣었던 rptNo가져오기
+		int rptno = ad.selectOrderRptNo(sqlSession, oRequestList);
+		System.out.println("맨처음oRequestList : " + oRequestList);
+		
+		
+		for(int i = 0; i < oRequestList.size(); i++) {
+			
+			oRequestList.get(i).setRptNo(rptno);
+		}
+		
+		//선택한 docuNo로 purRequest의 rptNo, ino 가져오기
+		int docno = oRequestList.get(0).getPurDocuno();
+		
+		ArrayList<OrderRequest>list = ad.selectPurRequestInfo(sqlSession, docno);
+		System.out.println("여기씨발 : " + list.size());
+		System.out.println("씨발list : " + list);
+		
+		for(int i = 0; i < list.size(); i++) {
+			//cnName=  new ArrayList<OrderRequest>();
+			oRequestList.get(i).setPurRptNo(list.get(i).getRptNo());
+			oRequestList.get(i).setPurIno(list.get(i).getIno());
+			
+			
+		}
+		System.out.println("마지막 : " + oRequestList);
+		
+		ArrayList<String> cnList = ad.selectCnCode(sqlSession, oRequestList);
+		
+		
+		for(int i = 0 ; i < oRequestList.size(); i++) {
+			oRequestList.get(i).setCnCode(cnList.get(i));
+		}
+		
+		
+		 System.out.println("final oRequestList : " + oRequestList);
+		 
+		 
+		 int orderResult = ad.insertFinalOrderRequest(sqlSession, oRequestList);
+		 
+		
+		
+		
+		return orderResult;
 	}
 
 

@@ -197,5 +197,11 @@ public class SettingDaoImpl implements SettingDao{
 		return roomList;
 	}
 
+	@Override
+	public int insertBrokenRoom(SqlSessionTemplate sqlSession, BrokenRoom brokenRoom) {
+
+		return sqlSession.insert("Setting.insertBrokenRoom", brokenRoom);
+	}
+
 
 }

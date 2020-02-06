@@ -20,6 +20,8 @@ public class CheckIn implements java.io.Serializable {
 	private String personCnt;
 	private String selRoomType;
 	private String selRoomNum;
+	private String selRoomNumm; 	//야매 ROOMNUM
+	private String rsvNo;
 
 	private String selSvc;
 	private String svcCnt; 
@@ -41,5 +43,7 @@ public class CheckIn implements java.io.Serializable {
 	private int payWayMoney;
 	private String svcCode;
 	private int svcCount;
+	
+	private int svcNo;
 
 }

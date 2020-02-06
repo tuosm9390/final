@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.common.model.vo.Payment;
 import com.kh.hotels.hotel.model.service.HotelService;
 import com.kh.hotels.mngAnalys.model.service.AnalysService;
 import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 import com.kh.hotels.mngStay.model.vo.Stay;
+
+import net.sf.json.JSONArray;
 
 @Controller
 public class AnalysController {
@@ -79,7 +82,7 @@ public class AnalysController {
 	}
 	
 	
-	
+	// 트렌드 메소드
 	@RequestMapping("viewTrendList.an")
 	public ModelAndView goTrend(ModelAndView mv) {
 		
@@ -89,6 +92,14 @@ public class AnalysController {
 		ArrayList<SalesDetail> dailyRsvList = as.selectRsvList(map);
 		ArrayList<Stay> dailyStayList = as.selectStayList(map);
 		ArrayList<RoomInfo> roomList = hs.selectRoomList();
+		
+		// 월별 매출 조회
+		ArrayList<SalesDetail> monthlyRsvList = as.selectMonthlyRsvList(map);
+		JSONArray json = JSONArray.fromObject(monthlyRsvList);
+		ArrayList<Stay> monthlyStayList = as.selectMonthlyStayList(map);
+		JSONArray json1 = JSONArray.fromObject(monthlyStayList);
+		mv.addObject("monthlyRsvList", json);
+		mv.addObject("monthlyStayList", json1);
 		
 		ArrayList<String> RoomList = new ArrayList<>();
 		for(int i = 0; i < roomList.size(); i++) {
@@ -112,16 +123,11 @@ public class AnalysController {
 		}
 		mv.addObject("dailyStaySales", dailyStaySales);
 		
-		// 일별 객실 현황
-		int roomTypecnt = 0;
-		for(int i = 0; i < dailyRsvList.size(); i++) {
-			if(i > 1) {
-				if(dailyRsvList.get(i).getRtNo() == dailyRsvList.get(i - 1).getRtNo()) {
-					roomTypecnt++;
-				};
-			}
-		}
-		System.out.println("roomTypeCnt : " + roomTypecnt);
+		
+		// 일별 지불 (고객)
+		ArrayList<Payment> dailyPaymentList = as.selectDailyPaymentList(map);
+		System.out.println("dailyPaymentList : " + dailyPaymentList);
+		mv.addObject("dailyPaymentList", dailyPaymentList);
 		
 		mv.setViewName("hoteladmin/mngAnalys/trend");
 		return mv;
@@ -130,20 +136,25 @@ public class AnalysController {
 	@RequestMapping("searchTrend.an")
 	public ModelAndView searchTrend(ModelAndView mv, String Condition,
 			@RequestParam(value="dailySales", required = false) String dailySales,
-			@RequestParam(value="dailyRoomStatus", required = false) String dailyRoomStatus) {
+			@RequestParam(value="dailyRoomStatus", required = false) String dailyRoomStatus,
+			@RequestParam(value="dailySalesCst", required = false) String dailySalesCst,
+			@RequestParam(value="dailySpendStrg", required = false) String dailySpendStrg,
+			@RequestParam(value="monthlySalesPerRoomType", required = false) String monthlySalesPerRoomType) {
 		
-		System.out.println("dailySales : " + dailySales);
-		System.out.println("dailyRoomStatus : " + dailyRoomStatus);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("dailySales", dailySales);
 		map.put("Condition", Condition);
+		map.put("dailySales", dailySales);
 		map.put("dailyRoomStatus", dailyRoomStatus);
-
+		map.put("dailySalesCst", dailySalesCst);
+		map.put("dailySpendStrg", dailySpendStrg);
+		
+		
+		// 일별 매출 조회
 		ArrayList<SalesDetail> dailyRsvList = as.selectRsvList(map);
 		ArrayList<Stay> dailyStayList = as.selectStayList(map);
 		
+		// 일별 객실 매출 조회
 		if(Condition.equals("dailySales")) {
-			// 일별 객실 매출 조회
 			int dailyRsvSales = 0;
 			for(int i = 0; i < dailyRsvList.size(); i++) {
 				dailyRsvSales += dailyRsvList.get(i).getPrice();
@@ -158,9 +169,9 @@ public class AnalysController {
 			System.out.println("dailyStaySales : " + dailyStaySales);
 			mv.addObject("dailyStaySales", dailyStaySales);
 			
+		// 일별 객실 현황
 		} else if(Condition.equals("dailyRoomStatus")){
 			
-			// 일별 객실 현황
 			System.out.println("dailyRsvList : " + dailyRsvList);
 			System.out.println("dailyStayList : " + dailyStayList);
 			if(dailyRsvList.size() > dailyStayList.size()) {
@@ -183,9 +194,20 @@ public class AnalysController {
 				mv.addObject("list", dailyStayList);
 			}
 			
+		// 일별 지불 (고객)
+		} else if(Condition.equals("dailySalesCst")){
 			
+		// 일별 지불 (재고)
+		} else if(Condition.equals("dailySpendStrg")) {
+			
+		// 월별 객실 타입별 매출
 		} else {
-			
+			map.put("monthlySalesPerRoomType", monthlySalesPerRoomType.substring(0, 7));
+			// 월별 매출 조회
+			ArrayList<SalesDetail> monthlyRsvList = as.selectMonthlyRsvList(map);
+			ArrayList<Stay> monthlyStayList = as.selectMonthlyStayList(map);
+			mv.addObject("monthlyRsvList", monthlyRsvList);
+			mv.addObject("monthlyStayList", monthlyStayList);
 		}
 		
 		

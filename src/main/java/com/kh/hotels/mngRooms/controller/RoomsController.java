@@ -20,6 +20,7 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
@@ -39,6 +40,7 @@ public class RoomsController {
 		ArrayList<Prc> roomPrice;
 		ArrayList<ServiceList> svcList;
 		RuleInfo ruleInfo;
+		Rfd rfdRate;
 		
 		try {
 			roomList = rs.viewRoomList();
@@ -48,21 +50,25 @@ public class RoomsController {
 			ruleInfo.setServiceRate(ruleInfo.getSvcRate() / 100.0);
 			ruleInfo.setNoshowUnit(Integer.parseInt(ruleInfo.getNsUnit()));
 			ruleInfo.setRentUnit(Integer.parseInt(ruleInfo.getLtUnit()));
+			rfdRate = rs.viewRefundRate();
 			
 			model.addAttribute("roomList", roomList);
 			model.addAttribute("roomPrice", roomPrice);
 			model.addAttribute("svcList", svcList);
 			model.addAttribute("ruleInfo", ruleInfo);
+			model.addAttribute("rfdRate", rfdRate);
 			
 			JSONArray jsonArray = new JSONArray();
 			JSONArray jsonArray2 = new JSONArray();
 			JSONArray jsonArray3 = new JSONArray();
 			JSONObject jsonObject = new JSONObject();
+			JSONObject jsonObject2 = new JSONObject();
 			
 			model.addAttribute("jsonList", jsonArray.fromObject(roomList));
 			model.addAttribute("jsonList2", jsonArray.fromObject(roomPrice));
 			model.addAttribute("jsonList3", jsonArray.fromObject(svcList));
 			model.addAttribute("jsonObject", JSONObject.fromObject(ruleInfo));
+			model.addAttribute("jsonObject2", JSONObject.fromObject(rfdRate));
 			
 			return "mngRooms/viewRoomList";
 		} catch (RoomListException e) {
@@ -126,8 +132,6 @@ public class RoomsController {
 			}
 			checkIn.setTotalPay(checkIn.getCreditCard() + checkIn.getCash() + checkIn.getAccount());
 			
-			System.out.println(checkIn);
-		
 			rs.insertCheckIn(checkIn);
 			mv.setViewName("redirect:view.ro");
 		} catch (InsertStayException e) {
@@ -153,12 +157,8 @@ public class RoomsController {
 	
 	@RequestMapping("ajxUpdateBrkStt.ro")
 	public ModelAndView ajxUpdateBrkStt(ModelAndView mv, int rmNo) {
-		try {
-			rs.ajxUpdateBrkStt(rmNo);
-		} catch (BrokenRoomException e) {
-			mv.addObject("msg", e.getMessage());
-			mv.setViewName("common/errorPage");
-		}
+		rs.ajxUpdateBrkStt(rmNo);
+		mv.setViewName("jsonView");
 		return mv;
 	}
 	
@@ -230,9 +230,30 @@ public class RoomsController {
 	
 	
 	@RequestMapping("cancelReserv.ro")
-	public ModelAndView cancelReserv(ModelAndView mv, String rsvNo) {
+	public ModelAndView cancelReserv(ModelAndView mv, String rsvNo, String rfdM, String payd, String rfdT) {
+		int rfdMoney = Integer.parseInt(rfdM);
+		int rfdType = Integer.parseInt(rfdT);
+		Rfd rfd = new Rfd();
+		rfd.setReservNo(rsvNo);
+		rfd.setRfdMoney(rfdMoney);
+		rfd.setPayDate(payd);
+		rfd.setRfdType(rfdType);
+		rs.cancelReservRSV(rfd);
+		rs.cancelReservSVC(rfd);
+		 rs.cancelReservRFD(rfd);
+		
 		mv.setViewName("redirect:view.ro");
 		return mv;
 	}
-
+	
+	
+	@PostMapping("insertRsvCI.ro")
+	public ModelAndView insertRsvCheckIn(ModelAndView mv, CheckIn checkIn) {
+		System.out.println("내가 찾던 데이터 : " + checkIn);
+		checkIn.setLentYN("STAY");
+		checkIn.setTotalPay(checkIn.getCreditCard() + checkIn.getCash() + checkIn.getAccount());
+		rs.insertRsvCheckIn(checkIn);
+		mv.setViewName("redirect:view.ro");
+		return mv;
+	}
 }

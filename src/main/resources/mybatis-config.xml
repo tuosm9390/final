@@ -30,6 +30,7 @@
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomType" alias="RoomType"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.BrokenRoom" alias="BrokenRoom"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.Room" alias="Room"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.BrokenRoom" alias="BrokenRoom2"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomPrc" alias="RoomPrc"/>
 		<typeAlias type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" alias="ReservationCheck"/>
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.Report" alias="Report"/>
@@ -54,6 +55,7 @@
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.RepRequest" alias="RepRequest"/>
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PartiReport" alias="PartiReport"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Payment" alias="Payment"/>
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.OrderRequest" alias="OrderRequest"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>

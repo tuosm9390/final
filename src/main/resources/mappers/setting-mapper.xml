@@ -9,6 +9,20 @@
 		<result property="floor" column="FLOOR" />
 	</resultMap>
 	
+	<resultMap type="Room" id="roomListResultSet">
+		<result property="rmNo" column="RM_NO" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="stdPer" column="STD_PER" />
+		<result property="rmOption" column="RM_OPTION" />
+		<result property="floor" column="FLOOR" />
+		<result property="rtNo" column="RT_NO" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="rmStatus" column="RM_STATUS" />
+		<result property="maxPer" column="MAXPER" />
+		<result property="minPer" column="MINPER" />
+		<result property="rtName" column="RT_NAME" />
+	</resultMap>
+	
 	<resultMap type="BrokenRoom" id="brokenRoomListResultSet">
 		<result property="rmNo" column="RM_NO" />
 		<result property="rmNum" column="RM_NUM" />
@@ -209,10 +223,22 @@
 		FROM ROOM
 		ORDER BY FLOOR
 	</select>
+
+	<select id="selectRoomList" resultMap="roomListResultSet">
+		SELECT R.RM_NO, R.RM_NUM, R.STD_PER, R.RM_OPTION, R.FLOOR, R.RT_NO, R.REG_DATE, R.RM_STATUS, RT.MAXPER, RT.MINPER, RT_NAME
+		FROM ROOM R
+		JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
+		WHERE R.RM_NUM NOT IN (SELECT DISTINCT RM_NUM
+		                       FROM ROOM R
+		                       LEFT JOIN BROKEN_HIS BH ON(BH.RM_NO = R.RM_NO)
+		                       LEFT JOIN STAY S ON(S.RM_NO = R.RM_NO)
+		                       WHERE STAY_STATUS = 'N' OR BRK_STATUS = 'Y')
+	</select>
 	
-	<!-- <select id="selectRoomList" resultMap="roomListResultSet">
-		
-	</select> -->
+	<select id="insertBrokenRoom" parameterType="BrokenRoom2">
+		INSERT INTO BROKEN_HIS(RM_NO, BRK_BEGIN, BRK_END, BRK_RSN, MNO, BRK_STATUS)
+		VALUES(#{rmNo}, TO_DATE(#{brkBegin}, 'YYYY-MM-DD'),TO_DATE(#{brkEnd}, 'YYYY-MM-DD'), #{brkRsn}, #{mno}, 'Y')
+    </select>
 </mapper>
 
 
