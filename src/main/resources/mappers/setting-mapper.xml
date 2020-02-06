@@ -238,8 +238,7 @@
 	<select id="insertBrokenRoom" parameterType="BrokenRoom2">
 		INSERT INTO BROKEN_HIS(RM_NO, BRK_BEGIN, BRK_END, BRK_RSN, MNO, BRK_STATUS)
 		VALUES(#{rmNo}, TO_DATE(#{brkBegin}, 'YYYY-MM-DD'),TO_DATE(#{brkEnd}, 'YYYY-MM-DD'), #{brkRsn}, #{mno}, 'Y')
-		
-	</select>
+
 </mapper>
 
 

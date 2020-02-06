@@ -210,7 +210,7 @@
 					});
 					$("#docuTit").children().eq(2).click(function(){
 						
-						if($("deptNo").val() == 3 && $("#authNo").val() == "AUTH2") {
+						if($("#deptNo").val() == 3 && $("#authNo").val() == "AUTH2") {
 							
 						location.href="writeFixApprove.ap"
 						}else {

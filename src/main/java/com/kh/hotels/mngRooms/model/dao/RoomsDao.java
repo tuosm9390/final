@@ -10,6 +10,7 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
@@ -23,6 +24,8 @@ public interface RoomsDao {
 	ArrayList<ServiceList> viewServiceList(SqlSessionTemplate sqlSession) throws RoomListException;
 
 	RuleInfo viewRuleInfo(SqlSessionTemplate sqlSession) throws RoomListException;
+	
+	Rfd viewRefundRate(SqlSessionTemplate sqlSession);
 	
 	ArrayList<Member> ajxFindClient(SqlSessionTemplate sqlSession, String searchName);
 	
@@ -67,5 +70,17 @@ public interface RoomsDao {
 	ArrayList<ModalClient> ajxSelectRsvSvc(SqlSessionTemplate sqlSession, String rsvNo);
 
 	ArrayList<ModalClient> ajxSelectRsvPay(SqlSessionTemplate sqlSession, String rsvNo);
+
+	void cancelReservRSV(SqlSessionTemplate sqlSession, Rfd rfd);
+
+	void cancelReservSVC(SqlSessionTemplate sqlSession, Rfd rfd);
+
+	void cancelReservRFD(SqlSessionTemplate sqlSession, Rfd rfd);
+
+	void insertRsvCheckIn(SqlSessionTemplate sqlSession, CheckIn checkIn);
+
+	void updateRsvPayment(SqlSessionTemplate sqlSession, CheckIn checkIn);
+
+	void updateRsvSvc(SqlSessionTemplate sqlSession, CheckIn checkIn);
 
 }

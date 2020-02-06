@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
+import com.kh.hotels.mngApproval.model.vo.OrderRequest;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PartiReport;
 import com.kh.hotels.mngApproval.model.vo.PurRequest;
@@ -401,10 +402,15 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		return list;
 	}
 
+	
+
+
 	@Override
-	public int insertOrderList(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList) {
+	public int insertOrderList(SqlSessionTemplate sqlSession, ArrayList<OrderRequest> oRequestList) {
 		
-		int result = sqlSession.insert("Report.insertOrderList", pRequestList);
+		System.out.println("발주요청 들어가기전");
+		
+		int result = sqlSession.insert("Report.insertOrderList", oRequestList.get(0));
 		
 		System.out.println("Report에 insert하기 result : " + result);
 		
@@ -412,12 +418,86 @@ public class ApprovalDaoImpl implements ApprovalDao{
 	}
 
 	@Override
-	public int insertOrderList2(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList) {
+	public ArrayList<OrderRequest> selectPurRequestInfo(SqlSessionTemplate sqlSession,
+			int docno) {
 		
-		int result = sqlSession.insert("Report.insertOrderList2", pRequestList);
+		ArrayList<OrderRequest> list = (ArrayList)sqlSession.selectList("Report.selectPurRequestInfo", docno);
+		
+		System.out.println("구매요청서 정보 : " + list);
+		
+		return list;
+	}
+
+	@Override
+	public int selectOrderRptNo(SqlSessionTemplate sqlSession, ArrayList<OrderRequest> oRequestList) {
+		
+		int doc = sqlSession.selectOne("Report.selectOrderRptNo", oRequestList.get(0));
+		System.out.println("docRptNo : " + doc);
+		
+		return doc;
+	}
+	
+	//발주 요청서 수신자 mno가져오기
+	@Override
+	public int selectOrderSmno(SqlSessionTemplate sqlSession, ArrayList<OrderRequest> oRequestList) {
+		
+		int smno = sqlSession.selectOne("Report.selectOrderSmno", oRequestList.get(0));
 		
 		
-		return 0;
+		
+		return smno;
+	}
+
+	@Override
+	public int insertFinalOrderRequest(SqlSessionTemplate sqlSession,
+			ArrayList<OrderRequest> oRequestList) {
+			
+		int OrderResult = 0;
+		
+		System.out.println("찐막 : " + oRequestList);
+		
+		for(int i = 0; i < oRequestList.size(); i++) {
+			System.out.println("i : " + i+1);
+			OrderResult = sqlSession.insert("Report.insertOrderResult", oRequestList.get(i));
+		}
+		
+		System.out.println("orderResult : " + OrderResult);
+		
+		return OrderResult;
+	}
+	
+	//cncode 가져오기
+	/*
+	 * @Override public ArrayList<String> selectCnCode(SqlSessionTemplate
+	 * sqlSession, String[] cnName) {
+	 * 
+	 * ArrayList<String> list = null; for(int i = 0; i < cnName.length; i++) {
+	 * System.out.println("들어가기전 : " + cnName[i]);
+	 * 
+	 * //list = (ArrayList)sqlSession.selectList("Report.selectCnCode", cnName[i]);
+	 * }
+	 * 
+	 * //System.out.println("회사코드가져오기 :" + list); return list; }
+	 */
+
+	@Override
+	public ArrayList<String> selectCnCode(SqlSessionTemplate sqlSession,
+			ArrayList<OrderRequest> oRequestList) {
+		
+		System.out.println("oRequestList : " + oRequestList);
+		String str = "";
+		ArrayList<String> list  = new ArrayList<String>();
+		
+		for(int i = 0; i < oRequestList.size(); i++) {
+			
+			str = (String)sqlSession.selectOne("Report.selectCnCode", oRequestList.get(i));
+			list.add(str);
+			System.out.println("str씨발!!!!!!!!!!!!!!!!!!!!!! : " + list);
+			//System.out.println("list : " + list );
+		}
+		System.out.println("마지막 list : " + list);
+		
+		return list;
 	}
 
 	
