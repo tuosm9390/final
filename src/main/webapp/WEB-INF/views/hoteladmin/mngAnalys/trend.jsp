@@ -65,6 +65,8 @@
 .chartArea{
 	text-align: center;
 	height: 300px;
+	position: relative;
+	z-index: -1;
 }
 
 .chartArea>ul{
@@ -179,48 +181,60 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
+				<c:set var="card" value="0"/>
+				<c:set var="cash" value="0"/>
+				<c:set var="account" value="0"/>
+				<c:set var="refund" value="0"/>
+				<c:set var="total" value="0"/>
+				<c:forEach var="dailyPaymentList" items="${dailyPaymentList}">
+					<c:if test="${dailyPaymentList.payStatus.equals('REFUND')}">
+						${ refund } = ${dailyPaymentList.price }
+					</c:if>
+					<c:if test="${dailyPaymentList.pway eq 'CARD'}">
+						${card} = ${dailyPaymentList.price }
+					</c:if>
+					<c:if test="${dailyPaymentList.pway eq 'CASH'}">
+						${cash } = ${dailyPaymentList.price }
+					</c:if>
+					<c:if test="${dailyPaymentList.pway eq 'ACCOUNT' && dailyPaymentList.payStatus ne 'REFUND'}">
+						${ account } = ${ dailyPaymentList.price }
+					</c:if>
+				</c:forEach>
 				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
 						<div style="float: left;">
-							<label><c:out value="신용카드"></c:out></label>
+							<label>신용카드</label>
 						</div>
 						<div style="float: right;">
-							<label><c:out value="69,083,116"></c:out></label>
+							<label>${ card }</label>
 						</div>
 						<br>
 						<div style="float: left;">
-							<label><c:out value="현금"></c:out></label>
+							<label>현금</label>
 						</div>
 						<div style="float: right;">
-							<label><c:out value="1,100,000"></c:out></label>
+							<label>${ cash }</label>
 						</div>
 						<br>
 						<div style="float: left;">
-							<label><c:out value="계좌이체"></c:out></label>
+							<label>계좌이체</label>
 						</div>
 						<div style="float: right;">
-							<label><c:out value="1,100,000"></c:out></label>
-						</div>
-						<br>
-						<div style="float: left;">
-							<label><c:out value="후불"></c:out></label>
-						</div>
-						<div style="float: right;">
-							<label><c:out value="101,100,000"></c:out></label>
-						</div>
-						<br>
-						<div style="float: left;">
-							<label><c:out value="환불"></c:out></label>
-						</div>
-						<div style="float: right;">
-							<label><c:out value="0"></c:out></label>
+							<label>${ account }</label>
 						</div>
 						<br><br>
 						<div style="float: left;">
-							<label style="font-weight: bold;"><c:out value="총 지불액"></c:out></label>
+							<label>환불</label>
 						</div>
 						<div style="float: right;">
-							<label style="font-weight: bold;"><c:out value="172,383,116"></c:out></label>
+							<label>${ refund }</label>
+						</div>
+						<br><br>
+						<div style="float: left;">
+							<label style="font-weight: bold;">총 지불액</label>
+						</div>
+						<div style="float: right;">
+							<label style="font-weight: bold;">${ total }</label>
 						</div>
 					</div>
 				</div>
@@ -348,7 +362,7 @@ input[type=text] {
 						</div>
 						<br><br><br>
 						<div style="float: left;">
-							<label style="font-weight: bold;"><c:out value="환불"></c:out></label>
+							<label style="font-weight: bold;"><c:out value="총 지불액"></c:out></label>
 						</div>
 						<div style="float: right;">
 							<label style="font-weight: bold;"><c:out value="0"></c:out></label>
@@ -388,6 +402,26 @@ input[type=text] {
 			$(this).prevAll().css({"background":"white", "color":"#3498DB"});
 		});
 		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		var deluxe = 0;		// 디럭스 가격
+	  	var spa = 0;		// 스파 가격
+	  	var standard = 0;	// 스탠다드 가격
+	  	var suite = 0;		// 스위트 가격
+	  	
+	  	var selectMaxList = [${ dailyRsvSales }, ${ dailyStaySales }];
+		var max = Math.max.apply(null, selectMaxList);
+		var increment = 0;
+		if(max >= 100000 && max < 1000000){
+			max = (Math.ceil(max / 100000) * 100000);
+			increment = (Math.ceil(max / 100000) * 10000);
+		} else if(max >= 1000000 && max < 10000000){
+			max = (Math.ceil(max / 1000000) * 1000000);
+			increment = (Math.ceil(max / 1000000) * 100000);
+		} else if(max >= 10000000 && max < 100000000){
+			max = (Math.ceil(max / 10000000) * 10000000);
+			increment = (Math.ceil(max / 10000000) * 1000000);
+		}
+		
 		// 일별 매출 차트
 		chart1 = {
 			'legend': {
@@ -395,14 +429,14 @@ input[type=text] {
 			},
 			'dataset': {
 				title: 'Playing time per day',
-				values: [${ dailyRsvSales }, ${ dailyStaySales }],
+				values: selectMaxList,
 				colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
 			},
 			'chartDiv': 'chartArea',
 			'chartType': 'column',
 			'chartSize': { width: 600, height: 300 },
-			'maxValue': 800000,
-			'increment': 100000
+			'maxValue': max,
+			'increment': increment
 		};
 		Nwagon.chart(chart1);
 		
@@ -415,28 +449,50 @@ input[type=text] {
 	  				url : "searchTrend.an?Condition=dailySales",
 	  				data : {dailySales:dailySales},
 	  				success:function(data){
+	  					selectMaxList = [];
+	  					selectMaxList = [data.dailyRsvSales, data.dailyStaySales];
+	  					console.log(selectMaxList);
+	  					max = 0;
+	  					max = Math.max.apply(null, selectMaxList);
+
+	  					increment = 0;
+	  					if(max >= 100000 && max < 1000000){
+	  						max = (Math.ceil(max / 100000) * 100000);
+	  						increment = (Math.ceil(max / 100000) * 10000);
+	  					} else if(max >= 1000000 && max < 10000000){
+	  						max = (Math.ceil(max / 1000000) * 1000000);
+	  						increment = (Math.ceil(max / 1000000) * 100000);
+	  					} else if(max >= 10000000 && max < 100000000){
+	  						max = (Math.ceil(max / 10000000) * 10000000);
+	  						increment = (Math.ceil(max / 10000000) * 1000000);
+	  					}
+	  					
 	  					$("#chartArea").children().remove();
 	  					$(".type-room-sales").children().remove();
-	  					$(".type-room-sales").append("<label>" + data.dailyRsvSales + "</label>");
+	  					$(".type-room-sales").append("<label>" + data.dailyRsvSales.toLocaleString() + "</label>");
 	  					$(".type-rent-sales").children().remove();
-	  					$(".type-rent-sales").append("<label>" + data.dailyStaySales + "</label>");
+	  					$(".type-rent-sales").append("<label>" + data.dailyStaySales.toLocaleString() + "</label>");
 	  					$(".type-total-sales").children().remove();
-	  					$(".type-total-sales").append("<label style='font-weight: bold;'>" + (data.dailyRsvSales + data.dailyStaySales) + "</label>")
-	  					chart1 = {
-	  						'legend': {
-	  							names: ['객실','대실'],
-	  						},
-	  						'dataset': {
-	  							values: [data.dailyRsvSales, data.dailyStaySales],
-	  							colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
-	  							},
-	  						'chartDiv': 'chartArea',
-	  						'chartType': 'column',
-	  						'chartSize': { width: 600, height: 300 },
-	  						'maxValue': 800000,
-	  						'increment': 100000
-	  					};
-	  					Nwagon.chart(chart1);
+	  					$(".type-total-sales").append("<label style='font-weight: bold;'>" + (data.dailyRsvSales + data.dailyStaySales).toLocaleString() + "</label>")
+	  					if(max != 0){
+		  					chart1 = {
+		  						'legend': {
+		  							names: ['객실','대실'],
+		  						},
+		  						'dataset': {
+		  							values: selectMaxList,
+		  							colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
+		  							},
+		  						'chartDiv': 'chartArea',
+		  						'chartType': 'column',
+		  						'chartSize': { width: 600, height: 300 },
+		  						'maxValue': max,
+		  						'increment': increment
+		  					};
+		  					Nwagon.chart(chart1);
+	  					} else {
+	  						$("#chartArea").append("<div style='display: inline-block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);'>내역이 존재하지 않습니다.</div>");
+	  					}
 	  				},
 	  				error:function(data){
 	  					console.log(data);
@@ -446,6 +502,7 @@ input[type=text] {
 		     }
 		});
 		
+		////////////////////////////////////////////////////////////////////////////////////////////
 		// 일별지불 (고객)
 		chart2 = {
 			'dataset':{
@@ -464,8 +521,12 @@ input[type=text] {
 		
 		$("#dailySalesCst").datepicker({
 			autoClose : true,
+			onSelect: function(){
+				dailySalesCst = $("#dailySalesCst").val();
+			}
 		});
 		
+		////////////////////////////////////////////////////////////////////////////////////////////
 		// 일별 객실 현황 차트
 		chart3 = {
 			'dataset':{
@@ -497,10 +558,6 @@ input[type=text] {
 	  						pricelist.push(list.price);
 	  					});
 	  					
-	  					var deluxe = 0;
-	  					var spa = 0;
-	  					var standard = 0;
-	  					var suite = 0;
 	  					// 객실 유형 이름
 	  					var namelist = [];
 	  					$.each(data.list, function(index, list){
@@ -518,15 +575,15 @@ input[type=text] {
 	  					
 	  					$("#chartArea3").children().remove();
 	  					$(".deluxe-price").children().remove();
-	  					$(".deluxe-price").append("<label>" + deluxe + "</label>");
+	  					$(".deluxe-price").append("<label>" + deluxe.toLocaleString() + "</label>");
 	  					$(".spa-price").children().remove();
-	  					$(".spa-price").append("<label>" + spa + "</label>");
+	  					$(".spa-price").append("<label>" + spa.toLocaleString() + "</label>");
 	  					$(".standard-price").children().remove();
-	  					$(".standard-price").append("<label>" + standard + "</label>");
+	  					$(".standard-price").append("<label>" + standard.toLocaleString() + "</label>");
 	  					$(".suite-price").children().remove();
-	  					$(".suite-price").append("<label>" + suite + "</label>");
+	  					$(".suite-price").append("<label>" + suite.toLocaleString() + "</label>");
 	  					$(".total-price").children().remove();
-	  					$(".total-price").append("<label>" + (deluxe+spa+standard+suite) + "</label>");
+	  					$(".total-price").append("<label>" + (deluxe+spa+standard+suite).toLocaleString() + "</label>");
 	  					chart3 = {
 	  						'dataset':{
 	  							title: 'Web accessibility status',
@@ -550,6 +607,7 @@ input[type=text] {
 		     }
 		});
 		
+		////////////////////////////////////////////////////////////////////////////////////////////
 		// 일별지불(재고)
 		chart4 = {
 			'dataset':{
@@ -568,30 +626,158 @@ input[type=text] {
 		
 		$("#dailySpendStrg").datepicker({
 			autoClose : true,
+			onSelect: function(){
+				dailySpendStrg = $("#dailySpendStrg").val();
+			}
 		});
 		
-		
+		////////////////////////////////////////////////////////////////////////////////////////////
 		// 월별 객실 타입별 매출
+		var monthlyRsvList = JSON.parse('${monthlyRsvList}');
+		var monthlyStayList = JSON.parse('${monthlyStayList}');
+		deluxe = 0;
+		spa = 0;
+		standard = 0;
+		suite = 0;
+		$.each(monthlyRsvList, function(index, monthlyRsvList){
+			if(monthlyRsvList.rtName == '디럭스'){
+				deluxe = monthlyRsvList.price;
+			} else if(monthlyRsvList.rtName == '스파'){
+				spa = monthlyRsvList.price;
+			} else if(monthlyRsvList.rtName == '스탠다드'){
+				standard = monthlyRsvList.price;
+			} else {
+				suite = monthlyRsvList.price;
+			}
+		});
+		
+		$.each(monthlyStayList, function(index, monthlyStayList){
+			if(monthlyStayList.rtName == '디럭스'){
+				deluxe += monthlyStayList.price;
+			} else if(monthlyStayList.rtName == '스파'){
+				spa += monthlyStayList.price;
+			} else if(monthlyStayList.rtName == '스탠다드'){
+				standard += monthlyStayList.price;
+			} else {
+				suite += monthlyStayList.price;
+			}
+		});
+		selectMaxList = [standard, deluxe, suite, spa];
+		max = Math.max.apply(null, selectMaxList);
+		
+		increment = 0;
+		if(max >= 100000 && max < 1000000){
+			max = (Math.ceil(max / 100000) * 100000);
+			increment = (Math.ceil(max / 100000) * 10000);
+		} else if(max >= 1000000 && max < 10000000){
+			max = (Math.ceil(max / 1000000) * 1000000);
+			increment = (Math.ceil(max / 1000000) * 100000);
+		} else if(max >= 10000000 && max < 100000000){
+			max = (Math.ceil(max / 10000000) * 10000000);
+			increment = (Math.ceil(max / 10000000) * 1000000);
+		} else if(max >= 100000000 && max < 1000000000){
+			max = (Math.ceil(max / 100000000) * 100000000);
+			increment = (Math.ceil(max / 100000000) * 10000000);
+		}
 		chart5 = {
 			'legend': {
 				names: ${RoomList},
 			},
 			'dataset': {
 				title: 'Playing time per day',
-				values: [1840000, 0, 200000, 240000],
+				values: selectMaxList,
 				colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
 			},
 			'chartDiv': 'chartArea5',
 			'chartType': 'column',
 			'chartSize': { width: 1200, height: 300 },
-			'maxValue': 2000000,
-			'increment': 200000
+			'maxValue': max,
+			'increment': increment
 		};
 		Nwagon.chart(chart5);
 		
 		$("#monthlySalesPerRoomType").datepicker({
 			autoClose : true,
+			onSelect: function(){
+				monthlySalesPerRoomType = $("#monthlySalesPerRoomType").val();
+				$.ajax({
+					type : "post",
+	  				url : "searchTrend.an?Condition=monthlySalesPerRoomType",
+	  				data : {monthlySalesPerRoomType : monthlySalesPerRoomType},
+	  				success:function(data){
+	  					$("#chartArea5").children().remove();
+	  					monthlyRsvList = data.monthlyRsvList;
+	  					monthlyStayList = data.monthlyStayList;
+	  					deluxe = 0;
+	  					spa = 0;
+	  					standard = 0;
+	  					suite = 0;
+	  					$.each(data.monthlyRsvList, function(index, monthlyRsvList){
+	  						if(monthlyRsvList.rtName == '디럭스'){
+	  							deluxe = monthlyRsvList.price;
+	  						} else if(monthlyRsvList.rtName == '스파'){
+	  							spa = monthlyRsvList.price;
+	  						} else if(monthlyRsvList.rtName == '스탠다드'){
+	  							standard = monthlyRsvList.price;
+	  						} else if(monthlyRsvList.rtName == '스위트'){
+	  							suite = monthlyRsvList.price;
+	  						}
+	  					});
+	  					
+	  					$.each(data.monthlyStayList, function(index, monthlyStayList){
+	  						if(monthlyStayList.rtName == '디럭스'){
+	  							deluxe += monthlyStayList.price;
+	  						} else if(monthlyStayList.rtName == '스파'){
+	  							spa += monthlyStayList.price;
+	  						} else if(monthlyStayList.rtName == '스탠다드'){
+	  							standard += monthlyStayList.price;
+	  						} else if(monthlyStayList.rtName == '스위트'){
+	  							suite += monthlyStayList.price;
+	  						}
+	  					});
+	  					
+	  					selectMaxList = [standard, deluxe, suite, spa];
+	  					max = Math.max.apply(null, selectMaxList);
+	  					
+	  					increment = 0;
+	  					if(max >= 100000 && max < 1000000){
+	  						max = (Math.ceil(max / 100000) * 100000);
+	  						increment = (Math.ceil(max / 100000) * 10000);
+	  					} else if(max >= 1000000 && max < 10000000){
+	  						max = (Math.ceil(max / 1000000) * 1000000);
+	  						increment = (Math.ceil(max / 1000000) * 100000);
+	  					} else if(max >= 10000000 && max < 100000000){
+	  						max = (Math.ceil(max / 10000000) * 10000000);
+	  						increment = (Math.ceil(max / 10000000) * 1000000);
+	  					} else if(max >= 100000000 && max < 1000000000){
+	  						max = (Math.ceil(max / 100000000) * 100000000);
+	  						increment = (Math.ceil(max / 100000000) * 10000000);
+	  					}
+	  					
+	  					chart5 = {
+	  							'legend': {
+	  								names: ${RoomList},
+	  							},
+	  							'dataset': {
+	  								title: 'Playing time per day',
+	  								values: selectMaxList,
+	  								colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
+	  							},
+	  							'chartDiv': 'chartArea5',
+	  							'chartType': 'column',
+	  							'chartSize': { width: 1200, height: 300 },
+	  							'maxValue': max,
+	  							'increment': increment
+	  						};
+	  						Nwagon.chart(chart5);
+	  				},
+	  				error:function(data){
+	  					
+	  				}
+				});
+			}
 		});
+		
 		
 		// 탭 클릭시 이동
 		function fnMove(seq){

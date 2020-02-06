@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.hotels.common.model.vo.Payment;
 import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
 import com.kh.hotels.mngStay.model.vo.Stay;
 
@@ -15,5 +16,11 @@ public interface AnalysDao {
 	ArrayList<SalesDetail> selectRsvList(SqlSessionTemplate sqlSession, Map<String, Object> map);
 
 	ArrayList<Stay> selectStayList(SqlSessionTemplate sqlSession, Map<String, Object> map);
+
+	ArrayList<SalesDetail> selectMonthlyRsvList(SqlSessionTemplate sqlSession, Map<String, Object> map);
+
+	ArrayList<Stay> selectMonthlyStayList(SqlSessionTemplate sqlSession, Map<String, Object> map);
+
+	ArrayList<Payment> selectDailyPaymentList(SqlSessionTemplate sqlSession, Map<String, Object> map);
 
 }

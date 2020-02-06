@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hotels.common.model.vo.Payment;
 import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
 import com.kh.hotels.mngStay.model.vo.Stay;
 
@@ -27,6 +28,21 @@ public class AnalysDaoImpl implements AnalysDao{
 	@Override
 	public ArrayList<Stay> selectStayList(SqlSessionTemplate sqlSession, Map<String, Object> map) {
 		return (ArrayList)sqlSession.selectList("Analys.selectStayList", map);
+	}
+
+	@Override
+	public ArrayList<SalesDetail> selectMonthlyRsvList(SqlSessionTemplate sqlSession, Map<String, Object> map) {
+		return (ArrayList)sqlSession.selectList("Analys.selectMonthlyRsvList", map);
+	}
+
+	@Override
+	public ArrayList<Stay> selectMonthlyStayList(SqlSessionTemplate sqlSession, Map<String, Object> map) {
+		return (ArrayList)sqlSession.selectList("Analys.selectMonthlyStayList", map);
+	}
+
+	@Override
+	public ArrayList<Payment> selectDailyPaymentList(SqlSessionTemplate sqlSession, Map<String, Object> map) {
+		return (ArrayList)sqlSession.selectList("Analys.selectDailyPaymentList", map);
 	}
 
 }
