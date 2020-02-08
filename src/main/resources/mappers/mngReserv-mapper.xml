@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Reserv">
+
+	<resultMap type="com.kh.hotels.mngReserv.model.vo.ReservHisList" id="reservHisListSet">
+		<id property="rsvNo" column="RSV_NO" />
+		<result property="rmType" column="RT_NAME" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="mname" column="NAME" />
+		<result property="phone" column="PHONE" />
+		<result property="checkin" column="CHECKIN" />
+		<result property="checkout" column="CHECKOUT" />
+		<result property="rsvPrc" column="STAY_PRICE" />
+		<result property="rsvDate" column="RSV_DATE" />
+		<result property="modDate" column="MOD_DATE" />
+		<result property="rsvWay" column="RSV_WAY" />
+		<result property="rsvStatus" column="RSV_STATUS" />
+		<result property="price" column="PRICE" />
+	</resultMap>
+	
+	<select id="goReservHis" resultMap="reservHisListSet">
+		SELECT V.RSV_NO, TO_CHAR(V.CHECKIN, 'YYYY-MM-DD') AS "CHECKIN", TO_CHAR(V.CHECKOUT, 'YYYY-MM-DD') AS "CHECKOUT",
+		       TO_CHAR(V.STAY_PRICE, '999,999,999') AS "PRICE", V.STAY_PRICE, V.RSV_DATE, V.RSV_STATUS, V.RSV_WAY,
+		       R.RM_NUM, T.RT_NAME, M.NAME, M.PHONE, V.MOD_DATE
+		FROM RSV V
+		JOIN ROOM R ON (V.RM_NO = R.RM_NO)
+		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
+		JOIN MEMBER M ON (V.MNO = M.MNO)
+		WHERE R.RM_STATUS = 'Y'
+		AND M.STATUS = 'Y'
+		AND M.TYPE = 'CLIENT'
+		AND SUBSTR(RSV_DATE, 1, 10) = TO_CHAR((SYSDATE + 9 / (24) + 135 / (24 * 60 * 60)), 'YYYY-MM-DD')
+		ORDER BY V.RSV_NO DESC
+	</select>
+	
+	<select id="searchReservHisDay" resultMap="reservHisListSet" parameterType="java.lang.String">
+		SELECT V.RSV_NO, TO_CHAR(V.CHECKIN, 'YYYY-MM-DD') AS "CHECKIN", TO_CHAR(V.CHECKOUT, 'YYYY-MM-DD') AS "CHECKOUT",
+		       TO_CHAR(V.STAY_PRICE, '999,999,999') AS "PRICE", V.STAY_PRICE, V.RSV_DATE, V.RSV_STATUS, V.RSV_WAY,
+		       R.RM_NUM, T.RT_NAME, M.NAME, M.PHONE, V.MOD_DATE
+		FROM RSV V
+		JOIN ROOM R ON (V.RM_NO = R.RM_NO)
+		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
+		JOIN MEMBER M ON (V.MNO = M.MNO)
+		WHERE R.RM_STATUS = 'Y'
+		AND M.STATUS = 'Y'
+		AND M.TYPE = 'CLIENT'
+		AND SUBSTR(RSV_DATE, 1, 10) = #{day}
+		ORDER BY V.RSV_NO DESC
+	</select>
+	
+</mapper>

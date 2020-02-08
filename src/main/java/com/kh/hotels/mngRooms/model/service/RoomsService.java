@@ -68,4 +68,6 @@ public interface RoomsService {
 
 	void insertRsvCheckIn(CheckIn checkIn);
 
+	void doCheckout(int sno);
+
 }

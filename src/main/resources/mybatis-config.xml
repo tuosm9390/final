@@ -71,6 +71,7 @@
         <mapper resource="mappers/account-mapper.xml"/>
         <mapper resource="mappers/analys-mapper.xml"/>
         <mapper resource="mappers/setting-mapper.xml"/>
+        <mapper resource="mappers/mngReserv-mapper.xml"/>
 	</mappers>
 		
 	

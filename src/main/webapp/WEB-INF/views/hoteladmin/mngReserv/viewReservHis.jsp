@@ -20,7 +20,7 @@
 
 .titleSec select {
 	height: 25px;
-	width: 100px;
+	width: 110px;
 	border: 1px solid lightgrey;
 	margin-top: 5px;
 	margin-left: 20px;
@@ -121,6 +121,10 @@ hr {
 	color: royalblue;
 }
 
+.lightsteelblue {
+	background-color: lightsteelblue;
+}
+
 </style>
 </head>
 <body>
@@ -131,18 +135,18 @@ hr {
 		<jsp:include page="../mngRooms/modalCheckIn.jsp"></jsp:include>
 		<div class="titleSec">
 			<h1>예약내역</h1>
-			<select name="serReservType">
-				<option selected>전체 예약</option>
-				<option>온라인 예약</option>
-				<option>오프라인 예약</option>
+			<select name="serReservType" id="serReservType" onchange="selReservType();">
+				<option value="all" selected>전체 예약</option>
+				<option value="on">온라인 예약</option>
+				<option value="off">오프라인 예약</option>
 			</select>
 		</div>
 		 
 		<hr>
 		<div class="topSec">
 			<div class="dateSec">
-				<label>영업일자</label>
-				<input type="text" id="today" name="today">
+				<label>예약일자</label>
+				<input type="text" id="today" name="today" value="${ today }">
 				<button id="goYesterday">◀</button>
 				<button id="goToday">오늘</button>
 				<button id="goTommorow">▶</button>
@@ -177,21 +181,46 @@ hr {
 					<th width="80px">상태</th>
 					<th width="119px">예약방법</th>
 				</tr>
-				<c:forEach var="i" begin="1" end="50">
+				<c:forEach var="r" items="${ rsvList }">
 					<tr>
-						<td>20191234</td>
-						<td>스위트 패밀리</td>
-						<td>707</td>
-						<td id="reservNo${ i }">김진호</td>
-						<td>010-0000-0000</td>
-						<td>2020-01-14</td>
-						<td>2020-01-16</td>
-						<td style="text-align: right;">1,000,000</td>
-						<td style="text-align: right;">1,000,000</td>
-						<td>2020-01-11 14:05:35</td>
-						<td>2020-01-11 14:05:49</td>
-						<td>확정예약</td>
-						<td>온라인예약</td>
+						<td onclick="openModal(${ r.rsvNo })">${ r.rsvNo }</td>
+						<td>${ r.rmType }</td>
+						<td>${ r.rmNum }</td>
+						<td>${ r.mname }</td>
+						<td>${ r.phone }</td>
+						<td>${ r.checkin }</td>
+						<td>${ r.checkout }</td>
+						<td style="text-align: right;">${ r.price }</td>
+
+						<c:if test="${ r.rsvStatus eq 'OK' ||  r.rsvStatus eq 'REFUND' || r.rsvStatus eq 'NOSHOW' }">
+						<td style="text-align: right;">${ r.price }</td>
+						</c:if>
+						<c:if test="${ r.rsvStatus eq 'WAIT'}">
+						<td style="text-align: right;">0</td>
+						</c:if>
+
+						<td>${ r.rsvDate }</td>
+						<td>${ r.modDate }</td>
+
+						<c:if test="${ r.rsvStatus eq 'OK' }">
+						<td>예약확정</td>
+						</c:if>
+						<c:if test="${ r.rsvStatus eq 'REFUND' }">
+						<td>예약취소</td>
+						</c:if>
+						<c:if test="${ r.rsvStatus eq 'NOSHOW' }">
+						<td>고객노쇼</td>
+						</c:if>
+						<c:if test="${ r.rsvStatus eq 'WAIT'}">
+						<td>예약대기</td>
+						</c:if>
+
+						<c:if test="${ r.rsvWay eq 'ONLINE' }">						
+						<td class="onR">온라인예약</td>
+						</c:if>
+						<c:if test="${ r.rsvWay eq 'OFFLINE' }">						
+						<td class="offR">전화예약</td>
+						</c:if>
 					</tr>
 				</c:forEach>
 			</table>
@@ -200,20 +229,236 @@ hr {
 	</section>
 
 	<script>
+		var roomlist;
+		var roomprice;
+		var svclist;
+		var ruleInfo;
+		var rfdRate;
+		
+		var today = new Date();
+		var day = today.getFullYear() + "-" + (today.getMonth()+1>9?today.getMonth()+1:"0" + (today.getMonth()+1)) + "-" + (today.getDate()>9?today.getDate():("0" + today.getDate()));
+		
 		$(function(){
 			var date = new Date;
 			checkIn = $("#today").datepicker({
 				autoClose : true,
+				maxDate : new Date(),
 				//선택한 날짜를 가져옴
 				onSelect : function(date) {
-					endNum = date;
+					location.href = "searchRsvDay.re?day=" + date; 
 				}
 			}).data('datepicker');
+			$("#today").text($("#today").val());
 			
-			$("#reservNo1").parent().click(function(){
-				$(".modal").fadeIn();
-			});
+			if($("#today").val() == day) {
+				$("#goTommorow").prop('disabled', true);
+			}
+			
+			roomlist = JSON.parse('${jsonList}');
+			roomprice = JSON.parse('${jsonList2}');
+			svclist = JSON.parse('${jsonList3}');
+			ruleInfo = JSON.parse('${jsonObject}');
+			rfdRate = JSON.parse('${jsonObject2}');
+			
+			//모달 기본 내용 불러오기 (객실타입 / 객실호수)
+			var roomTypeArr = new Array();
+			var tempCnt = 0;
+			roomTypeArr.push(roomlist[0].rtName);
+			for(var i = 0; i < roomlist.length; i++) {
+				var tempRtName = roomlist[i].rtName;
+				for(var j = 0; j < roomTypeArr.length; j++) {
+					if(roomTypeArr[j] == tempRtName) {
+						tempCnt++;
+					}
+				}
+				if(tempCnt == 0) {
+					roomTypeArr.push(tempRtName);
+				}
+				tempCnt = 0;
+				
+				if(roomlist[i].stayNo == 0 && roomlist[i].rsvNo == "") {
+					$("#selRoomNum").append("<option value='" + roomlist[i].rmNo + "'>" + roomlist[i].rmNum + "호</option>")
+				} else {
+					$("#selRoomNum").append("<option value='" + roomlist[i].rmNo + "' disabled>" + roomlist[i].rmNum + "호</option>")
+				}
+			}
+			for(var i = 0; i < roomTypeArr.length; i++) {
+				$("#selRoomType").append("<option>" + roomTypeArr[i] + "</option>")
+			}
 		});
+		
+		function selReservType() {
+			var type = $("#serReservType").val();
+			var table = $(".reservList tr");
+			switch(type) {
+			case "all" : table.show(); break;
+			case "on" : table.find('.onR').parent().show(); table.find('.offR').parent().hide(); break;
+			case "off" : table.find('.onR').parent().hide(); table.find('.offR').parent().show(); break;
+			}
+		}
+		
+		//여기여기여기여기여기
+		$("#goYesterday").click(function(){
+			var yesterday = new Date($("#today").val().substring(0,4), $("#today").val().substring(5,7)-1, $("#today").val().substring(8,10));
+			yesterday.setDate(today.getDate() - 1);
+			var yday = yesterday.getFullYear() + "-" + (yesterday.getMonth()+1>9?yesterday.getMonth()+1:"0" + (yesterday.getMonth()+1)) + "-" + (yesterday.getDate()>9?yesterday.getDate():("0" + yesterday.getDate()));
+			location.href = "searchRsvDay.re?day=" + yday; 
+		});
+		
+		$("#goToday").click(function(){
+			location.href = "searchRsvDay.re?day=" + day; 
+		});
+		
+		$("#goTommorow").click(function(){
+			var tommorow = new Date($("#today").val().substring(0,4), $("#today").val().substring(5,7), $("#today").val().substring(8,10));
+			tommorow.setTime(today.getTime() + (1 * 24 * 60 * 60 * 1000));
+			var tday = tommorow.getFullYear() + "-" + (tommorow.getMonth()+1>9?tommorow.getMonth()+1:"0" + (tommorow.getMonth()+1)) + "-" + (tommorow.getDate()>9?tommorow.getDate():("0" + tommorow.getDate()));
+			location.href = "searchRsvDay.re?day=" + tday; 
+		});
+		
+		
+		
+		
+		
+		
+		
+		//▼모달 관련 함수들▼
+		var reservPayDate;
+		var reservCheckinTime;
+		var selRoomNumm;
+		
+		//모달 객실요금 변경 함수
+		function changeModalFee(rtNo, sttfeeday, endfeeday, perday) {
+			$(".feeDetailSec tr").remove();
+			var totalFee = 0;
+			for(var i = 0; i < perday; i++) {
+				var tempday = new Date(sttfeeday.getFullYear(), sttfeeday.getMonth(), sttfeeday.getDate() + i);
+				//var feeday = tempday.format('yyyy-MM-dd');
+				var feeday = sttfeeday.getFullYear() + "-" + (sttfeeday.getMonth()+1>9?sttfeeday.getMonth()+1:"0" + (sttfeeday.getMonth()+1)) + "-" + ((sttfeeday.getDate() + i)>9?(sttfeeday.getDate() + i):"0" + (sttfeeday.getDate() + i));
+				totalFee = detailModalFee(rtNo, tempday, feeday, 'STAY', totalFee);
+			}
+		}
+		
+		function detailModalFee(rtNo, tempday, feedate, data, totalFee) {
+			var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
+			var feeday = week[tempday.getDay()];
+			var termType;
+			if((feedate.substring(5,7) * 1) == 1 || (feedate.substring(5,7) * 1) == 2 || (feedate.substring(5,7) * 1) == 7 || (feedate.substring(5,7) * 1) == 8 || (feedate.substring(5,7) * 1) == 12) {
+				termType = "SEASON";
+			} else {
+				termType = "OFFSEASON";
+			}
+			for(var i = 0; i < roomprice.length; i++) {
+				if(roomprice[i].rtNo == rtNo && roomprice[i].dayType == feeday && roomprice[i].stayType == data && roomprice[i].termType == termType) {
+					var dayfee = roomprice[i].price.toLocaleString();
+					totalFee += roomprice[i].price;
+					$(".feeDetailSec table").append("<tr><td>" + feedate.substring(5) + "</td><td>" + dayfee + "</td></tr>");
+				}
+			}
+			$("#totalRoom").text(totalFee.toLocaleString());
+			$("#totalVlt").text((totalFee * ruleInfo.serviceRate).toLocaleString());
+			changeTotalPrcTxt();
+			
+			return totalFee;
+		}
+		
+		function openModal(rsvNo) {
+			$(".statusColor").addClass('lightsteelblue');
+			$(".totalPrice").addClass('lightsteelblue');
+			$("#modalStt").text('　예약');
+			$("#staycode").text(rsvNo);
+			$("#checkinBtn").show();
+			
+			$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
+			$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
+			
+			$.ajax({
+				url:"ajxSelectRsvInfo.ro",
+				type:"post",
+				data:{rsvNo:rsvNo},
+				success:function(data) {
+					$("#clientName").val(data.stayInfo.clientName);
+					$("#insertClient").text(data.stayInfo.clientNo);
+					$("#clientNo").val(data.stayInfo.clientNo);
+					$("#clientPhone").val(data.stayInfo.clientPhone);
+					$("#clientEmail").val(data.stayInfo.clientEmail);
+					$("#rsvCancelBtn").show();
+					$("#checkinBtn").text('저장').attr('onclick', 'doSave();');
+					
+					$("#checkIn").val(data.stayInfo.scheckin);
+					var sttday = new Date(data.stayInfo.scheckin.substring(0,4), data.stayInfo.scheckin.substring(5,7) - 1, data.stayInfo.scheckin.substring(8,10));
+					$("#checkOut").val(data.stayInfo.scheckout);
+					var endday = new Date(data.stayInfo.scheckout.substring(0,4), data.stayInfo.scheckout.substring(5,7) - 1, data.stayInfo.scheckout.substring(8,10));
+					$("select[name=stayDay] option[value='" + data.stayInfo.stayDays + "']").prop('selected', true);
+					
+					$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
+					$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
+					selRoomNumm = data.stayInfo.rmNo;
+					
+					var stdPer = data.stayInfo.stdPer;
+					var maxPer = data.stayInfo.maxPer;
+					var rmType = data.stayInfo.roomType;
+					for(var i = 0; i < roomlist.length; i++) {
+						if(roomlist[i].rtName != rmType) {
+							$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
+						} else {
+							$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+						}
+						
+						if(roomlist[i].rsvNo == rsvNo) {
+							reservCheckinTime = roomlist[i].ciTime;
+						}
+					}
+					for(var i = 1; i <= stdPer; i++) {
+						if(i == data.stayInfo.stayPer) {
+							$("#personCnt").append("<option value='" + i + "' selected>" + i + "</option>");
+						} else {
+							$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
+						}
+					}
+					
+					var perday = ((endday.getTime() - sttday.getTime()) / 1000 / 60 / 60/ 24);
+					changeModalFee(data.stayInfo.rtNo, sttday, endday, perday);
+					
+					var tempSvcTotal = 0;
+					for(var i = 0; i < data.staySvc.length; i++) {
+						var tempSvc = $(".svcTR").clone();
+						tempSvc.attr('class', 'useSvc').css({'display':'table-row', 'width':'100%'});
+						tempSvc.children().eq(0).text(data.staySvc[i].svcDate);
+						tempSvc.find('select').attr('disabled', 'disabled');
+						tempSvc.find('select option[value="' + data.staySvc[i].svcCode + '"]').prop("selected", true);
+						tempSvc.find('input[type=number]').eq(0).attr('readonly', 'readonly').val(data.staySvc[i].useCnt);
+						tempSvc.children().eq(3).children().attr('type', 'text').css("background-color", "white").val(data.staySvc[i].svcPrice.toLocaleString());
+						tempSvc.children().eq(4).children().attr('type', 'text').css("background-color", "white").val((data.staySvc[i].useCnt * data.staySvc[i].svcPrice).toLocaleString());
+						tempSvcTotal += data.staySvc[i].useCnt * data.staySvc[i].svcPrice;
+						tempSvc.find('button').remove();
+						$(".svcDetailSec table").append(tempSvc);
+					}
+					$("#totalSvc").text(tempSvcTotal.toLocaleString());
+					
+					for(var i = 0; i < data.stayPay.length; i++) {
+						switch(data.stayPay[i].payWay) {
+						case "CARD" : $("#payCard").val($("#payCard").val() * 1 + data.stayPay[i].paymentFee); break;
+						case "CASH" : $("#payCash").val($("#payCash").val() * 1 + data.stayPay[i].paymentFee); break;
+						case "ACCOUNT" : $("#payAcc").val($("#payAcc").val() * 1 + data.stayPay[i].paymentFee); break;
+						case "REFUND" : $("#payRfd").val($("#payRfd").val() * 1 + data.stayPay[i].paymentFee); break;
+						}
+						
+						if(i == data.stayPay.length - 1) {
+							$("#lastPayDay").text(data.stayPay[i].payDate);
+							reservPayDate = data.stayPay[i].payDate;
+						}
+					}
+					changeTotalPrcTxt();
+					
+				},
+				error:function(error, status) {
+					alert("SYSTEM ERROR!");
+				}
+			});
+			
+			$(".modal").fadeIn();
+		}
 	</script>
 </body>
 </html>

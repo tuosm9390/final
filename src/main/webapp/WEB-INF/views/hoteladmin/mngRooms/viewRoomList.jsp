@@ -1135,7 +1135,7 @@ input[type=checkbox] {
 					success:function(data) {
 						$("#modalStt").text('　' + data.stayInfo.rmNum + ' (대실)');
 						$("#clientName").val(data.stayInfo.clientName);
-						$("#insertClient").text(data.stayInfo.clientNo);
+						//$("#insertClient").text(data.stayInfo.clientNo);
 						$("#clientPhone").val(data.stayInfo.clientPhone);
 						$("#clientEmail").val(data.stayInfo.clientEmail);
 						
