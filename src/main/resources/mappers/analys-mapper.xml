@@ -34,6 +34,26 @@
 		<result property="payDate" column="PAY_DATE" />
 		<result property="payStatus" column="PAY_STATUS" />
 	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngAnalys.model.vo.DailySpendStock" id="DailySpendStockResultSet">
+		<id property="dssNo" column="dssNo" />
+		<result property="rptStatus" column="rpt_Status" />
+		<result property="apprDate" column="appr_Date" />
+		<result property="rptType" column="rpt_Type" />
+		<result property="totalPrice" column="tot_Price" />
+		<result property="type" column="type" />
+	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngAnalys.model.vo.SpendDetail" id="SpendDetailResultSet">
+		<id property="sdNo" column="sdNo" />
+		<result property="rptType" column="rpt_Type" />
+		<result property="name" column="name" />
+		<result property="pway" column="pway" />
+		<result property="modDate" column="mod_Date" />
+		<result property="response" column="response" />
+		<result property="totalPrice" column="tot_price" />
+		<result property="memo" column="memo" />
+	</resultMap>
 
 	<select id="selectSalesDetailList" resultType="java.util.ArrayList" resultMap="SalesDetailResultSet">
 		SELECT RM.RM_NUM, RSV_NO, R.MNO, M.NAME, CHECKIN, CHECKOUT, STAY_PRICE, TO_DATE(SUBSTR(RSV_DATE, 0, 10), 'YYYY-MM-DD') AS RSV_DATE
@@ -60,6 +80,56 @@
 			]]>
 			</when>
 		</choose>
+	</select>
+	
+	<select id="selectSpendDetailList" resultType="java.util.ArrayList" resultMap="SpendDetailResultSet">
+		SELECT R.RPT_TYPE, C.CN_NAME || (C.CN_MANAGER) AS NAME, IT.TYPE AS PWAY, R.RPT_DATE AS MOD_DATE, IT.SCATEGORY AS RESPONSE, TOT_PRICE, I.INAME AS MEMO
+		FROM PUR_REQ PR
+		LEFT JOIN ITEM I ON (PR.INO = I.INO)
+		LEFT JOIN ITEM_TYPE IT ON (I.TYPE_NO = IT.TYPE_NO)
+		LEFT JOIN REPORT R ON (PR.RPT_NO = R.RPT_NO)
+		LEFT JOIN CONN C ON (I.CN_CODE = C.CN_CODE)
+		WHERE R.RPT_STATUS = 'APPR'
+		AND R.RPT_TYPE = 'PURCHASE'
+		<if test="searchCondition == 'search' and searchCondition != null">
+			<![CDATA[
+				AND TO_DATE(SUBSTR(R.RPT_DATE, 0, 10), 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND TO_DATE(SUBSTR(R.RPT_DATE, 0, 10), 'YYYY-MM-DD') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+			]]>
+		</if>
+		
+		UNION
+		
+		SELECT R.RPT_TYPE AS TYPE, C.CN_NAME || (C.CN_MANAGER) AS NAME, IT.TYPE AS PWAY, R.RPT_DATE AS MOD_DATE, M.NAME AS RESPONSE, TOT_PRICE AS PRICE, I.INAME AS MEMO
+		FROM REP_REQ RR
+		LEFT JOIN ITEM I ON (RR.INO = I.INO)
+		LEFT JOIN ITEM_TYPE IT ON (I.TYPE_NO = IT.TYPE_NO)
+		LEFT JOIN REPORT R ON (RR.RPT_NO = R.RPT_NO)
+		LEFT JOIN CONN C ON (I.CN_CODE = C.CN_CODE)
+		LEFT JOIN MEMBER M ON (M.MNO = R.RECEIVER)
+		WHERE R.RPT_STATUS = 'APPR'
+		AND R.RPT_TYPE = 'REPAIR'
+		<if test="searchCondition == 'search' and searchCondition != null">
+			<![CDATA[
+				AND TO_DATE(SUBSTR(R.RPT_DATE, 0, 10), 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND TO_DATE(SUBSTR(R.RPT_DATE, 0, 10), 'YYYY-MM-DD') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+			]]>
+		</if>
+		
+		UNION
+		
+		SELECT PAY_STATUS AS TYPE, M.NAME, PWAY, P.MOD_DATE AS MOD_DATE, NAME AS RESPONSE, PRICE AS PRICE, R.RSV_NO || ' ' || CASE WHEN R.RSV_STATUS = 'NOSHOW' THEN '노쇼' ELSE '환불' END AS MEMO
+		FROM PAYMENT P
+		LEFT JOIN RSV R ON (P.RSV_NO = R.RSV_NO)
+		LEFT JOIN MEMBER M ON (M.MNO = R.MNO)
+		WHERE PAY_STATUS = 'REFUND'
+		<if test="searchCondition == 'search' and searchCondition != null">
+			<![CDATA[
+				AND TO_DATE(SUBSTR(P.MOD_DATE, 0, 10), 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND TO_DATE(SUBSTR(P.MOD_DATE, 0, 10), 'YYYY-MM-DD') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+			]]>
+		</if>
+		ORDER BY MOD_DATE
 	</select>
 
 	<select id="selectRsvList" resultType="java.util.ArrayList" resultMap="SalesDetailResultSet">
@@ -143,27 +213,58 @@
 
 	<!-- 일별 지불 (고객) -->
 	<select id="selectDailyPaymentList" resultType="java.util.ArrayList" resultMap="PaymentResultSet">
-		SELECT SUM(PRICE) AS PRICE, PWAY, TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM') AS PAY_DATE, PAY_STATUS
+		SELECT SUM(PRICE) AS PRICE, PWAY, TO_DATE(SUBSTR(PAY_DATE, 0, 10), 'YYYY-MM-DD') AS PAY_DATE, PAY_STATUS
 		FROM PAYMENT
 		<choose>
 			<when test="Condition == 'view'">
-				WHERE EXTRACT(MONTH FROM TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM')) = EXTRACT(MONTH FROM SYSDATE)
-				AND EXTRACT(YEAR FROM TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM')) = EXTRACT(YEAR FROM SYSDATE)
+				WHERE TO_DATE(SUBSTR(PAY_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(SYSDATE)
 			</when>
 			<when test="Condition == 'dailySalesCst'">
-				WHERE EXTRACT(MONTH FROM TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM')) = TO_DATE(#{dailySalesCst}, 'YYYY-MM')
+				WHERE TO_DATE(SUBSTR(PAY_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailySalesCst}, 'YYYY-MM-DD')
 			</when>
 		</choose>
-		GROUP BY (PWAY, TO_DATE(SUBSTR(PAY_DATE, 0, 7), 'YYYY-MM'), PAY_STATUS)
+		GROUP BY (PWAY, TO_DATE(SUBSTR(PAY_DATE, 0, 10), 'YYYY-MM-DD'), PAY_STATUS)
 		ORDER BY PWAY
 	</select>
 
-
-
-
-
-
-
+	<!-- 일별 지불 (재고) -->
+	<select id="selectDailySpendStrgList" resultType="java.util.ArrayList" resultMap="DailySpendStockResultSet">
+		SELECT RPT_STATUS, TO_DATE(SUBSTR(APPR_DATE, 0, 10), 'YYYY-MM-DD') AS APPR_DATE, RPT_TYPE, SUM(TOT_PRICE) AS TOT_PRICE, TYPE
+		FROM PUR_REQ PR
+		LEFT JOIN REPORT R ON (R.RPT_NO = PR.RPT_NO)
+		LEFT JOIN ITEM I ON (I.INO = PR.INO)
+		LEFT JOIN ITEM_TYPE IT ON (I.TYPE_NO = IT.TYPE_NO)
+		WHERE RPT_TYPE = 'PURCHASE'
+		AND RPT_STATUS = 'APPR'
+		<choose>
+			<when test="Condition == 'view'">
+				AND TO_DATE(SUBSTR(APPR_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(SYSDATE)
+			</when>
+			<when test="Condition == 'dailySpendStrg'">
+				AND TO_DATE(SUBSTR(APPR_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailySpendStrg}, 'YYYY-MM-DD')
+			</when>
+		</choose>
+		GROUP BY RPT_STATUS, TO_DATE(SUBSTR(APPR_DATE, 0, 10), 'YYYY-MM-DD'), RPT_TYPE, TYPE
+		
+		UNION
+		
+		SELECT RPT_STATUS, TO_DATE(SUBSTR(APPR_DATE, 0, 10), 'YYYY-MM-DD') AS APPR_DATE, RPT_TYPE, SUM(TOT_PRICE) AS TOT_PRICE, TYPE
+		FROM REP_REQ RR
+		LEFT JOIN REPORT R ON (RR.RPT_NO = R.RPT_NO)
+		LEFT JOIN ITEM I ON (I.INO = RR.INO)
+		LEFT JOIN ITEM_TYPE IT ON (I.TYPE_NO = IT.TYPE_NO)
+		WHERE RPT_STATUS = 'APPR'
+		AND RPT_TYPE = 'REPAIR'
+		<choose>
+			<when test="Condition == 'view'">
+				AND TO_DATE(SUBSTR(APPR_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(SYSDATE)
+			</when>
+			<when test="Condition == 'dailySpendStrg'">
+				AND TO_DATE(SUBSTR(APPR_DATE, 0, 10), 'YYYY-MM-DD') = TO_DATE(#{dailySpendStrg}, 'YYYY-MM-DD')
+			</when>
+		</choose>
+		GROUP BY RPT_STATUS, TO_DATE(SUBSTR(APPR_DATE, 0, 10), 'YYYY-MM-DD'), RPT_TYPE, TYPE
+	</select>
 </mapper>
 
  

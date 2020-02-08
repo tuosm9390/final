@@ -245,7 +245,7 @@ input[type=text], select{
 			<form id="searchForm" action="searchDetail.an?Condition=spend" method="post">
 				<div class="searchArea" align="right">
 					<label>지불 일시</label>
-					
+					<input type="hidden" name="searchCondition" value="search">
 					<input type="text" name="startDate" class="date" id="startDate" readonly> - 
 					<input type="text" name="endDate" class="date" id="endDate" readonly>
 					<button type="submit" class="anlys-btn">검색</button>
@@ -266,18 +266,24 @@ input[type=text], select{
 						<th>지불 금액</th>
 						<th>비고</th>
 					</tr>
-					<c:forEach var="i" begin="1" end="10" step="1">
+					<c:forEach var="list" items="${ sdList }">
+					<c:if test="${ list.rptType eq '환불' }">
+						<c:set var="type" value="고객"/>
+					</c:if>
+					<c:if test="${ list.rptType ne '환불' }">
+						<c:set var="type" value="업체"/>
+					</c:if>
 					<tr>
-						<td>고객</td>
-						<td>환불</td>
-						<td>남윤진</td>
-						<td>계좌이체</td>	
-						<td>2020-01-09</td>
-						<td>송기준</td>
-						<td align="right"><fmt:formatNumber value="${ price }" pattern="#,###"/> 원</td>
-						<td>예약번호 : 2001806</td>
+						<td>${ type }</td>
+						<td>${ list.rptType }</td>
+						<td>${ list.name }</td>
+						<td>${ list.pway }</td>	
+						<td>${ list.modDate }</td>
+						<td>${ list.response }</td>
+						<td align="right"><fmt:formatNumber value="${ list.totalPrice }" pattern="#,###"/> 원</td>
+						<td>${ list.memo }</td>
 					</tr>
-					<c:set var="sum" value="${ sum + price }"></c:set>
+					<c:set var="sum" value="${ sum + list.totalPrice }"></c:set>
 					</c:forEach>
 					<tr>
 						<th colspan="5"></th>

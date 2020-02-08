@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.kh.hotels.common.model.vo.Payment;
+import com.kh.hotels.mngAnalys.model.vo.DailySpendStock;
 import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
+import com.kh.hotels.mngAnalys.model.vo.SpendDetail;
 import com.kh.hotels.mngStay.model.vo.Stay;
 
 public interface AnalysService {
@@ -20,5 +22,9 @@ public interface AnalysService {
 	ArrayList<Stay> selectMonthlyStayList(Map<String, Object> map);
 
 	ArrayList<Payment> selectDailyPaymentList(Map<String, Object> map);
+
+	ArrayList<DailySpendStock> selectDailySpendStrgList(Map<String, Object> map);
+
+	ArrayList<SpendDetail> selectSpendDetailList(Map<String, String> map);
 
 }

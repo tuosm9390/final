@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hotels.common.model.vo.Payment;
 import com.kh.hotels.mngAnalys.model.dao.AnalysDao;
+import com.kh.hotels.mngAnalys.model.vo.DailySpendStock;
 import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
+import com.kh.hotels.mngAnalys.model.vo.SpendDetail;
 import com.kh.hotels.mngStay.model.vo.Stay;
 
 @Service
@@ -47,6 +49,16 @@ public class AnalysServiceImpl implements AnalysService{
 	@Override
 	public ArrayList<Payment> selectDailyPaymentList(Map<String, Object> map) {
 		return ad.selectDailyPaymentList(sqlSession, map);
+	}
+
+	@Override
+	public ArrayList<DailySpendStock> selectDailySpendStrgList(Map<String, Object> map) {
+		return ad.selectDailySpendStrgList(sqlSession, map);
+	}
+
+	@Override
+	public ArrayList<SpendDetail> selectSpendDetailList(Map<String, String> map) {
+		return ad.selectSpendDetailList(sqlSession, map);
 	}
 
 }
