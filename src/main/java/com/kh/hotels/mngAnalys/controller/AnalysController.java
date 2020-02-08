@@ -14,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.hotels.common.model.vo.Payment;
 import com.kh.hotels.hotel.model.service.HotelService;
 import com.kh.hotels.mngAnalys.model.service.AnalysService;
+import com.kh.hotels.mngAnalys.model.vo.DailySpendStock;
 import com.kh.hotels.mngAnalys.model.vo.SalesDetail;
+import com.kh.hotels.mngAnalys.model.vo.SpendDetail;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 import com.kh.hotels.mngStay.model.vo.Stay;
 
@@ -34,15 +36,36 @@ public class AnalysController {
 		
 		Map<String, String> map = new HashMap<String, String>();
 		
-		ArrayList<SalesDetail> sdList = null;
 		if(Condition.equals("sales")) {
-			sdList = as.selectSalesDetailList(map);
+			ArrayList<SalesDetail> sdList = as.selectSalesDetailList(map);
+			mv.addObject("sdList", sdList);
 		} else {
-			
+			ArrayList<SpendDetail> sdList = as.selectSpendDetailList(map);
+			for(int i = 0; i < sdList.size(); i++) {
+				if(sdList.get(i).getRptType().equals("PURCHASE")) {
+					sdList.get(i).setRptType("제품 구매");
+					sdList.get(i).setResponse("구매팀장");
+					sdList.get(i).setPway("계좌이체");
+				} else if(sdList.get(i).getRptType().equals("REFUND")) {
+					sdList.get(i).setRptType("환불");
+					sdList.get(i).setResponse("프론트");
+					
+					if(sdList.get(i).getPway().equals("ACCOUNT")) {
+						sdList.get(i).setPway("계좌이체");
+					} else if(sdList.get(i).getPway().equals("CASH")) {
+						sdList.get(i).setPway("현금");
+					} else if(sdList.get(i).getPway().equals("CARD")) {
+						sdList.get(i).setPway("카드");
+					}
+				} else {
+					sdList.get(i).setRptType("제품 수리");
+					sdList.get(i).setPway("계좌이체");
+				}
+			}
+			mv.addObject("sdList", sdList);
 		}
 		
 		mv.addObject("view", "view");
-		mv.addObject("sdList", sdList);
 		mv.addObject("Condition", Condition);
 		mv.setViewName("hoteladmin/mngAnalys/detailList");
 		
@@ -63,18 +86,39 @@ public class AnalysController {
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
 		
-		ArrayList<SalesDetail> sdList = null;
 		if(Condition.equals("sales")) {
-			sdList = as.selectSalesDetailList(map);
+			ArrayList<SalesDetail> sdList = as.selectSalesDetailList(map);
+			mv.addObject("sdList", sdList);
 		} else {
-			
+			ArrayList<SpendDetail> sdList = as.selectSpendDetailList(map);
+			for(int i = 0; i < sdList.size(); i++) {
+				if(sdList.get(i).getRptType().equals("PURCHASE")) {
+					sdList.get(i).setRptType("제품 구매");
+					sdList.get(i).setResponse("구매팀장");
+					sdList.get(i).setPway("계좌이체");
+				} else if(sdList.get(i).getRptType().equals("REFUND")) {
+					sdList.get(i).setRptType("환불");
+					sdList.get(i).setResponse("프론트");
+					
+					if(sdList.get(i).getPway().equals("ACCOUNT")) {
+						sdList.get(i).setPway("계좌이체");
+					} else if(sdList.get(i).getPway().equals("CASH")) {
+						sdList.get(i).setPway("현금");
+					} else if(sdList.get(i).getPway().equals("CARD")) {
+						sdList.get(i).setPway("카드");
+					}
+				} else {
+					sdList.get(i).setRptType("제품 수리");
+					sdList.get(i).setPway("계좌이체");
+				}
+			}
+			mv.addObject("sdList", sdList);
 		}
 		
 		mv.addObject("view", "search");
 		mv.addObject("searchCondition", searchCondition);
 		mv.addObject("startDate", startDate);
 		mv.addObject("endDate", endDate);
-		mv.addObject("sdList", sdList);
 		mv.addObject("Condition", Condition);
 		mv.setViewName("hoteladmin/mngAnalys/detailList");
 		
@@ -102,7 +146,7 @@ public class AnalysController {
 		mv.addObject("monthlyStayList", json1);
 		
 		ArrayList<String> RoomList = new ArrayList<>();
-		for(int i = 0; i < roomList.size(); i++) {
+		for(int i = 0; i < roomList.size() - 1; i++) {
 			RoomList.add(i, "'" + roomList.get(i).getRt_Name() + "'");
 		}
 		
@@ -123,16 +167,56 @@ public class AnalysController {
 		}
 		mv.addObject("dailyStaySales", dailyStaySales);
 		
+		// 일별 객실 현황 가격 조회
+		JSONArray json3 = null;
+		if(dailyRsvList.size() > dailyStayList.size()) {
+			for(int i = 0; i < dailyRsvList.size(); i++) {
+				for(int j = 0; j < dailyStayList.size(); j++) {
+					if(dailyRsvList.get(i).getRtNo() == dailyStayList.get(j).getRtNo()) {
+						dailyRsvList.get(i).setPrice(dailyRsvList.get(i).getPrice() + dailyStayList.get(j).getPrice());
+					}
+				}
+			}
+			json3 = JSONArray.fromObject(dailyRsvList);
+		} else {
+			for(int i = 0; i < dailyStayList.size(); i++) {
+				for(int j = 0; j < dailyRsvList.size(); j++) {
+					if(dailyRsvList.get(i).getRtNo() == dailyStayList.get(j).getRtNo()) {
+						dailyStayList.get(i).setPrice(dailyStayList.get(i).getPrice() + dailyRsvList.get(j).getPrice());
+					}
+				}
+			}
+			json3 = JSONArray.fromObject(dailyStayList);
+		}
+		mv.addObject("list", json3);
 		
 		// 일별 지불 (고객)
 		ArrayList<Payment> dailyPaymentList = as.selectDailyPaymentList(map);
+		for(int i = 0; i < dailyPaymentList.size(); i++) {
+			if(dailyPaymentList.get(i).getPway().equals("ACCOUNT")) {
+				dailyPaymentList.get(i).setPway("계좌이체");
+			} else if(dailyPaymentList.get(i).getPway().equals("CASH")) {
+				dailyPaymentList.get(i).setPway("현금");
+			} else if(dailyPaymentList.get(i).getPway().equals("CARD")) {
+				dailyPaymentList.get(i).setPway("카드");
+			} else if(dailyPaymentList.get(i).getPayStatus().equals("REFUND")){
+				dailyPaymentList.get(i).setPway("환불");
+			}
+		}
 		System.out.println("dailyPaymentList : " + dailyPaymentList);
-		mv.addObject("dailyPaymentList", dailyPaymentList);
+		JSONArray json2 = JSONArray.fromObject(dailyPaymentList);
+		mv.addObject("dailyPaymentList", json2);
+		
+		// 일별 지불 (재고)
+		ArrayList<DailySpendStock> dailySpendStrgList = as.selectDailySpendStrgList(map);
+		JSONArray json4 = JSONArray.fromObject(dailySpendStrgList);
+		mv.addObject("dailySpendStrgList", json4);
 		
 		mv.setViewName("hoteladmin/mngAnalys/trend");
 		return mv;
 	}
 	
+	//트렌드 검색
 	@RequestMapping("searchTrend.an")
 	public ModelAndView searchTrend(ModelAndView mv, String Condition,
 			@RequestParam(value="dailySales", required = false) String dailySales,
@@ -196,9 +280,24 @@ public class AnalysController {
 			
 		// 일별 지불 (고객)
 		} else if(Condition.equals("dailySalesCst")){
+			ArrayList<Payment> dailyPaymentList = as.selectDailyPaymentList(map);
+			for(int i = 0; i < dailyPaymentList.size(); i++) {
+				if(dailyPaymentList.get(i).getPway().equals("ACCOUNT")) {
+					dailyPaymentList.get(i).setPway("계좌이체");
+				} else if(dailyPaymentList.get(i).getPway().equals("CASH")) {
+					dailyPaymentList.get(i).setPway("현금");
+				} else if(dailyPaymentList.get(i).getPway().equals("CARD")) {
+					dailyPaymentList.get(i).setPway("카드");
+				} else if(dailyPaymentList.get(i).getPayStatus().equals("REFUND")){
+					dailyPaymentList.get(i).setPway("환불");
+				}
+			}
+			mv.addObject("dailyPaymentList", dailyPaymentList);
 			
 		// 일별 지불 (재고)
 		} else if(Condition.equals("dailySpendStrg")) {
+			ArrayList<DailySpendStock> dailySpendStrgList = as.selectDailySpendStrgList(map);
+			mv.addObject("dailySpendStrgList", dailySpendStrgList);
 			
 		// 월별 객실 타입별 매출
 		} else {

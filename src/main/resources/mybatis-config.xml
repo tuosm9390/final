@@ -56,6 +56,8 @@
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PartiReport" alias="PartiReport"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Payment" alias="Payment"/>
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.OrderRequest" alias="OrderRequest"/>
+		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.DailySpendStock" alias="DailySpendStock"/>
+		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.SpendDetail" alias="SpendDetail"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>

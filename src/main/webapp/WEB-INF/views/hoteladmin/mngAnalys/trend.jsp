@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -147,21 +148,21 @@ input[type=text] {
 							<label>객실</label>
 						</div>
 						<div style="float: right;" class="type-room-sales">
-							<label>${ dailyRsvSales }</label>
+							<label><fmt:formatNumber value="${ dailyRsvSales }" pattern="#,###"/></label>
 						</div>
 						<br><br>
 						<div style="float: left;" class="type-rent">
 							<label>대실</label>
 						</div>
 						<div style="float: right;" class="type-rent-sales">
-							<label>${ dailyStaySales }</label>
+							<label><fmt:formatNumber value="${ dailyStaySales }" pattern="#,###"/></label>
 						</div>
 						<br><br><br><br>
 						<div style="float: left;" class="type-total">
 							<label style="font-weight: bold;">총 매출액</label>
 						</div>
 						<div style="float: right;" class="type-total-sales">
-							<label style="font-weight: bold;">${ totalprice }</label>
+							<label style="font-weight: bold;"><fmt:formatNumber value="${ totalprice }" pattern="#,###"/></label>
 						</div>
 					</div>
 				</div>
@@ -181,23 +182,22 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
+				<c:set var="refund" value="0"/>
 				<c:set var="card" value="0"/>
 				<c:set var="cash" value="0"/>
 				<c:set var="account" value="0"/>
-				<c:set var="refund" value="0"/>
-				<c:set var="total" value="0"/>
-				<c:forEach var="dailyPaymentList" items="${dailyPaymentList}">
-					<c:if test="${dailyPaymentList.payStatus.equals('REFUND')}">
-						${ refund } = ${dailyPaymentList.price }
+				<c:forEach var="dailyPaymentList" items="${dailyPaymentList}" varStatus="st">
+					<c:if test="${dailyPaymentList.payStatus eq '환불'}">
+						<c:set var="refund" value="${dailyPaymentList.price}"/>
 					</c:if>
-					<c:if test="${dailyPaymentList.pway eq 'CARD'}">
-						${card} = ${dailyPaymentList.price }
+					<c:if test="${dailyPaymentList.pway eq '카드'}">
+						<c:set var="card" value="${dailyPaymentList.price}"/>
 					</c:if>
-					<c:if test="${dailyPaymentList.pway eq 'CASH'}">
-						${cash } = ${dailyPaymentList.price }
+					<c:if test="${dailyPaymentList.pway eq '현금'}">
+						<c:set var="cash" value="${dailyPaymentList.price}"/>
 					</c:if>
-					<c:if test="${dailyPaymentList.pway eq 'ACCOUNT' && dailyPaymentList.payStatus ne 'REFUND'}">
-						${ account } = ${ dailyPaymentList.price }
+					<c:if test="${dailyPaymentList.pway eq '계좌이체' && dailyPaymentList.payStatus ne 'REFUND'}">
+						<c:set var="account" value="${dailyPaymentList.price}"/>
 					</c:if>
 				</c:forEach>
 				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
@@ -205,36 +205,36 @@ input[type=text] {
 						<div style="float: left;">
 							<label>신용카드</label>
 						</div>
-						<div style="float: right;">
-							<label>${ card }</label>
+						<div style="float: right;" class="card-value">
+							<label><fmt:formatNumber value="${ card }" pattern="#,###"/></label>
 						</div>
 						<br>
 						<div style="float: left;">
 							<label>현금</label>
 						</div>
-						<div style="float: right;">
-							<label>${ cash }</label>
+						<div style="float: right;" class="cash-value">
+							<label><fmt:formatNumber value="${ cash }" pattern="#,###"/></label>
 						</div>
 						<br>
 						<div style="float: left;">
 							<label>계좌이체</label>
 						</div>
-						<div style="float: right;">
-							<label>${ account }</label>
+						<div style="float: right;" class="account-value">
+							<label><fmt:formatNumber value="${ account }" pattern="#,###"/></label>
 						</div>
 						<br><br>
 						<div style="float: left;">
 							<label>환불</label>
 						</div>
-						<div style="float: right;">
-							<label>${ refund }</label>
+						<div style="float: right;" class="refund-value">
+							<label><fmt:formatNumber value="${ refund }" pattern="#,###"/></label>
 						</div>
 						<br><br>
 						<div style="float: left;">
 							<label style="font-weight: bold;">총 지불액</label>
 						</div>
-						<div style="float: right;">
-							<label style="font-weight: bold;">${ total }</label>
+						<div style="float: right;" class="total-value">
+							<label style="font-weight: bold;"><fmt:formatNumber value="${ (card + cash + account + refund) }" pattern="#,###"/></label>
 						</div>
 					</div>
 				</div>
@@ -257,25 +257,23 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
-				<c:set var="totalprice" value="0"/>
 				<c:set var="deluxeprice" value="0"/>
 				<c:set var="spaprice" value="0"/>
 				<c:set var="standardprice" value="0"/>
 				<c:set var="suiteprice" value="0"/>
 				<c:forEach var="list" items="${ list }">
 					<c:if test="${ list.rtName eq '디럭스' }">
-						${ deluxeprice } = ${ list.price }
+						<c:set var="deluxeprice" value="${ list.price }"/>
 					</c:if>
 					<c:if test="${ list.rtName eq '스파' }">
-						${ spaprice } = ${ list.price }
+						<c:set var="spaprice" value="${ list.price }"/>
 					</c:if>
 					<c:if test="${ list.rtName eq '스탠다드' }">
-						${ standardprice } = ${ list.price }
+						<c:set var="standardprice" value="${ list.price }"/>
 					</c:if>
 					<c:if test="${ list.rtName eq '스위트' }">
-						${ suiteprice } = ${ list.price }
+						<c:set var="suiteprice" value="${ list.price }"/>
 					</c:if>
-					${ totalprice } += ${ list.price }
 				</c:forEach>
 				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
@@ -283,35 +281,35 @@ input[type=text] {
 							<label>디럭스</label>
 						</div>
 						<div style="float: right;" class="deluxe-price">
-							<label>${ deluxeprice }</label>
+							<label><fmt:formatNumber value="${ deluxeprice }" pattern="#,###"/></label>
 						</div>
 						<br>
 						<div style="float: left;">
 							<label>스파</label>
 						</div>
 						<div style="float: right;" class="spa-price">
-							<label>${ spaprice }</label>
+							<label><fmt:formatNumber value="${ spaprice }" pattern="#,###"/></label>
 						</div>
 						<br>
 						<div style="float: left;">
 							<label>스탠다드</label>
 						</div>
 						<div style="float: right;" class="standard-price">
-							<label>${ standardprice }</label>
+							<label><fmt:formatNumber value="${ standardprice }" pattern="#,###"/></label>
 						</div>
 						<br>
 						<div style="float: left;">
 							<label>스위트</label>
 						</div>
 						<div style="float: right;" class="suite-price">
-							<label>${ suiteprice }</label>
+							<label><fmt:formatNumber value="${ suiteprice }" pattern="#,###"/></label>
 						</div>
 						<br><br><br>
 						<div style="float: left;">
 							<label style="font-weight: bold;">총 매출액</label>
 						</div>
 						<div style="float: right;" class="total-price">
-							<label style="font-weight: bold;">${ totalprice }</label>
+							<label style="font-weight: bold;"><fmt:formatNumber value="${ (deluxeprice + spaprice + standardprice + suiteprice) }" pattern="#,###"/></label>
 						</div>
 					</div>
 				</div>
@@ -331,41 +329,50 @@ input[type=text] {
 				<!-- 차트 영역 끝 -->
 				<!-- 금액 영역 -->
 				<div class="priceOuterArea" align="center">
+				<c:set var="repair" value="0"/>
+				<c:set var="purequip" value="0"/>
+				<c:set var="purcons" value="0"/>
+				<c:forEach var="purlist" items="${ dailySpendStrgList }">
+					<c:if test="${ purlist.rptType eq 'REPAIR' }">
+						<c:set var="repair" value="${ purlist.totalPrice }"/>
+					</c:if>
+					<c:if test="${ purlist.rptType eq 'PURCHASE' }">
+						<c:if test="${ purlist.type eq 'EQUIP' }">
+							<c:set var="purequip" value="${ purlist.totalPrice }"/>
+						</c:if>
+						<c:if test="${ purlist.type eq 'CONS' }">
+							<c:set var="purcons" value="${ purlist.totalPrice }"/>
+						</c:if>
+					</c:if>
+				</c:forEach>
 				<div class="priceInfo" align="right"><label>기준 : 원</label></div>
 					<div class="priceArea">
 						<div style="float: left;">
-							<label><c:out value="수리"></c:out></label>
+							<label>수리</label>
 						</div>
-						<div style="float: right;">
-							<label><c:out value="69,083,116"></c:out></label>
-						</div>
-						<br>
-						<div style="float: left;">
-							<label><c:out value="비품구입"></c:out></label>
-						</div>
-						<div style="float: right;">
-							<label><c:out value="1,100,000"></c:out></label>
+						<div style="float: right;" class="repair-price">
+							<label><fmt:formatNumber value="${ repair }" pattern="#,###"/></label>
 						</div>
 						<br>
 						<div style="float: left;">
-							<label><c:out value="소모품구입"></c:out></label>
+							<label>비품구입</label>
 						</div>
-						<div style="float: right;">
-							<label><c:out value="1,100,000"></c:out></label>
+						<div style="float: right;" class="purequip-price">
+							<label><fmt:formatNumber value="${ purequip }" pattern="#,###"/></label>
 						</div>
 						<br>
 						<div style="float: left;">
-							<label><c:out value="기타"></c:out></label>
+							<label>소모품구입</label>
 						</div>
-						<div style="float: right;">
-							<label><c:out value="101,100,000"></c:out></label>
+						<div style="float: right;" class="purcons-price">
+							<label><fmt:formatNumber value="${ purcons }" pattern="#,###"/></label>
 						</div>
-						<br><br><br>
+						<br><br><br><br>
 						<div style="float: left;">
-							<label style="font-weight: bold;"><c:out value="총 지불액"></c:out></label>
+							<label style="font-weight: bold;">총 지불액</label>
 						</div>
-						<div style="float: right;">
-							<label style="font-weight: bold;"><c:out value="0"></c:out></label>
+						<div style="float: right;" class="purtotal-price">
+							<label style="font-weight: bold;"><fmt:formatNumber value="${ (repair + purequip + purcons) }" pattern="#,###"/></label>
 						</div>
 					</div>
 				</div>
@@ -422,23 +429,27 @@ input[type=text] {
 			increment = (Math.ceil(max / 10000000) * 1000000);
 		}
 		
-		// 일별 매출 차트
-		chart1 = {
-			'legend': {
-				names: ['객실','대실'],
-			},
-			'dataset': {
-				title: 'Playing time per day',
-				values: selectMaxList,
-				colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
-			},
-			'chartDiv': 'chartArea',
-			'chartType': 'column',
-			'chartSize': { width: 600, height: 300 },
-			'maxValue': max,
-			'increment': increment
-		};
-		Nwagon.chart(chart1);
+		if(max != 0){
+			// 일별 매출 차트
+			chart1 = {
+				'legend': {
+					names: ['객실','대실'],
+				},
+				'dataset': {
+					title: 'Playing time per day',
+					values: selectMaxList,
+					colorset: ['#DC143C', '#FF8C00', "#30a1ce"]
+				},
+				'chartDiv': 'chartArea',
+				'chartType': 'column',
+				'chartSize': { width: 600, height: 300 },
+				'maxValue': max,
+				'increment': increment
+			};
+			Nwagon.chart(chart1);
+		} else {
+			$("#chartArea").append("<div style='display: inline-block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);'>내역이 존재하지 않습니다.</div>");
+		}
 		
 		$("#dailySales").datepicker({
 			autoClose : true,
@@ -504,44 +515,161 @@ input[type=text] {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// 일별지불 (고객)
-		chart2 = {
-			'dataset':{
-				title: 'Web accessibility status',
-				values:[69083116, 1100000, 1100000, 101100000],
-				colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
-				fields: ['신용카드', '현금', '계좌이체', '후불', '환불'],
-			},
-			'donut_width' : 50,
-			'core_circle_radius':70,
-			'chartDiv': 'chartArea2',
-			'chartType': 'donut',
-			'chartSize': {width:700, height:400}
-		};
-		Nwagon.chart(chart2);
+		var cash = 0;
+		var card = 0;
+		var account = 0;
+		var refund = 0;
+		var pricelist = [];
+		var dailyPaymentList = JSON.parse('${dailyPaymentList}');
+		$.each(dailyPaymentList, function(index, dailyPaymentList){
+			pricelist.push(dailyPaymentList.price);
+		});
+		
+		var namelist = [];
+		$.each(dailyPaymentList, function(index, dailyPaymentList){
+			namelist.push(dailyPaymentList.pway);
+			if(dailyPaymentList.pway == '현금'){
+				cash = dailyPaymentList.price;
+			} else if(dailyPaymentList.pway == '카드'){
+				card = dailyPaymentList.price;
+			} else if(dailyPaymentList.pway == '계좌이체'){
+				account = dailyPaymentList.price;
+			} else {
+				refund = dailyPaymentList.price;
+			}
+		});
+		
+		if(card == 0 && cash == 0 && account == 0 && refund == 0){
+			$("#chartArea2").append("<div style='display: inline-block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);'>내역이 존재하지 않습니다.</div>");
+		} else {
+			chart2 = {
+				'dataset':{
+					title: 'Web accessibility status',
+					values: pricelist,
+					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+					fields: namelist,
+				},
+				'donut_width' : 50,
+				'core_circle_radius':70,
+				'chartDiv': 'chartArea2',
+				'chartType': 'donut',
+				'chartSize': {width:700, height:400}
+			};
+			Nwagon.chart(chart2);
+		}
 		
 		$("#dailySalesCst").datepicker({
 			autoClose : true,
 			onSelect: function(){
 				dailySalesCst = $("#dailySalesCst").val();
+				$.ajax({
+					type : "post",
+	  				url : "searchTrend.an?Condition=dailySalesCst",
+	  				data : {dailySalesCst : dailySalesCst},
+	  				success:function(data){
+	  					cash = 0;
+	  					card = 0;
+	  					account = 0;
+	  					refund = 0;
+	  					
+	  					pricelist = [];
+	  					$.each(data.dailyPaymentList, function(index, dailyPaymentList){
+	  						pricelist.push(dailyPaymentList.price);
+	  					});
+	  					
+	  					namelist = [];
+	  					$.each(data.dailyPaymentList, function(index, dailyPaymentList){
+	  						namelist.push(dailyPaymentList.pway);
+	  						if(dailyPaymentList.pway == '현금'){
+	  							cash = dailyPaymentList.price;
+	  						} else if(dailyPaymentList.pway == '카드'){
+	  							card = dailyPaymentList.price;
+	  						} else if(dailyPaymentList.pway == '계좌이체'){
+	  							account = dailyPaymentList.price;
+	  						} else {
+	  							refund = dailyPaymentList.price;
+	  						}
+	  					});
+	  					
+	  					$("#chartArea2").children().remove();
+	  					$(".card-value").children().remove();
+	  					$(".card-value").append("<label>" + card.toLocaleString() + "</label>");
+	  					$(".cash-value").children().remove();
+	  					$(".cash-value").append("<label>" + cash.toLocaleString() + "</label>");
+	  					$(".account-value").children().remove();
+	  					$(".account-value").append("<label>" + account.toLocaleString() + "</label>");
+	  					$(".refund-value").children().remove();
+	  					$(".refund-value").append("<label>" + refund.toLocaleString() + "</label>");
+	  					$(".total-value").children().remove();
+	  					$(".total-value").append("<label style='font-weight: bold;'>" + (card + cash + account + refund).toLocaleString() + "</label>");
+	  					if(card == 0 && cash == 0 && account == 0 && refund == 0){
+	  						$("#chartArea2").append("<div style='display: inline-block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);'>내역이 존재하지 않습니다.</div>");
+	  					} else {
+		  					chart2 = {
+		  						'dataset':{
+		  							title: 'Web accessibility status',
+		  							values: pricelist,
+		  							colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+		  							fields: namelist,
+		  						},
+		  						'donut_width' : 50,
+		  						'core_circle_radius':70,
+		  						'chartDiv': 'chartArea2',
+		  						'chartType': 'donut',
+		  						'chartSize': {width:700, height:400}
+		  					};
+		  					Nwagon.chart(chart2);
+	  					}
+	  					
+	  				},
+	  				error:function(data){
+	  					console.log(data);
+	  				}
+				});
 			}
 		});
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// 일별 객실 현황 차트
-		chart3 = {
-			'dataset':{
-				title: 'Web accessibility status',
-				values:[25, 3],
-				colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
-				fields: ['대실', '투숙'],
-			},
-			'donut_width' : 50,
-			'core_circle_radius':70,
-			'chartDiv': 'chartArea3',
-			'chartType': 'donut',
-			'chartSize': {width:700, height:400}
-		};
-		Nwagon.chart(chart3);
+		var dailyRoomStatus = JSON.parse('${list}');
+		deluxe = 0;
+		spa = 0;
+		standard = 0;
+		suite = 0;
+		pricelist = [];
+		namelist = [];
+		$.each(dailyRoomStatus, function(index, dailyRoomStatus){
+			pricelist.push(dailyRoomStatus.price);
+			namelist.push(dailyRoomStatus.rtName);
+			if(dailyRoomStatus.rtName == '디럭스'){
+				deluxe = dailyRoomStatus.price;
+			} else if(dailyRoomStatus.rtName == '스파'){
+				spa = dailyRoomStatus.price;
+			} else if(dailyRoomStatus.rtName == '스탠다드'){
+				standard = dailyRoomStatus.price;
+			} else {
+				suite = dailyRoomStatus.price;
+			}
+		});
+		
+		if(deluxe == 0 && spa == 0 && standard == 0 && suite == 0){
+			$("#chartArea3").append("<div style='display: inline-block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);'>내역이 존재하지 않습니다.</div>");
+		} else {
+			chart3 = {
+				'dataset':{
+					title: 'Web accessibility status',
+					values: pricelist,
+					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+					fields: namelist,
+				},
+				'donut_width' : 50,
+				'core_circle_radius':70,
+				'chartDiv': 'chartArea3',
+				'chartType': 'donut',
+				'chartSize': {width:700, height:400}
+			};
+			Nwagon.chart(chart3);
+		}
 		
 		$("#dailyRoomStatus").datepicker({
 			autoClose : true,
@@ -552,15 +680,16 @@ input[type=text] {
 	  				url : "searchTrend.an?Condition=dailyRoomStatus",
 	  				data : {dailyRoomStatus : dailyRoomStatus},
 	  				success:function(data){
+	  					deluxe = 0;
+	  					spa = 0;
+	  					standard = 0;
+	  					suite = 0;
 	  					// 객실 유형별 매출액
-	  					var pricelist = [];
+	  					pricelist = [];
+	  					// 객실 유형 이름
+	  					namelist = [];
 	  					$.each(data.list, function(index, list){
 	  						pricelist.push(list.price);
-	  					});
-	  					
-	  					// 객실 유형 이름
-	  					var namelist = [];
-	  					$.each(data.list, function(index, list){
 	  						namelist.push(list.rtName);
 	  						if(list.rtName == '디럭스'){
 	  							deluxe = list.price;
@@ -583,21 +712,25 @@ input[type=text] {
 	  					$(".suite-price").children().remove();
 	  					$(".suite-price").append("<label>" + suite.toLocaleString() + "</label>");
 	  					$(".total-price").children().remove();
-	  					$(".total-price").append("<label>" + (deluxe+spa+standard+suite).toLocaleString() + "</label>");
-	  					chart3 = {
-	  						'dataset':{
-	  							title: 'Web accessibility status',
-	  							values : pricelist,
-	  							colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
-	  							fields: namelist,
-	  						},
-	  						'donut_width' : 50,
-	  						'core_circle_radius':70,
-	  							'chartDiv': 'chartArea3',
-	  						'chartType': 'donut',
-	  						'chartSize': {width:700, height:400}
-	  					};
-	  					Nwagon.chart(chart3);
+	  					$(".total-price").append("<label style='font-weight: bold;'>" + (deluxe+spa+standard+suite).toLocaleString() + "</label>");
+	  					if(deluxe == 0 && spa == 0 && standard == 0 && suite == 0){
+	  						$("#chartArea3").append("<div style='display: inline-block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);'>내역이 존재하지 않습니다.</div>");
+	  					} else {
+		  					chart3 = {
+		  						'dataset':{
+		  							title: 'Web accessibility status',
+		  							values : pricelist,
+		  							colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+		  							fields: namelist,
+		  						},
+		  						'donut_width' : 50,
+		  						'core_circle_radius':70,
+		  							'chartDiv': 'chartArea3',
+		  						'chartType': 'donut',
+		  						'chartSize': {width:700, height:400}
+		  					};
+		  					Nwagon.chart(chart3);
+	  					}
 	  				},
 	  				error:function(data){
 	  					console.log(data);
@@ -609,25 +742,102 @@ input[type=text] {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// 일별지불(재고)
-		chart4 = {
-			'dataset':{
-				title: 'Web accessibility status',
-				values:[69083116, 1100000, 1100000, 101100000],
-				colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
-				fields: ['수리', '비품구입', '소모품구입', '기타'],
-			},
-			'donut_width' : 50,
-			'core_circle_radius':70,
-			'chartDiv': 'chartArea4',
-			'chartType': 'donut',
-			'chartSize': {width:700, height:400}
-		};
-		Nwagon.chart(chart4);
+		var dailySpendStrgList = JSON.parse('${dailySpendStrgList}');
+		pricelist = [];
+		namelist = [];
+		$.each(dailySpendStrgList, function(index, dailySpendStrgList){
+			pricelist.push(dailySpendStrgList.totalPrice);
+			if(dailySpendStrgList.rptType == "REPAIR"){
+				namelist.push("수리");
+			} else if(dailySpendStrgList.rptType == "PURCHASE"){
+				if(dailySpendStrgList.type == 'EQUIP'){
+					namelist.push("비품구입");
+				} else if(dailySpendStrgList.type == "CONS"){
+					namelist.push("소모품구입");
+				}
+			}
+		});
+		if(namelist != null){
+			chart4 = {
+				'dataset':{
+					title: 'Web accessibility status',
+					values: pricelist,
+					colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+					fields: namelist,
+				},
+				'donut_width' : 50,
+				'core_circle_radius':70,
+				'chartDiv': 'chartArea4',
+				'chartType': 'donut',
+				'chartSize': {width:700, height:400}
+			};
+			Nwagon.chart(chart4);
+		} else {
+			$("#chartArea4").append("<div style='display: inline-block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);'>내역이 존재하지 않습니다.</div>");
+		}
 		
 		$("#dailySpendStrg").datepicker({
 			autoClose : true,
 			onSelect: function(){
 				dailySpendStrg = $("#dailySpendStrg").val();
+				$.ajax({
+					type : "post",
+	  				url : "searchTrend.an?Condition=dailySpendStrg",
+	  				data : {dailySpendStrg : dailySpendStrg},
+	  				success:function(data){
+	  					var repair = 0;
+	  					var purequip = 0;
+	  					var purcons = 0;
+	  					pricelist = [];
+	  					namelist = [];
+	  					$.each(data.dailySpendStrgList, function(index, dailySpendStrgList){
+	  						pricelist.push(dailySpendStrgList.totalPrice);
+	  						if(dailySpendStrgList.rptType == "REPAIR"){
+	  							namelist.push("수리");
+	  							repair = dailySpendStrgList.totalPrice;
+	  						} else if(dailySpendStrgList.rptType == "PURCHASE"){
+	  							if(dailySpendStrgList.type == "EQUIP"){
+	  								namelist.push("비품구입");
+	  								purequip = dailySpendStrgList.totalPrice;
+	  							} else if(dailySpendStrgList.type == "CONS"){
+	  								namelist.push("소모품구입");
+	  								purcons = dailySpendStrgList.totalPrice;
+	  							}
+	  						}
+	  					});
+	  					$("#chartArea4").children().remove();
+	  					$(".repair-price").children().remove();
+	  					$(".purequip-price").children().remove();
+	  					$(".purcons-price").children().remove();
+	  					$(".purtotal-price").children().remove();
+	  					$(".repair-price").append("<label>" + repair.toLocaleString() + "</label>");
+	  					$(".purequip-price").append("<label>" + purequip.toLocaleString() + "</label>");
+	  					$(".purcons-price").append("<label>" + purcons.toLocaleString() + "</label>");
+	  					$(".purtotal-price").append("<label style='font-weight: bold;'>" + (repair + purequip + purcons).toLocaleString() + "</label>");
+	  					
+	  					if(repair == 0 && purequip == 0 && purcons == 0){
+	  						$("#chartArea4").append("<div style='display: inline-block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);'>내역이 존재하지 않습니다.</div>");
+	  					} else {
+	  						chart4 = {
+	  							'dataset':{
+	  								title: 'Web accessibility status',
+	  								values: pricelist,
+	  								colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+	  								fields: namelist,
+	  							},
+	  							'donut_width' : 50,
+	  							'core_circle_radius':70,
+	  							'chartDiv': 'chartArea4',
+	  							'chartType': 'donut',
+	  							'chartSize': {width:700, height:400}
+	  						};
+	  						Nwagon.chart(chart4);
+	  					}
+	  				},
+	  				error:function(data){
+	  					console.log("에러");
+	  				}
+				});
 			}
 		});
 		
@@ -679,6 +889,7 @@ input[type=text] {
 			max = (Math.ceil(max / 100000000) * 100000000);
 			increment = (Math.ceil(max / 100000000) * 10000000);
 		}
+		console.log(${RoomList});
 		chart5 = {
 			'legend': {
 				names: ${RoomList},

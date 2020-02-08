@@ -33,6 +33,7 @@
 		<result property="checkIn" column="checkIn" />
 		<result property="checkOut" column="checkOut" />
 		<result property="rsvDate" column="rsv_Date" />
+		<result property="modDate" column="mod_Date" />
 		<result property="checkInTime" column="ci_time" />
 		<result property="rtName" column="rt_Name" />
 		<result property="adult" column="adult" />
@@ -217,9 +218,9 @@
 	<!-- 예약 입력 쿼리 -->
 	<insert id="insertReservation" parameterType="ReservationCheck">
 		INSERT
-		INTO RSV (RSV_NO, RM_NO, MNO, CHECKIN, CHECKOUT, STAY_PRICE, RSV_DATE, RSV_STATUS, RSV_WAY, ADULT, CHILD, CI_TIME, RSV_REQ, RSV_OPTION)
+		INTO RSV (RSV_NO, RM_NO, MNO, CHECKIN, CHECKOUT, STAY_PRICE, RSV_DATE, RSV_STATUS, RSV_WAY, ADULT, CHILD, CI_TIME, RSV_REQ, RSV_OPTION, MOD_DATE)
 		VALUES(#{rsvNo}, #{rmNo}, #{mno}, #{checkIn}, #{checkOut},
-		#{stayPrice}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), 'OK', 'ONLINE', #{adult}, #{child}, #{checkInTime}, #{rsvReq}, #{rsvOption})
+		#{stayPrice}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'), 'OK', 'ONLINE', #{adult}, #{child}, #{checkInTime}, #{rsvReq}, #{rsvOption}, TO_CHAR(#{rsvDate}, 'YYYY-MM-DD HH24:MI:SS'))
 	</insert>
 	
 	<insert id="insertReservationHis" parameterType="ReservationCheck">
