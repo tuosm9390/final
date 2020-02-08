@@ -240,7 +240,7 @@ public class RoomsController {
 		rfd.setRfdType(rfdType);
 		rs.cancelReservRSV(rfd);
 		rs.cancelReservSVC(rfd);
-		 rs.cancelReservRFD(rfd);
+		rs.cancelReservRFD(rfd);
 		
 		mv.setViewName("redirect:view.ro");
 		return mv;
@@ -249,10 +249,18 @@ public class RoomsController {
 	
 	@PostMapping("insertRsvCI.ro")
 	public ModelAndView insertRsvCheckIn(ModelAndView mv, CheckIn checkIn) {
-		System.out.println("내가 찾던 데이터 : " + checkIn);
 		checkIn.setLentYN("STAY");
 		checkIn.setTotalPay(checkIn.getCreditCard() + checkIn.getCash() + checkIn.getAccount());
 		rs.insertRsvCheckIn(checkIn);
+		mv.setViewName("redirect:view.ro");
+		return mv;
+	}
+	
+	
+	@RequestMapping("doCheckOut.ro")
+	public ModelAndView doCheckOut(ModelAndView mv, String stayNo) {
+		int sno = Integer.parseInt(stayNo);
+		rs.doCheckout(sno);
 		mv.setViewName("redirect:view.ro");
 		return mv;
 	}

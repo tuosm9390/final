@@ -830,6 +830,7 @@ input[type=number]:disabled {
 				$(".totalPrice").removeClass('gold');
 				
 				$("#rentYN").prop('checked', false);
+				$("#checkinBtn").text('입실').attr('onclick', 'doCheckIn();');
 				
 				$(".modal").fadeOut();
 			});

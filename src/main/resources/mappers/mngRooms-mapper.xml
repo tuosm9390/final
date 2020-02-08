@@ -493,4 +493,27 @@
 		VALUES (#{svcNo}, 'STAY_NO', 'NULL', SEQ_STAY_NO.CURRVAL, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), '예약고객입실')
 	</insert>
 	
+	<update id="doCheckOutStay" parameterType="_int">
+		UPDATE STAY
+		SET STAY_STATUS = 'Y', MOD_DATE = TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), REAL_CO = TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss')
+		WHERE STAY_NO = #{sno} 
+	</update>
+	
+	<insert id="doCheckOutStayHis" parameterType="_int">
+		INSERT ALL
+		INTO STAY_HIS VALUES (#{sno}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'STAY_STATUS', 'N', 'Y', '고객퇴실')
+		INTO STAY_HIS VALUES (#{sno}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'REAL_CO', 'NULL', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), '고객퇴실')
+		SELECT * FROM DUAL
+	</insert>
+	
+	<select id="selectCOrmNo" parameterType="_int" resultType="_int">
+		SELECT RM_NO
+		FROM STAY
+		WHERE STAY_NO = #{sno}
+	</select>
+	
+	<insert id="updateRoomNoCleanCO" parameterType="_int">
+		INSERT INTO ROOM_STT_HIS
+		VALUES (#{rmNo}, 'Y', 'N', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), '고객퇴실')
+	</insert>
 </mapper>
