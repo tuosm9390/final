@@ -92,18 +92,20 @@ public class AccountController {
 	}
 	
 	@PostMapping("updateDetail.ac")
-	public ModelAndView updateDetail(ModelAndView mv,String cnCode,String bankName,String account,String accName,String accMemo) {
+	public String updateDetail(ModelAndView mv,String cnCode,String bankName,String account,String accName,String accMemo) {
 		Conn c = new Conn();
 		c.setCnCode(cnCode);
 		c.setBankName(bankName);
 		c.setAccount(account);
 		c.setAccName(accName);
 		c.setAccMemo(accMemo);
-		
+		System.out.println("이거  : " + c);
 		int result = as.updateDetail(c);  
 		
-		mv.setViewName("jsonView");
-		mv.addObject("result", result);
-		return mv;
+		if(result>0) {
+			return  "redirect:selectAccount.ac";
+		}else {
+			return "common/errorPage";
+		}
 	}
 }

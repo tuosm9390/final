@@ -150,6 +150,7 @@ margin-left: 50px;
 			success:function(data){
 				console.log(data);
 				alert("성공");
+				location.reload(true);
 			},error:function(status){
 				console.log(status);
 				alert("ㅅㅂ");

@@ -90,8 +90,6 @@ $(function(){
 		var y = $("#sCategoryFilter").val();
 		console.log("cnName : " + x + " sCategory : " + y);
 		
-		
-		
 		if($("#iName").val()==""){
 			alert("물품명을 입력해주세요.");
 			return false;
@@ -127,9 +125,6 @@ $(function(){
 			$("#insertStock").submit();
 		}
 		
-
-		
-		
 	})
 })
 
@@ -149,6 +144,7 @@ $("#sCategoryFilter").change(function(){
 			for(var i=0;i<data.Conn.length;i++){
 				$("#cnName").append("<option value='"+data.Conn[i].cnCode+"'>"+data.Conn[i].cnName+"</option>");
 			}
+			
 		},error:function(status){
 			console.log(status);
 		}
