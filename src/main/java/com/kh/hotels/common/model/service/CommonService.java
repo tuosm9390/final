@@ -41,5 +41,7 @@ public interface CommonService {
 
 	int insertHotelPhoto(ArrayList<Attach> attachList);
 
+	int deleteInfomation();
+
 
 }

@@ -5,11 +5,14 @@ import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Svc;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 import com.kh.hotels.mngSetting.model.vo.SearchService;
 import com.kh.hotels.mngSetting.model.vo.SearchStaff;
@@ -61,6 +64,22 @@ public interface SettingDao {
 
 	int insertBrokenRoom(SqlSessionTemplate sqlSession, BrokenRoom brokenRoom);
 
+	int updateBrokenRoom(SqlSessionTemplate sqlSession, BrokenRoom brokenRoom);
+
+	ArrayList<BrokenRoom> selectSearchBrokenRoomList(BrokenRoom brokenRoom, SqlSessionTemplate sqlSession);
+
+	ArrayList<Prc> selectRoomPrcList(SqlSessionTemplate sqlSession);
+
+	int getRoomTypeCount(SqlSessionTemplate sqlSession);
+
+	int insertNewRoomType(SqlSessionTemplate sqlSession, RoomType roomType);
+
+	int selectRtNo(SqlSessionTemplate sqlSession, RoomType roomType);
+
+	int insertNewRoomTypePhoto(SqlSessionTemplate sqlSession, ArrayList<Attach> attachList);
+
+	int insertNewRoomTypeFare(SqlSessionTemplate sqlSession, RoomPrc roomPrc);
+	
 	ArrayList<HashMap<String, Object>> selectHotelInfo(SqlSessionTemplate sqlSession);
 
 	ArrayList<HashMap<String, Object>> selectHotelNoshowInfo(SqlSessionTemplate sqlSession);

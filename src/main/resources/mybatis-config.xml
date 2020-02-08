@@ -46,6 +46,7 @@
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.ClientSearchCondition" alias="ClientSearchCondition"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomList" alias="RoomList" />
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.Prc" alias="RoomPrice" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.Prc" alias="Prc" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurVos" alias="PurVos"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.ServiceList" alias="ServiceList" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurRequest" alias="PurRequest"/>

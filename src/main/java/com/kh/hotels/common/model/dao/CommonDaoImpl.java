@@ -226,5 +226,34 @@ public class CommonDaoImpl implements CommonDao{
 		return result;
 	}
 
+	@Override
+	public int deleteInformation(SqlSessionTemplate sqlSession) {
+		
+		int result  = 0;
+		int result1 = sqlSession.delete("Common.deleteInfo");
+		int result2 = sqlSession.delete("Common.deleteRule");
+		int result4 = sqlSession.delete("Common.deleteRfd");
+		int result5 = sqlSession.delete("Common.deleteNoshow");
+		int result6 = sqlSession.delete("Common.deleteBasic");
+		int result7 = sqlSession.delete("Common.deleteCal");
+		int result8 = sqlSession.delete("Common.deleteLaw");
+		
+		System.out.println("result1 : " + result1);
+		System.out.println("result2 : " + result2);
+		System.out.println("result4 : " + result4);
+		System.out.println("result5 : " + result5);
+		System.out.println("result6 : " + result6);
+		System.out.println("result7 : " + result7);
+		System.out.println("result8 : " + result8);
+		
+		if(result1 > 0 && result2 > 0 &&  result4 > 0 && result5 > 0 && result6 > 0 && result7 > 0 && result8 > 0) {
+			result = 1;
+		}else {
+			result = 0;
+		}
+		
+		return result;
+	}
+
 	
 }

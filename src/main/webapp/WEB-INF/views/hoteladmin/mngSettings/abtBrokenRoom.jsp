@@ -73,6 +73,7 @@
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
 	}
+	
 </style>
 </head>
 <body>
@@ -89,21 +90,19 @@
 			</div>
 			<div class="brokenRoomDate">
 				<h4>고장기간</h4>
+				<form action="searchBrokenRoom.st" method="post" class="searchForm">
 				<table>
 					<tr>
 						<td width="50%"></td>
 						<td><input type="text" id="brokenStart" name="brokenStart"></td>
-					</tr>
-				</table>
-				~
-				<table>
-					<tr>
+						<td> ~ </td>
 						<td width="50%"></td>
 						<td><input type="text" id="brokenEnd" name="brokenEnd"></td>
 					</tr>
 				</table>
+				</form>
 				<div class="brokenBtnGroup">
-					<button class="brokenBtn">검색</button>
+					<button class="brokenBtn" type="submit" onclick="return searchBrokenRoom();">검색</button>
 					<button class="brokenBtn" onclick="openBrokenModal();" style="margin-left:550px;">고장등록</button>
 					<button class="brokenBtn" style="background:darkgray;" onclick="return brokenDelete();">고장해지</button>
 				</div>
@@ -293,6 +292,18 @@
 		if(confirm("고장객실을 해지하시겠습니까 ? ")){
 			location.href="updateBrokenRoom.st?rmNo="+rmNo+"&brkBegin="+brkBegin;
 		}
+	}
+	function searchBrokenRoom(){
+		
+		if($("#brokenStart").val() == ""){
+			alert("시작날짜를 입력해주세요.");
+			return false;
+		}
+		if($("#brokenEnd").val() == ""){
+			alert("종료날짜를 입력해주세요.");
+			return false;
+		}
+		$(".searchForm").submit();
 	}
 </script>
 </body>

@@ -120,7 +120,6 @@
 				<label class="textArea">객실타입은 수정 및 삭제가 불가능 합니다. 신규로 생성할 수 있습니다.</label>
 				<button class="addRoomType" onclick="addRoomType();">+ 추가</button>
 				<br>
-				<form action="addRoomType.st" method="post">
 					<div class="tableAreaRoom">
 						<table border="1" class="roomTable" style="border-collapse: collapse;">
 							<tr class="thArea">
@@ -141,11 +140,6 @@
 							</c:forEach>
 						</table>
 					</div>
-					<div align="right" style="margin-top:10px;">
-						<button type="reset" class="saveBtn resetBtn" onclick="return resetRoomType();">취소</button>
-						<button type="submit" class="saveBtn" onclick="return saveRoomType();">저장</button>
-					</div>
-				</form>
 			</div>
 		</div>
 	</div>
@@ -161,42 +155,67 @@
 			});
 		}) */
 	};
-	function saveRoomType(){
-		if($(".newTrArea").length < 1){
-			alert("추가할 객실 타입을 입력해주세요.");
+	function modalAddRoomType(){
+
+		if($(".rtName").val() == ""){
+			alert("객실 타입을 입력해주세요.");
+			return false;
+		}
+		
+		if($(".limitprc").val() == ""){
+			alert("객실 하한가격을 입력해주세요.");
+			return false;
+		}
+		
+		var regNumber = /^[0-9]*$/;
+		
+		if(!regNumber.test($(".limitprc").val())){
+			alert("숫자만 입력해주세요.");
 			return false;
 		}
 		
 		$(".roomTypeName").each(function(index, item){
-			
-			$(".rtNames").each(function(index, items){
-				if(items.value == ""){
-					alert("객실 타입 명을 입력해주세요.");
-					return false;
-				}
+			$(".rtName").each(function(index, items){
 				if(items.value == item.value){
 					alert("같은 타입의 객실명을 입력하실 수 없습니다.");
 					return false;
 				}
-				
 				return false;
 			});
-
 		});
 		
-		$(".limitprc").each(function(index, item){
-			if(item.value == ""){
-				alert("객실 가격을 입력해주세요.");
-				return false;
-			}
+		if($(".minPer").val() == ""){
+			alert("객실 기준인원을 선택해주세요.");
 			return false;
-		});
-		
-		if(confirm("객실 유형을 등록하시겠습니까? ")){
-			return true;
+		}
+		if($(".maxPer").val() == ""){
+			alert("객실 기준인원을 선택해주세요.");
+			return false;
 		}
 		
+		if($(".mainPhoto").val() == ""){
+			alert("대표사진을 등록해주세요.");
+			return false;
+		}
+		
+		$(".money").each(function(){
+			if($(this).val() == ""){
+				alert("금액을 입력해주세요.");
+				return false;
+			}
+			
+			
+			if(!regNumber.test($(this).val())){
+				alert("숫자만 입력해주세요.");
+				return false;
+			}
+		});
+		
+		if(confirm("객실 유형을 등록하시겠습니까?")){
+			return true;
+		}
 		return false;
+		
 	};
 	function resetRoomType(){
 		$(".newTrArea").remove();

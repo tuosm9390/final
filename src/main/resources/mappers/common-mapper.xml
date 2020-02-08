@@ -299,6 +299,40 @@
 		INSERT INTO ATTACH(FNO, RT_NO, ORIGIN_NAME, CHANGE_NAME, UPLOAD_DATE, FILE_PATH, FILE_LEVEL, FILE_STATE)
 		VALUES(SEQ_FNO.NEXTVAL, #{rtNo}, #{originName}, #{changeName}, SYSDATE, #{filePath}, #{fileLevel}, 'Y')	
 	</insert>
+	
+	<delete id="deleteInfo">
+		DELETE
+		FROM INFO
+	</delete>
+	<delete id="deleteRule">
+		DELETE
+		FROM RULE
+	</delete>
+	<delete id="deleteBasic">
+		DELETE
+		FROM BASIC
+	</delete>
+	<delete id="deleteLaw">
+		DELETE
+		FROM LAW
+	</delete>
+	<delete id="deleteRfd">
+		DELETE
+		FROM RFD
+	</delete>
+	<delete id="deleteCal">
+		DELETE
+		FROM CAL
+	</delete>
+	<delete id="deleteNoshow">
+		DELETE
+		FROM NOSHOW
+	</delete>
+	<delete id="deleteRoomType">
+		DELETE
+		FROM ROOM_TYPE
+	</delete>
+	
 </mapper>
 
 

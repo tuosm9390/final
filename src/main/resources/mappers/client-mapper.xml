@@ -102,13 +102,13 @@
 	<select id="getClientListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM MEMBER
-		WHERE TYPE = 'CLIENT' AND STATUS = 'Y'
+		WHERE TYPE = 'CLIENT' AND STATUS = 'Y' AND NAME NOT LIKE '%-%'
 	</select>
 	
 	<select id="selectClientList" resultMap="clientListResultSet">
 		SELECT *
 		FROM MEMBER
-		WHERE TYPE = 'CLIENT' AND STATUS = 'Y'
+		WHERE TYPE = 'CLIENT' AND STATUS = 'Y' AND NAME NOT LIKE '%-%'
 		ORDER BY MNO DESC
 	</select>
 

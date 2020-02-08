@@ -1,12 +1,13 @@
 package com.kh.hotels.mngSetting.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,15 +16,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.common.controller.CommonsUtils;
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.common.model.vo.Svc;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
-import com.kh.hotels.mngRooms.model.voEtc.BrokenHistory;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 import com.kh.hotels.mngSetting.model.service.SettingService;
 import com.kh.hotels.mngSetting.model.vo.SearchService;
@@ -67,41 +73,93 @@ public class SettingController {
 	
 	
 	@PostMapping("addRoomType.st")
-	public String addRoomType(Model model, String rtName, String minPer, String maxPer, String limitprc) {
-		
-		String[] rtNames = rtName.split(",");
-		String[] minPers = minPer.split(",");
-		String[] maxPers = maxPer.split(",");
-		String[] limitprcs = limitprc.split(",");
-		
-		ArrayList<RoomType> roomTypeList = new ArrayList<>();
-		
-		RoomType roomType;
+	public String addRoomType(MultipartFile mainPhoto,MultipartHttpServletRequest subPhoto, Model model, HttpServletRequest request,
+			RoomType roomType, RoomPrc roomPrc) {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		String regDate = sdf.format(date);
 		
+		roomType.setRegDate(regDate);
 		
-		for(int i = 0; i < rtNames.length; i++) {
-			roomType = new RoomType();
-			roomType.setRtName(rtNames[i]);
-			roomType.setMinPer(Integer.parseInt(minPers[i]));
-			roomType.setMaxPer(Integer.parseInt(maxPers[i]));
-			roomType.setLimitprc(Integer.parseInt(limitprcs[i]));
-			roomType.setRegDate(regDate);
-			
-			roomTypeList.add(roomType);
+		int rtNo = ss.insertNewRoomType(roomType);
+		
+		roomType.setRtNo(rtNo);
+		roomType.setRegDate(regDate);
+		roomPrc.setRtNo(rtNo);
+		roomPrc.setRegDate(regDate);
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String filePath = root + "\\uploadFiles";
+		
+		
+		String originNameMainPhoto = mainPhoto.getOriginalFilename();
+		String ext = originNameMainPhoto.substring(originNameMainPhoto.lastIndexOf("."));
+		
+		String changeNameMainPhoto = CommonsUtils.getRandomString();
+		
+		ArrayList<Attach> attachList = new ArrayList<>();
+		
+		Attach attachMain = new Attach();
+		attachMain.setRtNo(rtNo);
+		attachMain.setFileLevel(1);
+		attachMain.setOriginName(originNameMainPhoto);
+		attachMain.setChangeName(changeNameMainPhoto);
+		attachMain.setFilePath((filePath + "\\" + attachMain.getChangeName() + ext));
+		
+		attachList.add(attachMain);
+		
+		Attach attachSub;
+		
+		List<MultipartFile> mfListSub = subPhoto.getFiles("subPhoto");
+		
+		String[] subPhotoOriginFileNames = new String[mfListSub.size()];;
+		
+		for(int i = 0; i < mfListSub.size(); i++) {
+			subPhotoOriginFileNames[i] = mfListSub.get(i).getOriginalFilename();
 		}
 		
-		int result = ss.insertRoomType(roomTypeList);
+		String[] extSub = new String[subPhotoOriginFileNames.length];
+		for(int i = 0; i < subPhotoOriginFileNames.length; i++) {
+			extSub[i] = subPhotoOriginFileNames[i].substring(subPhotoOriginFileNames[i].lastIndexOf("."));
+		}
 		
-		if( result > 0 ) {
+		for(int i = 0; i < mfListSub.size(); i++) {
+			attachSub = new Attach();
+			attachSub.setRtNo(rtNo);
+			attachSub.setOriginName(subPhotoOriginFileNames[i]);
+			attachSub.setChangeName(CommonsUtils.getRandomString());
+			attachSub.setFilePath(filePath + "\\" + attachSub.getChangeName() + extSub[i]);
+			attachSub.setFileLevel(2);
+			attachList.add(attachSub);
+			try {
+				
+				mfListSub.get(i).transferTo(new File(filePath + "\\" + attachSub.getChangeName() +  extSub[i]));
+				
+			} catch (IllegalStateException | IOException e) {
+				
+				new File(filePath + "\\" + attachSub.getChangeName() +  extSub[i]).delete();
+				
+			}
+		}
+		
+		try {
+			mainPhoto.transferTo(new File(filePath + "\\" + changeNameMainPhoto + ext));
+		} catch (IllegalStateException | IOException e) {
+			new File(filePath + "\\" + changeNameMainPhoto + ext).delete();
+			e.printStackTrace();
+		}
+		
+		int result = ss.insertNewRoomTypePhotoAndPrice(roomPrc, attachList);
+		
+		if(result > 0) {
 			return "redirect:/goRoomType.st";
 		}else {
-			model.addAttribute("msg", "객실타입추가 실패");
+			model.addAttribute("msg", "객실타입 생성실패");
 			return "common/errorPage";
 		}
+		
+
 	}
 	@RequestMapping("goRoomDetail.st")
 	public String goRoomDetailPage(Model model) {
@@ -134,9 +192,122 @@ public class SettingController {
 	}
 	
 	@RequestMapping("goRoomFare.st")
-	public String goRoomFarePage() {
+	public String goRoomFarePage(Model model) {
 		
+		ArrayList<Prc> roomPrcList = ss.selectRoomPrcList();
 		
+		int roomTypeCount = ss.getRoomTypeCount();
+		
+		System.out.println("roomTypeCount  : " + roomTypeCount);
+		System.out.println("roomPrcList  : " + roomPrcList);
+		model.addAttribute("roomPrcList", roomPrcList);
+		
+		RoomPrc roomPrc = new RoomPrc();
+		ArrayList<RoomPrc> roomFareList = new ArrayList<>();
+		for(int i = 0; i < roomPrcList.size(); i++) {
+			roomPrc.setRtNo(roomPrcList.get(i).getRtNo());
+			roomPrc.setRtName(roomPrcList.get(i).getRtName());
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("MON") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setRentMon(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("TUE") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setRentTue(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("WED") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setRentWed(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("THU") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setRentThu(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("FRI") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setRentFri(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("SAT") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setRentSat(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("SUN") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setRentSun(roomPrcList.get(i).getPrice());
+			}
+			
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("MON") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setStayMon(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("TUE") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setStayTue(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("WED") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setStayWed(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("THU") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setStayThu(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("FRI") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setStayFri(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("SAT") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setStaySat(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("SEASON") && roomPrcList.get(i).getDayType().equals("SUN") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setStaySun(roomPrcList.get(i).getPrice());
+			}
+			
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("MON") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setOffRentMon(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("TUE") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setOffRentTue(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("WED") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setOffRentWed(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("THU") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setOffRentThu(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("FRI") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setOffRentFri(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("SAT") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setOffRentSat(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("SUN") && roomPrcList.get(i).getStayType().equals("LENT")) {
+				roomPrc.setOffRentSun(roomPrcList.get(i).getPrice());
+			}
+			
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("MON") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setOffStayMon(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("TUE") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setOffStayTue(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("WED") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setOffStayWed(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("THU") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setOffStayThu(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("FRI") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setOffStayFri(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("SAT") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setOffStaySat(roomPrcList.get(i).getPrice());
+			}
+			if(roomPrcList.get(i).getTermType().equals("OFFSEASON") && roomPrcList.get(i).getDayType().equals("SUN") && roomPrcList.get(i).getStayType().equals("STAY")) {
+				roomPrc.setOffStaySun(roomPrcList.get(i).getPrice());
+			}
+
+			if(roomPrc.getOffRentFri() > 0 && roomPrc.getOffRentMon() > 0 && roomPrc.getOffRentSat() > 0 && roomPrc.getOffRentSun() > 0 && roomPrc.getOffRentThu() > 0 &&
+					roomPrc.getOffRentTue() > 0 && roomPrc.getOffRentWed() > 0 && roomPrc.getOffStayFri() > 0 && roomPrc.getOffStayMon() > 0 && roomPrc.getOffStaySat() > 0 &&
+					roomPrc.getOffStaySun() > 0 && roomPrc.getOffStayThu() > 0 && roomPrc.getOffStayTue() > 0 && roomPrc.getOffStayWed() > 0 &&
+					roomPrc.getRentFri() > 0 && roomPrc.getRentMon() > 0 && roomPrc.getRentSat() > 0 && roomPrc.getRentSun() > 0 && roomPrc.getRentThu() > 0 &&
+					roomPrc.getRentTue() > 0 && roomPrc.getRentWed() > 0 && roomPrc.getStayFri() > 0 && roomPrc.getStayMon() > 0 && roomPrc.getStaySat() > 0 &&
+					roomPrc.getStaySun() > 0 && roomPrc.getStayThu() > 0 && roomPrc.getStayTue() > 0 && roomPrc.getStayWed() > 0) {
+				roomFareList.add(roomPrc);
+				roomPrc = new RoomPrc();
+			}
+			
+		}
+		
+		model.addAttribute("roomFareList", roomFareList);
 		
 		return "hoteladmin/mngSettings/abtRoomFare";
 	}
@@ -175,6 +346,33 @@ public class SettingController {
 			return "common/errorPage";
 		}
 		
+	}
+	
+	@RequestMapping("updateBrokenRoom.st")
+	public String updateBrokenRoom(BrokenRoom brokenRoom, Model model) {
+		
+		int result = ss.updateBrokenRoom(brokenRoom);
+		
+		if(result > 0) {
+			return "redirect:/goBrokenRoom.st";
+		}else {
+			model.addAttribute("msg", "고장객실 변경 실패 ");
+			return "common/errorPage";
+		}
+		
+	}
+	@PostMapping("searchBrokenRoom.st")
+	public String searchBrokenRoom(String brokenStart,String brokenEnd, Model model) {
+		
+		BrokenRoom brokenRoom = new BrokenRoom();
+		brokenRoom.setBrkBegin(brokenStart);
+		brokenRoom.setBrkEnd(brokenEnd);
+		
+		ArrayList<BrokenRoom> searchBrokenRoomList = ss.selectSearchBrokenRoomList(brokenRoom);
+		
+		model.addAttribute("brokenRoomList", searchBrokenRoomList);
+		
+		return "hoteladmin/mngSettings/abtBrokenRoom";
 	}
 	
 	@RequestMapping("goServiceSetting.st")

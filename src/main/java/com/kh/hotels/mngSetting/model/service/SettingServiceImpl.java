@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Svc;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 import com.kh.hotels.mngSetting.model.dao.SettingDao;
 import com.kh.hotels.mngSetting.model.vo.SearchService;
@@ -183,6 +186,60 @@ public class SettingServiceImpl implements SettingService {
 	}
 
 	@Override
+	public int updateBrokenRoom(BrokenRoom brokenRoom) {
+
+		return sd.updateBrokenRoom(sqlSession, brokenRoom);
+	}
+
+	@Override
+	public ArrayList<BrokenRoom> selectSearchBrokenRoomList(BrokenRoom brokenRoom) {
+
+		return sd.selectSearchBrokenRoomList(brokenRoom, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Prc> selectRoomPrcList() {
+		
+		return sd.selectRoomPrcList(sqlSession);
+	}
+
+	@Override
+	public int getRoomTypeCount() {
+
+		return sd.getRoomTypeCount(sqlSession);
+	}
+
+	@Override
+	public int insertNewRoomType(RoomType roomType) {
+
+		int result = sd.insertNewRoomType(sqlSession, roomType);
+		
+		int rtNo = 0;
+		
+		if(result > 0) {
+			rtNo = sd.selectRtNo(sqlSession, roomType);
+		}
+		
+		return rtNo;
+	}
+
+	@Override
+	public int insertNewRoomTypePhotoAndPrice(RoomPrc roomPrc, ArrayList<Attach> attachList) {
+
+		int result = 0;
+		
+		int result1 = sd.insertNewRoomTypePhoto(sqlSession, attachList);
+		
+		int result2 = sd.insertNewRoomTypeFare(sqlSession, roomPrc);
+		
+		if(result1 > 0 && result2 > 0) {
+			result = 1;
+		}else {
+			result = 0;
+		}
+		
+		return result;
+
 	public ArrayList<HashMap<String, Object>> selectHotelInfo() {
 		
 		ArrayList<HashMap<String, Object>> list = sd.selectHotelInfo(sqlSession);
