@@ -297,10 +297,10 @@ width: 150px;
 	///이체정보추가!!//
 	$("#newac").click(function(){
 		$(".modalz").fadeIn();
-		
+		$("#sendCnCode").val($("#cnCoder").val());
 		console.log($("#cnCoder").val()+"fkfkfkfk")
 	})
-	//이처정보수정//
+	//이처정보수정버튼을 눌렀을때//
 	$("#newac2").click(function(){
 		$("#acTbody2").empty();
 		$("#newac2").hide();
@@ -308,10 +308,11 @@ width: 150px;
 		$("#acTbody").hide();
 		$("#acTbody2").show();
 		var cnCodez = $("#cnCoder").val();
+		console.log(cnCodez);
 	
-		$("#acTbody2").append("<tr><td hidden='hidden'><input type='text' id='cnCodex'></td><td><input type='text' name='bankName' id='bankName'></td><td><input type='text' id='account'></td><td><input type='text' id='accName'></td><td><input type='text' id='accMemo'></td></tr>")
+		$("#acTbody2").append("<tr><td hidden='hidden'><input type='text' id='cnCodex'></td><td><input type='text' name='bankName' id='bankName'></td><td><input type='text' id='account' name='account'></td><td><input type='text' id='accName' name='accName'></td><td><input type='text' id='accMemo' name='accMemo'></td></tr>")
 		//이체정보수정ajax
-		$.ajax({
+		/* $.ajax({
 			url:"updateDetail.ac",
 			type:"post",
 			data:{
@@ -327,7 +328,7 @@ width: 150px;
 			error:function(status){
 				console.log(status);
 			}
-		});
+		}); */
 		////////////
 	})
 	
@@ -337,10 +338,11 @@ width: 150px;
 		$("#acTbody2").hide();
 		$("#newac2").show();
 		$(".btnss2").hide();
-	})
+	});
 	//
 	
 	$("#ok").click(function(){
+		
 		$("#updateDetail").submit();
 		console.log("////////////////////");
 		console.log($("#cnCodee").val())

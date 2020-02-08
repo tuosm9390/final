@@ -125,7 +125,7 @@
 }
 
 #excel{
-background : white;
+	background : white;
 	color:green;
 	border: 1px solid green;
 	width: 68px;
@@ -339,30 +339,47 @@ width:1000px;
 							"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
 						}else{
 							$("#detailBody").append("<tr><th class='hide'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
-						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
-						}
+						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th style='width:100px;'>위치</th><th>객실번호</th></tr>")
+						}	
 						for(var i=0;i<data.stockDetailList.length;i++){
-							console.log(data.stockDetailList[i].rmNo);
-									if(data.stockDetailList[i].rmNo=='0'){
-										data.stockDetailList[i].rmNo='-';
-									}
-									if(data.stockDetailList[i].strgName==""){
-										data.stockDetailList[i].strgName="-";
-									}
-									if(data.stockDetailList[i].areaName==""){
-										data.stockDetailList[i].areaName="-";
-									}
+							
+							if(data.stockDetailList[i].rmNo=='0'){
+								data.stockDetailList[i].rmNo='-';
+							}
+							if(data.stockDetailList[i].strgName==""){
+								data.stockDetailList[i].strgName="-";
+							}
+							if(data.stockDetailList[i].areaName==""){
+								data.stockDetailList[i].areaName="-";
+							}
 									
 									
 							if(data.stockDetailList[0].type=="EQUIP"){
-							$("#detailBody").append(
+							$("#detailBody").append( 
 									"<tr><td class='hide'><input type='checkbox' name='checkRow'></td><td>"+
 									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
 									data.stockDetailList[i].amount+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
 									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
 									data.stockDetailList[i].cnName+"<input type='text' value='"+data.stockDetailList[i].cnCode+"' hidden='hidden' id='cnCode"+data.stockDetailList[i].ino+"'></td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
-									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
+									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td><td hidden='hidden>'"+
+									"<input type='text' name='ino' value='"+data.stockDetailList[i].ino+"'>"+
+									"<input type='text' name='iname' value='"+data.stockDetailList[i].iname+"'>"+
+									"<input type='text' name='amount' value='"+data.stockDetailList[i].amount+"'>"+
+									"<input type='text' name='vos' value='"+data.stockDetailList[i].vos+"'>"+
+									"<input type='text' name='vat' value='"+data.stockDetailList[i].vat+"'>"+
+									"<input type='text' name='up' value='"+data.stockDetailList[i].up+"'>"+
+									"<input type='text' name='mfg' value='"+data.stockDetailList[i].mfg+"'>"+
+									"<input type='text' name='cnName' value='"+data.stockDetailList[i].cnName+"'>"+
+									"<input type='text' name='cnCode' value='"+data.stockDetailList[i].cnCode+"'>"+
+									"<input type='text' name='areaName' value='"+data.stockDetailList[i].areaName+"'>"+
+									"<input type='text' name='rmNo' value='"+data.stockDetailList[i].rmNo+"'>"+"</td></tr>"
+									
+							);
+							console.log("ffffff");
+							console.log(data.stockDetailList[0].rmNo);
+							console.log(data.stockDetailList[i].rmNo);
+							
 							}else{
 								$("#detailBody").append(
 									"<tr><td class='hide'><input type='checkbox' name='checkRow'></td><td>"+
