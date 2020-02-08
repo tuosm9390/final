@@ -456,9 +456,36 @@ public class SettingController {
 		
 		return "hoteladmin/mngSettings/abtBill";
 	}
-
+	
+	//호텔 정보 조회, 수정
 	@RequestMapping("hotelInfo.st")
-	public String goHotelInfo() {
+	public String goHotelInfo(HttpServletRequest request, Model model) {
+		
+		
+		ArrayList<HashMap<String, Object>> list = ss.selectHotelInfo();
+		
+		//RFD SEASON, WEEK
+		ArrayList<HashMap<String, Object>> noShowList = ss.selectHotelNoshowInfo();
+		//RFD SEASON, WEEKEND
+		ArrayList<HashMap<String, Object>> rfdSWList = ss.selectHotelRfdSWInfo();
+		//RFD OFFSEASON, WEEK
+		ArrayList<HashMap<String, Object>> rfdOWList = ss.selectHotelRfdOWInfo();
+		//RFD OFFSEASON, WEEKEND
+		ArrayList<HashMap<String, Object>> rfdOWEList = ss.selectHotelRfdOWEInfo();
+		
+		model.addAttribute("list", list);
+		model.addAttribute("noShowList", noShowList);
+		model.addAttribute("rfdSWList", rfdSWList);
+		model.addAttribute("rfdOWList", rfdOWList);
+		model.addAttribute("rfdOWEList", rfdOWEList);
+		
+		
+		System.out.println("list : " + list);
+		System.out.println("noShowList : " + noShowList);
+		System.out.println("rfdSWList : " + rfdSWList);
+		System.out.println("rfdOWList : " + rfdOWList);
+		System.out.println("rfdOWEList : " + rfdOWEList);
+		
 		return "hoteladmin/mngSettings/abtHotel/hotelInfo";
 	}
 	

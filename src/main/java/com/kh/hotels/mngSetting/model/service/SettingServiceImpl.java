@@ -239,6 +239,46 @@ public class SettingServiceImpl implements SettingService {
 		}
 		
 		return result;
+
+	public ArrayList<HashMap<String, Object>> selectHotelInfo() {
+		
+		ArrayList<HashMap<String, Object>> list = sd.selectHotelInfo(sqlSession);
+		
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectHotelNoshowInfo() {
+		
+		ArrayList<HashMap<String, Object>> list = sd.selectHotelNoshowInfo(sqlSession);
+		
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectHotelRfdSWInfo() {
+		
+		ArrayList<HashMap<String, Object>> list = sd.selectHotelRfdSWList(sqlSession);
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectHotelRfdOWInfo() {
+		
+		ArrayList<HashMap<String, Object>> list = sd.selectHotelRfdOWList(sqlSession);
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectHotelRfdOWEInfo() {
+		
+		ArrayList<HashMap<String, Object>> list = sd.selectHotelRfdOWEList(sqlSession);
+		
+		return list;
 	}
 
 

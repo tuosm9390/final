@@ -68,6 +68,16 @@ public interface SettingService {
 
 	int insertNewRoomTypePhotoAndPrice(RoomPrc roomPrc, ArrayList<Attach> attachList);
 
+	ArrayList<HashMap<String, Object>> selectHotelInfo();
+
+	ArrayList<HashMap<String, Object>> selectHotelNoshowInfo();
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdSWInfo();
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdOWInfo();
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdOWEInfo();
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.kh.hotels.mngSetting.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -313,6 +314,44 @@ public class SettingDaoImpl implements SettingDao{
 		
 		
 		return result;
+
+	public ArrayList<HashMap<String, Object>> selectHotelInfo(SqlSessionTemplate sqlSession) {
+
+		
+		
+		return (ArrayList)sqlSession.selectList("Setting.selectHotelInfo");
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectHotelNoshowInfo(SqlSessionTemplate sqlSession) {
+		
+		
+		
+		return (ArrayList)sqlSession.selectList("Setting.selectHotelRfdInfo");
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectHotelRfdSWList(SqlSessionTemplate sqlSession) {
+		
+		
+		
+		return (ArrayList)sqlSession.selectList("Setting.selectRfdSWList");
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectHotelRfdOWList(SqlSessionTemplate sqlSession) {
+		
+		
+		
+		return (ArrayList)sqlSession.selectList("Setting.selectRfdOW");
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectHotelRfdOWEList(SqlSessionTemplate sqlSession) {
+		
+		
+		
+		return (ArrayList)sqlSession.selectList("Setting.selectRfdOWE");
 	}
 
 

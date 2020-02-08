@@ -200,7 +200,7 @@ public class RoomsDaoImpl implements RoomsDao {
 	public void cancelReservRSV(SqlSessionTemplate sqlSession, Rfd rfd) {
 		int result = sqlSession.update("Rooms.cancelReservRSV", rfd);
 		if(result > 0) {
-			sqlSession.update("Rooms.cancelReservRSVhis", rfd);
+			sqlSession.insert("Rooms.cancelReservRSVhis", rfd);
 		}
 	}
 
@@ -247,6 +247,23 @@ public class RoomsDaoImpl implements RoomsDao {
 			}
 		}
 		
+	}
+
+	@Override
+	public void doCheckOut(SqlSessionTemplate sqlSession, int sno) {
+		int result = sqlSession.update("Rooms.doCheckOutStay", sno);
+		if(result > 0) {
+			sqlSession.insert("Rooms.doCheckOutStayHis", sno);
+		}
+	}
+
+	@Override
+	public void updateRoomSttCO(SqlSessionTemplate sqlSession, int sno) {
+		int rmNo = sqlSession.selectOne("Rooms.selectCOrmNo", sno);
+		int result = sqlSession.update("Rooms.ajxUpdateRoomNoClean", rmNo);
+		if(result > 0) {
+			sqlSession.insert("Rooms.updateRoomNoCleanCO", rmNo);
+		}
 	}
 
 }

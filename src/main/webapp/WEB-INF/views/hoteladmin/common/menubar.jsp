@@ -247,6 +247,7 @@
 					<input type="hidden" class="userDept" value="${sessionScope.loginUser.deptNo }">
 					<input type="hidden" class="userAuth" value="${sessionScope.loginUser.authNo }">
 					<input type="hidden" class="userMno" value="${sessionScope.loginUser.mno }">
+				
 				</div>
 			</li>
 		</c:if>

@@ -45,7 +45,7 @@
 			<tr>
 				<td>은행명</td>
 				<td><input type="text" class="dtTd" name="bankName"></td>
-				<td><input type="text" hidden='hidden' id="cnCode" name="cnCode"></td>			
+				<td><input type="text" hidden='hidden' id="sendCnCode" name="cnCode"></td>			
 			</tr>
 			<tr>
 				<td>계좌번호</td>

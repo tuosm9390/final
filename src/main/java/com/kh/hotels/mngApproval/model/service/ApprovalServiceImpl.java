@@ -191,11 +191,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public int insertList(ArrayList<PurRequest> pRequestList) throws ReportException {
 		System.out.println("service전 : " + pRequestList);
 		int docNo = pRequestList.get(0).getDocno();
+		System.out.println("docNo : " + docNo);
 		//Report테이블에 정보 넣기
 		int result = ad.insertPurchase(sqlSession,pRequestList);
+		System.out.println("report에 넣기 : ");
 		//rptNo가져오기
 		int result2 = ad.selectRptNo(sqlSession, docNo);
-		
+		System.out.println("result2 :" + result2);
 		for(int i = 0; i < pRequestList.size(); i++) {
 			pRequestList.get(i).setRptNo(result2);
 			System.out.println("service : " + pRequestList.get(i));
@@ -440,6 +442,36 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		
 		return orderResult;
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> selectRepairConList() {
+		
+		ArrayList<HashMap<String, Object>> list = ad.selectRepairCon(sqlSession);
+		
+		
+		return list;
+	}
+
+
+	@Override
+	public int getListCount(int myMno) {
+		
+		int count = ad.selectCountMyApprove(sqlSession, myMno);
+		
+		
+		return count;
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> selectReportList(PageInfo pi, int myMno) {
+		
+		ArrayList<HashMap<String, Object>> list = ad.selectMyApproveList(sqlSession, pi, myMno);
+		
+		
+		return list;
 	}
 
 

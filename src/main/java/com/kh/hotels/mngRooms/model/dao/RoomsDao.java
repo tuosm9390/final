@@ -83,4 +83,8 @@ public interface RoomsDao {
 
 	void updateRsvSvc(SqlSessionTemplate sqlSession, CheckIn checkIn);
 
+	void doCheckOut(SqlSessionTemplate sqlSession, int sno);
+
+	void updateRoomSttCO(SqlSessionTemplate sqlSession, int sno);
+
 }

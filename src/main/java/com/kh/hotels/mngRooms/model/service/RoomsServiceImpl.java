@@ -238,4 +238,10 @@ public class RoomsServiceImpl implements RoomsService {
 		rd.updateRsvSvc(sqlSession, checkIn);
 	}
 
+	@Override
+	public void doCheckout(int sno) {
+		rd.doCheckOut(sqlSession, sno);
+		rd.updateRoomSttCO(sqlSession, sno);
+	}
+
 }

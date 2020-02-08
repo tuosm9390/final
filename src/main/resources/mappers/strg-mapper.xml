@@ -64,6 +64,7 @@
 		JOIN ITEM I ON(I.AREA_NO = A.AREA_NO)
 		JOIN ITEM_TYPE T ON (I.TYPE_NO=T.TYPE_NO)
 		WHERE S.STRG_NO=#{strgNo}
+		ORDER BY I.INAME ASC
 	</select>
 	
 	<update id="updateWarehouse" parameterType="Strg">

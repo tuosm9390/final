@@ -20,6 +20,7 @@ public class ReservationCheck {
 	private Date checkIn; // 체크인날짜
 	private Date checkOut; // 체크아웃날짜
 	private java.util.Date rsvDate; // 예약날짜
+	private java.util.Date modDate; // 수정날짜
 	private String checkInTime; // 체크인시간
 	private String rtName; // 객실명
 	private int adult; // 대인인원

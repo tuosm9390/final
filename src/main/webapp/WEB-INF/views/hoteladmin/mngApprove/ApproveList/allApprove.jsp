@@ -37,7 +37,7 @@
 	border: 1px solid white;
 	background: white;
 	color: #3498DB;
-	width: 70px;
+	width: 75px;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
@@ -138,6 +138,7 @@
 				<button class="category btl">진행중</button>
 				<button class="category btl">반려</button>
 				<button class="category btl">승인</button>
+				<button class="category btl">내 기안함</button>
 			</div>
 			<div class="writeDocu">
 				<button class="write" onclick="location.href='writeAllApprove.ap'">기안서
@@ -164,7 +165,7 @@
 					</colgroup>
 
 					<tr>
-						<th>No</th>
+						<th>No<input type="hidden" value="${sessionScope.loginUser.mno }" class="mno"></th>
 						<th>기안일시</th>
 						<th>제목</th>
 						<th>구분</th>
@@ -273,6 +274,7 @@
        		   },
        		 success:function(data) {
    			   var totalPrice = 0;
+   			   console.log(data.list[0].RSTATUS);
    			   
    			  $.each(data.list, function(index, list) {
                     $('#tbl_modal_order .tempOrder').after("<tr class='repeatOrder'><td>"+list.ITYPE+"</td><td>" + list.CNAME + "</td><td>"+list.INAME+"</td><td>" + list.MFG +"</td><td>"+list.VOS + "</td><td>" + list.AMOUNT + "</td><td>"+list.VOS * list.AMOUNT+"</td></tr>");
@@ -283,10 +285,9 @@
    			   
    			   
    			    $("#tbl_modal_order tr:first-child").children().eq(1).text(data.list[0].DOCNO);
-   			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
-   			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
-
+   			    if(data.list[0].RSTATUS == 'WAIT') {
    			    }else {
+   			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(3).text(data.list[0].SNAME);
    			    }
    			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
    			 	
@@ -321,7 +322,7 @@
               			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
               			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
               			 	
-              			 	if(data.list[0].RSTATUS == "APPR") {
+              			 	if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
               			 		$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).text(data.list[0].SNAME);
               			 	}
               			 	
@@ -372,7 +373,7 @@
              			   
              			   
              			    $("#tbl_modal tr:first-child").children().eq(1).text(data.list[0].DOCNO);
-             			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+             			    if(data.list[0].RSTATUS == 'WAIT') {
              			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
 
              			    }else {
@@ -412,9 +413,14 @@
           $except = $(this);
            $(this).css({"box-shadow":"0px 0px 0px", "border":"1px solid lightgray", "background":"#3498DB", "color":"white"});
            $(".category.btl").not($except).css({"color":"#3498DB", "background":"white","border":"1px solid white", "box-shadow":"0px 4px 4px rgba(0, 0, 0, 0.25)"});
+			
+           var mno = $(".mno").val();
+           console.log(mno)
+           
            
             var cate = $(this).text();
            var scurrentPage = 1; 
+           console.log(cate)
 
            
            
@@ -424,7 +430,8 @@
    		   type:"get",
    		   data:{
    			   cate:cate,
-   			   scurrentPage:scurrentPage
+   			   scurrentPage:scurrentPage,
+   			   mno:mno
    			   
    			   
    		   },
@@ -573,7 +580,7 @@
  			   
  			   
  			    $("#tbl_modal_order tr:first-child").children().eq(1).text(data.list[0].DOCNO);
- 			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+ 			    if(data.list[0].RSTATUS == 'WAIT') {
  			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
 
  			    }else {
@@ -611,7 +618,7 @@
      			   var totalPrice = 0;
      			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
      			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
-     			 	if(data.list[0].RSTATUS == "APPR") {
+     			 	if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
      			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).text(data.list[0].SNAME);
      			 	}
      			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
@@ -659,7 +666,7 @@
      			   
      			   
      			    $("#tbl_modal tr:first-child").children().eq(1).text(data.list[0].DOCNO);
-     			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+     			    if(data.list[0].RSTATUS == 'WAIT') {
      			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
 
      			    }else {
@@ -702,6 +709,7 @@
     	
     	//3. 페이징
        function paging(val) {
+    	   var mno = $(".mno").val();
     	   var cate = $("#hide").val();
     	   var scurrentPage = val.text;
     	   
@@ -715,7 +723,8 @@
     		   type:"get",
     		   data:{
     			   cate:cate,
-    			   scurrentPage:scurrentPage
+    			   scurrentPage:scurrentPage,
+    			   mno:mno
     			   
     			   
     		   },
@@ -751,7 +760,7 @@
 				 		var $ctr5 = "<td>" + reportList[i].RPTYPE + "</td>";
 				 		var $ctr6 = "<td>" + reportList[i].MNAME + "</td>";
 				 		if(reportList[i].RPSTATUS == "승인") {
-				 			var $ctr7 = "<td>" + reportList[i].SNAME + "</td>";
+				 			var $ctr7 = "<td>" + reportList[i].RNAME + "</td>";
 				 		}else {
 				 			var $ctr7 = "<td></td>";
 				 		}
@@ -857,7 +866,7 @@
 				   			   
 				   			   
 				   			    $("#tbl_modal_order tr:first-child").children().eq(1).text(data.list[0].DOCNO);
-				   			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+				   			    if(data.list[0].RSTATUS == 'WAIT') {
 				   			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
 
 				   			    }else {
@@ -903,7 +912,7 @@
 		              			   var totalPrice = 0;
 		              			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
 		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
-		              			 	if(data.list[0].RSTATUS == "APPR") {
+		              			 	if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
 		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).text(data.list[0].SNAME);
 		              			 	}
 		              			   $("#tbl_modal_repair tr:nth-child(2)").children().eq(1).text(data.list[0].DNAME);
@@ -950,7 +959,7 @@
 		             			   
 		             			   
 		             			    $("#tbl_modal tr:first-child").children().eq(1).text(data.list[0].DOCNO);
-		             			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+		             			    if(data.list[0].RSTATUS == 'WAIT') {
 		             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
 
 		             			    }else {
@@ -1168,7 +1177,7 @@
     				   			   
     				   			   
     				   			    $("#tbl_modal_order tr:first-child").children().eq(1).text(data.list[0].DOCNO);
-    				   			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+    				   			    if(data.list[0].RSTATUS == 'WAIT') {
     				   			    	$("#tbl_modal_order tr:nth-child(2)").children().eq(4).text(data.list[0].SNAME);
 
     				   			    }else {
@@ -1207,7 +1216,7 @@
     		              			   var totalPrice = 0;
     		              			    $("#tbl_modal_repair tr:first-child").children().eq(1).text(data.list[0].DOCNO);
     		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).text(data.list[0].MNAME);
-    		              			 	if(data.list[0].RSTATUS == "APPR") {
+    		              			 	if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
     		              			 	$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).text(data.list[0].SNAME);
     		              			 	}
     		              			    //$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
@@ -1253,7 +1262,7 @@
     		             			   
     		             			   
     		             			    $("#tbl_modal tr:first-child").children().eq(1).text(data.list[0].DOCNO);
-    		             			    if(data.list[0].RSTATUS == 'WAIT' || data.list[0].RSTATUS == 'REJECT') {
+    		             			    if(data.list[0].RSTATUS == 'WAIT') {
     		             			    	$("#tbl_modal tr:nth-child(2)").children().eq(2).text("");
 
     		             			    }else {

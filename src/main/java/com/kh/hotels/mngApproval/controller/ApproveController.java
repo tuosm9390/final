@@ -96,7 +96,7 @@ public class ApproveController {
 
 	}
 	@GetMapping("docuFilter.ap")
-	public ModelAndView docuFilterWait(HttpServletRequest request, ModelAndView mv, String scurrentPage, String cate) {
+	public ModelAndView docuFilterWait(HttpServletRequest request, ModelAndView mv, String scurrentPage, String cate, String mno) {
 
 		//int currentPage = 1;
 
@@ -110,6 +110,50 @@ public class ApproveController {
 
 		}else if(cate.equals("승인")){
 			cateCh = "APPR";
+		}else if(cate.equals("내 기안함")){
+			
+			int myMno = Integer.parseInt(mno);
+			
+			if(scurrentPage != null) {
+				chScurrentPage = Integer.parseInt(scurrentPage);
+			}
+			
+			int listCount = 0;
+			List<HashMap<String, Object>> reportList = null;
+			PageInfo pi = null;
+			
+			listCount = as.getListCount(myMno);
+			pi = Pagination.getPageInfo(chScurrentPage, listCount);
+			reportList= as.selectReportList(pi, myMno);
+			
+			for(int i = 0; i < reportList.size(); i++) {
+				if(reportList.get(i).get("RPSTATUS").equals("WAIT")) {
+					reportList.get(i).put("RPSTATUS", "진행중");
+				}else if(reportList.get(i).get("RPSTATUS").equals("APPR")) {
+					reportList.get(i).put("RPSTATUS", "승인");
+				}else {
+					reportList.get(i).put("RPSTATUS", "반려");
+				}
+			}
+			for(int i = 0; i < reportList.size(); i++) {
+				if(reportList.get(i).get("RPTYPE").equals("PURCHASE")) {
+					reportList.get(i).put("RPTYPE", "구매 요청서");
+				}else if(reportList.get(i).get("RPTYPE").equals("ORDER")) {
+					reportList.get(i).put("RPTYPE", "발주 요청서");
+				}else {
+					reportList.get(i).put("RPTYPE", "수리 요청서");
+				}
+			}
+			
+			mv.addObject("reportList", reportList);
+			mv.addObject("pi", pi);
+			mv.addObject("cate", cateCh);
+			mv.setViewName("jsonView");
+
+
+			return mv;
+			
+			//여기가 끝
 		}else {
 			cateCh = "";
 		}
@@ -135,7 +179,11 @@ public class ApproveController {
 				listCount = as.getListCount();
 				pi = Pagination.getPageInfo(chScurrentPage, listCount);
 				reportList= as.selectReportList(pi);
-
+				
+				for(int i = 0; i < reportList.size(); i++) {
+					reportList.get(i).put("RNAME", reportList.get(i).get("SNAME"));
+				}
+				
 			}
 
 
@@ -253,6 +301,8 @@ public class ApproveController {
 				}
 			}
 			
+			
+			
 			model.addAttribute("list", list);
 			model.addAttribute("pi", pi);
 			System.out.println("list : " + list);
@@ -296,7 +346,10 @@ public class ApproveController {
 		
 		try {
 			List<HashMap<String, Object>> list = as.selectRepairInfo();
+			List<HashMap<String, Object>> listCon =as.selectRepairConList(); 
+			
 			m.addAttribute("list", list);
+			m.addAttribute("listCon", listCon);
 			
 			return "hoteladmin/mngApprove/writeApprove/writerFixApprove";
 			
@@ -441,7 +494,107 @@ public class ApproveController {
 	public String insertPurchase(HttpServletRequest request, Model m, String docno, String rptDate, 
 			String sname, String mname, String title, String content, String type, String cname, String iname, String mfg, String vosprice, String amount,
 			String price, String totPrice, String ino, Model model ) {
+		
+		System.out.println("sname : " + sname);
+		
+		if(ino.contains(",")) {
+		
+				int count = sname.indexOf("(");
+				int countStart = count+1;
+				int countEnd = sname.indexOf(")");
+				
+				String stfId = sname.substring(countStart, countEnd);
+				String ssName = sname.substring(0, count);
+				
+				System.out.println("stfId : " + stfId);
+				System.out.println("count : " + count);
+				System.out.println("countEnd : " + countEnd);
+				System.out.println("ssName : " + ssName);
+				
+				
+		
+		
+				ArrayList<PurRequest> pRequestList = new ArrayList<>();
+		
+				//int docNo = Integer.parseInt(docno);
+		
+				int mno = Integer.parseInt(mname); 
+				int docNo = Integer.parseInt(docno);
+				int totalPrice = Integer.parseInt(totPrice);
+				
+				
+				
+				String[] cName = cname.split(",");
+				String[] iName = iname.split(",");
+				String[] mFg = mfg.split(",");
+				
+				//int
+				String[] vo = vosprice.split(",");
+				String[] am = amount.split(",");
+				String[] pr = price.split(",");
+				String[] in = ino.split(",");
+				
+				int[] vos2 = new int[cName.length];
+				int[] amount2 = new int[cName.length];
+				int[] price2 = new int[cName.length];
+				int[] ino2 = new int[cName.length];
+				
+				
+				System.out.println("cName.length : " + cName.length);
+				
+				PurRequest pRequest = null;
+				
+				
+				
+				
+				for(int j = 0; j < cName.length; j++) {
+					pRequest = new PurRequest();
+					vos2[j] = Integer.parseInt(vo[j]);
+					amount2[j] = Integer.parseInt(am[j]);
+					price2[j] = Integer.parseInt(pr[j]);
+					ino2[j] = Integer.parseInt(in[j]);
+					
+					pRequest.setVosprice(vos2[j]);
+					pRequest.setAmount(amount2[j]);
+					pRequest.setPrice(price2[j]);
+					pRequest.setIno(ino2[j]);
+					pRequest.setCname(cName[j]);
+					pRequest.setIname(iName[j]);
+					pRequest.setMfg(mFg[j]);
+					pRequest.setDeptname("구매팀"); 
+					pRequest.setMmno(mno);
+					pRequest.setRptDate(rptDate); 
+					pRequest.setSname(ssName); 
+					pRequest.setTitle(title);
+					pRequest.setContent(content);
+					pRequest.setType(type);
+					pRequest.setDocno(docNo);
+					pRequest.setTotPrice(totPrice);
+					pRequest.setStfId(stfId);
+					pRequestList.add(pRequest);
+					System.out.println("for문안 pRequestList : " + pRequestList);
+				}
+				
+				
+				
+				
+				//System.out.println("중간pRequestList : " + pRequestList);
+				try {
+					System.out.println("pRequestList : " + pRequestList);
+					int result = as.insertList(pRequestList);
+					model.addAttribute("pRequestList", pRequestList);
+					
+					return "redirect:/documentApproval.ap";
+					
+					
+					
+				} catch (ReportException e) {
+					model.addAttribute("msg", "실패");
+					return "common/errorPage";
+				}
+	}else {
 
+		ArrayList<PurRequest> pRequestList = new ArrayList<>();
 		
 		int count = sname.indexOf("(");
 		int countStart = count+1;
@@ -449,93 +602,66 @@ public class ApproveController {
 		
 		String stfId = sname.substring(countStart, countEnd);
 		String ssName = sname.substring(0, count);
-		
-		System.out.println("stfId : " + stfId);
-		System.out.println("count : " + count);
-		System.out.println("countEnd : " + countEnd);
-		System.out.println("ssName : " + ssName);
-		
-		
-
-
-		ArrayList<PurRequest> pRequestList = new ArrayList<>();
 
 		//int docNo = Integer.parseInt(docno);
 
 		int mno = Integer.parseInt(mname); 
 		int docNo = Integer.parseInt(docno);
 		int totalPrice = Integer.parseInt(totPrice);
+		int vos = Integer.parseInt(vosprice);
+		int amountR = Integer.parseInt(amount);
+		int priceR = Integer.parseInt(price);
+		int inoR = Integer.parseInt(ino);
 		
+		PurRequest pRequest =  new PurRequest();
 		
+		 
+		    
 		
-		String[] cName = cname.split(",");
-		String[] iName = iname.split(",");
-		String[] mFg = mfg.split(",");
+		pRequest.setDeptname("구매팀"); 
+		pRequest.setMmno(mno);
+		pRequest.setRptDate(rptDate); 
+		pRequest.setSname(sname); 
+		pRequest.setTitle(title);
+		pRequest.setContent(content);
+		pRequest.setType(type);
+		pRequest.setDocno(docNo);
+		pRequest.setTotPrice(totPrice);
+		pRequest.setMname(mname);
+		pRequest.setCname(cname);
+		pRequest.setIname(iname);
+		pRequest.setMfg(mfg);
+		pRequest.setVosprice(vos);
+		pRequest.setAmount(amountR);
+		pRequest.setPrice(priceR);
+		pRequest.setIno(inoR);
+		pRequest.setStfId(stfId);
 		
-		//int
-		String[] vo = vosprice.split(",");
-		String[] am = amount.split(",");
-		String[] pr = price.split(",");
-		String[] in = ino.split(",");
+		pRequestList.add(pRequest);
 		
-		int[] vos2 = new int[cName.length];
-		int[] amount2 = new int[cName.length];
-		int[] price2 = new int[cName.length];
-		int[] ino2 = new int[cName.length];
+		System.out.println("for문안 pRequestList : " + pRequestList);
 		
-		
-		System.out.println("cName.length : " + cName.length);
-		
-		PurRequest pRequest = null;
-		
-		
-		
-		
-		for(int j = 0; j < cName.length; j++) {
-			pRequest = new PurRequest();
-			vos2[j] = Integer.parseInt(vo[j]);
-			amount2[j] = Integer.parseInt(am[j]);
-			price2[j] = Integer.parseInt(pr[j]);
-			ino2[j] = Integer.parseInt(in[j]);
-			
-			pRequest.setVosprice(vos2[j]);
-			pRequest.setAmount(amount2[j]);
-			pRequest.setPrice(price2[j]);
-			pRequest.setIno(ino2[j]);
-			pRequest.setCname(cName[j]);
-			pRequest.setIname(iName[j]);
-			pRequest.setMfg(mFg[j]);
-			pRequest.setDeptname("구매팀"); 
-			pRequest.setMmno(mno);
-			pRequest.setRptDate(rptDate); 
-			pRequest.setSname(ssName); 
-			pRequest.setTitle(title);
-			pRequest.setContent(content);
-			pRequest.setType(type);
-			pRequest.setDocno(docNo);
-			pRequest.setTotPrice(totPrice);
-			pRequest.setStfId(stfId);
-			pRequestList.add(pRequest);
-			System.out.println("for문안 pRequestList : " + pRequestList);
-		}
-		
-		
-		
-		
-		//System.out.println("중간pRequestList : " + pRequestList);
 		try {
-			System.out.println("pRequestList : " + pRequestList);
 			int result = as.insertList(pRequestList);
+			
+			
+			
 			model.addAttribute("pRequestList", pRequestList);
+			
 			
 			return "redirect:/documentApproval.ap";
 			
-			
-			
 		} catch (ReportException e) {
-			model.addAttribute("msg", "실패");
-			return "common/errorPage";
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
+		
+		
+		return null;
+		
+	}
 		
 
 	}
@@ -813,34 +939,51 @@ public class ApproveController {
 		int docNo = Integer.parseInt(docno);
 		int totPrice = Integer.parseInt(totalPrice);
 		
+		//수리비용
 		String[] cName = cnName.split(",");
+		//수리비용 끝
+		
 		String[] iName = iname.split(",");
-		String[] repRson = rsn.split(",");
 		
-		//int
+		//거래처 이름
 		String[] pr = price.split(",");
+		//거래청 이름 끝
+		
+		//제품코드 
 		String[] in = ino.split(",");
-		
-		int[] price2 = new int[cName.length];
 		int[] ino2 = new int[cName.length];
+		//제품코드 종료
+		
+		//수리비용
+		int[] repairPrice = new int[cName.length];
+		
+		//수리 사유
+		String[] repairRsn = rsn.split(",");
+		
+		//
 		
 		
-		System.out.println("cName.length : " + cName.length);
 		
 		RepRequest rRequest = null;
 		
 		
 		
 		
-		for(int j = 0; j < cName.length; j++) {
+		for(int j = 0; j < repairPrice.length; j++) {
 			rRequest = new RepRequest();
-			price2[j] = Integer.parseInt(pr[j]);
-			ino2[j] = Integer.parseInt(in[j]);
 			
-			rRequest.setPrice(price2[j]);
+			//수리요청서 밑에 항목 5개
+			ino2[j] = Integer.parseInt(in[j]);
+			repairPrice[j] = Integer.parseInt(cName[j]);
+			
+			rRequest.setPrice(repairPrice[j]);
 			rRequest.setIno(ino2[j]);
-			rRequest.setCnName(cName[j]);
+			rRequest.setCnName(pr[j]);
+			rRequest.setRsn(repairRsn[j]);
 			rRequest.setIname(iName[j]);
+			//5개 항목 끝
+			
+			
 			rRequest.setDeptName(("시설팀")); 
 			rRequest.setMmno(mName);
 			rRequest.setRptDate(rptDate); 
@@ -850,9 +993,11 @@ public class ApproveController {
 			rRequest.setContent(content);
 			rRequest.setDocno(docNo);
 			rRequest.setTotalPrice((totPrice));
-			rRequest.setRsn(repRson[j]);
 			rRequestList.add(rRequest);
+			
 			System.out.println("for문안 pRequestList : " + rRequestList);
+			
+			
 		}
 		
 		
@@ -995,7 +1140,7 @@ public class ApproveController {
 	
 	@RequestMapping("approveYn.ap")
 	public String updateApproveStatus(HttpServletRequest request, String status, String dateString, String mno,
-									RedirectAttributes redirect, String deptNo, String authNo, String docuN) {
+									RedirectAttributes redirect, String deptNo, String authNo, String rpt) {
 		
 		System.out.println("들어오니??");
 		
@@ -1004,13 +1149,13 @@ public class ApproveController {
 		System.out.println("1");
 		int deptno = Integer.parseInt(deptNo);
 		System.out.println("2");
-		int docuNum = Integer.parseInt(docuN);
+		int rptNum = Integer.parseInt(rpt);
 		System.out.println("3");
 		
 	
 		
 		//System.out.println("rptno : " + rptno);
-		System.out.println("docuN : " + docuN);
+		System.out.println("docuN : " + rptNum);
 		System.out.println("mno : " + mmno);
 		System.out.println("status : " + status);
 		System.out.println("dateString : " + dateString);
@@ -1019,7 +1164,7 @@ public class ApproveController {
 		Report report = new Report();
 		
 		//report.setRptNo(rptno);
-		report.setDocNo(docuNum);
+		report.setRptNo(rptNum);
 		report.setRptStatus(status);
 		report.setApprDate(dateString);
 		

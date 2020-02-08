@@ -91,6 +91,7 @@
 	
 	</header>
 		<div id="marginDiv">
+		<form action="updateReal.sto" id="updateReal" method="post">
 			<table id="stockTbb">  
 				<tr>  
 					<th><input type="checkbox"></th>
@@ -107,7 +108,7 @@
 				
 			
 			</table>
-				
+		</form>
 		</div>
 			<div class="btnss">
 			<button id="delete">삭제</button>
@@ -150,17 +151,17 @@
 			    $( "input[name='checkRow']:checked" ).each(function(){
 			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
 			    var ix =$(this).parent().parent().children("td").eq(1).text();
-			  
-			    $(this).parent().parent().children("td").eq(9).html("<select id='STRG"+ix+"'><option value='창고명' hidden='hidden' style='width:100px;'>창고명</option></selcet>");
-			    $(this).parent().parent().children("td").eq(10).html("<select id='AREA"+ix+"'><option value='위치' hidden='hidden'>위치</option></selcet>");
-			    $(this).parent().parent().children("td").eq(11).html("<select id='RM_NO"+ix+"'><option value='객실번호' hidden='hidden'>객실번호</option></selcet>");
+			    $(this).parent().parent().children("td").eq(3).html("<input type='number' name='amount' id='AMOUNT+"+ix+"' style='width:70px;'>");
+			    $(this).parent().parent().children("td").eq(9).html("<select id='STRG"+ix+"' name='strgNo' ><option value='창고명' hidden='hidden' style='width:100px;'>창고명</option></selcet>");
+			    $(this).parent().parent().children("td").eq(10).html("<select id='AREA"+ix+"' name='areaNo'><option value='위치' hidden='hidden'>위치</option></selcet>");
+			    $(this).parent().parent().children("td").eq(11).html("<select id='RM_NO"+ix+"' name='rmNo'><option value='객실번호' hidden='hidden'>객실번호</option></selcet>");
 			    checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
 			    
 			    console.log("ix : " + ix);
 			    
 			    //기본옵션
 			    $("#STRG"+ix+"").append("<option value='창고명'>창고명</option>");
-		    	$("#RM_NO"+ix+"").append("<option value='객실번호'>객실번호</option>");
+		    	$("#RM_NO"+ix+"").append("<option value='0'>객실번호</option>");
 			    //정보에따른옵션
 			    for(var i=0;i<data.strgList.length;i++){
 			    	//StrgNo를넣어야함 
@@ -221,48 +222,56 @@
 			$(".hide").show();
 			//체크값가져오기
 			var checkRow = "";
-			var itemList = new Array();
+			var itemList = [];
 			
+		
 			  $("input[name='checkRow']:checked").each (function (){
 			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+",";
 			    
 			console.log( $(this).parent().parent().children("td").eq(1).text()+"테스트");    
-			var	 ino=$(this).parent().parent().children("td").eq(1).text()
-			var	amount=$(this).parent().parent().children("td").eq(3).text()
-			var	strgNo=$(this).parent().parent().children("td").eq(9).val()
-			var	areaNo=$(this).parent().parent().children("td").eq(10).val()
-			var      rmNo=$(this).parent().parent().children("td").eq(11).val()
+			var	 ino=$(this).parent().parent().children("td").eq(1).text()*1;
+			var	amount=$(this).parent().parent().children("td").eq(3).text()*1;
+			var	strgNo=$("#STRG"+ino+"").val();
+			var	areaNo=$("#AREA"+ino+"").val();
+			var rmNo=$("#RM_NO"+ino+"").val()*1;
 			
 			console.log("ino : " + ino+ "amount : "+amount+" strgNo : "+strgNo+" areaNo : "+areaNo+" rmNo : "+rmNo);
-		   
-		   
-			  //itemList 넘기는 ajax
+		
+			   //itemList 넘기는 ajax
 			  $.ajax({
 				 url:"updateStockOk.sto",
 				 type:"post", 
 				 dataType:"json",
-				 data:{
-					 	   ino:$(this).parent().parent().children("td").eq(1).text()*1,
-						amount:$(this).parent().parent().children("td").eq(3).text()*1,
-						strgNo:$(this).parent().parent().children("td").eq(9).val(),
-						
-						areaNo:$(this).parent().parent().children("td").eq(10).val(),
-					      rmNo:$(this).parent().parent().children("td").eq(11).val()
-						},
+				 data:{	 ino:ino,
+						 amount:amount,
+						 strgNo:strgNo,
+						 areaNo:areaNo,
+						 rmNo:rmNo
+					 },
 			  	 success:function(data){
 			  		 console.log(data);
 			  	 },
 			  	 error:function(status){
 			  		 console.log(status);
 			  	 }
-			  });
+			  }); 
 			  /////////
+			var data = {
+				   ino:ino,
+				   amount:amount,
+		   		   strgNo:strgNo,
+		   		   areaNo:areaNo,
+		   		   rmNo:rmNo
+			   };
+		   	  itemList.push(data);
+			  });  
 			  
-			  });
+			  jQuery.ajaxSettings.traditional = true;
 
 			  
 			  checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
 			console.log(checkRow);
+			//$("#updateReal").submit();  
 		});
 		
 		
@@ -279,9 +288,7 @@
 			 var checkRow = "";
 			  $( "input[name='checkRow']:checked" ).each(function(){
 			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
-			    $(this).parent().parent().children("td").eq(9).html("<input type='text' style='width:70px;'>");
-			    $(this).parent().parent().children("td").eq(10).html("<input type='text' style='width:70px;'>");
-			    $(this).parent().parent().children("td").eq(11).html("<input type='text' style='width:60px;'>");
+			   
 			  });
 			  checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
 			console.log(checkRow);
@@ -299,6 +306,7 @@
 			  	success:function(data){
 			  		console.log(data);
 			  		alert("삭제성공")
+			  		location.reload(true);
 			  	},
 			  	error:function(status){
 			  		console.log(status);
