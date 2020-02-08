@@ -123,6 +123,13 @@ public class CommonServiceImpl implements CommonService{
 		return cd.insertHotelPhoto(attachList, sqlSession);
 	}
 
+
+	@Override
+	public int deleteInfomation() {
+
+		return cd.deleteInformation(sqlSession);
+	}
+
 	
 
 }

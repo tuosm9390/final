@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class RoomPrc implements java.io.Serializable{
 
 	private int rtNo;
+	private String rtName;
 	private int offRentMon;
 	private int offRentTue;
 	private int offRentWed;

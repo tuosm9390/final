@@ -54,5 +54,7 @@ public interface CommonDao {
 
 	int insertHotelPhoto(ArrayList<Attach> attachList, SqlSessionTemplate sqlSession);
 
+	int deleteInformation(SqlSessionTemplate sqlSession);
+
 
 }

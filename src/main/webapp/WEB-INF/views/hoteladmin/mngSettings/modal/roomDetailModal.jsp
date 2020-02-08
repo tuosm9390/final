@@ -70,14 +70,14 @@
 		height:30px;
 	}
 	input[type=text]{
-		width:130px;
+		width:180px;
 		height:20px;
 		margin-left:10px;
 		border-radius:5px;
 		border:1px solid lightgray;
 	}
 	input[type=number]{
-		width:100px;
+		width:145px;
 		height:20px;
 		margin-left:10px;
 		border-radius:5px;
@@ -158,7 +158,7 @@
 		margin-left:20px;
 	}
 	.addRoomTypeTable td{
-		padding-left:50px;
+		padding-left:30px;
 	}
 	.fareTable{
 		width:760px;
@@ -188,6 +188,9 @@
 		background-color: #3498DB;
    		color: white;
 	}
+	.addRoomTypeTable td:nth-child(2){
+		padding-left:200px;
+	}
 </style>
 </head>
 <body>
@@ -197,9 +200,10 @@
 				<h2 style="margin:0 auto;">객실 타입 추가</h2>
 				<a class="btn_close">×</a>
 			</div>
+			<form action="addRoomType.st" method="post" enctype="multipart/form-data">
 			<div>
 				<div>
-					<table class="addRoomTypeTable" align="center">
+					<table class="addRoomTypeTable">
 						<tr>
 							<td>· 객실 타입<input type="text" name="rtName" class="rtName"></td>
 							<td>· 하한 가격<input type="text" name="limitprc" class="limitprc"></td>
@@ -210,6 +214,7 @@
 						</tr>
 					</table>
 				</div>
+				<hr style="width:95%; border:1px solid lightgray;">
 				<div class="area" id="">
 					<div class="roomModal">
 						<div class="roomArea">
@@ -282,10 +287,11 @@
 							</table>
 						</div>
 					<div>
-						<button class="roomTypeAddBtn" style="float:right; margin-right:30px; margin-top:20px;">등록하기</button>
+						<button class="roomTypeAddBtn" style="float:right; margin-right:30px; margin-top:20px;" type="submit" onclick="return modalAddRoomType();">등록하기</button>
 					</div>
 				</div>
 			</div>
+			</form>
 		</div>
 	</div>
 
@@ -296,28 +302,33 @@
 				$(".fareTable td input").val("");
 				$(".addRoomTypeTable td input").val("");
 				$(".modalRoomDetail").fadeOut();
-				
-				
+			});
+			$(".roomSubPhotoArea").each(function(){	
+				$(".addImageBtn").addEventListener("onclick", function addImages(){
+					$(".roomMainPhotoArea:last").after("<div class='roomSubPhotoArea'><img alt='' src='' name='' width='110' height='50'><h3>객실이미지</h3><input type='file' name='subPhoto' class='subPhoto' onchange='loadImg(this);'><input type='hidden' value='' name='subPhotoRoomTypeName'><button onclick='deleteArea(this);'>삭제</button>");
+				});
 			});
 			
+			
+			
 			$(".minPer").each(function(){
-			$(this).change(function(){
-				$(this).parent().siblings().children(".maxPer").attr("min", $(this).val());
-				$(this).parent().siblings().children(".maxPer").attr("value", $(this).val());
-			});
-		}) 
+				$(this).change(function(){
+					$(this).parent().siblings().children(".maxPer").attr("min", $(this).val());
+					$(this).parent().siblings().children(".maxPer").attr("value", $(this).val());
+				});
+			}) 
 		});
 		function addImages(){
 			
-			$(".roomMainPhotoArea:last").after("<div class='roomSubPhotoArea'><img alt='' src='' name='' width='110' height='50'><h3>객실이미지</h3><input type='file' name='subPhoto' class='subPhoto' onchange='loadImg(this);'><input type='hidden' value='' name='subPhotoRoomTypeName'><button onclick='deleteArea(this);'>삭제</button>");
 			
-			$(".roomSubPhotoArea").each(function(){
-				if($(".roomSubPhotoArea").length >= 4){
-					$(".addImageBtn").attr("onclick", null);
-				}			
-			});
+			if($(".roomSubPhotoArea").length >= 4){
+				
+			}else{
+				//console.log("dd");
+				$(".roomMainPhotoArea:last").after("<div class='roomSubPhotoArea'><img alt='' src='' name='' width='110' height='50'><h3>객실이미지</h3><input type='file' name='subPhoto' class='subPhoto' onchange='loadImg(this);'><input type='hidden' value='' name='subPhotoRoomTypeName'><button onclick='deleteArea(this);'>삭제</button>");
+			}		
 			
-			console.log($(".roomSubPhotoArea").length);
+		//console.log($(".roomSubPhotoArea").length);
 		}
 		
 		function deleteArea(debtn){

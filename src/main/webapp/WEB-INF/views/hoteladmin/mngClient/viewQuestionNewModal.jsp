@@ -172,6 +172,7 @@ cursor: pointer;
 			if(confirm("답변내용을 저장하시겠습니까?")){
 				return true;
 			}
+			return false;
 		}
 	</script>
 </body>

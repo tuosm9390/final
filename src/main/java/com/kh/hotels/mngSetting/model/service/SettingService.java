@@ -3,11 +3,14 @@ package com.kh.hotels.mngSetting.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.hotels.common.model.vo.Attach;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Svc;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
+import com.kh.hotels.mngRooms.model.vo.Prc;
 import com.kh.hotels.mngRooms.model.voEtc.Room;
+import com.kh.hotels.mngRooms.model.voEtc.RoomPrc;
 import com.kh.hotels.mngRooms.model.voEtc.RoomType;
 import com.kh.hotels.mngSetting.model.vo.SearchService;
 import com.kh.hotels.mngSetting.model.vo.SearchStaff;
@@ -52,6 +55,18 @@ public interface SettingService {
 	HashMap<String, Object> selectFloorList();
 
 	int insertBrokenRoom(BrokenRoom brokenRoom);
+
+	int updateBrokenRoom(BrokenRoom brokenRoom);
+
+	ArrayList<BrokenRoom> selectSearchBrokenRoomList(BrokenRoom brokenRoom);
+
+	ArrayList<Prc> selectRoomPrcList();
+
+	int getRoomTypeCount();
+
+	int insertNewRoomType(RoomType roomType);
+
+	int insertNewRoomTypePhotoAndPrice(RoomPrc roomPrc, ArrayList<Attach> attachList);
 
 
 

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -86,13 +87,25 @@ public class HotelSettingController {
 	}
 	
 	@RequestMapping("backHotelInfoSettingPage.set")
-	public String goHotelInfoSetting() {
+	public String goHotelInfoSetting(SessionStatus status,Model model) {
 		
-		return "hotelSetting/hotelInfoSetting";
+		int result = cs.deleteInfomation();
+		
+		if(result > 0) {
+			status.setComplete();
+			
+			return "hotelSetting/hotelInfoSetting";
+		}else {
+			model.addAttribute("msg", "정보삭제실패");
+			return "common/errorPage";
+		}
+		
 		
 	}
 	@RequestMapping("backRoomTypeSetting.set")
-	public String backRoomTypeSetting() {
+	public String backRoomTypeSetting(SessionStatus status) {
+		
+		status.setComplete();
 		
 		return "hotelSetting/hotelRoomTypeSetting";
 		
