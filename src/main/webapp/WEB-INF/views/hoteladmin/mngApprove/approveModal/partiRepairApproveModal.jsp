@@ -145,7 +145,7 @@
 	<div class="modal_repair">
 		<div class="modal_content">
 			<div class="titleBarplus">
-				<h1 style="text-align: left;">수리 요청서</h1>
+				<h1 style="text-align: left;" id="approveTitle">수리 요청서</h1>
 			</div>
 			<a class="btn_close_plus">×</a>
 
@@ -242,6 +242,10 @@
 	<script>
 		$(document).ready(function() {
 				$(".btn_close_plus").click(function(){
+					
+					$(".repairTr").remove();
+					$(".approveTitle").text("");
+					$(".rpt").text("");
 					
 					$(".modal_repair").fadeOut();
 				})

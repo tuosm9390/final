@@ -104,5 +104,11 @@ public interface ApprovalDao {
 	ArrayList<String> selectCnCode(SqlSessionTemplate sqlSession,
 			ArrayList<OrderRequest> oRequestList);
 
+	ArrayList<HashMap<String, Object>> selectRepairCon(SqlSessionTemplate sqlSession);
+
+	int selectCountMyApprove(SqlSessionTemplate sqlSession, int myMno);
+
+	ArrayList<HashMap<String, Object>> selectMyApproveList(SqlSessionTemplate sqlSession, PageInfo pi, int myMno);
+
 
 }

@@ -80,6 +80,12 @@ public interface ApprovalService {
 
 	int insertOrderList(ArrayList<OrderRequest> oRequestList);
 
+	List<HashMap<String, Object>> selectRepairConList();
+
+	int getListCount(int myMno);
+
+	List<HashMap<String, Object>> selectReportList(PageInfo pi, int myMno);
+
 	
 	
 	

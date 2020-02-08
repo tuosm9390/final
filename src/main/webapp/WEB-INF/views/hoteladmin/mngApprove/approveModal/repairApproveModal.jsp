@@ -153,8 +153,8 @@
 							<tr>
 								<td>기안부서</td>
 								<td colspan="2"></td>
-								<td rowspan="2"></td>
-								<td rowspan="2" colspan="2"></td>
+								<td rowspan="2" class="part"></td>
+								<td rowspan="2" colspan="2" class="part2"></td>
 							</tr>
 							<tr>
 								<td>기안자</td>
@@ -215,17 +215,11 @@
 	<script>
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
-				$("#tbl_modal_repair tr:first-child").children().eq(1).val('');
-				$("#tbl_modal_repair tr:nth-child(2)").children().eq(1).val('');
-				$("#tbl_modal_repair tr:nth-child(2)").children().eq(2).val('');
-				$("#tbl_modal_repair tr:nth-child(2)").children().eq(3).val('');
-				$("#tbl_modal_repair tr:nth-child(3)").children().eq(1).val('');
-				$("#tbl_modal_repair tr:nth-child(4)").children().eq(1).val('');
-				$("#tbl_modal_repair tr:nth-child(5)").children().eq(1).val('');
-				$("#tbl_modal_repair tr:nth-child(6)").children().eq(1).val('');
-				$(".repeatRepair").children().val('');
-				$("#totalPrice").children().eq(1).val('');
-				$("#content").val('');
+				$(".repairTr").remove();
+				$(".part").text("");
+				$(".part2").text("");
+				
+				
 				
 				$(".modal_repair").fadeOut();
 			});

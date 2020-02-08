@@ -219,7 +219,7 @@
 		RR.CN_CODE AS "CCODE",
 		RR.REP_PRICE AS "RPRICE", CON.CN_NAME AS "CNAME", RR.INO
 		AS
-		"INO",IT.TYPE AS "ITYPE"
+		"INO",IT.TYPE AS "ITYPE", RR.RPT_NO AS "RPT_NO"
 		FROM
 		REPORT R, REP_REQ RR, MEMBER M, ITEM I,
 		DEPT D, STAFF ST,
@@ -257,7 +257,7 @@
 		I.VOS AS "VOS", ORQ.TOT_PRICE AS
 		"TPRICE", ORQ.ORDER_RSN AS "ORSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
 		"UP",
-		CON.CN_NAME AS "CNAME",IT.TYPE AS "ITYPE", I.MFG AS "MFG"
+		CON.CN_NAME AS "CNAME",IT.TYPE AS "ITYPE", I.MFG AS "MFG", ORQ.RPT_NO AS "RPT_NO"
 		FROM
 		REPORT R, ORDER_REQ
 		ORQ, MEMBER M,
@@ -516,7 +516,7 @@
 		UPDATE REPORT
 		SET RPT_STATUS = #{rptStatus},
 	    	APPR_DATE = #{apprDate}
-	    WHERE DOC_NO = #{docNo}
+	    WHERE RPT_NO = #{rptNo}
 	</select>
 	
 	<select id="selectPariApproveAllList" parameterType="PartiReport" resultType="java.util.HashMap">
@@ -635,6 +635,49 @@
 		FROM CONN
 		WHERE CN_NAME = #{cname}
 	</select>
+	
+	<select id="selectRepairList" resultType="java.util.HashMap">
+		SELECT CN_NAME, CN_CODE
+		FROM CONN
+		WHERE CN_ITEM LIKE '%수리%'
+	</select>
+	
+	<select id="selectMyApproveCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM REPORT
+		WHERE MNO = #{myMno}
+	</select>
+	
+	<select id="selectMyApproveList" parameterType="_int" resultType="java.util.HashMap">
+		SELECT ROWNUM RNUM,
+		RPT_NO, RMNO, MNAME, RPTDATE, RCEIVER, RNAME, RPTITLE,
+		RPSTATUS,
+		APPDATE, DOCNO, RPTYPE
+		FROM(
+		SELECT
+		R.RPT_NO AS "RPT_NO", R.MNO AS
+		"RMNO", M.NAME "MNAME", R.RPT_DATE AS
+		"RPTDATE", R.RECEIVER AS
+		"RCEIVER", S.NAME AS "RNAME",
+		R.RPT_TITLE AS
+		"RPTITLE", R.RPT_STATUS AS
+		"RPSTATUS", R.APPR_DATE AS "APPDATE",
+		R.DOC_NO AS "DOCNO", R.RPT_TYPE
+		AS "RPTYPE"
+		FROM REPORT R, MEMBER M,
+		(SELECT MNO, NAME
+		FROM MEMBER
+		WHERE
+		MNO IN (SELECT DISTINCT RECEIVER
+		FROM REPORT)
+		) S
+		WHERE R.MNO = M.MNO
+		AND R.RECEIVER = S.MNO
+		AND R.MNO = #{myMno}
+		ORDER BY RPT_NO ASC)
+		ORDER BY RNUM DESC
+	</select>
+	
 	
 </mapper>
   

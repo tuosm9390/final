@@ -226,6 +226,9 @@
 	<script>
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
+				
+				$(".repeatOrder").children().remove();
+				
 				$(".modal_order").fadeOut();
 			});
 		});

@@ -268,26 +268,31 @@ textarea {
 				</colgroup>
 				<tr class="repairTr">
 					<th>No</th>
+					<th>수리 업체명</th>
 					<th>제품코드</th>
 					<th>제품 명</th>
-					<th>수리 업체명</th>
 					<th>금액</th>
 					<th>수리사유</th>
 				</tr>
 				<tr class="repeat">
 					<td>1</td>
-					<td><input type="text" class="anoTxt_ino" style="text-align:center;" name="ino"></td>
-					<td><input type="text" class="anoTxt_iname" placeholder="제품명" readonly style="text-align:center;" name="iname"></td>
 					<td>
 					<!-- <input type="text" class="anoTxt_price" placeholder="금액" style="text-align:center;" name="price"> -->
+					
+					
 					<select class="anoTxt_price" name="price">
 							<option selected disabled hidden>선택 해주세요</option>
+							<c:forEach var="c" items="${listCon }">
+								<option><c:out value="${c.CN_NAME }"/></option>
+							</c:forEach>
+							
 						</select>
-					<td>
-						
-						<input type="text" class="anoTxt_cname" placeholder="수리 업체명" style="text-align:center;" name="cnName"></td>
-					
 					</td>
+					<td><input type="text" class="anoTxt_ino" style="text-align:center;" name="ino"></td>
+					<td><input type="text" class="anoTxt_iname" placeholder="제품명" readonly style="text-align:center;" name="iname"></td>
+						
+						<td><input type="text" class="anoTxt_cname" placeholder="수리 업체명" style="text-align:center;" name="cnName"></td>
+					
 					<td><input type="text" class="anoTxt_rsn" placeholder="사유" style="text-align:center;" name="rsn"></td>
 				</tr>
 				
@@ -404,10 +409,10 @@ textarea {
 		var totalPrice = "";
 		for(var i = 0; i < tblCount; i++) {
 			if(i == 0) {
-				totalPrice = $(".payTbl.fix tr").eq(i+1).children().find(".anoTxt_price").val()*1;
+				totalPrice = $(".payTbl.fix tr").eq(i+1).children().find(".anoTxt_cname").val()*1;
 				
 			}else {
-				totalPrice += $(".payTbl.fix tr").eq(i+1).children().find(".anoTxt_price").val()*1;
+				totalPrice += $(".payTbl.fix tr").eq(i+1).children().find(".anoTxt_cname").val()*1;
 			}
 		}
 		$(".payTbl.Area tr").children().find("#txtLong").val(totalPrice);

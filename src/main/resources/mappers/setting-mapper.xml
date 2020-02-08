@@ -239,6 +239,43 @@
 		INSERT INTO BROKEN_HIS(RM_NO, BRK_BEGIN, BRK_END, BRK_RSN, MNO, BRK_STATUS)
 		VALUES(#{rmNo}, TO_DATE(#{brkBegin}, 'YYYY-MM-DD'),TO_DATE(#{brkEnd}, 'YYYY-MM-DD'), #{brkRsn}, #{mno}, 'Y')
     </select>
+    
+    <select id="selectHotelInfo" resultType="java.util.HashMap">
+	SELECT I.HNAME AS "HNAME", I.OWNER AS "OWNER", I.HEMAIL AS "EMAIL", I.HPHONE AS "PHONE", 
+	        I.BIZ_NAME AS "BIZ_NAME", I.BIZ_NO AS "BIZ_NO", I.HTEL AS "HTEL", B.CHKIN AS "CHKIN", B.CHKOUT AS "CHKOUT",
+	       B.LENT_UNIT AS "LENT_UNIT", C.SVC_RATE AS "SVC_RATE", C.CAL_TIME AS "CAL_TIME", C.VAT_TYPE AS "VAT_TYPE", R.RCONTENT AS "RCONTENT", N.NS_UNIT, N.NS_RATE
+	FROM INFO I
+	JOIN BASIC B ON(I.HNAME = B.HNAME)
+	JOIN CAL C ON (I.HNAME = C.HNAME)
+	JOIN RULE R ON (I.HNAME = R.HNAME)
+	JOIN NOSHOW N ON (I.HNAME = N.HNAME)
+    	
+    </select>
+    <select id="selectHotelRfdInfo" resultType="java.util.HashMap">
+    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
+		FROM RFD
+		WHERE TERM_TYPE = 'SEASON'
+		AND DAY_TYPE = 'WEEK'
+    </select>
+    <select id="selectRfdSWList" resultType="java.util.HashMap">
+    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
+		FROM RFD
+		WHERE TERM_TYPE = 'SEASON'
+		AND DAY_TYPE = 'WEEKEND'
+    </select>
+    <select id="selectRfdOW" resultType="java.util.HashMap">
+    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
+		FROM RFD
+		WHERE TERM_TYPE = 'OFFSEASON'
+		AND DAY_TYPE = 'WEEK'
+    </select>
+    <select id="selectRfdOWE" resultType="java.util.HashMap">
+    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
+		FROM RFD
+		WHERE TERM_TYPE = 'OFFSEASON'
+		AND DAY_TYPE = 'WEEKEND'
+    </select>
+    
 </mapper>
 
 
