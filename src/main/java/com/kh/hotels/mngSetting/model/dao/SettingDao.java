@@ -1,6 +1,7 @@
 package com.kh.hotels.mngSetting.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -59,5 +60,15 @@ public interface SettingDao {
 	ArrayList<Room> selectRoomList(SqlSessionTemplate sqlSession);
 
 	int insertBrokenRoom(SqlSessionTemplate sqlSession, BrokenRoom brokenRoom);
+
+	ArrayList<HashMap<String, Object>> selectHotelInfo(SqlSessionTemplate sqlSession);
+
+	ArrayList<HashMap<String, Object>> selectHotelNoshowInfo(SqlSessionTemplate sqlSession);
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdSWList(SqlSessionTemplate sqlSession);
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdOWList(SqlSessionTemplate sqlSession);
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdOWEList(SqlSessionTemplate sqlSession);
 
 }

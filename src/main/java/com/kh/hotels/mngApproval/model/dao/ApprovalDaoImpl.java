@@ -500,6 +500,41 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		return list;
 	}
 
+	@Override
+	public ArrayList<HashMap<String, Object>> selectRepairCon(SqlSessionTemplate sqlSession) {
+		
+		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectRepairList");
+		
+		System.out.println("수리업체명 : " + list);
+		
+		return list;
+	}
+
+	@Override
+	public int selectCountMyApprove(SqlSessionTemplate sqlSession, int myMno) {
+		
+		int count = sqlSession.selectOne("Report.selectMyApproveCount", myMno);
+		
+		
+		return count;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectMyApproveList(SqlSessionTemplate sqlSession, PageInfo pi,
+			int myMno) {
+		
+		ArrayList<HashMap<String, Object>> list = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		list = (ArrayList)sqlSession.selectList("Report.selectMyApproveList", myMno, rowBounds);
+		
+		
+		return list;
+	}
+
 	
 
 }

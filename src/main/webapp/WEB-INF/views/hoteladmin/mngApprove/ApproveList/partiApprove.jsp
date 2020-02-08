@@ -338,24 +338,46 @@ solid
 			console.log(deptNo);
 			console.log(authNo);
 			
+			var approveType = $(".approveTitle").val();
+			var rpt = $(".rpt").val();
 			
-			//총지배인
+			console.log(approveType);
+			console.log(rpt);
+			
 			if(deptNo == 1) {
-				var docuN = $("#tbl_modal_order tr:first-child").children().eq(1).text();
-				console.log(docuN);
+				
+				/* if(approveType == "수리") {
+					
+					if (window.confirm("승인 하시겠습니까?") == true) {
+						
+						var status = "APPR";
+						//console.log(rptNo);
+		
+						location.href = "approveYn.ap?status="
+								+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&rpt=" + rpt;
+		
+					} else {
+						return false;
+					} 
+				}else {
+					
+					
+				}
+				 */
+				 
 				if (window.confirm("승인 하시겠습니까?") == true) {
 					
-					var rptNo = $("tbl_modal_order").find(".repeatOrder").children().eq(0).val();
 					var status = "APPR";
 					//console.log(rptNo);
 	
 					location.href = "approveYn.ap?status="
-							+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&docuN=" + docuN;
+							+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&rpt=" + rpt;
 	
 				} else {
 					return false;
-				}
-			
+				} 
+				 
+			 
 		}else {
 			var docuN = $(".tbl_modal.parti tr:first-child").children().eq(1).text();
 			if (window.confirm("승인 하시겠습니까?") == true) {
@@ -365,7 +387,7 @@ solid
 				//console.log(rptNo);
 
 				location.href = "approveYn.ap?status="
-						+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&docuN=" + docuN;
+						+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&rpt=" + rpt;
 
 			} else {
 				return false;
@@ -381,11 +403,14 @@ solid
 			console.log(deptNo);
 			console.log(authNo);
 			
+			var approveType = $(".approveTitle").val();
+			var rpt = $(".rpt").val();
 			
 			//총지배인
 			if(deptNo == 1) {
 				var docuN = $("#tbl_modal_order tr:first-child").children().eq(1).text();
 				console.log(docuN);
+				
 				if (window.confirm("반려 하시겠습니까?") == true) {
 					
 					var rptNo = $("tbl_modal_order").find(".repeatOrder").children().eq(0).val();
@@ -393,7 +418,7 @@ solid
 					//console.log(rptNo);
 	
 					location.href = "approveYn.ap?status="
-							+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&docuN=" + docuN;
+						+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&rpt=" + rpt;
 	
 				} else {
 					return false;
@@ -408,7 +433,7 @@ solid
 				//console.log(rptNo);
 
 				location.href = "approveYn.ap?status="
-						+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&docuN=" + docuN;
+					+ status + "&dateString=" + dateString + "&mno=" + mno + "&deptNo=" + deptNo + "&authNo=" + authNo + "&rpt=" + rpt;
 
 			} else {
 				return false;
@@ -443,11 +468,17 @@ solid
 							},
 							success : function(data) {
 								var totalPrice = 0;
+								console.log(data.list)
+								if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
+									$(".approveBtn").hide();
+								}else {
+									$(".approveBtn").show();
+								} 
 
 								$.each(data.list, function(index, list) {
 									$('#tbl_modal_order .tempOrder').after(
-											"<tr class='repeatOrder'><input type='hidden' value='" + list.RPT_NO + "'><td>"
-													+ list.ITYPE + "</td><td>"
+											"<tr class='repeatOrder'><input type='hidden' value='" + list.RPT_NO + "' class='rpt'><td>"
+													+ list.ITYPE + "</td><td><input type='hidden' value='발주' class='approveTitle'>"
 													+ list.CNAME + "</td><td>"
 													+ list.INAME + "</td><td>"
 													+ list.MFG + "</td><td>"
@@ -458,15 +489,14 @@ solid
 
 								});
 
-								$("#tbl_modal_order tr:first-child").children()
-										.eq(1).text(data.list[0].DOCNO);
-								if (data.list[0].RSTATUS == 'WAIT'
-										|| data.list[0].RSTATUS == 'REJECT') {
-									$("#tbl_modal_order tr:nth-child(2)")
-											.children().eq(4).text(
-													data.list[0].SNAME);
+								/* $("#tbl_modal_order tr:first-child").children()
+										.eq(1).text(data.list[0].DOCNO); */
+								if (data.list[0].RSTATUS == 'WAIT') {
 
 								} else {
+									$("#tbl_modal_order tr:nth-child(2)")
+											.children().eq(3).text(
+													data.list[0].SNAME);
 								}
 								$("#tbl_modal_order tr:nth-child(2)")
 										.children().eq(2).text(
@@ -509,16 +539,22 @@ solid
 								type : type
 							},
 							success : function(data) {
+								if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
+									$(".approveBtn").hide();
+								}else {
+									$(".approveBtn").show();
+								}
+								console.log(data.list);
 								var totalPrice = 0;
+								console.log(data);
 								$("#tbl_modal_repair tr:first-child")
 										.children().eq(1).text(
 												data.list[0].DOCNO);
-								console.log(data.list[0].DOCNO);
 								$("#tbl_modal_repair tr:nth-child(2)")
 										.children().eq(2).text(
 												data.list[0].MNAME);
 
-								if (data.list[0].RSTATUS == "APPR") {
+								if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
 									$("#tbl_modal_repair tr:nth-child(2)")
 											.children().eq(3).text(
 													data.list[0].SNAME);
@@ -543,9 +579,9 @@ solid
 
 								$.each(data.list, function(index, list) {
 									$('#tbl_modal_repair .repeatRepair').after(
-											"<tr class='repairTr'><td>"
+											"<tr class='repairTr'><input type='hidden' value='" + list.RPT_NO + "' class='rpt'><td>"
 													+ list.RNUM + "</td><td>"
-													+ list.INO + "</td><td>"
+													+ list.INO + "</td><td><input type='hidden' value='수리' class='approveTitle'>"
 													+ list.INAME + "</td><td>"
 													+ list.CNAME + "</td><td>"
 													+ list.RPRICE + "</td><td>"
@@ -588,7 +624,7 @@ solid
 
 								$.each(data.list, function(index, list) {
 									$('.tbl_modal.parti .temp').after(
-											"<tr class='repeat'><input type='hidden' value='"+list.RPT_NO+"'><td>"
+											"<tr class='repeat'><input type='hidden' value='"+list.RPT_NO+"' class='rpt'><td>"
 													+ list.ITYPE + "</td><td>"
 													+ list.CNAME + "</td><td>"
 													+ list.INAME + "</td><td>"
@@ -729,7 +765,7 @@ solid
 												var $ctr6 = "<td>"
 														+ partiReportList[i].MNAME
 														+ "</td>";
-												if (partiReportList[i].RPSTATUS == "승인") {
+												if (partiReportList[i].RPSTATUS == "승인" || partiReportList[i].RPSTATUS == "반려") {
 													var $ctr7 = "<td>"
 															+ partiReportList[i].SNAME
 															+ "</td>";
@@ -874,6 +910,12 @@ solid
 																				},
 																				success : function(
 																						data) {
+																					console.log(data.list)
+																					 if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
+																						$(".approveBtn").hide();
+																					}else {
+																						$(".approveBtn").show();
+																					} 
 																					var totalPrice = 0;
 
 																					$
@@ -885,9 +927,9 @@ solid
 																										$(
 																												'#tbl_modal_order .tempOrder')
 																												.after(
-																														"<tr class='repeatOrder'><td>"
+																														"<tr class='repeatOrder'><input type='hidden' value='" + list.RPT_NO + "' class='rpt'><td>"
 																																+ list.ITYPE
-																																+ "</td><td>"
+																																+ "</td><td><input type='hidden' value='발주' class='approveTitle'>"
 																																+ list.CNAME
 																																+ "</td><td>"
 																																+ list.INAME
@@ -912,12 +954,12 @@ solid
 																							.text(
 																									data.list[0].DOCNO);
 																					if (data.list[0].RSTATUS == 'WAIT'
-																							|| data.list[0].RSTATUS == 'REJECT') {
+																							) {
 																						$(
 																								"#tbl_modal_order tr:nth-child(2)")
 																								.children()
 																								.eq(
-																										4)
+																										3)
 																								.text(
 																										data.list[0].SNAME);
 
@@ -1005,6 +1047,11 @@ solid
 																				},
 																				success : function(
 																						data) {
+																					if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
+																						$(".approveBtn").hide();
+																					}else {
+																						$(".approveBtn").show();
+																					}
 																					console
 																							.log(data.list.RSTATUS)
 																					var totalPrice = 0;
@@ -1022,7 +1069,7 @@ solid
 																									2)
 																							.text(
 																									data.list[0].MNAME);
-																					if (data.list[0].RSTATUS == "APPR") {
+																					if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
 																						$(
 																								"#tbl_modal_repair tr:nth-child(2)")
 																								.children()
@@ -1076,9 +1123,9 @@ solid
 																										$(
 																												'#tbl_modal_repair .repeatRepair')
 																												.after(
-																														"<tr class='repairTr'><td>"
+																														"<tr class='repairTr'><input type='hidden' value='" + list.RPT_NO + "' class='rpt'><td>"
 																																+ list.RNUM
-																																+ "</td><td>"
+																																+ "</td><td><input type='hidden' value='수리' class='approveTitle'>"
 																																+ list.INO
 																																+ "</td><td>"
 																																+ list.INAME
@@ -1126,13 +1173,18 @@ solid
 																				},
 																				success : function(
 																						data) {
+																					if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
+																						$(".approveBtn").hide();
+																					}else {
+																						$(".approveBtn").show();
+																					}
 																					var totalPrice = 0;
 																					console
 																							.log(data.list);
 
 																					$.each(data.list, function(index,list) {
 																						$('.tbl_modal.parti .temp').after(
-																								"<tr class='repeat'><input type='hidden' value='"+list.RPT_NO+"'><td>" + list.ITYPE + "</td><td>"
+																								"<tr class='repeat'><input type='hidden' value='"+list.RPT_NO+"' class='rpt'><td>" + list.ITYPE + "</td><td>"
 																										+ list.CNAME + "</td><td>"
 																										+ list.INAME + "</td><td>"
 																										+ list.MFG + "</td><td>"
@@ -1420,6 +1472,12 @@ solid
 																},
 																success : function(
 																		data) {
+																	 console.log(data.list);
+																	if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
+																		$(".approveBtn").hide();
+																	}else {
+																		$(".approveBtn").show();
+																	} 
 																	var totalPrice = 0;
 
 																	$
@@ -1431,9 +1489,9 @@ solid
 																						$(
 																								'#tbl_modal_order .tempOrder')
 																								.after(
-																										"<tr class='repeatOrder'><td>"
+																										"<tr class='repeatOrder'><input type='hidden' value='" + list.RPT_NO + "' class='rpt'><td>"
 																												+ list.ITYPE
-																												+ "</td><td>"
+																												+ "</td><td><input type='hidden' value='발주' class='approveTitle'>"
 																												+ list.CNAME
 																												+ "</td><td>"
 																												+ list.INAME
@@ -1458,12 +1516,12 @@ solid
 																			.text(
 																					data.list[0].DOCNO);
 																	if (data.list[0].RSTATUS == 'WAIT'
-																			|| data.list[0].RSTATUS == 'REJECT') {
+																			) {
 																		$(
 																				"#tbl_modal_order tr:nth-child(2)")
 																				.children()
 																				.eq(
-																						4)
+																						3)
 																				.text(
 																						data.list[0].SNAME);
 
@@ -1523,7 +1581,7 @@ solid
 																							+ "원");
 																	// console.log(list.PRSN)
 																	$(
-																			"#tbl_modal_order_order #content")
+																			"#tbl_modal_order_order#contenta")
 																			.children()
 																			.children()
 																			.text(
@@ -1552,6 +1610,11 @@ solid
 																},
 																success : function(
 																		data) {
+																	if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
+																		$(".approveBtn").hide();
+																	}else {
+																		$(".approveBtn").show();
+																	}
 																	console
 																			.log(data.list.RSTATUS)
 																	var totalPrice = 0;
@@ -1569,7 +1632,7 @@ solid
 																					2)
 																			.text(
 																					data.list[0].MNAME);
-																	if (data.list[0].RSTATUS == "APPR") {
+																	if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
 																		$(
 																				"#tbl_modal_repair tr:nth-child(2)")
 																				.children()
@@ -1624,9 +1687,9 @@ solid
 																						$(
 																								'#tbl_modal_repair .repeatRepair')
 																								.after(
-																										"<tr class='repairTr'><td>"
+																										"<tr class='repairTr'><input type='hidden' value='" + list.RPT_NO + "' class='rpt'><td>"
 																												+ list.RNUM
-																												+ "</td><td>"
+																												+ "</td><td><input type='hidden' value='수리' class='approveTitle'>"
 																												+ list.INO
 																												+ "</td><td>"
 																												+ list.INAME
@@ -1673,6 +1736,12 @@ solid
 																},
 																success : function(
 																		data) {
+																	console.log(data.list);
+																	if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
+																		$(".approveBtn").hide();
+																	}else {
+																		$(".approveBtn").show();
+																	}
 																	var totalPrice = 0;
 
 																	$
@@ -1684,7 +1753,7 @@ solid
 																						$(
 																								'#tbl_modal .temp')
 																								.after(
-																										"<tr class='repeat'><td>"
+																										"<tr class='repeat'><input type='hidden' value='"+list.RPT_NO+"' class='rpt'><td>"
 																												+ list.ITYPE
 																												+ "</td><td>"
 																												+ list.CNAME

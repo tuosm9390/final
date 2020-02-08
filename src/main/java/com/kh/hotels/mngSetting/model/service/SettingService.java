@@ -53,6 +53,16 @@ public interface SettingService {
 
 	int insertBrokenRoom(BrokenRoom brokenRoom);
 
+	ArrayList<HashMap<String, Object>> selectHotelInfo();
+
+	ArrayList<HashMap<String, Object>> selectHotelNoshowInfo();
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdSWInfo();
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdOWInfo();
+
+	ArrayList<HashMap<String, Object>> selectHotelRfdOWEInfo();
+
 
 
 }
