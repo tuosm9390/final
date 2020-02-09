@@ -25,6 +25,9 @@
 		<result property="unit" column="UNIT"/>
 		<result property="typeNo" column="TYPE_NO"/>
 		<result property="cnCode" column="CN_CODE"/>
+		<result property="rmNum" column="RM_NUM"/>
+		<result property="strgNo" column="STRG_NO"/>
+		<result property="areaNo" column="AREA_NO"/>
 	</resultMap>
 	
 	
@@ -107,7 +110,7 @@
 	<!-- 물품 디테일 -->
 	
 	<select id="selectStockDetailList" resultMap="resultSetStock">
-		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.UNIT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM AS RM_NO,T.TYPE,I.AMOUNT,C.CN_CODE
+		SELECT T.LCATEGORY,T.MCATEGORY,T.SCATEGORY,I.INO,I.INAME,I.UNIT,I.VOS,I.VAT,I.UP,I.MFG,C.CN_NAME,S.STRG_NAME,A.AREA_NAME,R.RM_NUM,I.RM_NO,T.TYPE,I.AMOUNT,C.CN_CODE,S.STRG_NO,A.AREA_NO
 		FROM ITEM I
 		JOIN ITEM_TYPE T ON (I.TYPE_NO = T.TYPE_NO)
 		JOIN CONN C ON (C.CN_CODE = I.CN_CODE)
@@ -175,6 +178,31 @@
 	<select id="selectRmNoList" resultMap="resultRoom">
 	SELECT RM_NO,RM_NUM FROM ROOM
 	</select>
+	
+	<update id="updateStockOk">
+		<choose>
+		<when test="rmNo == 0">
+		UPDATE ITEM SET 
+		AMOUNT=#{amount},
+		AREA_NO=#{areaNo},
+		SITE_CODE=#{strgName},
+		RM_NO=NULL
+		WHERE INO = #{ino}
+		</when>		
+		<when test="rmNo != 0">
+		UPDATE ITEM SET 
+		AMOUNT=#{amount},
+		AREA_NO=#{areaNo},
+		SITE_CODE=#{strgName},
+		RM_NO=#{rmNo}
+		WHERE INO = #{ino}
+		</when>
+		</choose>
+	</update>
+	
+	<insert id="updateStockHis" parameterType="His">
+		INSERT INTO ITEM_HIS VALUES(#{ino},TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'),#{modCol},#{befData},#{aftData},'UPDATE')
+	</insert>
 </mapper>
 
  

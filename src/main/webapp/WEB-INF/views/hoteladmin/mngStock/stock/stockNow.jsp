@@ -331,7 +331,8 @@ width:1000px;
 					type:"post",
 					data:{iName:iName},
 					success:function(data){
-						console.log(data)
+						console.log(data);
+						console.log("//////////////");
 						$("#stockTbb").empty();
 						$("#stockTbb").append("<tbody id='detailBody'></tbody>")
 						if(data.stockDetailList[0].type=="EQUIP"){
@@ -342,38 +343,33 @@ width:1000px;
 						"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th style='width:100px;'>위치</th><th>객실번호</th></tr>")
 						}	
 						for(var i=0;i<data.stockDetailList.length;i++){
-							
-							if(data.stockDetailList[i].rmNo=='0'){
-								data.stockDetailList[i].rmNo='-';
-							}
-							if(data.stockDetailList[i].strgName==""){
-								data.stockDetailList[i].strgName="-";
-							}
-							if(data.stockDetailList[i].areaName==""){
-								data.stockDetailList[i].areaName="-";
-							}
-									
+							var ino = data.stockDetailList[i].ino;
+							console.log("../////");
+							console.log(data);
 									
 							if(data.stockDetailList[0].type=="EQUIP"){
+								
 							$("#detailBody").append( 
 									"<tr><td class='hide'><input type='checkbox' name='checkRow'></td><td>"+
 									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
 									data.stockDetailList[i].amount+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
-									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
-									data.stockDetailList[i].cnName+"<input type='text' value='"+data.stockDetailList[i].cnCode+"' hidden='hidden' id='cnCode"+data.stockDetailList[i].ino+"'></td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
-									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td><td hidden='hidden>'"+
-									"<input type='text' name='ino' value='"+data.stockDetailList[i].ino+"'>"+
-									"<input type='text' name='iname' value='"+data.stockDetailList[i].iname+"'>"+
-									"<input type='text' name='amount' value='"+data.stockDetailList[i].amount+"'>"+
-									"<input type='text' name='vos' value='"+data.stockDetailList[i].vos+"'>"+
-									"<input type='text' name='vat' value='"+data.stockDetailList[i].vat+"'>"+
-									"<input type='text' name='up' value='"+data.stockDetailList[i].up+"'>"+
-									"<input type='text' name='mfg' value='"+data.stockDetailList[i].mfg+"'>"+
-									"<input type='text' name='cnName' value='"+data.stockDetailList[i].cnName+"'>"+
-									"<input type='text' name='cnCode' value='"+data.stockDetailList[i].cnCode+"'>"+
-									"<input type='text' name='areaName' value='"+data.stockDetailList[i].areaName+"'>"+
-									"<input type='text' name='rmNo' value='"+data.stockDetailList[i].rmNo+"'>"+"</td></tr>"
+									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td id='xcnName"+ino+"'>"+
+									data.stockDetailList[i].cnName+"<input type='text' value='"+data.stockDetailList[i].cnCode+"' hidden='hidden' id='cnCode"+data.stockDetailList[i].ino+"'></td><td id='xstrgName"+ino+"'>"+data.stockDetailList[i].strgName+"</td><td>"+
+									data.stockDetailList[i].areaName+"</td><td id='xrmNum"+ino+"'>"+data.stockDetailList[i].rmNum+"</td><td hidden='hidden'>"+
+									"<input type='text' id='zino"+ino+"' name='ino' value='"+data.stockDetailList[i].ino+"'>"+
+									"<input type='text' id='ziName"+ino+"' name='iname' value='"+data.stockDetailList[i].iname+"'>"+
+									"<input type='text' id='zamount"+ino+"' name='amount' value='"+data.stockDetailList[i].amount+"'>"+
+									"<input type='text' id='zvos"+ino+"' name='vos' value='"+data.stockDetailList[i].vos+"'>"+
+									"<input type='text' id='zvat"+ino+"' name='vat' value='"+data.stockDetailList[i].vat+"'>"+
+									"<input type='text' id='zup"+ino+"' name='up' value='"+data.stockDetailList[i].up+"'>"+
+									"<input type='text' id='zmfg"+ino+"' name='mfg' value='"+data.stockDetailList[i].mfg+"'>"+
+									"<input type='text' id='zcnName"+ino+"' name='cnName' value='"+data.stockDetailList[i].cnName+"'>"+
+									"<input type='text' id='zcnCode"+ino+"' name='cnCode' value='"+data.stockDetailList[i].cnCode+"'>"+
+									"<input type='text' id='zareaName"+ino+"' name='areaName' value='"+data.stockDetailList[i].areaName+"'>"+
+									"<input type='text' id='zareaNo"+ino+"' name='areaNo' value='"+data.stockDetailList[i].areaNo+"'>"+
+									"<input type='text' id='zstrgNo"+ino+"' name='strgNo' value='"+data.stockDetailList[i].strgNo+"'>"+
+									"<input type='text' id='zrmNo"+ino+"' name='rmNo' value='"+data.stockDetailList[i].rmNo+"'>"+"</td></tr>"
 									
 							);
 							console.log("ffffff");
@@ -391,6 +387,15 @@ width:1000px;
 									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
 							}
 						
+							if(data.stockDetailList[i].rmNo=='0'){
+								$("#xrmNo"+ino+"").text("-");
+							}
+							if(data.stockDetailList[i].strgName==""){
+								data.stockDetailList[i].strgName="-";
+							}
+							if(data.stockDetailList[i].areaName==""){
+								data.stockDetailList[i].areaName="-";
+							}
 							//디테일전체체크박스
 							
 							$("#checkDetail").change(function(){

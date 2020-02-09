@@ -27,6 +27,7 @@ import com.kh.hotels.mngApproval.model.exception.ReportException;
 import com.kh.hotels.mngStock.model.Service.StockService;
 import com.kh.hotels.mngStock.model.Service.warehouseService;
 import com.kh.hotels.mngStock.model.vo.Conn;
+import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
@@ -233,26 +234,74 @@ public class StockController {
 	}
 	
 @RequestMapping("updateStockOk.sto")
-public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strgNo,int areaNo,int rmNo) {
+public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strgName,int areaNo,int rmNo
+		,int zino,int zamount,String zstrgName,int zareaNo,int zrmNo) {
 	
-	System.out.println("//////////");
+	System.out.println("//////바꾼값////");
 	System.out.println(ino);
 	System.out.println(amount);
-	System.out.println(strgNo);
+	System.out.println(strgName);
 	System.out.println(areaNo);
 	System.out.println(rmNo);
-	System.out.println("//////////////");
+	System.out.println("///////전값///////");
+	System.out.println(zino);
+	System.out.println(zamount);
+	System.out.println(zstrgName);
+	System.out.println(zareaNo);
+	System.out.println(zrmNo);
 	Stock st = new Stock();
 	st.setIno(ino);
 	st.setAmount(amount);
-	
-	
+	st.setStrgName(strgName);
+	if(rmNo==0) {
+		
+	}else {
+		st.setRmNo(rmNo);
+	}
+	st.setAreaNo(areaNo);
+	int result = ss.updateStockOk(st);
+	His h = new His();
+	if(result>0) {
+		
+		
+		if(st.getStrgName().equals(zstrgName)) {
+		}else {
+			h.setIno(zino);
+			h.setModCol("STRG_NO");
+			h.setBefData(strgName);
+			h.setAftData(zstrgName);
+			int result1 = ss.updateStockHis(h);
+		}
+		if(st.getAmount()!=zamount) {
+			h.setIno(zino);
+			h.setModCol("AMOUNT");
+			h.setBefData(amount+"");
+			h.setAftData(zamount+"");
+			int result2 = ss.updateStockHis(h);
+		}
+		if(st.getAreaNo()!=zareaNo) {
+			h.setIno(zino);
+			h.setModCol("AREA_NO");
+			h.setBefData(areaNo+"");
+			h.setAftData(zareaNo+"");
+			int result3 = ss.updateStockHis(h);
+		}
+		if(st.getRmNo()!=zrmNo) {
+			h.setIno(zino);
+			h.setModCol("RM_NO");
+			h.setBefData(rmNo+"");
+			h.setAftData(zrmNo+"");
+			int result4 = ss.updateStockHis(h);
+		}
+		
+	}else {
+		System.out.println("xx");
+	}
+		
 	mv.setViewName("jsonView");
 		
 	return mv;
 	}
-
-
 
 
 	

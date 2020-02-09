@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.vo.Conn;
+import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
@@ -41,6 +42,10 @@ public interface StockDao {
 	ArrayList<Item> selectRmNoList(SqlSessionTemplate sqlSession);
 
 	int insertStockHis(SqlSessionTemplate sqlSession, Model m, Stock st);
+
+	int updateStockOk(SqlSessionTemplate sqlSession, Stock st);
+
+	int updateStockHis(SqlSessionTemplate sqlSession, His h);
 
 
 
