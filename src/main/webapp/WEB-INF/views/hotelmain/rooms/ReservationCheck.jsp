@@ -168,8 +168,63 @@
 	<footer>
 	</footer>
 	<script>
-		$(".reservation-cancel").click(function() {
-			$(".reservation-check-modal").fadeIn();
+		$(function(){
+			ReservationCheckIn = '${ReservationCheck.checkIn}';
+			ReservationCheckOut = '${ReservationCheck.checkOut}';
+			week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
+			getDayD1 = new Date(ReservationCheckIn.substring(0, 4), (ReservationCheckIn.substring(5, 7) * 1 - 1), ReservationCheckIn.substring(8, 10));
+			getDayD2 = new Date(ReservationCheckOut.substring(0, 4), (ReservationCheckOut.substring(5, 7) * 1 - 1), ReservationCheckOut.substring(8, 10));
+			console.log((getDayD2 - getDayD1)/(1000*60*60*24));
+			getDay1 = week[getDayD1.getDay()];
+			getDay2 = week[getDayD2.getDay()];
+			console.log(getDay1);
+			console.log(getDay2);
+			getMonth = new Date(ReservationCheckIn.substring(0, 4), (ReservationCheckIn.substring(5, 7) * 1 - 1), ReservationCheckIn.substring(8, 10)).getMonth();
+			termType = "";
+			if (getMonth == 0 || getMonth == 1 || getMonth == 6 || getMonth == 7 || getMonth == 11) {
+				termType = "SEASON";
+			} else {
+				termType = "OFFSEASON";
+			}
+			console.log(termType);
+			
+			dayType = "";
+			if(((getDayD2 - getDayD1)/(1000*60*60*24)) > 7){
+				// 주말 항상 포함
+				dayType = "WEEKEND";
+			} else {
+				if(getDayD2.getDay() < 6 && getDayD1.getDay() > 0){
+					// 항상 주중
+					dayType = "WEEK";
+				} else {
+					// 주말 포함
+					dayType = "WEEKEND";
+				}
+			}
+			console.log(dayType);
+			
+			$(".reservation-cancel").click(function() {
+				var roomType = ${roomType};
+				console.log(termType);
+				$.ajax({
+					url : "ajaxCallRefund.hmain",
+					type : "post",
+					data : {
+						roomType : roomType,
+						termType : termType,
+						dayType : dayType,
+						checkIn : ReservationCheckIn,
+						checkOut : ReservationCheckOut
+					},
+					success:function(){
+						
+					},
+					error:function(){
+						console.log("에러");
+					}
+				});
+				$(".reservation-check-modal").fadeIn();
+			});
 		});
 	</script>
 </body>

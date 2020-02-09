@@ -86,6 +86,16 @@
 		<result property="price" column="price" />
 		<result property="regDate" column="reg_Date" />
 	</resultMap>
+	
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.Rfd" id="RfdResultSet">
+		<id property="rfdNo" column="rfd_No" />
+		<result property="termType" column="term_Type" />
+		<result property="dayType" column="day_Type" />
+		<result property="rfdDate" column="rfd_Date" />
+		<result property="rfdRate" column="rfd_Rate" />
+		<result property="hname" column="hname" />
+		<result property="ltype" column="ltype" />
+	</resultMap>
 
 	<!-- 문의 내용 갯수 조회 쿼리 -->
 	<select id="selectListCount" resultType="_int" parameterType="java.util.HashMap">
@@ -330,35 +340,23 @@
 		FROM ANS
 		WHERE QNO = #{qno}
 	</select>
+	
+	<select id="selectRfdList" resultType="java.util.ArrayList" resultMap="RfdResultSet">
+		SELECT *
+		FROM RFD
+		WHERE HNAME = 'HotelBoutique'
+		AND LTYPE = 'RFD'
+		ORDER BY TERM_TYPE DESC, DAY_TYPE, TO_NUMBER(RFD_DATE) DESC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
