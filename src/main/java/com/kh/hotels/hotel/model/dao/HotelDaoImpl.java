@@ -15,6 +15,7 @@ import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 @Component
@@ -175,6 +176,11 @@ public class HotelDaoImpl implements HotelDao{
 	@Override
 	public ArrayList<Prc> selectRoomPrice(SqlSessionTemplate sqlSession, int roomType) {
 		return (ArrayList)sqlSession.selectList("hotel.selectRoomPrice", roomType);
+	}
+
+	@Override
+	public ArrayList<Rfd> selectRfdList(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return (ArrayList)sqlSession.selectList("hotel.selectRfdList", map);
 	}
 
 }

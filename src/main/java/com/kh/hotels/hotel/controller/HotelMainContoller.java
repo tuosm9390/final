@@ -29,6 +29,7 @@ import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.Reservation;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 import net.sf.json.JSONArray;
@@ -133,9 +134,14 @@ public class HotelMainContoller {
 	public ModelAndView showHotelRoomReservation(ModelAndView mv, HttpSession session,
 			Reservation rsv, Date checkIn, Date checkOut, int adult, int child, int roomNo, int roomType) {
 		
+		Map<String, String> map = new HashMap<String, String>();
+		
 		ArrayList<Prc> roomprice = hs.selectRoomPrice(roomType);
 		JSONArray json = JSONArray.fromObject(roomprice);
-
+		
+		ArrayList<Rfd> rfdList = hs.selectRfdList(map);
+		JSONArray json1 = JSONArray.fromObject(rfdList);
+		mv.addObject("rfdList", json1);
 		System.out.println("roomprice : " + roomprice);
 		
 		rsv.setRmNo(roomNo);
@@ -279,21 +285,56 @@ public class HotelMainContoller {
 		ReservationCheck rsvCheck = hs.reservationCheck(rsv);
 		
 		int roomType = hs.selectRoomType(rsvNo);
+
+		ArrayList<RoomInfo> selectFile = hs.selectFile(roomType);
 		
-		ArrayList<RoomInfo> roomInfo = hs.selectRoom(roomType);
+		String[] filePathList = new String[selectFile.size()];
 		
-		String[] filePathList = new String[roomInfo.size()];
-		
-		for(int i = 0; i < roomInfo.size(); i++) {
-			filePathList[i] = roomInfo.get(i).getFilePath().substring(47).replace('\\', '/');
+		String[] str = new String[2];
+		for(int i = 0; i < selectFile.size(); i++) {
+			str = selectFile.get(i).getFilePath().split("webapp", 2);
+			filePathList[i] = str[1];
 			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
+			str = null;
 		}
 		
 		System.out.println("rsvCheck : " + rsvCheck);
+		mv.addObject("roomType", roomType);
 		mv.addObject("filePathList", filePathList);
 		mv.addObject("ReservationCheck", rsvCheck);
 		mv.setViewName("hotelmain/rooms/ReservationCheck");
 
+		return mv;
+	}
+	
+	// 예약 취소 환불규정 호출 메소드
+	@RequestMapping("ajaxCallRefund.hmain")
+	public ModelAndView ajaxCallRefund(ModelAndView mv, int roomType,
+			String termType, String dayType, String checkIn, String checkOut) {
+		
+		System.out.println("roomType : " + roomType);
+		System.out.println("termType : " + termType);
+		System.out.println("dayType : " + dayType);
+		System.out.println("checkIn : " + checkIn);
+		System.out.println("checkOut : " + checkOut);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		
+		ArrayList<Prc> roomprice = hs.selectRoomPrice(roomType);
+		ArrayList<Rfd> rfdList = hs.selectRfdList(map);
+		
+		mv.addObject("roomprice", roomprice);
+		mv.addObject("rfdList", rfdList);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	// 예약 취소 메소드
+	@RequestMapping("")
+	public ModelAndView cancelRsv(ModelAndView mv) {
+		
+		
+		
+		
 		return mv;
 	}
 	

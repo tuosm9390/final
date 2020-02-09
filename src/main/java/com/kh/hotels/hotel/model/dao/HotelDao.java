@@ -13,6 +13,7 @@ import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 public interface HotelDao {
@@ -70,5 +71,7 @@ public interface HotelDao {
 	int insertReservationHis(SqlSessionTemplate sqlSession, ReservationCheck rsvCheck);
 
 	ArrayList<Prc> selectRoomPrice(SqlSessionTemplate sqlSession, int roomType);
+
+	ArrayList<Rfd> selectRfdList(SqlSessionTemplate sqlSession, Map<String, String> map);
 
 }

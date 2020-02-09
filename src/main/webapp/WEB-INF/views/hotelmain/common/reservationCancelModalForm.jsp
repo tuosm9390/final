@@ -73,7 +73,7 @@ cursor: pointer;
 				<div class="top-content">
 					<h2 style="font-weight: bold;">예약을 취소하시겠습니까?</h2>
 					<li style="font-weight: bold;">본인 확인을 위해 예약번호를 입력해주세요<br><br>
-					<input type="text" name="">
+					<input type="text" name="rsvNo">
 				</div>
 				<div class="refund-content">
 					<h2 style="font-weight: bold; text-decoration: underline; text-underline-position: under;">환불규정</h2>

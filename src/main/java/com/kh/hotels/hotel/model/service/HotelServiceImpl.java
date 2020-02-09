@@ -16,6 +16,7 @@ import com.kh.hotels.mngClient.model.vo.Que;
 import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngReserv.model.vo.ReservationCheck;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomInfo;
 
 @Service
@@ -165,6 +166,11 @@ public class HotelServiceImpl implements HotelService{
 	@Override
 	public ArrayList<Prc> selectRoomPrice(int roomType) {
 		return hd.selectRoomPrice(sqlSession, roomType);
+	}
+
+	@Override
+	public ArrayList<Rfd> selectRfdList(Map<String, String> map) {
+		return hd.selectRfdList(sqlSession, map);
 	}
 
 }

@@ -110,16 +110,24 @@
 .refund-table{
 	width: 100%;
 	border-collapse: collapse;
+/* 	display : table-cell; */
 }
 
-.refund-table tr:not(:last-child) td{
+.refund-table td{
 	border: 1px solid black;
 	text-align: center;
 	padding: 5px 0;
 }
 
 .refund-table tr:last-child td{
-	border: none;
+/* 	border: none; */
+}
+
+.test{
+	width: 49.9%;
+    position: relative;
+    display: inline-flex;
+    margin-right: -5.4px;
 }
 </style>
 </head>
@@ -261,68 +269,100 @@
 				<div class="refund-box">
 					<!-- 성수기 -->
 					<div class="refund peak-refund">
-					<h5>※ 공제 또는 배상 비율(소비자 책임)</h5>
+					<h5>※ 공제 또는 배상 비율(소비자 책임시 해당 비율 공제 후 환불)</h5>
+					<div class="test">
 					<table class="refund-table">
 						<tr>
 							<td style="width: 15%;" rowspan="2"></td>
 							<td style="width: 35%;" colspan="2"><h4 style="font-weight: bold;">[ 성수기 ]</h4></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;">주중</td>
+							<td style="font-weight: bold;">주말</td>
+						</tr>
+						<c:forEach var="rfdList" items="${ rfdList }">
+							<c:if test="${ rfdList.dayType eq 'WEEK'}">
+								<tr>
+									<c:if test="${ rfdList.termType eq 'SEASON' }">
+										<c:if test="${ rfdList.rfdDate ne '0' }">
+											<td>${ rfdList.rfdDate }일전</td>
+											<c:if test="${ rfdList.rfdRate eq '100' }">
+												<td>전액 환불</td>
+												<td>전액 환불</td>
+											</c:if>
+											<c:if test="${ rfdList.rfdRate eq '0' }">
+												<td>100%</td>
+												<td>100%</td>
+											</c:if>
+											<c:if test="${ rfdList.rfdRate ne '0' && rfdList.rfdRate ne '100' }">
+												<td>${ 100 - rfdList.rfdRate }%</td>
+												<td>${ 110 - rfdList.rfdRate }%</td>
+											</c:if>
+										</c:if>
+										<c:if test="${ rfdList.rfdDate eq '0' }">
+											<tr>
+												<c:if test="${ rfdList.termType eq 'SEASON' }">
+													<td>노쇼</td>
+													<td>100%</td>
+													<td>100%</td>
+												</c:if>
+											</tr>
+										</c:if>
+									</c:if>
+								</tr>
+							</c:if>
+						</c:forEach>
+					</table>
+					</div>
+					<div class="test">
+					<table class="refund-table">
+						<tr>
 							<td style="width: 15%;" rowspan="2"></td>
 							<td style="width: 35%;" colspan="2"><h4 style="font-weight: bold;">[ 비수기 ]</h4></td>
 						</tr>
 						<tr>
 							<td style="font-weight: bold;">주중</td>
 							<td style="font-weight: bold;">주말</td>
-							<td style="font-weight: bold;">주중</td>
-							<td style="font-weight: bold;">주말</td>
 						</tr>
-						<tr>
-							<td>10일전</td>
-							<td>전액 환불</td>
-							<td>전액 환불</td>
-							<td rowspan="2">2일전</td>
-							<td rowspan="2">전액 환불</td>
-							<td rowspan="2">전액 환불</td>
-						</tr>
-						<tr>
-							<td>7일전</td>
-							<td>10%</td>
-							<td>20%</td>
-						</tr>
-						<tr>
-							<td>5일전</td>
-							<td>30%</td>
-							<td>40%</td>
-							<td rowspan="2">1일전</td>
-							<td rowspan="2">10%</td>
-							<td rowspan="2">20%</td>
-						</tr>
-						<tr>
-							<td>3일전</td>
-							<td>50%</td>
-							<td>60%</td>
-						</tr>
-						<tr>
-							<td>1일전</td>
-							<td>80%</td>
-							<td>90%</td>
-							<td rowspan="2">노쇼</td>
-							<td rowspan="2">20%</td>
-							<td rowspan="2">30%</td>
-						</tr>
-						<tr>
-							<td>노쇼</td>
-							<td>100%</td>
-							<td>100%</td>
-						</tr>
-						<tr>
-							<td colspan="3"><h4 style="font-weight: bold;">[ 기후변화 또는 천재지변, 거짓 과장 광고]</h4></td>
-							<td colspan="3">전액 환불</td>
-						</tr>
-						<tr>
-							<td colspan="6" style="color: gray; text-align: right;">※ 사업자 책임일 경우 계약금 + 배상 비율만큼 배상</td>
-						</tr>
+						<c:forEach var="rfdList" items="${ rfdList }">
+							<c:if test="${ rfdList.dayType eq 'WEEK'}">
+								<tr>
+									<c:if test="${ rfdList.termType eq 'OFFSEASON' }">
+										<c:if test="${ rfdList.rfdDate ne '0' }">
+											<td height="62px;">${ rfdList.rfdDate }일전</td>
+											<c:if test="${ rfdList.rfdRate eq '100' }">
+												<td>전액 환불</td>
+												<td>전액 환불</td>
+											</c:if>
+											<c:if test="${ rfdList.rfdRate eq '0' }">
+												<td>100%</td>
+												<td>100%</td>
+											</c:if>
+											<c:if test="${ rfdList.rfdRate ne '0' && rfdList.rfdRate ne '100' }">
+												<td>${ 100 - rfdList.rfdRate }%</td>
+												<td>${ 110 - rfdList.rfdRate }%</td>
+											</c:if>
+										</c:if>
+										<c:if test="${ rfdList.rfdDate eq '0' }">
+											<tr>
+												<c:if test="${ rfdList.termType eq 'OFFSEASON' }">
+													<td height="62px;">노쇼</td>
+													<td>100%</td>
+													<td>100%</td>
+												</c:if>
+											</tr>
+										</c:if>
+									</c:if>
+								</tr>
+							</c:if>
+						</c:forEach>
 					</table>
-					<br>
+					</div>
+					<div class="test">
+						<h4 style="font-weight: bold;">[ 기후변화 또는 천재지변, 거짓 과장 광고 ] &emsp;&emsp;&emsp;계약금 환급
+						</h4>
+					</div>
+					<br><br>
 					<label style="font-weight: 200; font-size: 16px; line-height: 21px; color: rgba(145, 133, 133, 0.71); float: right;">
 						<input type="checkbox" id="agreement" name="agreement"
 						style="width: 19px; height: 19px; vertical-align: middle; margin-top: 0px;">위 규정을 확인하였습니다.
@@ -408,11 +448,11 @@
 			var week = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
 			var feeday = week[feedate.getDay()];
 			var termType;
-			if ((feedate.getMonth()) == 1
-					|| (feedate.getMonth()) == 2
+			if ((feedate.getMonth()) == 0
+					|| (feedate.getMonth()) == 1
+					|| (feedate.getMonth()) == 6
 					|| (feedate.getMonth()) == 7
-					|| (feedate.getMonth()) == 8
-					|| (feedate.getMonth()) == 12) {
+					|| (feedate.getMonth()) == 11) {
 				termType = "SEASON";
 			} else {
 				termType = "OFFSEASON";
