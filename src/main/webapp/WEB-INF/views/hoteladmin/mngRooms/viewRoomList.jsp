@@ -305,6 +305,7 @@ input[type=checkbox] {
 <body>
 	<header>
 		<jsp:include page="../common/menubar.jsp" />
+		<jsp:include page="modalDetailClient.jsp"></jsp:include>
 	</header>
 	<section>
 		<jsp:include page="modalCheckIn.jsp"></jsp:include>
@@ -1622,6 +1623,11 @@ input[type=checkbox] {
 	            showAction();
 	            timer2 = setInterval(showAction, 1000);
 	        }
+			
+			
+			
+			
+		
 		</script>
 </body>
 </html>

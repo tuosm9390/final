@@ -80,6 +80,12 @@
 		<result property="minPer" column="MINPER" />
 	</resultMap>
 	
+	<resultMap type="RoomType" id="roomMinperMaxPerResultSet">
+		<result property="rtNo" column="RT_NO" />
+		<result property="minPer" column="MINPER" />
+		<result property="maxPer" column="MAXPER" />
+	</resultMap>
+	
 	<resultMap type="SettingRoomType" id="roomTypeListResultSet">
 		<result property="rtNo" column="RT_NO" />
 		<result property="rtName" column="RT_NAME" />
@@ -107,8 +113,8 @@
 	
 	<select id="selectRoomDetailList" parameterType="_int" resultMap="roomDetailListResultSet">
 		SELECT R.RM_NO, R.RM_NUM, R.STD_PER, R.RM_OPTION, R.FLOOR, R.RT_NO, R.REG_DATE, R.RM_STATUS, RT.MAXPER, RT.MINPER
-		FROM ROOM_TYPE RT
-		LEFT JOIN ROOM R ON(R.RT_NO = RT.RT_NO)
+		FROM ROOM R
+		LEFT JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
 		WHERE RT.RT_NO = #{rtNo}
 	</select>
 	
@@ -416,46 +422,31 @@
 		VALUES(SEQ_RPNO.NEXTVAL, #{rtNo}, 'SEASON', 'SUN', 'STAY', #{staySun}, #{regDate})
 	</insert>
 	<!-- 끝 -->
-    </select>
-    
-    <select id="selectHotelInfo" resultType="java.util.HashMap">
-	SELECT I.HNAME AS "HNAME", I.OWNER AS "OWNER", I.HEMAIL AS "EMAIL", I.HPHONE AS "PHONE", 
-	        I.BIZ_NAME AS "BIZ_NAME", I.BIZ_NO AS "BIZ_NO", I.HTEL AS "HTEL", B.CHKIN AS "CHKIN", B.CHKOUT AS "CHKOUT",
-	       B.LENT_UNIT AS "LENT_UNIT", C.SVC_RATE AS "SVC_RATE", C.CAL_TIME AS "CAL_TIME", C.VAT_TYPE AS "VAT_TYPE", R.RCONTENT AS "RCONTENT", N.NS_UNIT, N.NS_RATE
-	FROM INFO I
-	JOIN BASIC B ON(I.HNAME = B.HNAME)
-	JOIN CAL C ON (I.HNAME = C.HNAME)
-	JOIN RULE R ON (I.HNAME = R.HNAME)
-	JOIN NOSHOW N ON (I.HNAME = N.HNAME)
-    	
-    </select>
-    <select id="selectHotelRfdInfo" resultType="java.util.HashMap">
-    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
-		FROM RFD
-		WHERE TERM_TYPE = 'SEASON'
-		AND DAY_TYPE = 'WEEK'
-    </select>
-    <select id="selectRfdSWList" resultType="java.util.HashMap">
-    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
-		FROM RFD
-		WHERE TERM_TYPE = 'SEASON'
-		AND DAY_TYPE = 'WEEKEND'
-    </select>
-    <select id="selectRfdOW" resultType="java.util.HashMap">
-    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
-		FROM RFD
-		WHERE TERM_TYPE = 'OFFSEASON'
-		AND DAY_TYPE = 'WEEK'
-    </select>
-    <select id="selectRfdOWE" resultType="java.util.HashMap">
-    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
-		FROM RFD
-		WHERE TERM_TYPE = 'OFFSEASON'
-		AND DAY_TYPE = 'WEEKEND'
-    </select>
-    
-</mapper>
 
+	<select id="selectMinPerMaxPer" parameterType="_int" resultMap="roomMinperMaxPerResultSet">
+		SELECT RT.RT_NO, RT.MAXPER, RT.MINPER
+		FROM ROOM_TYPE RT
+		WHERE RT.RT_NO = #{rtNo}
+	</select>
+
+	<select id="insertAddNewRoomDetail" parameterType="Room">
+		INSERT INTO ROOM(RM_NO, RM_NUM, STD_PER, RM_OPTION, FLOOR, RT_NO, REG_DATE, RM_STATUS)
+		VALUES(SEQ_RM_NO.NEXTVAL, #{rmNum}, #{stdPer}, #{rmOption}, #{floor}, #{rtNo}, #{regDate},#{rmStatus})
+	</select>
+
+	<select id="updateRoomDisable" parameterType="_int">
+		UPDATE ROOM
+		SET RM_STATUS = 'N'
+		WHERE RM_NO = #{rmNo}
+	</select>
+	
+	<select id="updateRoomEnable" parameterType="_int">
+		UPDATE ROOM
+		SET RM_STATUS = 'Y'
+		WHERE RM_NO = #{rmNo}
+	</select>
+
+</mapper>
 
 
 

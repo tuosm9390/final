@@ -149,7 +149,7 @@ cursor: pointer;
 						</tr>
 						<tr>
 							<td></td>
-							<td><button type="submit" onclick="return saveAnswer();"style="float:right;">저장</button></td>
+							<td><button type="submit" class="answerBtn" onclick="return saveAnswer();"style="float:right;">저장</button></td>
 						</tr>
 					</table>
 				</div>

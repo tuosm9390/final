@@ -90,4 +90,12 @@ public interface SettingDao {
 
 	ArrayList<HashMap<String, Object>> selectHotelRfdOWEList(SqlSessionTemplate sqlSession);
 
+	RoomType selectMinPerMaxPer(SqlSessionTemplate sqlSession, int rtNo);
+
+	int insertAddNewRoomDetail(SqlSessionTemplate sqlSession, ArrayList<Room> roomList);
+
+	int updateRoomDisable(SqlSessionTemplate sqlSession, int[] rmNo);
+
+	int updateRoomEnable(SqlSessionTemplate sqlSession, int[] rmNo);
+
 }

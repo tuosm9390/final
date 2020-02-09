@@ -239,7 +239,8 @@ public class SettingServiceImpl implements SettingService {
 		}
 		
 		return result;
-
+	}
+	
 	public ArrayList<HashMap<String, Object>> selectHotelInfo() {
 		
 		ArrayList<HashMap<String, Object>> list = sd.selectHotelInfo(sqlSession);
@@ -279,6 +280,30 @@ public class SettingServiceImpl implements SettingService {
 		ArrayList<HashMap<String, Object>> list = sd.selectHotelRfdOWEList(sqlSession);
 		
 		return list;
+	}
+
+	@Override
+	public RoomType selectMinPerMaxPer(int rtNo) {
+		
+		return sd.selectMinPerMaxPer(sqlSession, rtNo);
+	}
+
+	@Override
+	public int insertAddNewRoomDetail(ArrayList<Room> roomList) {
+
+		return sd.insertAddNewRoomDetail(sqlSession, roomList);
+	}
+
+	@Override
+	public int updateRoomDisable(int[] rmNo) {
+		
+		return sd.updateRoomDisable(sqlSession, rmNo);
+	}
+
+	@Override
+	public int updateRoomEnable(int[] rmNo) {
+		
+		return sd.updateRoomEnable(sqlSession, rmNo);
 	}
 
 
