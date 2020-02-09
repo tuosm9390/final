@@ -244,4 +244,9 @@ public class RoomsServiceImpl implements RoomsService {
 		rd.updateRoomSttCO(sqlSession, sno);
 	}
 
+	@Override
+	public Rfd ajxFindRfdRate(String checkin) {
+		return rd.ajxFindRfdRate(sqlSession, checkin);
+	}
+
 }

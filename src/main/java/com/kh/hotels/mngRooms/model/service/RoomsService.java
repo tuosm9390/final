@@ -70,4 +70,6 @@ public interface RoomsService {
 
 	void doCheckout(int sno);
 
+	Rfd ajxFindRfdRate(String checkin);
+
 }

@@ -21,6 +21,50 @@
 		<result property="price" column="PRICE" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngReserv.model.vo.RoomInfo" id="roomInfoSet">
+		<id property="rmNo" column="RM_NO" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="floor" column="FLOOR" />
+		<result property="rtNo" column="RT_NO" />
+		<result property="rtName" column="RT_NAME" />
+	</resultMap>
+	
+	<resultMap type="RoomList" id="roomListSet">
+		<id property="rmNo" column="RM_NO" />
+		<result property="rmNum" column="RM_NUM" />
+		<result property="floor" column="FLOOR" />
+		<result property="rmStatus" column="RM_STATUS" />
+		<result property="rtNo" column="RT_NO" />
+		<result property="rtName" column="RT_NAME" />
+		<result property="cleanStatus" column="CLEAN_STATUS" />
+		<result property="reservmno" column="RMNO" />
+		<result property="reservname" column="RNAME" />
+		<result property="smno" column="SMNO" />
+		<result property="sname" column="SNAME" />
+		<result property="stayNo" column="STAY_NO" />
+		<result property="scheckin" column="S_CHECKIN" />
+		<result property="scheckout" column="S_CHECKOUT" />
+		<result property="stayStatus" column="STAY_STATUS" />
+		<result property="stayType" column="STAY_TYPE" />
+		<result property="stayPrice" column="STAY_PRICE" />
+		<result property="rsvNo" column="RSV_NO" />
+		<result property="rcheckin" column="R_CHECKIN" />
+		<result property="rcheckout" column="R_CHECKOUT" />
+		<result property="rsvPrice" column="RSV_PRICE" />
+		<result property="rsvStatus" column="RSV_STATUS" />
+		<result property="ciTime" column="CI_TIME" />
+		<result property="nsUnit" column="NS_UNIT" />
+		<result property="brkBegin" column="BRK_BEGIN" />
+		<result property="brkEnd" column="BRK_END" />
+		<result property="brkRsn" column="BRK_RSN" />
+		<result property="realCI" column="REAL_CI" />
+		<result property="stdPer" column="STD_PER" />
+		<result property="maxPer" column="MAXPER" />
+		<result property="reservphone" column="RPHONE" />
+		<result property="sphone" column="SPHONE" />
+	</resultMap>
+	
+	<!-- ReservHis -->
 	<select id="goReservHis" resultMap="reservHisListSet">
 		SELECT V.RSV_NO, TO_CHAR(V.CHECKIN, 'YYYY-MM-DD') AS "CHECKIN", TO_CHAR(V.CHECKOUT, 'YYYY-MM-DD') AS "CHECKOUT",
 		       TO_CHAR(V.STAY_PRICE, '999,999,999') AS "PRICE", V.STAY_PRICE, V.RSV_DATE, V.RSV_STATUS, V.RSV_WAY,
@@ -51,4 +95,43 @@
 		ORDER BY V.RSV_NO DESC
 	</select>
 	
+	<!-- ReservNow -->
+	<select id="selectRoomInfo" resultMap="roomInfoSet">
+		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RT_NO, T.RT_NAME
+		FROM ROOM R
+		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
+		WHERE R.RM_STATUS = 'Y'
+		ORDER BY RT_NAME, RM_NUM
+	</select>
+	
+	<select id="selectRoomList" resultMap="roomListSet">
+		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
+		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
+		       V.RSV_NO, TO_CHAR(V.CHECKIN, 'yyyy-MM-dd') AS "R_CHECKIN", TO_CHAR(V.CHECKOUT, 'yyyy-MM-dd') AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
+		       M1.MNO AS "RMNO", M1.NAME AS "RNAME", M2.MNO AS "SMNO", M2.NAME AS "SNAME", TO_CHAR(B.BRK_BEGIN, 'yyyy-MM-dd') AS "BRK_BEGIN", TO_CHAR(B.BRK_END, 'yyyy-MM-dd') AS "BRK_END",
+		       BRK_RSN, R.STD_PER, T.MAXPER, M1.PHONE AS "RPHONE", M2.PHONE AS "SPHONE"
+		FROM ROOM R
+		LEFT JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
+		LEFT JOIN ROOM_STT N ON (R.RM_NO = N.RM_NO)
+		LEFT JOIN (SELECT *
+		           FROM STAY
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR((SYSDATE + 9 / (24) + 135 / (24 * 60 * 60)) + 13, 'YYYY-MM-DD')
+		           AND TO_CHAR(CHECKOUT, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		           AND STAY_STATUS = 'N') S ON (R.RM_NO = S.RM_NO)
+		LEFT JOIN (SELECT *
+		           FROM RSV
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR((SYSDATE + 9 / (24) + 135 / (24 * 60 * 60)) + 13, 'YYYY-MM-DD')
+		           AND TO_CHAR(CHECKOUT, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		           AND RSV_STATUS IN ('OK', 'WAIT')) V ON (R.RM_NO = V.RM_NO)
+		LEFT JOIN MEMBER M1 ON (V.MNO = M1.MNO)
+		LEFT JOIN MEMBER M2 ON (S.MNO = M2.MNO)
+		LEFT JOIN (SELECT RM_NO, BRK_BEGIN, BRK_END, BRK_RSN
+		           FROM ROOM
+		           LEFT JOIN BROKEN_HIS USING (RM_NO)
+		           WHERE TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR((SYSDATE + 9 / (24) + 135 / (24 * 60 * 60)) + 13, 'YYYY-MM-DD')
+		           AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		           AND BRK_STATUS = 'Y') B ON (R.RM_NO = B.RM_NO)
+		WHERE R.RM_STATUS = 'Y'
+		ORDER BY T.RT_NAME, RM_NUM
+	</select>
 </mapper>
