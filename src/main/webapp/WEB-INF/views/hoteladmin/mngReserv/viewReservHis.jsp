@@ -297,10 +297,9 @@ hr {
 			}
 		}
 		
-		//여기여기여기여기여기
 		$("#goYesterday").click(function(){
 			var yesterday = new Date($("#today").val().substring(0,4), $("#today").val().substring(5,7)-1, $("#today").val().substring(8,10));
-			yesterday.setDate(today.getDate() - 1);
+			yesterday.setTime(yesterday.getTime() - (1 * 24 * 60 * 60 * 1000));
 			var yday = yesterday.getFullYear() + "-" + (yesterday.getMonth()+1>9?yesterday.getMonth()+1:"0" + (yesterday.getMonth()+1)) + "-" + (yesterday.getDate()>9?yesterday.getDate():("0" + yesterday.getDate()));
 			location.href = "searchRsvDay.re?day=" + yday; 
 		});
@@ -310,8 +309,8 @@ hr {
 		});
 		
 		$("#goTommorow").click(function(){
-			var tommorow = new Date($("#today").val().substring(0,4), $("#today").val().substring(5,7), $("#today").val().substring(8,10));
-			tommorow.setTime(today.getTime() + (1 * 24 * 60 * 60 * 1000));
+			var tommorow = new Date($("#today").val().substring(0,4), $("#today").val().substring(5,7)-1, $("#today").val().substring(8,10));
+			tommorow.setTime(tommorow.getTime() + (1 * 24 * 60 * 60 * 1000));
 			var tday = tommorow.getFullYear() + "-" + (tommorow.getMonth()+1>9?tommorow.getMonth()+1:"0" + (tommorow.getMonth()+1)) + "-" + (tommorow.getDate()>9?tommorow.getDate():("0" + tommorow.getDate()));
 			location.href = "searchRsvDay.re?day=" + tday; 
 		});
@@ -440,13 +439,23 @@ hr {
 						switch(data.stayPay[i].payWay) {
 						case "CARD" : $("#payCard").val($("#payCard").val() * 1 + data.stayPay[i].paymentFee); break;
 						case "CASH" : $("#payCash").val($("#payCash").val() * 1 + data.stayPay[i].paymentFee); break;
-						case "ACCOUNT" : $("#payAcc").val($("#payAcc").val() * 1 + data.stayPay[i].paymentFee); break;
+						case "ACCOUNT" :
+							if(data.stayPay[i].payStatus == 'REFUND') {
+								$("#payRfd").val($("#payRfd").val() * 1 + data.stayPay[i].paymentFee); break;
+							} else {
+								$("#payAcc").val($("#payAcc").val() * 1 + data.stayPay[i].paymentFee); break;
+							}
 						case "REFUND" : $("#payRfd").val($("#payRfd").val() * 1 + data.stayPay[i].paymentFee); break;
 						}
 						
 						if(i == data.stayPay.length - 1) {
 							$("#lastPayDay").text(data.stayPay[i].payDate);
 							reservPayDate = data.stayPay[i].payDate;
+						}
+						
+						//여기여기여기
+						if(data.stayPay[i].payStatus == 'REFUND') {
+							$("#rsvCancelBtn").hide();
 						}
 					}
 					changeTotalPrcTxt();

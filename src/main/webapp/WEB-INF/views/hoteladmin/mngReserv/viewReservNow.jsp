@@ -84,7 +84,7 @@ hr {
 .statusSec {
 	display: inline-flex;
 	margin-top: -15px;
-	margin-left: 130px;
+	margin-left: 450px;
 }
 
 .stColor {
@@ -131,19 +131,7 @@ hr {
 	border: 1px solid lightgrey;
 }
 
-.stInfo:nth-child(1)>div:nth-child(2), .stInfo:nth-child(3)>div:nth-child(2),
-	.stInfo:nth-child(4)>div:nth-child(2), .stInfo:nth-child(6)>div:nth-child(2),
-	.stInfo:nth-child(8)>div:nth-child(2) {
-	width: 50px;
-	height: 26px;
-	padding-top: 4px;
-	padding-left: 3px;
-	border-left: none;
-	border-right: none;
-}
-
-.stInfo:nth-child(2)>div:nth-child(2), .stInfo:nth-child(5)>div:nth-child(2),
-	.stInfo:nth-child(7)>div:nth-child(2) {
+.stInfo div:nth-child(2) {
 	width: 70px;
 	height: 26px;
 	padding-top: 4px;
@@ -200,8 +188,15 @@ hr {
 	background-color: #f7f7f7;
 }
 
-.reservTable .roomType {
-	
+.emptyroom {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.halfCI, .halfCO {
+	display: inline-block;
+	width: 46.5px;
+	height: 19px;
 }
 </style>
 </head>
@@ -242,9 +237,6 @@ hr {
 				<div class="stInfo"><div class="stColor lightsteelblue"></div><div id="stReserv">입실예정</div><div>00</div></div>
 				<div class="stInfo"><div class="stColor gold"></div><div id="stRent">대실</div><div>00</div></div>
 				<div class="stInfo"><div class="stColor mediumseagreen"></div><div id="stSleep">투숙</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor coral"></div><div id="stOut">퇴실예정</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor"><div class="stClean"></div></div><div id="stClean">정비</div><div>00</div></div>
-				<div class="stInfo"><div class="stColor"><div class="stNoClean"></div></div><div id="stUnclean">미정비</div><div>00</div></div>
 				<div class="stInfo"><div class="stColor darkgray"></div><div id="stBroken">고장</div><div>00</div></div>
 			</div>
 			<!-- statusSec end -->
@@ -253,99 +245,35 @@ hr {
 		<div class="reservTable">
 			<table class="table sticky-header" style="border-collapse: collapse;">
 				<tr>
-					<th width="100px;">번호</th>
-					<th width="330px;">침대</th>
-					<th width="80px;" style="color: red;">01/19<br>일</th>
-					<th width="80px;">01/20<br>월</th>
-					<th width="80px;">01/21<br>화</th>
-					<th width="80px;">01/22<br>수</th>
-					<th width="80px;">01/23<br>목</th>
-					<th width="80px;">01/24<br>금</th>
-					<th width="80px;" style="color: blue;">01/28<br>토</th>
-					<th width="80px;" style="color: red;">01/19<br>일</th>
-					<th width="80px;">01/20<br>월</th>
-					<th width="80px;">01/21<br>화</th>
-					<th width="80px;">01/22<br>수</th>
-					<th width="80px;">01/23<br>목</th>
-					<th width="80px;">01/24<br>금</th>
-					<th width="80px;" style="color: blue;">01/25<br>토</th>
+					<th width="100px;">객실</th>
+					<th width="330px;">유형</th>
+					<c:forEach var="i" begin="1" end="14">
+						<th width="80px;"></th>
+					</c:forEach>
 				</tr>
-				<tr>
-					<td style="border-right: 1px solid white; background-color:white;"></td>
-					<td colspan="15" class="roomType">스위트</td>
-				</tr>
-				<c:forEach var="i" begin="1" end="10">
-					<tr>
-						<td>701</td>
-						<td>스위트 더블</td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-					</tr>
-				</c:forEach>
-				<tr>
-					<td style="border-right: 1px solid white; background-color:white;"></td>
-					<td colspan="15" class="roomType">디럭스</td>
-				</tr>
-				<c:forEach var="i" begin="1" end="10">
-				<tr>
-						<td>501</td>
-						<td>디럭스 더블</td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-					</tr>
-				</c:forEach>
-				<tr>
-					<td style="border-right: 1px solid white; background-color:white;"></td>
-					<td colspan="15" class="roomType">스탠다드</td>
-				</tr>
-				<c:forEach var="i" begin="1" end="10">
-					<tr>
-						<td>201</td>
-						<td>스탠다드 싱글</td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
-						<td class="emptyroom"></td>
+				<c:set var="rtName" value="0" />
+				<c:forEach var="r" items="${ roominfo }">
+					<c:if test="${ r.rtName ne rtName }">
+						<c:set var="rtName" value="${ r.rtName }" />
+						<tr>
+							<td style="border-right: 1px solid white; background-color:white;"></td>
+							<td colspan="15" class="roomType">${ r.rtName }</td>
+						</tr>
+					</c:if>
+					<tr class="emptyroomTR">
+						<td>${ r.rmNum }</td>
+						<td>${ r.rtName }</td>
+						<c:forEach var="i" begin="1" end="14">
+							<td class="emptyroom" id="${ r.rmNum }"><div class="halfCO"></div><div class="halfCI"></div></td>
+						</c:forEach>	
 					</tr>
 				</c:forEach>
 			</table>
 		</div>
 	</section>
 	<script>
+		var roomlist;
+		
 		$(function(){
 			var date = new Date;
 			checkIn = $("#today").datepicker({
@@ -356,7 +284,77 @@ hr {
 				}
 			}).data('datepicker');
 			
+			roomlist = JSON.parse('${jsonList}');
+			console.log(roomlist);
+			
+			for(var i = 0; i < 14; i++) {
+				var week = new Array('일', '월', '화', '수', '목', '금', '토');
+				var viewday = new Date();
+				viewday.setDate(viewday.getDate() + i);
+				
+				var viewdayD = week[viewday.getDay()];
+				var viewdayS = ((viewday.getMonth()+1)>9?(viewday.getMonth()+1):("0"+(viewday.getMonth()+1))) + "/" + (viewday.getDate()>9?viewday.getDate():("0"+viewday.getDate()));
+				var viewdayID = viewday.getFullYear() + "-" + ((viewday.getMonth()+1)>9?(viewday.getMonth()+1):("0"+(viewday.getMonth()+1))) + "-" + (viewday.getDate()>9?viewday.getDate():("0"+viewday.getDate()));
+				
+				$(".reservTable tr").eq(0).children().eq(2 + i).text(viewdayS + "(" + viewdayD + ")");
+				if(viewdayD == '일') {
+					$(".reservTable tr").eq(0).children().eq(2 + i).css('color', 'red');
+				} else if(viewdayD == '토') {
+					$(".reservTable tr").eq(0).children().eq(2 + i).css('color', 'blue');
+				}
+				
+				$(".reservTable .emptyroomTR").each(function(){
+					$(this).children().eq(2 + i).attr('id', $(this).children().eq(2 + i).attr('id') + "/" + viewdayID);
+				});
+			}
+			
+			for(var i = 0; i < roomlist.length; i++) {
+				
+				var rmNum = roomlist[i].rmNum;
+				<td class="emptyroom" id="${ r.rmNum }"><div class="halfCO"></div><div class="halfCI"></div></td>
+
+				//고장객실
+				if(roomlist[i].brkBegin != '' && roomlist[i].brkEnd != '') {
+					var brkBegin = strToDate(roomlist[i].brkBegin);
+					var brkEnd = strToDate(roomlist[i].brkEnd);
+					var distance = (brdEnd.getTime() - brkBegin.getTime()) / 1000 / 60 / 60 / 24;
+					for(int j = 1; j < distance; j++) {
+						var tempday = brkBegin;
+						tempday.setDate(tempday.getDate() + j);
+					}
+				}
+				
+				//예약객실
+				if(roomlist[i].rcheckin != '' && roomlist[i].rcheckout != '') {
+					
+				}
+				
+				//숙박객실
+				if(roomlist[i].scheckin != '' && roomlist[i].scheckout != '') {
+					
+					//대실객실
+					if(roomlist[i].scheckin == roomlist[i].scheckout) {
+						
+					}
+				}
+				
+			}
+			
 		});
+		
+		function strToDate(str) {
+			var year = str.substr(0,4);
+			var month = str.substr(5,7) * 1 - 1;
+			var day = str.substr(8,10);
+			var date = new Date(year, month, day);
+			return date;
+		}
+		
+		function dateToStr(date) {
+			var year = date.getFullYear();
+			var month = (date.getMonth()+1)>9?(date.getMonth()+1):"0"+(date.getMonth()+1);
+			var day = date.getDate()
+		}
 		
 		$("tr").children(".emptyroom").click(function(){
 			$(".modal").fadeIn();

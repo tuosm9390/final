@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hotels.mngReserv.model.service.ReservHisService;
+import com.kh.hotels.mngReserv.model.service.ReservNowService;
 import com.kh.hotels.mngReserv.model.vo.ReservHisList;
+import com.kh.hotels.mngReserv.model.vo.RoomInfo;
 import com.kh.hotels.mngRooms.model.exception.RoomListException;
 import com.kh.hotels.mngRooms.model.service.RoomsService;
 import com.kh.hotels.mngRooms.model.vo.Prc;
@@ -32,10 +32,22 @@ public class ReservController {
 	@Autowired
 	private ReservHisService rh;
 	@Autowired
+	private ReservNowService rn;
+	@Autowired
 	private RoomsService rs;
 	
 	@GetMapping("viewNow.re")
-	public String goReservNow() {
+	public String goReservNow(Model model) {
+		ArrayList<RoomInfo> roominfo = rn.selectRoomInfo();
+		ArrayList<RoomList> roomlist = rn.selectRoomList();
+		
+		model.addAttribute("roominfo", roominfo);
+		model.addAttribute("roomlist", roomlist);
+		
+		JSONArray jsonArray = new JSONArray();
+		
+		model.addAttribute("jsonList", jsonArray.fromObject(roomlist));
+		
 		return "viewReservNow";
 	}
 

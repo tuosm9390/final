@@ -44,6 +44,6 @@ public class ModalClient implements java.io.Serializable {
 	private String payWay;
 	private int paymentFee;
 	private String payDate;
-	
+	private String payStatus;
 
 }

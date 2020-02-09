@@ -87,4 +87,6 @@ public interface RoomsDao {
 
 	void updateRoomSttCO(SqlSessionTemplate sqlSession, int sno);
 
+	Rfd ajxFindRfdRate(SqlSessionTemplate sqlSession, String checkin);
+
 }

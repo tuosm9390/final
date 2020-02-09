@@ -77,6 +77,14 @@ public class RoomsController {
 		}
 	}
 	
+	@RequestMapping("ajxFindRfdRate.ro")
+	public ModelAndView ajxFindRfdRate(ModelAndView mv, String checkin) {
+		Rfd rfdRate = rs.ajxFindRfdRate(checkin);
+		mv.addObject("ajxRfdRate", rfdRate);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
 	@RequestMapping("ajxFindClient.ro")
 	public ModelAndView ajxFindClient(ModelAndView mv, String searchName) {
 		ArrayList<Member> clientList = rs.ajxFindClient(searchName);

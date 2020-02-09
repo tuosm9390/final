@@ -1051,24 +1051,38 @@ input[type=number]:disabled {
 		
 		//예약취소 버튼
 		$("#rsvCancelBtn").click(function(){
-			var rsvNo = $("#staycode").text();
-			var termt; var dayt; var rfdr;
+			var checkin = $("#checkIn").val();
+			$.ajax({
+				url:"ajxFindRfdRate.ro",
+				data:{checkin:checkin},
+				type:"post",
+				success:function(data){
+					console.log(data.ajxRfdRate);
+					var rsvNo = $("#staycode").text();
+					var termt; var dayt; var rfdr;
+					
+					switch(data.ajxRfdRate.termType) {
+					case 'SEASON' : tert = '성수기'; break;
+					default : tert = '비수기'; break;
+					}
+					switch(data.ajxRfdRate.dayType) {
+					case 'WEEK' : dayt = '주중'; break;
+					default : dayt = '주말'; break;
+					}
+					rfdr = data.ajxRfdRate.rfdRate;
+					rfdp = parseInt($("#totalRoom").text().replace(/,/g , '')) * (rfdr / 100);
+					var daybef = data.ajxRfdRate.rfdDate;
+					
+					if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 취소하시겠습니까?\n"
+									+ "환불금액 : " + rfdp + "원 (" + tert + " " + dayt + " [입실 " + daybef + "일 전] 기준 " + rfdr +"% 환불)")) {
+						location.href = "cancelReserv.ro?rsvNo=" + rsvNo + "&rfdM=" + rfdp + "&payd=" + reservPayDate + "&rfdT=" + 0;
+					}
+				},
+				error:function(error, status){
+					console.log('SYSTEM ERROR!')
+				}
+			});
 			
-			switch(rfdRate.termType) {
-			case 'SEASON' : tert = '성수기'; break;
-			default : tert = '비수기'; break;
-			}
-			switch(rfdRate.dayType) {
-			case 'WEEK' : dayt = '주중'; break;
-			default : dayt = '주말'; break;
-			}
-			rfdr = rfdRate.rfdRate;
-			rfdp = parseInt($("#totalRoom").text().replace(/,/g , '')) * (rfdr / 100);
-			
-			if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 취소하시겠습니까?\n"
-							+ "환불금액 : " + rfdp + "원 (" + tert + " " + dayt + " 기준 " + rfdr +"% 환불)")) {
-				location.href = "cancelReserv.ro?rsvNo=" + rsvNo + "&rfdM=" + rfdp + "&payd=" + reservPayDate + "&rfdT=" + 0;
-			}
 		});
 		
 		//노쇼처리 버튼

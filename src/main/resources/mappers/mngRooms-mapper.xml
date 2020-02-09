@@ -146,6 +146,7 @@
 		<result property="rtNo" column="RT_NO" />
 		<result property="svcCode" column="SVC_CODE" />
 		<result property="timeCI" column="CI_TIME" />
+		<result property="payStatus" column="PAY_STATUS" />
 	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngRooms.model.vo.Rfd" id="refundInfoSet">
@@ -382,8 +383,7 @@
 		JOIN MEMBER M ON (V.MNO = M.MNO)
 		JOIN ROOM R ON (V.RM_NO = R.RM_NO)
 		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
-		WHERE V.RSV_STATUS = 'OK'
-		AND V.RSV_NO = #{rsvNo}
+		WHERE V.RSV_NO = #{rsvNo}
 		AND M.STATUS = 'Y'
 		AND M.TYPE = 'CLIENT'
 		AND R.RM_STATUS = 'Y'
@@ -394,17 +394,15 @@
 		FROM RSV V
 		JOIN SVC_USE C0 ON (V.RSV_NO = C0.RSV_NO)
 		JOIN SVC C1 ON (C0.SVC_CODE = C1.SVC_CODE)
-		WHERE V.RSV_STATUS = 'OK'
-		AND V.RSV_NO = #{rsvNo}
+		WHERE V.RSV_NO = #{rsvNo}
 		ORDER BY REG_DATE
 	</select>
 	
 	<select id="ajxSelectRsvPay" parameterType="java.lang.String" resultMap="rsvInfoSet">
-		SELECT V.RSV_NO, P.PNO, P.PWAY, P.PRICE AS "PFEE", P.PAY_DATE
+		SELECT V.RSV_NO, P.PNO, P.PWAY, P.PRICE AS "PFEE", P.PAY_DATE, P.PAY_STATUS
 		FROM RSV V
 		LEFT JOIN PAYMENT P ON (V.RSV_NO = P.RSV_NO)
-		WHERE V.RSV_STATUS = 'OK'
-		AND V.RSV_NO = #{rsvNo}
+		WHERE V.RSV_NO = #{rsvNo}
 		ORDER BY PAY_DATE
 	</select>
 	
@@ -516,4 +514,18 @@
 		INSERT INTO ROOM_STT_HIS
 		VALUES (#{rmNo}, 'Y', 'N', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), '고객퇴실')
 	</insert>
+	
+	<select id="ajxFindRfdRate" resultMap="refundInfoSet" parameterType="java.lang.String">
+		SELECT *
+		FROM RFD
+		WHERE TERM_TYPE = CASE
+		                    WHEN EXTRACT(MONTH FROM TO_DATE(#{checkin}, 'YYYY-MM-DD')) IN (1, 2, 7, 8, 12) THEN 'SEASON'
+		                    ELSE 'OFFSEASON'
+		                  END
+		AND DAY_TYPE = CASE
+		                WHEN TO_CHAR((TO_DATE(#{checkin}, 'YYYY-MM-DD')), 'd') IN (1, 6, 7) THEN 'WEEKEND'
+		                ELSE 'WEEK'
+		               END
+		AND RFD_DATE = (TO_DATE(#{checkin}, 'YYYY-MM-DD')) - TRUNC(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60))
+	</select>
 </mapper>

@@ -266,4 +266,9 @@ public class RoomsDaoImpl implements RoomsDao {
 		}
 	}
 
+	@Override
+	public Rfd ajxFindRfdRate(SqlSessionTemplate sqlSession, String checkin) {
+		return sqlSession.selectOne("Rooms.ajxFindRfdRate", checkin);
+	}
+
 }
