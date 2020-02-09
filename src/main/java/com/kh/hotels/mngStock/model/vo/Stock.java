@@ -24,12 +24,15 @@ public class Stock implements java.io.Serializable{
 	private int unit;
 	private String cnCode;
 	private int typeNo;
+	private int areaNo;
+	private String strgNo;
+	private String rmNum;
 	
 	public Stock() {}
 
 	public Stock(int ino, String iName, String lCategory, String mCategory, String sCategory, int amount, int up,
 			int vat, int vos, String mfg, String cnName, String type, int cnt, String areaName, String strgName,
-			int rmNo, int unit, String cnCode, int typeNo) {
+			int rmNo, int unit, String cnCode, int typeNo, int areaNo, String strgNo, String rmNum) {
 		super();
 		this.ino = ino;
 		this.iName = iName;
@@ -50,6 +53,9 @@ public class Stock implements java.io.Serializable{
 		this.unit = unit;
 		this.cnCode = cnCode;
 		this.typeNo = typeNo;
+		this.areaNo = areaNo;
+		this.strgNo = strgNo;
+		this.rmNum = rmNum;
 	}
 
 	public int getIno() {
@@ -204,16 +210,39 @@ public class Stock implements java.io.Serializable{
 		this.typeNo = typeNo;
 	}
 
+	public int getAreaNo() {
+		return areaNo;
+	}
+
+	public void setAreaNo(int areaNo) {
+		this.areaNo = areaNo;
+	}
+
+	public String getStrgNo() {
+		return strgNo;
+	}
+
+	public void setStrgNo(String strgNo) {
+		this.strgNo = strgNo;
+	}
+
+	public String getRmNum() {
+		return rmNum;
+	}
+
+	public void setRmNum(String rmNum) {
+		this.rmNum = rmNum;
+	}
+
 	@Override
 	public String toString() {
 		return "Stock [ino=" + ino + ", iName=" + iName + ", lCategory=" + lCategory + ", mCategory=" + mCategory
 				+ ", sCategory=" + sCategory + ", amount=" + amount + ", up=" + up + ", vat=" + vat + ", vos=" + vos
 				+ ", mfg=" + mfg + ", cnName=" + cnName + ", type=" + type + ", cnt=" + cnt + ", areaName=" + areaName
 				+ ", strgName=" + strgName + ", rmNo=" + rmNo + ", unit=" + unit + ", cnCode=" + cnCode + ", typeNo="
-				+ typeNo + "]";
+				+ typeNo + ", areaNo=" + areaNo + ", strgNo=" + strgNo + ", rmNum=" + rmNum + "]";
 	}
 
-	
 	
 	
 	

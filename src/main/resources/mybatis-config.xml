@@ -35,6 +35,7 @@
 		<typeAlias type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" alias="ReservationCheck"/>
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.Report" alias="Report"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Stock" alias="Stock"/>
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.His" alias="His"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Conn" alias="Conn"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.StockDetail" alias="StockDetail"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.WarehouseDetail" alias="WarehouseDetail"/>

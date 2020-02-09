@@ -151,7 +151,7 @@
 			    $( "input[name='checkRow']:checked" ).each(function(){
 			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
 			    var ix =$(this).parent().parent().children("td").eq(1).text();
-			    $(this).parent().parent().children("td").eq(3).html("<input type='number' name='amount' id='AMOUNT+"+ix+"' style='width:70px;'>");
+			    $(this).parent().parent().children("td").eq(3).html("<input type='number' name='amount' id='AMOUNT"+ix+"' value='1' style='width:70px;'>");
 			    $(this).parent().parent().children("td").eq(9).html("<select id='STRG"+ix+"' name='strgNo' ><option value='창고명' hidden='hidden' style='width:100px;'>창고명</option></selcet>");
 			    $(this).parent().parent().children("td").eq(10).html("<select id='AREA"+ix+"' name='areaNo'><option value='위치' hidden='hidden'>위치</option></selcet>");
 			    $(this).parent().parent().children("td").eq(11).html("<select id='RM_NO"+ix+"' name='rmNo'><option value='객실번호' hidden='hidden'>객실번호</option></selcet>");
@@ -160,8 +160,8 @@
 			    console.log("ix : " + ix);
 			    
 			    //기본옵션
-			    $("#STRG"+ix+"").append("<option value='창고명'>창고명</option>");
-		    	$("#RM_NO"+ix+"").append("<option value='0'>객실번호</option>");
+			    $("#STRG"+ix+"").append("<option value='창고명' hidden='hidden'>창고명</option>");
+		    	$("#RM_NO"+ix+"").append("<option value='0' hidden='hidden'>객실번호</option><option value='0'>없음</option>");
 			    //정보에따른옵션
 			    for(var i=0;i<data.strgList.length;i++){
 			    	//StrgNo를넣어야함 
@@ -227,13 +227,19 @@
 		
 			  $("input[name='checkRow']:checked").each (function (){
 			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+",";
-			    
+			    var rmNo;
 			console.log( $(this).parent().parent().children("td").eq(1).text()+"테스트");    
 			var	 ino=$(this).parent().parent().children("td").eq(1).text()*1;
-			var	amount=$(this).parent().parent().children("td").eq(3).text()*1;
+			var	amount=$("#AMOUNT"+ino+"").val();
 			var	strgNo=$("#STRG"+ino+"").val();
 			var	areaNo=$("#AREA"+ino+"").val();
-			var rmNo=$("#RM_NO"+ino+"").val()*1;
+			console.log(amount);
+			console.log("///////");
+			if($("#RM_NO"+ino+"").val()=='객실번호'){
+				  rmNo=0;
+			}else{
+				  rmNo=$("#RM_NO"+ino+"").val();				
+			}
 			
 			console.log("ino : " + ino+ "amount : "+amount+" strgNo : "+strgNo+" areaNo : "+areaNo+" rmNo : "+rmNo);
 		
@@ -244,12 +250,18 @@
 				 dataType:"json",
 				 data:{	 ino:ino,
 						 amount:amount,
-						 strgNo:strgNo,
+						 strgName:strgNo,
 						 areaNo:areaNo,
-						 rmNo:rmNo
+						 rmNo:rmNo,
+						 zino:$("#zino"+ino+"").val(),
+						 zamount:$("#zamount"+ino+"").val(),
+						 zstrgName:$("#zstrgNo"+ino+"").val(),
+						 zareaNo:$("#zareaNo"+ino+"").val(),
+						 zrmNo:$("#zrmNo"+ino+"").val()
 					 },
 			  	 success:function(data){
 			  		 console.log(data);
+			  		location.reload(true);
 			  	 },
 			  	 error:function(status){
 			  		 console.log(status);

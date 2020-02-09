@@ -26,5 +26,6 @@ public class Item {
 	private String siteCode;
 	private String strgNo;
 	private int rmNo;
+	private int areaNo;
 	
 }
