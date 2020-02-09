@@ -67,7 +67,8 @@
 		color:white;
 	}
 	.brokenRoomTitleArea{
-		width:1215px;  
+		width:1215px; 
+		height:36px; 
 		padding-bottom:10px;
 		border-bottom-color: lightgray;
 		border-bottom-style: solid;

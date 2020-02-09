@@ -78,6 +78,14 @@ public interface SettingService {
 
 	ArrayList<HashMap<String, Object>> selectHotelRfdOWEInfo();
 
+	RoomType selectMinPerMaxPer(int rtNo);
+
+	int insertAddNewRoomDetail(ArrayList<Room> roomList);
+
+	int updateRoomDisable(int[] rmNo);
+
+	int updateRoomEnable(int[] rmNo);
+
 
 
 }

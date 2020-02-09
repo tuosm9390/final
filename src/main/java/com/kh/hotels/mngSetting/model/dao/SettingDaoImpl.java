@@ -314,11 +314,10 @@ public class SettingDaoImpl implements SettingDao{
 		
 		
 		return result;
+	}
 
 	public ArrayList<HashMap<String, Object>> selectHotelInfo(SqlSessionTemplate sqlSession) {
 
-		
-		
 		return (ArrayList)sqlSession.selectList("Setting.selectHotelInfo");
 	}
 
@@ -352,6 +351,48 @@ public class SettingDaoImpl implements SettingDao{
 		
 		
 		return (ArrayList)sqlSession.selectList("Setting.selectRfdOWE");
+	}
+
+	@Override
+	public RoomType selectMinPerMaxPer(SqlSessionTemplate sqlSession, int rtNo) {
+		
+		return sqlSession.selectOne("Setting.selectMinPerMaxPer", rtNo);
+	}
+
+	@Override
+	public int insertAddNewRoomDetail(SqlSessionTemplate sqlSession, ArrayList<Room> roomList) {
+
+		int result = 0;
+		
+		for(int i = 0; i < roomList.size(); i++) {
+			result = sqlSession.insert("Setting.insertAddNewRoomDetail", roomList.get(i));
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int updateRoomDisable(SqlSessionTemplate sqlSession, int[] rmNo) {
+
+		int result = 0;
+		
+		for(int i = 0; i < rmNo.length; i++) {
+			result = sqlSession.update("Setting.updateRoomDisable", rmNo[i]);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int updateRoomEnable(SqlSessionTemplate sqlSession, int[] rmNo) {
+		
+		int result = 0;
+		
+		for(int i = 0; i < rmNo.length; i++) {
+			result = sqlSession.update("Setting.updateRoomEnable", rmNo[i]);
+		}
+		
+		return result;
 	}
 
 

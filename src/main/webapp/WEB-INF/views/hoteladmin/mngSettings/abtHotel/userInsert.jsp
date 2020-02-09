@@ -104,10 +104,11 @@
 }
 
 .titArea {
-margin-top:-60px;
+	margin-top:-70px;
 	border-bottom:1px solid lightgray;
 	width:1095px;
-	height:40px;
+	height:36px;
+	padding-bottom:10px;
 }
 select {
 	height:28px;

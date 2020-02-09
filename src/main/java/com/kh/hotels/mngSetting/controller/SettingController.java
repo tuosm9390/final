@@ -191,6 +191,105 @@ public class SettingController {
 		return mv;
 	}
 	
+	@PostMapping("minPerAndmaxPer.st")
+	public ModelAndView minPerAndmaxPer(String activeTab, ModelAndView mv) {
+		
+		int rtNo = Integer.parseInt(activeTab);
+
+		RoomType roomTypeMinPerMaxPer = ss.selectMinPerMaxPer(rtNo); 
+		
+		mv.addObject("roomTypeMinPerMaxPer", roomTypeMinPerMaxPer);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@PostMapping("addNewRoomDetail.st")
+	public String addNewRoomDetail(String rtNoNew, String floorNew, String rmNumNew, String rmOptionNew, String stdPerNew, String statusNew, Model model) {
+		
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String regDate = sdf.format(date);
+		
+		String[] rtNos = rtNoNew.split(",");
+		String[] floors = floorNew.split(",");
+		String[] rmNums = rmNumNew.split(",");
+		String[] rmOptions = rmOptionNew.split(",");
+		String[] stdPers = stdPerNew.split(",");
+		String[] statuss = statusNew.split(",");
+		
+		int[] rtNo = new int[rtNos.length];
+		int[] stdPer = new int[stdPers.length];
+		int[] floor = new int[floors.length];
+
+		for(int i = 0; i < rtNos.length; i++) {
+			rtNo[i] = Integer.parseInt(rtNos[i]);
+			stdPer[i] = Integer.parseInt(stdPers[i]);
+			floor[i] = Integer.parseInt(floors[i]);
+		}
+		
+		ArrayList<Room> roomList = new ArrayList<>();
+		for(int i = 0; i < rtNo.length; i++) {
+			Room room = new Room();
+			room.setRmNum(rmNums[i]);
+			room.setStdPer(stdPer[i]);
+			room.setRmOption(rmOptions[i]);
+			room.setFloor(floor[i]);
+			room.setRtNo(rtNo[i]);
+			room.setRegDate(regDate);
+			room.setRmStatus(statuss[i]);
+			System.out.println(room.getRmStatus());
+			roomList.add(room);
+		}
+		
+		int result = ss.insertAddNewRoomDetail(roomList);
+		
+		if(result > 0) {
+			return "redirect:/goRoomDetail.st";
+		}else {
+			model.addAttribute("msg", "객실추가실패");
+			return "common/errorPage";
+		}
+		
+	}
+	@RequestMapping("disableRoom.st")
+	public String disableRoom(String[] rmNoArr, Model model) {
+		
+		int[] rmNo = new int[rmNoArr.length];
+		
+		for(int i =0; i < rmNoArr.length; i++) {
+			rmNo[i] = Integer.parseInt(rmNoArr[i]);
+		}
+		
+		int result = ss.updateRoomDisable(rmNo);
+		
+		if(result > 0) {
+			return "redirect:/goRoomDetail.st";
+		}else {
+			model.addAttribute("msg", "객실 상태 변경 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	@RequestMapping("enableRoom.st")
+	public String enableRoom(String[] rmNoArr, Model model) {
+		
+		int[] rmNo = new int[rmNoArr.length];
+		
+		for(int i =0; i < rmNoArr.length; i++) {
+			rmNo[i] = Integer.parseInt(rmNoArr[i]);
+		}
+		
+		int result = ss.updateRoomEnable(rmNo);
+		
+		if(result > 0) {
+			return "redirect:/goRoomDetail.st";
+		}else {
+			model.addAttribute("msg", "객실 상태 변경 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
 	@RequestMapping("goRoomFare.st")
 	public String goRoomFarePage(Model model) {
 		

@@ -835,9 +835,15 @@ input[type=number]:disabled {
 				$(".modal").fadeOut();
 			});
 			
-			$("#insertClient").click(function(){
-				$(".modalplus").fadeIn();
-			});
+			/* $("#insertClient").click(function(){
+				
+				if($(this).html != "추가"){
+					$(".modalDetailRoomView").fadeIn();
+				}
+				//$(".modalplus").fadeIn();
+				
+				
+			}); */
 		});
 
 		$(function() {
@@ -1085,6 +1091,90 @@ input[type=number]:disabled {
 				console.log(checkoutStayNo);
 				location.href = "doCheckOut.ro?stayNo=" + checkoutStayNo;
 			}
+		});
+		////////////////////////////////////////////////////////////////////
+		var searchCheck = ""; 
+		var clientMno;
+		var clientName;
+		var clientPhone;
+		var clientEmail;
+		
+		$(function(){
+			
+			$("#insertClient").click(function(){
+				if($(this).html() != "추가"){
+					$(".modalDetailRoomView").fadeIn();
+				}
+			});
+			
+		
+			
+			$("#insertClient").click(function(){
+				
+				//var mno = $(this).siblings(".clientMnoRoomView").children().val();
+				var mno = $("#insertClient").html();
+				console.log(mno);
+				
+				$.ajax({
+					url:"clientDetail.cl",
+					type:"post",
+					data:{
+						mno:mno
+					},
+					success:function(data){
+						console.log(data.hmap.clientInfo);
+						$(".clientDetailMnoRoomView").val(data.hmap.clientInfo.mno);
+						$(".clientDetailNameRoomView").val(data.hmap.clientInfo.userName);
+						$(".clientDetailPhoneRoomView").val(data.hmap.clientInfo.phone);
+						$(".clientDetailEmailRoomView").val(data.hmap.clientInfo.email);
+						$(".clientDetailVisitCountRoomView").val(data.hmap.visitCount);
+						$(".clientDetailTotalPriceRoomView").val(data.hmap.price);
+						$(".clientDetailStayDayRoomView").val(data.hmap.stayDay);
+						$(".clientDetailLastVisitRoomView").val(data.hmap.lastVisit);
+						
+						$.each(data.hmap.queModalList, function(index, queModalList) {
+							$('.clientDetailQueTableRoomView:last').append("<tr><td colspan='2' style='font-weight: bold'>"+queModalList.qdate+"</td></tr><tr><td style='font-weight: bold'>문의제목 : </td><td>"+queModalList.qtitle+"</td></tr><tr><td style='font-weight: bold'>문의유형 : </td><td>"+queModalList.qtype+"</td></tr><tr><td style='font-weight: bold'>문의내용 : </td><td>"+queModalList.qcontent+"</td></tr><tr><td style='font-weight: bold'>답변내용 : </td><td></td></tr>");
+						});
+						
+						$.each(data.hmap.sarList, function(index, sarList) {
+							
+						var checkInYear = sarList.checkIn.substr(0, 4);
+						var checkInMonth = sarList.checkIn.substr(5, 2);
+						var checkInDay = sarList.checkIn.substr(8, 2);
+						var checkInDate = new Date(checkInYear,checkInMonth-1,checkInDay);
+						
+						var checkOutYear = sarList.checkOut.substr(0, 4);
+						var checkOutMonth = sarList.checkOut.substr(5, 2);
+						var checkOutDay = sarList.checkOut.substr(8, 2);
+						var checkOutDate = new Date(checkOutYear,checkOutMonth-1,checkOutDay);
+						
+						var tempStatus = "";
+						switch(sarList.status){
+						case "REFUND" : tempStatus = "예약취소";break;
+						case "Y" : tempStatus = "체크아웃";break;
+						case "N" : tempStatus = "체크인";break;
+						case "OK" : tempStatus = "예약완료";break;
+						}
+						
+							$('.stayAndRsvTabelRoomView tbody:last').after("<tr><td>"+sarList.checkIn+"</td><td>"+sarList.checkOut+"</td><td>"+
+									(checkOutDate-checkInDate)/(24 * 60 * 60 * 1000)
+									+"</td><td>"+sarList.rmNum+"</td><td>"+sarList.price+"</td><td>"+sarList.rsvDate.substr(0,10)+"</td><td>"+tempStatus+"</td></tr>");
+						});
+						
+						clientMno = $("#clientDetailMnoRoomView").val();
+						clientName = $("#clientDetailNameRoomView").val();
+						clientPhone = $("#clientDetailPhoneRoomView").val();
+						clientEmail = $("#clientDetailEmailRoomView").val();
+						
+						$(".modalDetailRoomView").fadeIn();
+					},
+					error:function(data){
+						
+					}
+					
+				});
+			});
+			
 		});
 	</script>
 </body>

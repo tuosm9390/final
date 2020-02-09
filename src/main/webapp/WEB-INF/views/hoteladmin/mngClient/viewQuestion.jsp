@@ -337,6 +337,8 @@ section{
 						$(".queModalQno").val(data.queModal.qno);
 						if(data.queModal.acontent != null){
 							$(".queModalAcontent").val(data.queModal.acontent);
+							$(".queModalAcontent").attr("readonly","readonly");
+							$(".answerBtn").css("display","none");
 						}
 						
 					},
