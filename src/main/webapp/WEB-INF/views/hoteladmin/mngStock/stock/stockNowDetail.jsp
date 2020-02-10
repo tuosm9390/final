@@ -134,12 +134,13 @@
 			});
 		});
 		
-		
 		//수정버튼클릭시
 		$("#detail-modify-btn").click(function(){
+			
 			$("#detail-modify-btn").hide();
 			$("#detail-ok-btn").show();
 			$("#delete").hide();
+		
 			$.ajax({
 				url:"updateStock.sto",
 				type:"post",
@@ -151,17 +152,18 @@
 			    $( "input[name='checkRow']:checked" ).each(function(){
 			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
 			    var ix =$(this).parent().parent().children("td").eq(1).text();
-			    $(this).parent().parent().children("td").eq(3).html("<input type='number' name='amount' id='AMOUNT"+ix+"' value='1' style='width:70px;'>");
+			    var originAmount = $(this).parent().parent().children("td").eq(3).text();
+			    $(this).parent().parent().children("td").eq(3).html("<input type='number' name='amount' id='AMOUNT"+ix+"' value='"+originAmount+"' style='width:70px;'>");
 			    $(this).parent().parent().children("td").eq(9).html("<select id='STRG"+ix+"' name='strgNo' ><option value='창고명' hidden='hidden' style='width:100px;'>창고명</option></selcet>");
-			    $(this).parent().parent().children("td").eq(10).html("<select id='AREA"+ix+"' name='areaNo'><option value='위치' hidden='hidden'>위치</option></selcet>");
+			    $(this).parent().parent().children("td").eq(10).html("<select id='AREA"+ix+"' name='areaNo'><option value='없음' hidden='hidden'>위치</option></selcet>");
 			    $(this).parent().parent().children("td").eq(11).html("<select id='RM_NO"+ix+"' name='rmNo'><option value='객실번호' hidden='hidden'>객실번호</option></selcet>");
 			    checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
 			    
 			    console.log("ix : " + ix);
 			    
 			    //기본옵션
-			    $("#STRG"+ix+"").append("<option value='창고명' hidden='hidden'>창고명</option>");
-		    	$("#RM_NO"+ix+"").append("<option value='0' hidden='hidden'>객실번호</option><option value='0'>없음</option>");
+			    $("#STRG"+ix+"").append("<option selected='selected'>없음</option>");
+		    	$("#RM_NO"+ix+"").append("<option value='0' hidden='hidden'>객실번호</option><option value='0' selected='selected'>없음</option>");
 			    //정보에따른옵션
 			    for(var i=0;i<data.strgList.length;i++){
 			    	//StrgNo를넣어야함 
@@ -195,8 +197,9 @@
 							error:function(status){
 								console.log(status);
 							}
+							
 						}) 
-			  });
+				  });
 						
 				});
 			  
@@ -205,7 +208,14 @@
 					console.log(status);
 				}
 			});
-			
+			if($( "input[name='checkRow']:checked" ).length==0){
+				alert("선택해주세요.");
+				$("#detail-ok-btn").hide();
+				$("#detail-modify-btn").show();
+				$("#delete").show();
+				return false;
+				
+			}
 			
 			  $(".hide input[type=checkbox]").attr('disabled',true);
 	    
@@ -235,14 +245,28 @@
 			var	areaNo=$("#AREA"+ino+"").val();
 			console.log(amount);
 			console.log("///////");
-			if($("#RM_NO"+ino+"").val()=='객실번호'){
+			if($("#RM_NO"+ino+"").val()=='없음'){
 				  rmNo=0;
 			}else{
 				  rmNo=$("#RM_NO"+ino+"").val();				
 			}
 			
 			console.log("ino : " + ino+ "amount : "+amount+" strgNo : "+strgNo+" areaNo : "+areaNo+" rmNo : "+rmNo);
-		
+			console.log(strgNo)
+			console.log(areaNo)
+			console.log(rmNo)
+			if(strgNo=="없음"&&strgNo=="없음"&&rmNo==0){
+				alert("위치를 선택해주세요.")
+				return false;
+			}
+			if(strgNo=="없음"&&strgNo=="없음"){
+				alert("위치를 선택해주세요.")
+				return false;
+			}
+			
+			
+				
+			
 			   //itemList 넘기는 ajax
 			  $.ajax({
 				 url:"updateStockOk.sto",

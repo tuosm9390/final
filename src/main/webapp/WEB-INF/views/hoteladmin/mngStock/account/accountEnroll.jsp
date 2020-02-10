@@ -82,15 +82,15 @@
 	<div id="enrollDiv">
 	<form action="insertAcc.ac" id="insertAcc" method="post">
 		<div class="bodyDiv">
-			<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px"  id="sam" name="cnCode"></div>  </div>
-			<div>	<div class="same" id="ssam">상호(이름)</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnName"></div>  </div>
-			<div>	<div class="same" id="ssam">대표자명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="ownerName"></div>  </div>
-			<div>	<div class="same" id="ssam">종목</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnItem"></div>  </div>
-			<div>	<div class="same" id="ssam">전화</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnPhone"></div>  </div>
+			<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px"  id="cnCode" name="cnCode"></div>  </div>
+			<div>	<div class="same" id="ssam">상호(이름)</div>  <div class="same"><input type="text" class="space" style="width:600px" id="cnName" name="cnName"></div>  </div>
+			<div>	<div class="same" id="ssam">대표자명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="owerName" name="ownerName"></div>  </div>
+			<div>	<div class="same" id="ssam">종목</div>  <div class="same"><input type="text" class="space" style="width:600px" id="cnItem" name="cnItem"></div>  </div>
+			<div>	<div class="same" id="ssam">전화</div>  <div class="same"><input type="text" class="space" style="width:600px" id="cnPhone" name="cnPhone"></div>  </div>
 			<div>	<div class="same" id="search"><label id="searchId">우편번호검색</label></div> <div class="same"><input type="text" class="space" style="width:100px" id="sample6_postcode" name="cnAdd"><input type="text" style="width: 380px;" id="sample6_address" name="cnAdd"></div>  </div>
 			<div>	<div class="same" id="address"><label id="addressDiv">주소</label></div>  <div class="same"><label style="margin-left:-33px;">상세주소</label><input type="text" style="width: 600px; " id="sample6_detailAddress" name="cnAdd"><input type="text" id="sample6_extraAddress" hidden="hidden"></div>  </div>
-			<div>	<div class="same" id="ssam">업체담당자</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnManager"></div>  </div>
-			<div>	<div class="same" id="ssam">Email</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="cnEmail"></div>  </div> 
+			<div>	<div class="same" id="ssam">업체담당자</div>  <div class="same"><input type="text" class="space" style="width:600px" id="cnManager" name="cnManager"></div>  </div>
+			<div>	<div class="same" id="ssam">Email</div>  <div class="same"><input type="text" class="space" style="width:600px" id="cnEmail" name="cnEmail"></div>  </div> 
 		</div><!-- end -->
 		</form> 
 		<div class="btnx">
@@ -152,9 +152,63 @@
    		var address = $("#sample6_postcode").val()+","+$("#sample6_address").val()+","+$("#sample6_detailAddress").val();
    		
    		console.log(address);
+   		if($("#cnCode").val()==''){
+   			alert("거래처 코드를 입력해주세요.");
+   			return false;
+   		}
+   		if($("#cnName").val()==''){
+   			alert("거래처명을 입력해주세요");
+   			return false;
+   		}
+   		if($("#owerName").val()==''){
+   			alert("대표자명을 입력해주세요.");
+   			return false;
+   		}
+   		if($("#cnItem").val()==''){
+   			alert("거래항목을 입력해주세요.");
+   			return false;
+   		}
+   		if($("#cnPhone").val()==''){
+   			alert("전화번호를 입력해주세요.");
+   			return false;
+   		}
+   		if($("#sample6_postcode").val()==''){
+   			alert("주소를 입력해주세요.");
+   			return false;
+   		}
+   		if($("#sample6_address").val()==''){
+   			alert("주소를 입력해주세요.");
+   			return false;
+   		}
+   		if($("#cnManager").val()==''){
+   			alert("담당자를 입력해주세요");
+   			return false;
+   		}
+   		if($("#cnEmail").val()==''){
+   			alert("이메일을 입력해주세요");
+   			return false;
+   		}
+   		
+   		
+   		
+   		
+   		
    		$("#insertAcc").submit();
    		
    	});
+   	
+   	//다시작성
+   	$("#reBtn").click(function(){
+   			$("#cnCode").val("");
+   			$("#cnName").val("");
+   			$("#owerName").val("");
+   			$("#cnItem").val("");
+   			$("#cnPhone").val("");
+   			$("#sample6_postcode").val("");
+   			$("#sample6_address").val("");
+   			$("#cnManager").val("");
+   			$("#cnEmail").val("");
+   	})
 </script>
 </body>
 

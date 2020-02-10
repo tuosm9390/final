@@ -103,9 +103,32 @@ public class AccountController {
 		int result = as.updateDetail(c);  
 		
 		if(result>0) {
-			return  "redirect:selectAccount.ac";
+			return "redirect:selectAccount.ac";
 		}else {
 			return "common/errorPage";
 		}
 	}
+	
+	@RequestMapping("updateAcc.ac")
+	public ModelAndView updateAcc(ModelAndView mv,String checkRow,String check) {
+		System.out.println("////////////");
+		System.out.println(checkRow);
+		System.out.println(check);
+		
+		  String[] list = checkRow.split(",");
+		  
+		  String[] listStatus = check.split(",");
+		  Conn c = new Conn(); 
+		  
+		  for(int i=0;i<list.length;i++) {
+		  c.setCnCode(list[i]);
+		  c.setCnStatus(listStatus[i]); 
+		  int result = as.updateAcc(c);
+		  }
+		 
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
 }

@@ -30,10 +30,10 @@
 	
 	}
 	#searchZone{
-	float: right;
+	
 	}
 	#stockTb{
-	width: 1000px;
+	width:1000px;
 	height: 358px;
 	border-collapse: collapse;
 	border: 1px solid lightgray;
@@ -54,13 +54,9 @@
 	
 	}
 	
-	
+	  	
 	.btns{
-	    margin-top: 10px;
-    float: right;
-    margin-right: 298px; 
  	display: inline-block;
-
 	}
 	.tabClass{
 	display: inline-block;
@@ -77,7 +73,6 @@
 	background-color: lightgray; 
 	}
 	#sbtn{
-	margin-right: 110px;
 	color:white;
 	background : #3498DB;
 	border: 1px solid #3498DB;
@@ -94,7 +89,7 @@
 	background-color: #3498DB;
 	color: white;
 	} 
-	#mailtText{
+	#mailtText{              
 	color: #3498DB;
 	}
 	#mailSet:hover{
@@ -122,6 +117,8 @@
 	height: 25px;
 	font-weight: bold;
 	border-radius: 2px;
+	    margin-left: 933px;
+    margin-top: 11px;
 }
 
 #excel{
@@ -133,7 +130,7 @@
 	font-weight: bold;
 	border-radius: 2px;
 }
-
+  
 #delete{
 	background : white;
 	color:red;
@@ -143,7 +140,7 @@
 	height: 25px;
 	border-radius: 2px;
 }
-#mainMsg{
+#mainMsg{ 
 	font-size: 25px;
 	font-weight: bold;
 }
@@ -152,6 +149,7 @@
 width:1000px;
 	padding: 60px 0;
 	text-align: center;
+	height: 5px;
 }
 
 #pager_wrap .pager_com {
@@ -177,10 +175,26 @@ width:1000px;
 #pager_wrap .pager_num.on a {
 	color: #fff;
 }
+#addCategorys{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	width: 85px;
+	height: 25px;
+	font-weight: bold;
+    box-sizing: border-box;
+}
+#addCategorys:hover{
+cursor: pointer;
+}
+#searchForm{
+    position: relative;
+    left: 90px;
+    bottom: 23px;
+}
 </style>
 </head>
 <body>
-	
 	
 
 	<header>	
@@ -213,23 +227,23 @@ width:1000px;
 	<div class="top-div">
 			<div id="titlemsg"><label id="mainMsg">물품현황</label></div>
 		<div id="searchZone">
-			<select style="width:80px;height:25px;" id="filter" class="searchCondition" >
-			
-				<option value="default" hidden="hidden">검색조건</option>
-<!-- 				<option value="money">금액</option> -->
- 	 			<option value="check">수령</option>
+			<div class="btns"><button id="addCategorys">품목추가</button></div>
+	<form action="searchItem.sto" method="post" id="searchForm">
+			<select style="margin-left:615px;   width:80px;height:25px;" id="filter" class="searchOption" >
+				<option value="iname" selected="selected">물품명</option> 
 			</select>
-			<input type="text" name="serachCondition" class="searchCondition" style="height: 20px;width: 150px;"> 
-			<button class="searchCondition" style="width: 50px; height: 25px; width: 56px;" id="sbtn" >검색</button>
+			<input type="text" name="serachValue" class="searchCondition" style="height: 20px;width: 150px;"> 
+			<button class="searchCondition" style="width: 50px; height: 25px; width: 56px;" id="sbtn" onclick="return search();">검색</button>
+	</form>
 		</div>
 	</div><!-- top div end -->
 		<div id="stockTb">
 			<table style="border-collapse: collapse; width: 100%;">  
 				<tr>  
-					<th class="checkTb"><input type="checkbox"  id="allCheck"></th>
+					<th class="checkTb" style="width: 30px;"><input type="checkbox"  id="allCheck"></th>
 					<th width="250px;">품목명</th>
-					<th>재고수량</th>
-					<th>품목구분</th>
+					<th style="width: 100px">재고수량</th>
+					<th style="width: 100px">품목구분</th>
 				</tr>
 				<c:forEach var="i" items="${stockList }">
 				<tbody class="stockTbody">
@@ -242,13 +256,11 @@ width:1000px;
 				</tbody>
 				</c:forEach>
 			</table>
-		<div id="hrDiv"></div>
 		</div>
+
 			<div class="btns">
-			<button id="excel">Excel</button>
 			<button id="news">신규</button>&nbsp;
 			</div>
-		<div class="btns"><button id="addCategorys">품목추가</button></div>
 	
 	<!-- ddddddddddddddddddddddddddd  -->
 	
@@ -336,7 +348,7 @@ width:1000px;
 						$("#stockTbb").empty();
 						$("#stockTbb").append("<tbody id='detailBody'></tbody>")
 						if(data.stockDetailList[0].type=="EQUIP"){
-							$("#detailBody").append("<tr><th class='hide'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
+							$("#detailBody").append("<tr><th class='hide'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th hidden='hidden'>개별수량</th>"+
 							"<th>공급가액</th><th>부가세</th><th>단가</th><th>제조사</th><th>매입처</th><th>창고명</th><th>위치</th><th>객실번호</th></tr>")
 						}else{
 							$("#detailBody").append("<tr><th class='hide'><input type='checkbox' id='checkDetail'></th><th>물품코드</th><th>물품명</th><th>개별수량</th>"+
@@ -351,7 +363,7 @@ width:1000px;
 								
 							$("#detailBody").append( 
 									"<tr><td class='hide'><input type='checkbox' name='checkRow'></td><td>"+
-									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
+									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td hidden='hidden'>"+
 									data.stockDetailList[i].amount+"</td><td>"+
 									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
 									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td id='xcnName"+ino+"'>"+
@@ -377,14 +389,29 @@ width:1000px;
 							console.log(data.stockDetailList[i].rmNo);
 							
 							}else{
-								$("#detailBody").append(
-									"<tr><td class='hide'><input type='checkbox' name='checkRow'></td><td>"+
-									data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
-									data.stockDetailList[i].amount+"</td><td>"+
-									data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
-									data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td>"+
-									data.stockDetailList[i].cnName+"<input type='text' value='"+data.stockDetailList[i].cnCode+"' hidden='hidden' id='cnCode"+data.stockDetailList[i].ino+"'></td><td>"+data.stockDetailList[i].strgName+"</td><td>"+
-									data.stockDetailList[i].areaName+"</td><td>"+data.stockDetailList[i].rmNo+"</td>+</tr>");
+								$("#detailBody").append( 
+										"<tr><td class='hide'><input type='checkbox' name='checkRow'></td><td>"+
+										data.stockDetailList[i].ino+"</td><td>"+data.stockDetailList[i].iName+"</td><td>"+
+										data.stockDetailList[i].amount+"</td><td>"+
+										data.stockDetailList[i].vos+"</td><td>"+data.stockDetailList[i].vat+"</td><td>"+
+										data.stockDetailList[i].up+"</td><td>"+data.stockDetailList[i].mfg+"</td><td id='xcnName"+ino+"'>"+
+										data.stockDetailList[i].cnName+"<input type='text' value='"+data.stockDetailList[i].cnCode+"' hidden='hidden' id='cnCode"+data.stockDetailList[i].ino+"'></td><td id='xstrgName"+ino+"'>"+data.stockDetailList[i].strgName+"</td><td>"+
+										data.stockDetailList[i].areaName+"</td><td id='xrmNum"+ino+"'>"+data.stockDetailList[i].rmNum+"</td><td hidden='hidden'>"+
+										"<input type='text' id='zino"+ino+"' name='ino' value='"+data.stockDetailList[i].ino+"'>"+
+										"<input type='text' id='ziName"+ino+"' name='iname' value='"+data.stockDetailList[i].iname+"'>"+
+										"<input type='text' id='zamount"+ino+"' name='amount' value='"+data.stockDetailList[i].amount+"'>"+
+										"<input type='text' id='zvos"+ino+"' name='vos' value='"+data.stockDetailList[i].vos+"'>"+
+										"<input type='text' id='zvat"+ino+"' name='vat' value='"+data.stockDetailList[i].vat+"'>"+
+										"<input type='text' id='zup"+ino+"' name='up' value='"+data.stockDetailList[i].up+"'>"+
+										"<input type='text' id='zmfg"+ino+"' name='mfg' value='"+data.stockDetailList[i].mfg+"'>"+
+										"<input type='text' id='zcnName"+ino+"' name='cnName' value='"+data.stockDetailList[i].cnName+"'>"+
+										"<input type='text' id='zcnCode"+ino+"' name='cnCode' value='"+data.stockDetailList[i].cnCode+"'>"+
+										"<input type='text' id='zareaName"+ino+"' name='areaName' value='"+data.stockDetailList[i].areaName+"'>"+
+										"<input type='text' id='zareaNo"+ino+"' name='areaNo' value='"+data.stockDetailList[i].areaNo+"'>"+
+										"<input type='text' id='zstrgNo"+ino+"' name='strgNo' value='"+data.stockDetailList[i].strgNo+"'>"+
+										"<input type='text' id='zrmNo"+ino+"' name='rmNo' value='"+data.stockDetailList[i].rmNo+"'>"+"</td></tr>"
+										
+								);
 							}
 						
 							if(data.stockDetailList[i].rmNo=='0'){
@@ -523,7 +550,14 @@ width:1000px;
 		
 		
 	</script>
-	
+	<script>
+		function search(){
+			if($(".searchValue").val()==""){
+				return false;
+			}
+			return true;
+		}
+	</script>
 	
 	
 </body>

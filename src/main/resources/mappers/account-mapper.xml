@@ -56,6 +56,21 @@
 			ACC_MEMO=#{accMemo}
 			WHERE CN_CODE=#{cnCode}
 	</update>
+	
+	<update id="updateAcc">
+		<choose>
+			<when test="cnStatus=='Y'">
+				UPDATE CONN
+				SET CN_STATUS='N'
+				WHERE CN_CODE=#{cnCode}
+			</when>
+			<when test="cnStatus=='N'">
+				UPDATE CONN
+				SET CN_STATUS='Y'
+				WHERE CN_CODE=#{cnCode}
+			</when>
+		</choose>
+	</update>
 </mapper>
 
  

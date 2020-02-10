@@ -63,7 +63,7 @@
 	margin-top: 5px;
 	}
 	#wrapdivv{
-	height: 100px;
+	height: 50px;
 	}
 	
 	.tabb{
@@ -168,7 +168,7 @@
 	margin-top: 5px;
 	}
 	#wrapdiv{
-	height: 100px;
+	height: 70px;
 	}
 	
 	.productMenubarArea{
@@ -261,7 +261,6 @@
 		
 		<div class="bodyEq">예약금<label style="margin-left: 92px;">2018-03-12</label></div> 
 		<div class="bodyEq" id="rightEq">요금합계<label style="margin-left: 86px;">2018-03-12</label></div>
-		<div style="margin-left: 10px; font-weight: bold;margin-top: 10px;">호텔에서 지불해야할 금액은 <label>1,000,000</label>원 입니다.</div>
 		<div>
 			<pre style="color: blue;font-size: 12px;">
   공지사항 
@@ -292,6 +291,10 @@
 		$("#addBtn3").click(function(){
 			$("#addBtn4").click();
 		})
+	})
+	
+	$("#mailSet").click(function(){
+		location.href='goMail.st';
 	})
 	</script>
 	

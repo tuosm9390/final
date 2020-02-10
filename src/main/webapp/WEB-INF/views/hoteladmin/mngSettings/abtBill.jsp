@@ -5,16 +5,14 @@
 <html>
 <head>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
 <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	.wrap{
+	.wrapp{
 	width: 800px;
 	height: 620px;
 	border-radius: 5px;
-	margin-left: 30%;
 	border: 1px solid black;
 	}
 	#imgDiv{
@@ -71,9 +69,8 @@
 	font-weight: bold;
 	} 
 	#botTable{
-	border-collapse: collapse;
 	width: 760px;
-	height: 150px;
+	height: 200px;
 	margin-left: 10px;
 	margin-top: 10px;
 	}
@@ -81,20 +78,22 @@
 		border: 1px solid lightgray;
 		text-align: center;
 	}  
-	th{
+	#botTable2 th{
 	background-color: #f7f7f7;
 	color: #005B9E;
 	height: 40px;
+	width: 100%;
 	}
 	#botTable2{
+	border-collapse: collapse;
 	width: 760px;
-	height: 28px;
+	height: 100%;
 	} 
 	.botText{
 	width: 760px;
-	height: 100px;
+	height: 70px;
 	margin-left: 10px;
-	margin-top: 10px;
+/* 	margin-top: 10px; */
 	}
 	.botEq{
 	height: 90px;
@@ -102,7 +101,20 @@
 	}
 	#infoTable{
 	   position: relative;
-    bottom: 23px;
+    bottom: -7px;
+    left:-19px;
+    width: 500px;
+	}
+	#saveBtn{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	box-sizing: border-box;
+	height: 25px;
+	font-weight: bold;
+	width: 60px;
+	float: right;
+	margin-top: 11px;
 	}
 	
 	
@@ -113,12 +125,11 @@
 	<header>
 		<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 		<jsp:include page="../common/settingMenubar.jsp"/>
-	<jsp:include page="../common/menubar.jsp"/>
+		<jsp:include page="../common/menubar.jsp"/>
 	</header>
 	<section>
 	<h1>영수증</h1>
-	<div class="wrap">
-		<div id="imgDiv" class="same"><img src="${contextPath }/resources/images/NoImg.png" width="150px"></div>
+	<div class="wrapp">
 		<div id="topInfo"class="same">
 			<table id="infoTable">
 				<tr>
@@ -138,10 +149,8 @@
 				</tr>
 			</table>
 		</div>
-		<div class="btns"><button class="ui primary basic button" id="addBtn">추가</button>
-			<input type="file" style="display: none;" id="addBtn2">
-		<button id="rightBtn" class="ui primary basic button">삭제</button></div>
-		<div align="right" style="color: blue">* 부가가치세법 제32조 1항 규정에 의한 영수증</div>
+		<div class="btns"></div>
+		<div align="right" style="color: blue; margin-right: 10px;">* 부가가치세법 제32조 1항 규정에 의한 영수증</div>
 		<div class="hrDiv"></div>
 		
 		<!-- 반복 -->
@@ -160,33 +169,33 @@
 			<table id="botTable2">
 				<tr>
 					<th>Date</th>
-					<th>Description</th>
-					<th>Amount</th>
-					<th>Reference</th>
+					<th  style="width:200px;">Description</th>
+					<th  style="width:200px;">Amount</th>
+					<th  style="width:200px;">Reference</th>
 				</tr>
 				<tr>
-					<td>fff</td>
-					<td>ff</td>
-					<td>ff</td>
-					<td>ff</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr>
-					<td>fff</td>
-					<td>ff</td>
-					<td>ff</td>
-					<td>ff</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr>
-					<td>fff</td>
-					<td>ff</td>
-					<td>ff</td>
-					<td>ff</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr>
-					<td>fff</td>
-					<td>ff</td>
-					<td>ff</td>
-					<td>ff</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
 				</tr>
 				
 			</table>
@@ -194,7 +203,7 @@
 		<div class="hrDiv"></div>
 		<div class="botText">
 			<div class="botEq" style="width: 460px;">
-			<label style="margin-top: 10px;color: blue">i agree that my liability for this bill is not walved
+			<label style="margin-top: 10px;color: blue;font-size: 12px;">i agree that my liability for this bill is not walved
 			and agree to be held personally liable in the event that the indicated person, company or association fails to pay for any or the fulll amount of these charges.
 			</label>
 			</div>
@@ -206,7 +215,7 @@
 			</div>
 		</div>
 	<div class="btnss">
-		<button>저장</button><button>미리보기</button>
+		<button id="saveBtn">수정</button>
 	</div>
 	
 	</div>

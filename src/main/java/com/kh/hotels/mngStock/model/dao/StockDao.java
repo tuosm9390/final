@@ -11,6 +11,7 @@ import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
+import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.StockDetail;
 import com.kh.hotels.mngStock.model.vo.Strg;
@@ -46,6 +47,14 @@ public interface StockDao {
 	int updateStockOk(SqlSessionTemplate sqlSession, Stock st);
 
 	int updateStockHis(SqlSessionTemplate sqlSession, His h);
+
+	int deleteStockHis(SqlSessionTemplate sqlSession, His h);
+
+	ArrayList<Stock> searchList(SqlSessionTemplate sqlSession, SearchItem s);
+
+	int getRepairListCount(SqlSessionTemplate sqlSession);
+
+	ArrayList<Repair> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi);
 
 
 

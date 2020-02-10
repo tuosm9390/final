@@ -14,6 +14,7 @@ import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
+import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.StockDetail;
 import com.kh.hotels.mngStock.model.vo.Strg;
@@ -115,6 +116,30 @@ public class StockServiceImpl implements StockService{
 	public int updateStockHis(His h) {
 		// TODO Auto-generated method stub
 		return sd.updateStockHis(sqlSession,h);
+	}
+
+	@Override
+	public int deleteStockHis(His h) {
+		// TODO Auto-generated method stub
+		return sd.deleteStockHis(sqlSession,h);
+	}
+
+	@Override
+	public ArrayList<Stock> serachList(SearchItem s) {
+		// TODO Auto-generated method stub
+		return sd.searchList(sqlSession,s);
+	}
+
+	@Override
+	public int getRepairListCount() {
+		// TODO Auto-generated method stub
+		return sd.getRepairListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Repair> repairList(PageInfo pi) {
+		// TODO Auto-generated method stub
+		return sd.getRepairList(sqlSession,pi);
 	}
 
 	

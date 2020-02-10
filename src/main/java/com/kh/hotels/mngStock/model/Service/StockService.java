@@ -10,6 +10,7 @@ import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
+import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.Strg;
 import com.kh.hotels.mngStock.model.vo.StrgArea;
@@ -43,6 +44,14 @@ public interface StockService {
 	int updateStockOk(Stock st);
 
 	int updateStockHis(His h);
+
+	int deleteStockHis(His h);
+
+	ArrayList<Stock> serachList(SearchItem s);
+
+	int getRepairListCount();
+
+	ArrayList<Repair> repairList(PageInfo pi);
 
 
 

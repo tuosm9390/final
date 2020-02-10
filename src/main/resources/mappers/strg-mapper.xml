@@ -33,7 +33,7 @@
 	
 	<select id="selectList" resultMap="resultSetStrg">
 		SELECT * FROM STRG
-		ORDER BY STRG_NO ASC
+		ORDER BY STRG_STATUS DESC, STRG_NAME ASC
 	</select>
 
 	<select id="searchList" resultMap="resultSetStrg">
@@ -52,7 +52,7 @@
 		</when>
 		
 		</choose>
-		ORDER BY STRG_NO ASC
+		ORDER BY STRG_STATUS DESC, STRG_NAME ASC
 		
 	</select>
 	

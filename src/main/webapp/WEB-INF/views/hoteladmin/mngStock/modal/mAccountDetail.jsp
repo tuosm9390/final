@@ -24,7 +24,7 @@
 	top: 45%;
 	transform: translate(-50%, -50%);
 	width:700px;
-	height:400px;
+	height:200px;
 	max-height: 600px;
 	background-color: white;
 	overflow: hidden;

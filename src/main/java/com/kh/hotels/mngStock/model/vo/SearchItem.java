@@ -7,11 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class His {
-	int ino;
-	String modDate;
-	String modCol;
-	String befData;
-	String aftData;
-	String modRsn;
-} 
+public class SearchItem {
+	private String searchOption;
+	private String searchValue;
+}

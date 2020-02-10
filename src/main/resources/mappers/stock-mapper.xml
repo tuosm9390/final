@@ -126,9 +126,17 @@
 
 	
 	<!-- 수리 현황 리스트 조회-->
-	<select id="selectRepairList" resultMap="resultSetRepair">
+	<select id="getRepairListCount" resultType="_int">
+		SELECT COUNT(*) FROM(
 		SELECT RPT_NO,RPT_TITLE,RPT_STATUS FROM REP_REQ R
 		JOIN REPORT USING(RPT_NO)
+        ORDER BY RPT_NO ASC)
+	</select>
+	
+	<select id="getRepairList" resultMap="resultSetRepair">
+		SELECT RPT_NO,RPT_TITLE,RPT_STATUS FROM REP_REQ R
+		JOIN REPORT USING(RPT_NO)
+        ORDER BY RPT_NO ASC
 	</select>	
 	
 	<!-- 분류 리스트 -->
@@ -202,6 +210,10 @@
 	
 	<insert id="updateStockHis" parameterType="His">
 		INSERT INTO ITEM_HIS VALUES(#{ino},TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'),#{modCol},#{befData},#{aftData},'UPDATE')
+	</insert>
+	
+	<insert id="deleteStockHis" parameterType="His">
+		INSERT INTO ITEM_HIS VALUES(#{ino},TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'),'ALL','ALL',' ','DELETE')
 	</insert>
 	
 	<!-- <select id="">

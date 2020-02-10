@@ -13,6 +13,7 @@ import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
+import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.StockDetail;
 import com.kh.hotels.mngStock.model.vo.Strg;
@@ -107,6 +108,33 @@ public class StockDaoImpl implements StockDao{
 	public int updateStockHis(SqlSessionTemplate sqlSession, His h) {
 		System.out.println("hius : " + h);
 		return sqlSession.insert("Stock.updateStockHis",h);
+	}
+
+	@Override
+	public int deleteStockHis(SqlSessionTemplate sqlSession, His h) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("Stock.deleteStockHis",h);
+	}
+
+	@Override
+	public ArrayList<Stock> searchList(SqlSessionTemplate sqlSession, SearchItem s) {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("Stock.searchList",s);
+	}
+
+	@Override
+	public int getRepairListCount(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("Stock.getRepairListCount");
+	}
+
+	@Override
+	public ArrayList<Repair> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return (ArrayList)sqlSession.selectList("Stock.getRepairList", null, rowBounds);
 	}
 
 
