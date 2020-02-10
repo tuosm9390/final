@@ -20,10 +20,12 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.RequestStayRsv;
 import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
+import com.kh.hotels.mngRooms.model.voEtc.RsvMemo;
 
 @Service
 public class RoomsServiceImpl implements RoomsService {
@@ -251,6 +253,18 @@ public class RoomsServiceImpl implements RoomsService {
 	@Override
 	public Rfd ajxFindRfdRate(String checkin) {
 		return rd.ajxFindRfdRate(sqlSession, checkin);
+	}
+
+	@Override
+	public ArrayList<RequestStayRsv> selectRsrList(RequestStayRsv rsr) {
+
+		return rd.selectRsrList(sqlSession, rsr);
+	}
+
+	@Override
+	public int insertMemo(RsvMemo rm) {
+		
+		return rd.insertMemo(sqlSession, rm);
 	}
 
 }

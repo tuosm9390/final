@@ -594,6 +594,8 @@ input[type=number]:disabled {
 			<div class="infoETC">
 				<h4>기타정보</h4>
 				<button id="openMemoMD" type="button">메모</button>
+				<input type="hidden" value="" id="rsvNoModal">
+				<input type="hidden" value="" id="stayNoModal">
 			</div>
 			<br>
 			<button id="checkinBtn" onclick="doCheckIn()" type="button">입실</button>
@@ -719,10 +721,10 @@ input[type=number]:disabled {
 					<button id="memoInsertBtn" type="button">+　추가</button>
 					<hr>
 					<div class="memolist">
-						<div class="memocontent">
+						<div class="memocontent rsvRequest">
 							<div class="memoread">
-								<span>관리자 2020-01-11 22:35:17</span>
-								<p>메모내용내용내용</p>
+								<span>예약 요청사항</span>
+								<p><input type="text" style="border:0;" id="rsvRequest"></p>
 							</div>
 							<button id="memoDelBtn" type="button">×</button>
 						</div>
@@ -836,6 +838,8 @@ input[type=number]:disabled {
 				$("#rentYN").prop('checked', false);
 				$("#checkinBtn").text('입실').attr('onclick', 'doCheckIn();');
 				
+				$(".memocontent").remove();
+				
 				$(".modal").fadeOut();
 			});
 			
@@ -865,9 +869,39 @@ input[type=number]:disabled {
 				$(".modal_content3").hide();
 				$("#viewMemo").hide();
 				$("#viewHistory").hide();
+				$("#rsvRequest").remove();
+				$(".memocontent").remove();
 			});
 			
+			
+			/// 메모 영역
 			$("#openMemoMD").click(function(){
+				
+				$.ajax({
+					url:"requestInformation.ro",
+					type:"post",
+					data:{
+						rsvNo:rsvNoModalNew,
+						stayNo:stayNoModalNew
+					},
+					success:function(data){
+						console.log(data.rsrList[0].rsvReq);
+						$("#rsvRequest").val(data.rsrList[0].rsvReq);
+						var lengths = data.rsrList.length;
+						$.each(data.rsrList, function(index, rsrList){
+							$(".memolist").append("<div class='memocontent'> <div class='memoread'> <span>요청사항일시 : "+rsrList.reqDate+"</span> <p>"+rsrList.reqContent+"</p> </div> <button id='memoDelBtn' type='button'>×</button> </div>");
+						});
+						
+					},
+					error:function(data){
+						
+					}
+					
+				});
+				
+				console.log(rsvNoModalNew);				
+				console.log(stayNoModalNew);				
+				
 				$(".modal_content3").show();
 				$("#viewMemo").show();
 				//$("#viewHistory").show();
@@ -1202,6 +1236,35 @@ input[type=number]:disabled {
 				});
 			});
 			
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$("#memoInsertBtn").click(function(){
+				
+				memoModal = $(".memoInsert").val();
+				
+				if($(".memoInsert").val() == ""){
+					alert("메모를 입력해주세요.");
+				}else{
+					if(confirm("메모를 저장하시겠습니까?")){
+						$.ajax({
+							url:"insertMemo.ro",
+							type:"post",
+							data:{
+								memoContent:memoModal,
+								stayNo:stayNoModalNew
+							},
+							success:function(data){
+								
+							},
+							error:function(data){
+								
+							}
+						});
+					}
+				}
+			});
 		});
 	</script>
 </body>

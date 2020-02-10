@@ -460,7 +460,8 @@ input[type=checkbox] {
 			var ruleInfo;
 			var rfdRate;
 			var today;
-			
+			var rsvNoModalNew;
+			var stayNoModalNew;
 			//onload
 			$(function(){
 				$("#allFloor").css({"background-color":"#EAC064", "color":"white"});
@@ -933,6 +934,7 @@ input[type=checkbox] {
 						rtNo = roomlist[i].rtNo;
 						stdPer = roomlist[i].stdPer;
 						maxPer = roomlist[i].maxPer;
+						
 						$("#selRoomType").val(roomlist[i].rtName).prop("selected", true);
 						$("#selRoomNum").val(roomlist[i].rmNo).prop("selected", true);
 						
@@ -1010,6 +1012,8 @@ input[type=checkbox] {
 			var reservCheckinTime;
 			var selRoomNumm;
 			function goReserv(rsvNo) {
+				rsvNoModalNew = rsvNo;
+				
 				$(".statusColor").addClass('lightsteelblue');
 				$(".totalPrice").addClass('lightsteelblue');
 				$("#modalStt").text('　예약');
@@ -1119,6 +1123,9 @@ input[type=checkbox] {
 			//모달3 : [ 대실 ] 객실 클릭
 			var checkoutStayNo;
 			function goLent(stayNo) {
+				
+				stayNoModalNew = stayNo;
+				
 				$(".statusColor").addClass('gold');
 				$(".totalPrice").addClass('gold');
 				$("#staycode").text('　　');
@@ -1220,6 +1227,14 @@ input[type=checkbox] {
 				$("#staycode").text('　　');
 				$(".infoBtnSec").show();
 				checkoutStayNo = stayNo;
+				
+				stayNoModalNew = stayNo;
+				for(var i = 0; i < roomlist.length; i++) {
+					if(roomlist[i].stayNo  == stayNo) {
+						rsvNoModalNew = roomlist[i].rsvNo;
+						console.log(rsvNoModalNew);
+					}
+				}
 				
 				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
 				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");

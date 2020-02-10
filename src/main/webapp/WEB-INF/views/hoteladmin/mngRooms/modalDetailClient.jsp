@@ -245,7 +245,7 @@
 
 	<script>
 	
-		$(document).ready(function() {
+		$(function() {
 			
 			clientMno = $("#clientDetailMnoRoomView").val();
 			clientName = $("#clientDetailNameRoomView").val();

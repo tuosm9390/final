@@ -186,14 +186,13 @@
 			} else {
 				termType = "OFFSEASON";
 			}
-			console.log(termType);
 			
 			dayType = "";
 			if(((getDayD2 - getDayD1)/(1000*60*60*24)) > 7){
 				// 주말 항상 포함
 				dayType = "WEEKEND";
 			} else {
-				if(getDayD2.getDay() < 6 && getDayD1.getDay() > 0){
+				if(getDayD2.getDay() < 5 && getDayD1.getDay() > 0){
 					// 항상 주중
 					dayType = "WEEK";
 				} else {
@@ -201,7 +200,68 @@
 					dayType = "WEEKEND";
 				}
 			}
-			console.log(dayType);
+			
+			var startDateD = '${ ReservationCheck.checkIn }';
+			var startDate = new Date(startDateD.substring(0, 4), (startDateD.substring(5, 7) * 1 - 1), startDateD.substring(8, 10));
+			var today = new Date();
+			rfdDate = (today - startDate)/(1000*60*60*24);
+			console.log(typeof(rfdDate));
+			if(termType == 'SEASON'){
+				// 성수기
+				if(dayType == 'WEEK'){
+					// 주중
+					if(rfdDate >= 10){
+						rfdDate = 10;
+					} else if(rfdDate >= 7){
+						rfdDate = 7;
+					} else if(rfdDate >= 5){
+						rfdDate = 5;
+					} else if(rfdDate >= 3){
+						rfdDate = 3;
+					} else if(rfdDate >= 1){
+						rfdDate = 1;
+					} else {
+						rfdDate = 0;
+					}
+				} else {
+					// 주말
+					if(rfdDate >= 10){
+						rfdDate = 10;
+					} else if(rfdDate >= 7){
+						rfdDate = 7;
+					} else if(rfdDate >= 5){
+						rfdDate = 5;
+					} else if(rfdDate >= 3){
+						rfdDate = 3;
+					} else if(rfdDate >= 1){
+						rfdDate = 1;
+					} else {
+						rfdDate = 0;
+					}
+				}
+			} else {
+				// 비성수기
+				if(dayType == 'WEEK'){
+					// 주중
+					if(rfdDate >= 2){
+						rfdDate = 2;
+					} else if(rfdDate >= 1){
+						rfdDate = 1;
+					} else {
+						rfdDate = 0;
+					}
+				} else {
+					// 주말
+					if(rfdDate >= 2){
+						rfdDate = 2;
+					} else if(rfdDate >= 1){
+						rfdDate = 1;
+					} else {
+						rfdDate = 0;
+					}
+				}
+			}
+			console.log(rfdDate);
 			
 			$(".reservation-cancel").click(function() {
 				var roomType = ${roomType};
@@ -213,17 +273,30 @@
 						roomType : roomType,
 						termType : termType,
 						dayType : dayType,
-						checkIn : ReservationCheckIn,
-						checkOut : ReservationCheckOut
+						rfdDate : rfdDate
 					},
-					success:function(){
+					success:function(data){
+						console.log(data.rfdList);
+						console.log(termType);	// 성수기 / 비성수기
+						console.log(dayType);	// 주중 / 주말
 						
+						$.each(data.rfdList, function(index, list){
+							console.log(list);
+						});
+						
+						var rfdprice = ${ ReservationCheck.stayPrice } * (data.rfdList[0].rfdRate * 1);
+						console.log(rfdprice);
+						$("#rfdprice").val(rfdprice);
+						var rsvDateD = ${ ReservationCheck.rsvDate };
+						var rsvDate = new Date(rsvDateD.getFullYear(), rsvDateD.getMonth(), rsvDateD.getDate(), rsvDateD.getHours(), rsvDateD.getMinutes(), rsvDateD.getSeconds());
+						$("#rsvDate").val(rsvDate);
+						console.log($("#rsvDate").val());
+						$(".reservation-check-modal").fadeIn();
 					},
-					error:function(){
+					error:function(data){
 						console.log("에러");
 					}
 				});
-				$(".reservation-check-modal").fadeIn();
 			});
 		});
 	</script>

@@ -71,9 +71,13 @@ cursor: pointer;
 			
 			<div class="reservation-check-modal_content_real" align="center">
 				<div class="top-content">
-					<h2 style="font-weight: bold;">예약을 취소하시겠습니까?</h2>
-					<li style="font-weight: bold;">본인 확인을 위해 예약번호를 입력해주세요<br><br>
-					<input type="text" name="rsvNo">
+					<form action="">
+						<h2 style="font-weight: bold;">예약을 취소하시겠습니까?</h2>
+						<li style="font-weight: bold;">본인 확인을 위해 예약번호를 입력해주세요<br><br>
+						<input type="text" name="rsvNo">
+						<input type="hidden" name="rfdprice" id="rfdprice">
+						<input type="hidden" name="rsvDate" id="rsvDate">
+					</form>
 				</div>
 				<div class="refund-content">
 					<h2 style="font-weight: bold; text-decoration: underline; text-underline-position: under;">환불규정</h2>
@@ -128,8 +132,8 @@ cursor: pointer;
 		};
 		
 		function goReservationCancel(){
-			$(".reservation-check-modal").fadeOut();
 			
+			$(".reservation-check-modal").fadeOut();
 			$(".reservation-cancel-modal").fadeIn();
 		};
 	</script>
