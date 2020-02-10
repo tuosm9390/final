@@ -820,6 +820,10 @@ input[type=number]:disabled {
 				$("#ciCancelBtn").hide();
 				$("#rsvCancelBtn").hide();
 				
+				$("#rsvCancelBtn").text('× 예약취소');
+				$("#rsvCancelBtn").prop('disabled', false);
+				$("#rentYN").prop('disabled', false);
+				
 				$(".statusColor").removeClass('mediumseagreen');
 				$(".totalPrice").removeClass('mediumseagreen');
 				$(".statusColor").removeClass('lightsteelblue');
@@ -877,7 +881,8 @@ input[type=number]:disabled {
 		
 		$("select[name=stayDay]").change(function(){
 			var plusDay = $(this).val() * 1;
-			var coDay = new Date(today); coDay.setDate(coDay.getDate() + plusDay); coDay = coDay.format("yyyy-MM-dd");
+			var coDay = new Date(today); 
+			coDay.setDate(coDay.getDate() + plusDay); coDay = dateToStr(coDay);
 			$("#checkOut").val(coDay);
 		});
 
@@ -888,7 +893,9 @@ input[type=number]:disabled {
 			cloneSvc.find('select').attr('id', 'selSvc' + tempsvccnt);
 			cloneSvc.find('input[type=number]').eq(0).attr('id', 'svcCnt' + tempsvccnt);
 			$(".svcDetailSec table").append(cloneSvc);
-			$(".svcDetailSec tr:last-child").children().eq(0).text(new Date().format('MM-dd'));
+			var svcday = new Date();
+			var tempsvcday = ((svcday.getMonth()+1)>9?(svcday.getMonth()+1):"0"+(svcday.getMonth()+1)) + "-" + (svcday.getDate()>9?svcday.getDate():"0"+svcday.getDate());
+			$(".svcDetailSec tr:last-child").children().eq(0).text(tempsvcday);
 			tempsvccnt++;
 		});
 		
@@ -1049,6 +1056,12 @@ input[type=number]:disabled {
 			}
 		}
 		
+		//예약 등록 함수
+		function doSaveReserv() {
+			$("#checkinModal").attr("action", "insertReserv.re");
+			$("#checkinModal").submit();
+		}
+		
 		//예약취소 버튼
 		$("#rsvCancelBtn").click(function(){
 			var checkin = $("#checkIn").val();
@@ -1070,7 +1083,7 @@ input[type=number]:disabled {
 					default : dayt = '주말'; break;
 					}
 					rfdr = data.ajxRfdRate.rfdRate;
-					rfdp = parseInt($("#totalRoom").text().replace(/,/g , '')) * (rfdr / 100);
+					rfdp = (parseInt($("#totalRoom").text().replace(/,/g , '')) + parseInt($("#totalVlt").text().replace(/,/g , ''))) * (rfdr / 100);
 					var daybef = data.ajxRfdRate.rfdDate;
 					
 					if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 취소하시겠습니까?\n"

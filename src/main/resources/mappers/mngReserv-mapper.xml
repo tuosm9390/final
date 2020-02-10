@@ -19,6 +19,8 @@
 		<result property="rsvWay" column="RSV_WAY" />
 		<result property="rsvStatus" column="RSV_STATUS" />
 		<result property="price" column="PRICE" />
+		<result property="rsvPay" column="rsvPay" />
+		<result property="rfdPrice" column="RFD_PRICE" />
 	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngReserv.model.vo.RoomInfo" id="roomInfoSet">
@@ -64,15 +66,27 @@
 		<result property="sphone" column="SPHONE" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngRooms.model.vo.BrokenRoom" id="brkRoomSet">
+		<result property="rmNo" column="RM_NUM" />
+		<result property="brkBegin" column="BRK_BEGIN" />
+		<result property="brkEnd" column="BRK_END" />
+		<result property="brkRsn" column="BRK_RSN" />
+		<result property="userName" column="NAME" />
+		<result property="brkStatus" column="BRK_STATUS" />
+	</resultMap>
+	
 	<!-- ReservHis -->
 	<select id="goReservHis" resultMap="reservHisListSet">
 		SELECT V.RSV_NO, TO_CHAR(V.CHECKIN, 'YYYY-MM-DD') AS "CHECKIN", TO_CHAR(V.CHECKOUT, 'YYYY-MM-DD') AS "CHECKOUT",
 		       TO_CHAR(V.STAY_PRICE, '999,999,999') AS "PRICE", V.STAY_PRICE, V.RSV_DATE, V.RSV_STATUS, V.RSV_WAY,
-		       R.RM_NUM, T.RT_NAME, M.NAME, M.PHONE, V.MOD_DATE
+		       R.RM_NUM, T.RT_NAME, M.NAME, M.PHONE, V.MOD_DATE, TO_CHAR(V.STAY_PRICE - P.PRICE, '999,999,999') AS "RFD_PRICE"
 		FROM RSV V
 		JOIN ROOM R ON (V.RM_NO = R.RM_NO)
 		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
 		JOIN MEMBER M ON (V.MNO = M.MNO)
+		LEFT JOIN (SELECT DISTINCT RSV_NO, PRICE
+		           FROM PAYMENT
+		           WHERE PAY_STATUS = 'REFUND') P ON (V.RSV_NO = P.RSV_NO)
 		WHERE R.RM_STATUS = 'Y'
 		AND M.STATUS = 'Y'
 		AND M.TYPE = 'CLIENT'
@@ -83,11 +97,14 @@
 	<select id="searchReservHisDay" resultMap="reservHisListSet" parameterType="java.lang.String">
 		SELECT V.RSV_NO, TO_CHAR(V.CHECKIN, 'YYYY-MM-DD') AS "CHECKIN", TO_CHAR(V.CHECKOUT, 'YYYY-MM-DD') AS "CHECKOUT",
 		       TO_CHAR(V.STAY_PRICE, '999,999,999') AS "PRICE", V.STAY_PRICE, V.RSV_DATE, V.RSV_STATUS, V.RSV_WAY,
-		       R.RM_NUM, T.RT_NAME, M.NAME, M.PHONE, V.MOD_DATE
+		       R.RM_NUM, T.RT_NAME, M.NAME, M.PHONE, V.MOD_DATE, TO_CHAR(V.STAY_PRICE - P.PRICE, '999,999,999') AS "RFD_PRICE"
 		FROM RSV V
 		JOIN ROOM R ON (V.RM_NO = R.RM_NO)
 		JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
 		JOIN MEMBER M ON (V.MNO = M.MNO)
+		LEFT JOIN (SELECT DISTINCT RSV_NO, PRICE
+		           FROM PAYMENT
+		           WHERE PAY_STATUS = 'REFUND') P ON (V.RSV_NO = P.RSV_NO)
 		WHERE R.RM_STATUS = 'Y'
 		AND M.STATUS = 'Y'
 		AND M.TYPE = 'CLIENT'
@@ -134,4 +151,86 @@
 		WHERE R.RM_STATUS = 'Y'
 		ORDER BY T.RT_NAME, RM_NUM
 	</select>
+	
+	<select id="ajxFindBrokenHis" parameterType="_int" resultMap="brkRoomSet">
+		SELECT R.RM_NUM, B.BRK_BEGIN, B.BRK_END, B.BRK_RSN, M.NAME, B.BRK_STATUS
+		FROM BROKEN_HIS B
+		JOIN MEMBER M ON (B.MNO = M.MNO)
+		JOIN ROOM R ON (B.RM_NO = R.RM_NO)
+		WHERE B.RM_NO = #{rmNo}
+		AND BRK_STATUS = 'Y'
+	</select>
+	
+	<select id="searchReservNowDay" parameterType="java.lang.String" resultMap="roomListSet">
+		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
+		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
+		       V.RSV_NO, TO_CHAR(V.CHECKIN, 'yyyy-MM-dd') AS "R_CHECKIN", TO_CHAR(V.CHECKOUT, 'yyyy-MM-dd') AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
+		       M1.MNO AS "RMNO", M1.NAME AS "RNAME", M2.MNO AS "SMNO", M2.NAME AS "SNAME", TO_CHAR(B.BRK_BEGIN, 'yyyy-MM-dd') AS "BRK_BEGIN", TO_CHAR(B.BRK_END, 'yyyy-MM-dd') AS "BRK_END",
+		       BRK_RSN, R.STD_PER, T.MAXPER, M1.PHONE AS "RPHONE", M2.PHONE AS "SPHONE"
+		FROM ROOM R
+		LEFT JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
+		LEFT JOIN ROOM_STT N ON (R.RM_NO = N.RM_NO)
+		LEFT JOIN (SELECT *
+		           FROM STAY
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(TO_DATE(#{day}, 'YYYY-MM-DD') + 13, 'YYYY-MM-DD')
+		           AND TO_CHAR(CHECKOUT, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{day}
+		           AND STAY_STATUS = 'N') S ON (R.RM_NO = S.RM_NO)
+		LEFT JOIN (SELECT *
+		           FROM RSV
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(TO_DATE(#{day}, 'YYYY-MM-DD') + 13, 'YYYY-MM-DD')
+		           AND TO_CHAR(CHECKOUT, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{day}
+		           AND RSV_STATUS IN ('OK', 'WAIT')) V ON (R.RM_NO = V.RM_NO)
+		LEFT JOIN MEMBER M1 ON (V.MNO = M1.MNO)
+		LEFT JOIN MEMBER M2 ON (S.MNO = M2.MNO)
+		LEFT JOIN (SELECT RM_NO, BRK_BEGIN, BRK_END, BRK_RSN
+		           FROM ROOM
+		           LEFT JOIN BROKEN_HIS USING (RM_NO)
+		           WHERE TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(TO_DATE(#{day}, 'YYYY-MM-DD') + 13, 'YYYY-MM-DD')
+		           AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{day}
+		           AND BRK_STATUS = 'Y') B ON (R.RM_NO = B.RM_NO)
+		WHERE R.RM_STATUS = 'Y'
+		ORDER BY T.RT_NAME, RM_NUM
+	</select>
+	
+	<insert id="insertMember" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO MEMBER
+		VALUES (SEQ_MNO.NEXTVAL, #{clientName}, #{clientPhone}, #{clientEmail}, DEFAULT, 'CLIENT', NULL)
+	</insert>
+	
+	<select id="selectMno" resultType="_int" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		SELECT MNO
+		FROM MEMBER
+		WHERE NAME = #{clientName}
+		AND PHONE = #{clientPhone}
+		AND TYPE = 'CLIENT'
+		AND STATUS = 'Y'
+	</select>
+	
+	<insert id="insertRsv" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO RSV
+		VALUES(#{rsvNo}, #{selRoomNum}, #{clientNo}, TO_DATE(#{checkinTime}, 'yyyy-MM-dd'), TO_DATE(#{checkoutTime}, 'yyyy-MM-dd'),
+		       #{totalPrc}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), #{payStatus},
+		       'OFFLINE', #{personCnt}, 0, '14:00', NULL, NULL, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'))
+	</insert>
+	
+	<insert id="insertRsvHis" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO RSV_HIS
+		VALUES (#{rsvNo}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'ALL', 'NONE', 'ALL', 'INSERT')
+	</insert>
+	
+	<insert id="insertPayment" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO PAYMENT
+		VALUES (SEQ_PNO.NEXTVAL, #{payWay}, #{payWayMoney}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'DONE', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'Y', #{rsvNo}, NULL)
+	</insert>
+	
+	<insert id="insertSvcUse" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO SVC_USE
+		VALUES (NULL, #{svcCode}, #{svcCount}, DEFAULT, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), SEQ_SVC_NO.NEXTVAL,#{rsvNo})
+	</insert>
+	
+	<insert id="insertSvcUseHis" parameterType="com.kh.hotels.mngRooms.model.vo.CheckIn">
+		INSERT INTO SVC_USE_HIS
+		VALUES (SEQ_SVC_NO.CURRVAL, 'ALL', 'NONE', 'ALL', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'INSERT')
+	</insert>
+
 </mapper>

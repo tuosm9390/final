@@ -130,6 +130,7 @@ hr {
 <body>
 	<header>
 		<jsp:include page="../common/menubar.jsp" />
+		<jsp:include page="../mngRooms/modalDetailClient.jsp"></jsp:include>
 	</header>
 	<section>
 		<jsp:include page="../mngRooms/modalCheckIn.jsp"></jsp:include>
@@ -192,8 +193,11 @@ hr {
 						<td>${ r.checkout }</td>
 						<td style="text-align: right;">${ r.price }</td>
 
-						<c:if test="${ r.rsvStatus eq 'OK' ||  r.rsvStatus eq 'REFUND' || r.rsvStatus eq 'NOSHOW' }">
+						<c:if test="${ r.rsvStatus eq 'OK' }">
 						<td style="text-align: right;">${ r.price }</td>
+						</c:if>
+						<c:if test="${ r.rsvStatus eq 'REFUND' || r.rsvStatus eq 'NOSHOW' }">
+						<td style="text-align: right;">${ r.rfdPrice }</td>
 						</c:if>
 						<c:if test="${ r.rsvStatus eq 'WAIT'}">
 						<td style="text-align: right;">0</td>
@@ -361,12 +365,19 @@ hr {
 			return totalFee;
 		}
 		
+		function strToDate(str) {
+			var year = str.substr(0,4);
+			var month = (str.substr(5,1)=='0'?str.substr(6,1):str.substr(5,2)) * 1 - 1;
+			var day = str.substr(8,2);
+			var date = new Date(year, month, day);
+			return date;
+		}
+		
 		function openModal(rsvNo) {
 			$(".statusColor").addClass('lightsteelblue');
 			$(".totalPrice").addClass('lightsteelblue');
 			$("#modalStt").text('　예약');
 			$("#staycode").text(rsvNo);
-			$("#checkinBtn").show();
 			
 			$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
 			$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
@@ -381,7 +392,7 @@ hr {
 					$("#clientNo").val(data.stayInfo.clientNo);
 					$("#clientPhone").val(data.stayInfo.clientPhone);
 					$("#clientEmail").val(data.stayInfo.clientEmail);
-					$("#rsvCancelBtn").show();
+					$("#checkinBtn").show();
 					$("#checkinBtn").text('저장').attr('onclick', 'doSave();');
 					
 					$("#checkIn").val(data.stayInfo.scheckin);
@@ -389,6 +400,13 @@ hr {
 					$("#checkOut").val(data.stayInfo.scheckout);
 					var endday = new Date(data.stayInfo.scheckout.substring(0,4), data.stayInfo.scheckout.substring(5,7) - 1, data.stayInfo.scheckout.substring(8,10));
 					$("select[name=stayDay] option[value='" + data.stayInfo.stayDays + "']").prop('selected', true);
+					
+					var disCI = (strToDate($("#checkIn").val()).getTime() - new Date().getTime()) / 1000 / 60 / 60 / 24;
+					if(disCI < 0) {
+						$("#rsvCancelBtn").hide();
+					} else {
+						$("#rsvCancelBtn").show();
+					}
 					
 					$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
 					$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
@@ -453,9 +471,9 @@ hr {
 							reservPayDate = data.stayPay[i].payDate;
 						}
 						
-						//여기여기여기
 						if(data.stayPay[i].payStatus == 'REFUND') {
-							$("#rsvCancelBtn").hide();
+							$("#rsvCancelBtn").text('취소된 예약');
+							$("#rsvCancelBtn").prop('disabled', true);
 						}
 					}
 					changeTotalPrcTxt();

@@ -23,4 +23,5 @@ public class ReservHisList {
 	private String modDate;
 	private String rsvWay;
 	private String rsvStatus;
+	private String rfdPrice;
 }

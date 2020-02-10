@@ -1624,10 +1624,6 @@ input[type=checkbox] {
 	            timer2 = setInterval(showAction, 1000);
 	        }
 			
-			
-			
-			
-		
 		</script>
 </body>
 </html>
