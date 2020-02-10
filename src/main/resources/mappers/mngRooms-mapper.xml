@@ -167,7 +167,7 @@
 		<result property="ltype" column="LTYPE" />
 	</resultMap>
 	
-	   <select id="viewRoomList" resultMap="roomListSet">
+    <select id="viewRoomList" resultMap="roomListSet">
       SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
              S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
              V.RSV_NO, TO_CHAR(V.CHECKIN, 'yyyy-MM-dd') AS "R_CHECKIN", TO_CHAR(V.CHECKOUT, 'yyyy-MM-dd') AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
@@ -525,16 +525,19 @@
 	
 	<select id="ajxFindRfdRate" resultMap="refundInfoSet" parameterType="java.lang.String">
 		SELECT *
-		FROM RFD
-		WHERE TERM_TYPE = CASE
-		                    WHEN EXTRACT(MONTH FROM TO_DATE(#{checkin}, 'YYYY-MM-DD')) IN (1, 2, 7, 8, 12) THEN 'SEASON'
-		                    ELSE 'OFFSEASON'
-		                  END
-		AND DAY_TYPE = CASE
-		                WHEN TO_CHAR((TO_DATE(#{checkin}, 'YYYY-MM-DD')), 'd') IN (1, 6, 7) THEN 'WEEKEND'
-		                ELSE 'WEEK'
-		               END
-		AND RFD_DATE = (TO_DATE(#{checkin}, 'YYYY-MM-DD')) - TRUNC(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60))
+		FROM (SELECT *
+		      FROM RFD
+		      WHERE TERM_TYPE = CASE
+		                          WHEN EXTRACT(MONTH FROM TO_DATE(#{checkin}, 'YYYY-MM-DD')) IN (1, 2, 7, 8, 12) THEN 'SEASON'
+		                          ELSE 'OFFSEASON'
+		                        END
+		      AND DAY_TYPE = CASE
+		                      WHEN TO_CHAR((TO_DATE(#{checkin}, 'YYYY-MM-DD')), 'd') IN (1, 6, 7) THEN 'WEEKEND'
+		                      ELSE 'WEEK'
+		                     END
+		      AND RFD_DATE <![CDATA[ <= ]]> (TO_DATE(#{checkin}, 'YYYY-MM-DD')) - TRUNC(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60))
+		      ORDER BY TO_NUMBER(RFD_DATE) DESC)
+		WHERE ROWNUM = 1
 	</select>
 	
 	<select id="selectRsrList" parameterType="RequestStayRsv" resultMap="requestStayRsvResultSet">
