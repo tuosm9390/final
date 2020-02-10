@@ -11,10 +11,12 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.RequestStayRsv;
 import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
+import com.kh.hotels.mngRooms.model.voEtc.RsvMemo;
 
 @Repository
 public class RoomsDaoImpl implements RoomsDao {
@@ -269,6 +271,22 @@ public class RoomsDaoImpl implements RoomsDao {
 	@Override
 	public Rfd ajxFindRfdRate(SqlSessionTemplate sqlSession, String checkin) {
 		return sqlSession.selectOne("Rooms.ajxFindRfdRate", checkin);
+	}
+
+	@Override
+	public ArrayList<RequestStayRsv> selectRsrList(SqlSessionTemplate sqlSession, RequestStayRsv rsr) {
+
+		ArrayList<RequestStayRsv> rsrList = null;
+		
+		rsrList = (ArrayList)sqlSession.selectList("Rooms.selectRsrList", rsr);
+		
+		return rsrList;
+	}
+
+	@Override
+	public int insertMemo(SqlSessionTemplate sqlSession, RsvMemo rm) {
+		
+		return sqlSession.insert("Rooms.insertMemo", rm);
 	}
 
 }

@@ -162,6 +162,7 @@ cursor: pointer;
 		$(document).ready(function() {
 			$(".btn_close").click(function() {
 				$(".queModal").fadeOut();
+				$(".queModalAcontent").val("");
 			});
 		});
 		function saveAnswer(){

@@ -130,6 +130,7 @@ hr {
 <body>
 	<header>
 		<jsp:include page="../common/menubar.jsp" />
+		<jsp:include page="../mngRooms/modalDetailClient.jsp"></jsp:include>
 	</header>
 	<section>
 		<jsp:include page="../mngRooms/modalCheckIn.jsp"></jsp:include>
