@@ -238,14 +238,6 @@ public class CommonDaoImpl implements CommonDao{
 		int result7 = sqlSession.delete("Common.deleteCal");
 		int result8 = sqlSession.delete("Common.deleteLaw");
 		
-		System.out.println("result1 : " + result1);
-		System.out.println("result2 : " + result2);
-		System.out.println("result4 : " + result4);
-		System.out.println("result5 : " + result5);
-		System.out.println("result6 : " + result6);
-		System.out.println("result7 : " + result7);
-		System.out.println("result8 : " + result8);
-		
 		if(result1 > 0 && result2 > 0 &&  result4 > 0 && result5 > 0 && result6 > 0 && result7 > 0 && result8 > 0) {
 			result = 1;
 		}else {
@@ -253,6 +245,12 @@ public class CommonDaoImpl implements CommonDao{
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int deleteRoomType(SqlSessionTemplate sqlSession) {
+
+		return sqlSession.delete("Common.deleteRoomType");
 	}
 
 	

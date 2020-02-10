@@ -10,10 +10,12 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.RequestStayRsv;
 import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
+import com.kh.hotels.mngRooms.model.voEtc.RsvMemo;
 
 public interface RoomsDao {
 
@@ -88,5 +90,9 @@ public interface RoomsDao {
 	void updateRoomSttCO(SqlSessionTemplate sqlSession, int sno);
 
 	Rfd ajxFindRfdRate(SqlSessionTemplate sqlSession, String checkin);
+
+	ArrayList<RequestStayRsv> selectRsrList(SqlSessionTemplate sqlSession, RequestStayRsv rsr);
+
+	int insertMemo(SqlSessionTemplate sqlSession, RsvMemo rm);
 
 }

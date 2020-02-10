@@ -130,6 +130,13 @@ public class CommonServiceImpl implements CommonService{
 		return cd.deleteInformation(sqlSession);
 	}
 
+
+	@Override
+	public int deleteRoomType() {
+		
+		return cd.deleteRoomType(sqlSession);
+	}
+
 	
 
 }

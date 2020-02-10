@@ -92,7 +92,6 @@ public class HotelSettingController {
 		int result = cs.deleteInfomation();
 		
 		if(result > 0) {
-			status.setComplete();
 			
 			return "hotelSetting/hotelInfoSetting";
 		}else {
@@ -103,11 +102,16 @@ public class HotelSettingController {
 		
 	}
 	@RequestMapping("backRoomTypeSetting.set")
-	public String backRoomTypeSetting(SessionStatus status) {
+	public String backRoomTypeSetting(SessionStatus status, Model model) {
 		
-		status.setComplete();
+		int result = cs.deleteRoomType();
 		
-		return "hotelSetting/hotelRoomTypeSetting";
+		if(result > 0) {
+			return "hotelSetting/hotelRoomTypeSetting";
+		}else {
+			model.addAttribute("msg", "룸타입정보 삭제 실패");
+			return "common/errorPage";
+		}
 		
 	}
 	

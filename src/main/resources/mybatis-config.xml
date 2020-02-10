@@ -28,7 +28,9 @@
 		<typeAlias type="com.kh.hotels.mngClient.model.vo.BlackList" alias="BlackList"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomInfo" alias="RoomInfo"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomType" alias="RoomType"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RsvMemo" alias="RsvMemo"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.BrokenRoom" alias="BrokenRoom"/>
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RequestStayRsv" alias="RequestStayRsv"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.Room" alias="Room"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.BrokenRoom" alias="BrokenRoom2"/>
 		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomPrc" alias="RoomPrc"/>

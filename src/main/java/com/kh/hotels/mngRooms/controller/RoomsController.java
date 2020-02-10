@@ -1,6 +1,8 @@
 package com.kh.hotels.mngRooms.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,12 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.RequestStayRsv;
 import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
+import com.kh.hotels.mngRooms.model.voEtc.RsvMemo;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -270,6 +274,55 @@ public class RoomsController {
 		int sno = Integer.parseInt(stayNo);
 		rs.doCheckout(sno);
 		mv.setViewName("redirect:view.ro");
+		return mv;
+	}
+	
+	@PostMapping("requestInformation.ro")
+	public ModelAndView requestInformation(ModelAndView mv, String rsvNo, String stayNo) {
+		
+		System.out.println("rsvNo : " +rsvNo);
+		
+		if(rsvNo.equals("")) {
+			rsvNo = "0";
+		}
+		int stayNumber;
+		
+		if(stayNo.equals("")) {
+			stayNumber = 0;
+		}else {
+			stayNumber = Integer.parseInt(stayNo);
+		}
+		
+		RequestStayRsv rsr = new RequestStayRsv();
+		rsr.setStayNo(stayNumber);
+		rsr.setRsvNo(rsvNo);
+		
+		ArrayList<RequestStayRsv> rsrList = rs.selectRsrList(rsr);
+		
+		System.out.println(rsrList);
+		
+		mv.addObject("rsrList", rsrList);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	@PostMapping("insertMemo.ro")
+	public ModelAndView insertMemo(ModelAndView mv, String memoContent, String stayNo) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date to = new Date();
+		String from = sdf.format(to);
+		
+		RsvMemo rm = new RsvMemo();
+		rm.setReqDate(from);
+		rm.setReqContent(memoContent);
+		rm.setStayNo(Integer.parseInt(stayNo));
+		rs.insertMemo(rm);
+		
+		mv.addObject("success","success");
+		mv.setViewName("jsonView");
+		
 		return mv;
 	}
 }

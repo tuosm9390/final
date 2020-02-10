@@ -11,10 +11,12 @@ import com.kh.hotels.mngRooms.model.vo.BrokenRoom;
 import com.kh.hotels.mngRooms.model.vo.CheckIn;
 import com.kh.hotels.mngRooms.model.vo.ModalClient;
 import com.kh.hotels.mngRooms.model.vo.Prc;
+import com.kh.hotels.mngRooms.model.vo.RequestStayRsv;
 import com.kh.hotels.mngRooms.model.vo.Rfd;
 import com.kh.hotels.mngRooms.model.vo.RoomList;
 import com.kh.hotels.mngRooms.model.vo.RuleInfo;
 import com.kh.hotels.mngRooms.model.vo.ServiceList;
+import com.kh.hotels.mngRooms.model.voEtc.RsvMemo;
 
 public interface RoomsService {
 
@@ -71,5 +73,9 @@ public interface RoomsService {
 	void doCheckout(int sno);
 
 	Rfd ajxFindRfdRate(String checkin);
+
+	ArrayList<RequestStayRsv> selectRsrList(RequestStayRsv rsr);
+
+	int insertMemo(RsvMemo rm);
 
 }
