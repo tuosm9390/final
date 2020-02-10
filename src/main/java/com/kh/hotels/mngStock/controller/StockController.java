@@ -31,6 +31,7 @@ import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
+import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
 import com.kh.hotels.mngStock.model.vo.Strg;
 import com.kh.hotels.mngStock.model.vo.StrgArea;
@@ -52,7 +53,7 @@ public class StockController {
 		
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		}
+		} 
 		int listCount = ss.getListCount();
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		try {
@@ -69,6 +70,42 @@ public class StockController {
 			m.addAttribute("pi", pi);
 			
 			return "hoteladmin/mngStock/stock/stockNow";
+			
+		} catch (Exception e) {
+			m.addAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping("selectRepair.sto")
+	public String selectRepairList(HttpServletRequest request,Model m){
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		int listCount = ss.getRepairListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		try {
+			ArrayList<Repair> repairList = ss.repairList(pi);
+			
+			for(int i=0;i<repairList.size();i++) {
+				if(repairList.get(i).getRptStatus().equals("WAIT")) {
+					repairList.get(i).setRptStatus("대기");
+				}else if(repairList.get(i).getRptStatus().equals("APPR")){
+					repairList.get(i).setRptStatus("승인");
+				}else if(repairList.get(i).getRptStatus().equals("REJECT")) {
+					repairList.get(i).setRptStatus("반려");
+				}else {
+					repairList.get(i).setRptStatus("오류");
+				}
+			}
+			
+			m.addAttribute("repairList", repairList);
+			m.addAttribute("pi", pi);
+			
+			return "hoteladmin/mngStock/stock/repairRequest";
 			
 		} catch (Exception e) {
 			m.addAttribute("msg", e.getMessage());
@@ -93,30 +130,6 @@ public class StockController {
 		}
 	}
 	//////
-	@RequestMapping("selectRepair.sto")
-	public String selectRepairList(Model m){
-		
-		ArrayList<Repair> repairList = ss.selectRepairList();
-		
-		System.out.println(repairList);
-		
-		for(int i=0;i<repairList.size();i++) {
-			if(repairList.get(i).getRptStatus().equals("WAIT")) {
-				repairList.get(i).setRptStatus("대기");
-			}else if(repairList.get(i).getRptStatus().equals("APPR")){
-				repairList.get(i).setRptStatus("승인");
-			}else if(repairList.get(i).getRptStatus().equals("REJECT")) {
-				repairList.get(i).setRptStatus("반려");
-			}else {
-				repairList.get(i).setRptStatus("오류");
-			}
-		}
-		
-		m.addAttribute("repairList",repairList);
-		System.out.println(repairList);
-		return "hoteladmin/mngStock/stock/repairRequest";
-		
-	}
 	
 	@PostMapping("selectStockDetail.sto")
 	public ModelAndView selectStockDetail(String iName,ModelAndView mv) {
@@ -201,12 +214,16 @@ public class StockController {
 		
 		  String checkRowSplit[] = checkRow.split(",");
 		  
+		  His h = new His();
 		  for(int i = 0; i < checkRowSplit.length; i++) {
 			  int check = Integer.parseInt(checkRowSplit[i]);
 			  result =ss.deleteStock(check);
+			  h.setIno(check);
+			  
+			  System.out.println(check+" + check ------------------");
+			  int result1 = ss.deleteStockHis(h);
 			  }
-		 
-		
+		  	  
 		if(result>0) {
 			return "redirect:selectStock.sto";
 		}else {
@@ -260,10 +277,10 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 	}
 	st.setAreaNo(areaNo);
 	int result = ss.updateStockOk(st);
+	
 	His h = new His();
+	
 	if(result>0) {
-		
-		
 		if(st.getStrgName().equals(zstrgName)) {
 		}else {
 			h.setIno(zino);
@@ -304,8 +321,15 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 	}
 
 
+	@PostMapping("searchItem.sto")
+	public String searchItem(Model m ,SearchItem s) {
+		
+		ArrayList<Stock> searchList = ss.serachList(s);
+		
+		return "redirect:selectStock.sto";
+		
+	}
 	
-
 
 
 }

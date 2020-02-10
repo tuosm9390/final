@@ -36,7 +36,7 @@
 	}
 	#stockTb{
 	width: 700px;
-	height: 375px;
+	height: 364px;
 	border-collapse: collapse;
 	border: 1px solid lightgray;
 	margin-top: -22px;
@@ -56,8 +56,8 @@
 	width: 700px;
 	}
 	.btns{
-	 margin-top: 10px;
-    margin-left: 42.4%
+	 margin-top: 8px;
+    margin-left: 48.1%
 	}
 	.tabClass{
 	display: inline-block;
@@ -119,7 +119,37 @@ background : white;
 	border-radius: 2px;
 	margin-left: 5px;
 }
+
+#pager_wrap {
+width:700px;
+	padding: 40px 0;
+	text-align: center;
+	height: 5px;
+}
+
+#pager_wrap .pager_com {
+	display: inline-block;
+	width: 40px;
+	margin: 0 2px;
+	background-color: #f1f1f1;
+}
+
+#pager_wrap .pager_num.on {
+	background-color: #171f57;
+}
+
+#pager_wrap .pager_com a {
+	padding: 10px 0;
+	text-align: center;
+	color: #171f57;
+	font-size:5px; 
+	font-weight:none;
 	
+}
+
+#pager_wrap .pager_num.on a {
+	color: #fff;
+}
 	
 </style>
 </head>
@@ -178,8 +208,52 @@ background : white;
 		</div>
 			<div class="btns">
 			<button id="delete">선택삭제</button>
-			<button id="excel">Excel</button>
 			</div> 
+	<!-- 페이저 시작 -->
+			<!-- 페이징 영역 시작 -->
+			<div id="pager_wrap" align="center">
+				<ul class="pager_cnt clearfix add">
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="pager_com pager_arr prev on"><a
+							href="javascirpt: void(0);">&#x003C;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="blistBack" value="selectRepair.sto">
+							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
+							<c:param name="scurrentPage" value=""/>
+						</c:url>
+						<li class="pager_com pager_arr prev "><a href="${blistBack }">&#x003C;</a></li>
+					</c:if>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<li class="pager_com pager_num on"><a
+								href="javascript: void(0);">${p }</a></li>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+
+							<c:url var="blistCheck" value="selectRepair.sto">
+								<c:param name="currentPage" value="${p }" />
+							</c:url>
+							<li class="pager_com pager_num"><a href="${blistCheck }">${p }</a></li>
+						</c:if>
+					</c:forEach>
+
+
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="pager_com pager_arr next on"><a
+							href="javascript: void(0);">&#x003E;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="blistEnd" value="selectStock.sto">
+							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
+						</c:url>
+						<li class="pager_com pager_arr next"><a href="${blistEnd }">&#x003E;</a></li>
+					</c:if>
+				</ul>
+			</div>
+		
+			<!-- 페이징 영역 종료 -->
 	
 	
 	
@@ -204,7 +278,7 @@ background : white;
 		
 		//물품현황탭
 		$("#mailSet").click(function(){
-			location.href='goStockNow.st';
+			location.href='selectStock.sto';
 		});
 		
 		

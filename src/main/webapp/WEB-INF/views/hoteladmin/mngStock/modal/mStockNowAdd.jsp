@@ -82,7 +82,7 @@ cursor: pointer;
 	<div class="modalDetailAdd">
 		<div class="modal_contentDetailAdd">
 			<div class="titleBarplus">
-            <h2>창고상세</h2>
+            <h2>품목추가</h2>
             <a class="btn_close_pluss">×</a>
          </div>
 			

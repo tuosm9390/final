@@ -704,6 +704,15 @@ public class SettingController {
 		}
 		
 	}
+	
+	@RequestMapping("goMail.st")
+	public String goMail() {
+		
+		return "hoteladmin/mngSettings/abtMail";
+	}
+	
+
+	
 }
 
 

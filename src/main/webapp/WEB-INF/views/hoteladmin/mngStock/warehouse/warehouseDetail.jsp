@@ -77,7 +77,16 @@
 	border: 1px solid #3498DB;
 	font-weight: bold;
 	height: 25px;
-	margin-left: 64.7%;
+	margin-left: 61.9%;
+	}
+	#enrollBtn{
+	color:white;
+	background : #3498DB;
+	border: 1px solid #3498DB;
+	width: 68px;
+	height: 25px;
+	font-weight: bold;
+	border-radius: 2px;
 	}
 </style>
 </head>

@@ -21,4 +21,6 @@ public interface AccountDao {
 
 	int updateDetail(SqlSessionTemplate sqlSession, Conn c);
 
+	int updateAcc(SqlSessionTemplate sqlSession, Conn c);
+
 }

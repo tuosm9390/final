@@ -52,5 +52,11 @@ public class AccountServiceImpl implements AccountService{
 		// TODO Auto-generated method stub
 		return ad.updateDetail(sqlSession,c);
 	}
+
+	@Override
+	public int updateAcc(Conn c) {
+		// TODO Auto-generated method stub
+		return ad.updateAcc(sqlSession,c);
+	}
     
 }

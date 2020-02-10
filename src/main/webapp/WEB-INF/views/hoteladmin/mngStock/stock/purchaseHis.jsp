@@ -105,7 +105,7 @@
 		<div id="titlemsg"><label style="font-size: 25px; font-weight: bold;">구매내역조회</label></div>
 		<div id=line></div>
 		<div id="searchZone" style="width: 1000px;"> 
-		<div style="width: 1000px;">
+		<div style="width: 1010px;">
 			<select class="searchCondition"  id="purSearch" style="margin-left:70% ; height: 26px;">
 				<option value="default">기본옵션</option>
 			</select>

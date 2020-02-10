@@ -19,4 +19,6 @@ public interface AccountService {
 
 	int updateDetail(Conn c);
 
+	int updateAcc(Conn c);
+
 }

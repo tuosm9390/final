@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 <style>
 	#myTab{
-	margin-left: 17%;
 	line-height: 30px;
 	}
 	#mailText:hover{
@@ -51,7 +50,7 @@
 
 	<header>
 		<jsp:include page="../common/settingMenubar.jsp"/>
-	<jsp:include page="../common/menubar.jsp"/>
+		<jsp:include page="../common/menubar.jsp"/>
 	</header>
 	<section>
 	
@@ -63,7 +62,7 @@
 		</div>
 	</div>
 	
-	<div style="margin-left: 17%;">
+	<div>
 		<div id="mailSet">
 			<h2>호텔 대표 연락 정보</h2>
 			<label class="lb">호텔 대표 이메일</label><br>
@@ -71,6 +70,12 @@
 			<label class="lb" style="margin-top: 20px">호텔 대표 연락처</label><br>
 			<select style="height: 30px; margin-left: 20px"> 
 				<option>+82(대한민국)</option>
+				<option>02</option>
+				<option>031</option>
+				<option>011</option>
+				<option>010</option>
+				<option>019</option>
+				<option>070</option>
 			</select>
 			<input type="text" style="margin-left: 10px">
 			<pre style="color: gray; font-weight: bold;">
@@ -88,5 +93,10 @@
 	
 	
 	</section>
+	<script>
+		$("#mailText").click(function(){
+			location.href='goReserv.st';
+		})
+	</script>
 </body>
 </html>

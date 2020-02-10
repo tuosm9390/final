@@ -59,7 +59,7 @@
 	#purSearch{
 	border: 1px solid #919191;
 	}
-	#excel{
+	#reno{
 	background : white;
 	color:gray;
 	border: 1px solid gray;
@@ -80,10 +80,10 @@
 	}
 	.btns{
 	margin-top: 5px;
-	margin-left: 69.8%;
-	}
+	margin-left: 70%;
+	} 
 	#purDivv{
-	height: 403.7px;
+	height: 425.7px;
 	border: 1px solid lightgray;
 	width: 1100px;
 	margin-top: 2px;
@@ -93,8 +93,9 @@
 		border-bottom: 1px solid black;
 	}
 	#pager_wrap {
-width:1000px;
-	padding: 60px 0;
+width:1100px;
+height:0px;
+	padding: 40px 0;
 	text-align: center;
 }
 
@@ -142,7 +143,7 @@ width: 150px;
 		<div id=line></div>
 		<div id="searchZone" style="width: 1000px;"> 
 		<div style="width: 1146px;">
-			<select class="searchCondition"  id="purSearch" style="margin-left:70.2% ; height: 26px;">
+			<select class="searchCondition"  id="purSearch" style="margin-left:70.5% ; height: 26px;">
 				<option value="default" hidden="hidden">검색조건</option>
 				<option value="acName">거래처명</option>
 				<option value="acStock">거래항목</option>
@@ -157,6 +158,7 @@ width: 150px;
 	<div id="purDivv">
 	<table id="Table">
 			<tr>
+				<th><input type="checkBox" id="allCheck"></th>
 				<th>거래처코드</th>
 				<th>거래처명</th>
 				<th>대표자명</th>
@@ -168,7 +170,9 @@ width: 150px;
 				<th style="width:300px;">주소</th>
 			</tr>
 			<c:forEach var="i" items="${accountList}">
+			<tbody class="accTbody">
 			<tr>
+				<td class="checkTd"><input type="checkBox" name="checkRow"></td>
 				<td><c:out value="${i.cnCode }"/></td>
 				<td><c:out value="${i.cnName }"/></td>
 				<td><c:out value="${i.ownerName}"/></td>
@@ -176,14 +180,15 @@ width: 150px;
 				<td><c:out value="${i.cnPhone }"/></td>
 				<td><c:out value="${i.cnItem }"/></td>
 				<td><c:out value="${i.cnStatus }"/></td>
-				<td><c:out value="확인"/></td>
+				<td class="checkCn"><label style="color:#005B9E;">확인</label></td>
 				<td><c:out value="${i.cnAdd }" /></td>
 			</tr>  
+			</tbody>
 			</c:forEach>
 		</table>
 
 	</div><!-- purDivv end -->
-	<div class="btns"><button id="excel" style="width: 125px;font-weight: bold;">사용중단/재사용</button>&nbsp;<button id="print">신규</button></div>
+	<div class="btns"><button id="reno" style="width: 125px;font-weight: bold;">사용중단/재사용</button>&nbsp;<button id="print">신규</button></div>
 
 <!-- 페이저 시작 -->
 			<!-- 페이징 영역 시작 -->
@@ -194,7 +199,7 @@ width: 150px;
 							href="javascirpt: void(0);">&#x003C;</a></li>
 					</c:if>
 					<c:if test="${pi.currentPage > 1 }">
-						<c:url var="blistBack" value="selectStock.sto">
+						<c:url var="blistBack" value="selectAccount.ac">
 							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
 							<c:param name="scurrentPage" value=""/>
 						</c:url>
@@ -208,7 +213,7 @@ width: 150px;
 						</c:if>
 						<c:if test="${p ne pi.currentPage }">
 
-							<c:url var="blistCheck" value="selectStock.sto">
+							<c:url var="blistCheck" value="selectAccount.ac">
 								<c:param name="currentPage" value="${p }" />
 							</c:url>
 							<li class="pager_com pager_num"><a href="${blistCheck }">${p }</a></li>
@@ -221,7 +226,7 @@ width: 150px;
 							href="javascript: void(0);">&#x003E;</a></li>
 					</c:if>
 					<c:if test="${pi.currentPage < pi.maxPage }">
-						<c:url var="blistEnd" value="selectStock.sto">
+						<c:url var="blistEnd" value="selectAccount.ac">
 							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
 						</c:url>
 						<li class="pager_com pager_arr next"><a href="${blistEnd }">&#x003E;</a></li>
@@ -236,12 +241,12 @@ width: 150px;
 	<script>
 	//테이블
 	$(function(){
-		$("#Table").find("td").mouseenter(function(){
+		$("#Table").find("td:not(.checkTd)").mouseenter(function(){
 			$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
 		}).mouseout(function(){
 			$(this).parent("tr").css({"background":"white"});
 		}).click(function(){
-			var cnCode = $(this).parent().children("td").eq(0).text();
+			var cnCode = $(this).parent().children("td").eq(1).text();
 			$(".modal").fadeIn();
 			console.log("cnCOde : " + cnCode)
 			$("#cnCodee").val(cnCode);
@@ -351,10 +356,55 @@ width: 150px;
 		
 	})
 	
-	$(function(){
-	
-	})
+	//전체체크박스
+		$("#allCheck").change(function(){
+            if($(this).prop("checked")) {
+               $(".accTbody").find("input[type=checkbox]").prop("checked", true);
+            } else {
+               $(".accTbody").find("input[type=checkbox]").prop("checked", false);
+            }
+         });
+		
+         $(".accTbody").find("input[type=checkbox]").change(function(){
+            if($(this).prop("checked") == false) {
+               $("#allCheck").prop("checked", false);
+            }
+         });
+		
+         $("#reno").click(function(){
+        	 var checkRow = "";
+        	 var status = "";
+			  $( "input[name='checkRow']:checked" ).each(function(){
+			    checkRow = checkRow + $(this).parent().parent().children("td").eq(1).text()+"," ;
+			   status =status +  $(this).parent().parent().children("td").eq(7).text()+"," ;
+			  });
+			  
+			  checkRow = checkRow.substring(0,checkRow.lastIndexOf(",")); //맨끝 콤마 지우기
+			  status = status.substring(0,status.lastIndexOf(",")); //맨끝 콤마 지우기
+			  
+				console.log(checkRow); 
+			    console.log(status);
+			  /////////////
+			  $.ajax({
+				  url:"updateAcc.ac",
+				  type:"post",
+				  data:{
+					   checkRow:checkRow,
+					   check:status
+					   },
+				  success:function(data){
+					  console.log(data);
+					  location.reload(true);
+				  },
+				  error:function(status){
+					  console.log(status);
+				  }
+			  })
+			  ///////////////
+         });
+         
 	</script>
+	
 	
 </body>
 </html>
