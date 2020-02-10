@@ -257,7 +257,7 @@
 		I.VOS AS "VOS", ORQ.TOT_PRICE AS
 		"TPRICE", ORQ.ORDER_RSN AS "ORSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
 		"UP",
-		CON.CN_NAME AS "CNAME",IT.TYPE AS "ITYPE", I.MFG AS "MFG", ORQ.RPT_NO AS "RPT_NO"
+		CON.CN_NAME AS "CNAME",IT.TYPE AS "ITYPE", I.MFG AS "MFG", ORQ.RPT_NO AS "RPT_NO", ORQ.RCV_REQ_DATE AS "REQDATE"
 		FROM
 		REPORT R, ORDER_REQ
 		ORQ, MEMBER M,
@@ -628,7 +628,7 @@
 	
 	<select id="insertOrderResult" parameterType="OrderRequest">
 		INSERT INTO ORDER_REQ
-		VALUES(#{rptNo}, #{ino}, #{cnCode}, #{amount}, #{totPrice}, #{content}, #{purRptNo}, #{purIno})
+		VALUES(#{rptNo}, #{ino}, #{cnCode}, #{amount}, #{totPrice}, #{content}, #{purRptNo}, #{purIno}, TO_DATE(#{rsvReqDate}, 'yy-MM-dd'))
 	</select>
 	<select id="selectCnCode" parameterType="OrderRequest" resultType="String">
 		SELECT CN_CODE
@@ -676,6 +676,20 @@
 		AND R.MNO = #{myMno}
 		ORDER BY RPT_NO ASC)
 		ORDER BY RNUM DESC
+	</select>
+	<select id="selectRepList" parameterType="_int" resultType="java.util.HashMap">
+		SELECT *
+		FROM REPORT
+		WHERE RPT_NO = #{rptNo}
+	</select>
+	<select id="selectOrderReqList" parameterType="_int" resultType="java.util.HashMap">
+		SELECT DISTINCT TO_CHAR(RCV_REQ_DATE) AS "REQDATE"
+		FROM ORDER_REQ
+		WHERE RPT_NO = #{rptNo}
+	</select>
+	<select id="insertOrderHis" parameterType="OrderHistory" resultType="_int">
+		INSERT INTO ORDER_HIS
+		VALUES(SEQ_ORDER_NO.NEXTVAL, DEFAULT, #{orderDate}, DEFAULT, TO_DATE(#{rcvReqDate}, 'yy-MM-dd'), #{rptNo})
 	</select>
 	
 	

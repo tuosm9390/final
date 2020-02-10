@@ -7,8 +7,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>HotelsCompile</title>
+<link href="${ contextPath }/resources/css/datepicker.min.css" rel="stylesheet" type="text/css">
+<script src="${ contextPath }/resources/js/datepicker.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+<!-- Korean language -->
+<script src="${ contextPath }/resources/js/datepicker.kr.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
 
@@ -197,7 +204,6 @@ textarea {
 		<div class="inArea">
 		<form action="insertOrder.ap" method="get">
 	<div class="resultBtnPur">
-				<button id="pre" onclick="preWatch();">미리보기</button>
 				<button id="submit" type="button" onclick="insertPur();">기안하기</button>
 			</div>
 	
@@ -217,7 +223,12 @@ textarea {
 				</tr>
 				<tr class="tbl_tit">
 					<td>문서번호</td>
-					<td colspan="3" style="text-align:center;"><input type="text" name="docno" id="docuNo"></td>
+					<td style="text-align:center;"><input type="text" name="docno" id="docuNo"></td>
+					<td>입고 요청일</td>
+					<td>
+						<input type="text" id="insertDate" placeholder="입고요청 날짜를 선택해주세요" style="width:200px; text-align:center; border-radius:2px; border:1px solid lightgray; height:25px;" >
+						<input type="hidden" id="orderDate" name="orderDate" value="">
+					</td>
 					
 					
 				</tr>
@@ -311,6 +322,7 @@ textarea {
    
    
    var cntTable = "";
+   var date = "";
    
    $(document).ready(function(){
       //var docuNum = 
@@ -323,7 +335,7 @@ textarea {
        }
         // ""을 빼면 year + month (숫자+숫자) 됨.. ex) 2018 + 12 = 2030이 리턴됨.
        var today = ""+year + month; 
-      var random = Math.floor(Math.random() * 1000) + 1;
+      var random = Math.floor(Math.random() * 100000) + 1;
       var docuNum = today.concat(random);
       //var docuNum = 
       
@@ -374,7 +386,25 @@ textarea {
          
       
    })
+   
+
+   date = new Date;
+	checkIn = $("#insertDate").datepicker({
+		autoClose : true,
+		//선택한 날짜를 가져옴
+		onSelect : function(date) {
+			endNum = date;
+		}
+	}).data('datepicker');
+	
+   
+   
+   
+   
    });
+   
+		
+		
    //onload끝   
    
    var dnum = 0;
@@ -459,7 +489,10 @@ textarea {
       function insertPur() {
           clearInterval(startDate());
           console.log(dateString);
+          var idate = $("#insertDate").val();
          
+          $("#orderDate").val(idate);
+          
          $(".tbl tr:nth-child(4)").children().eq(1).find("#txt").val(dateString);
          
          

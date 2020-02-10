@@ -1,8 +1,13 @@
 package com.kh.hotels.mngApproval.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -668,8 +673,13 @@ public class ApproveController {
 	@RequestMapping("insertOrder.ap")
 	public String insertOrderApprove(HttpServletRequest request, Model m, String docuNos, String rptDate, 
 			String sname, String mname, String title, String content, String type, String cname, String iname, String mfg, String vos, String amount,
-			String price, String totPrice, String ino, String dnum, String docno) {
+			String price, String totPrice, String ino, String dnum, String docno, String orderDate)  {
 		
+		
+		
+		
+		
+		System.out.println("orderDate : " + orderDate);
 		System.out.println("sname : " + sname);
 		System.out.println("rptDate : " + rptDate);
 		System.out.println("mname : " + mname);
@@ -717,7 +727,7 @@ public class ApproveController {
 			int price2[] = new int[cnameR.length];
 			int ino2[] = new int[cnameR.length];
 			
-			System.out.println("cnameR : " + cnameR.length);
+		System.out.println("cnameR : " + cnameR.length);
 			System.out.println("여기좀되라 : " + oRequestList);
 
 			for(int j = 0; j < cnameR.length; j++) {
@@ -743,6 +753,7 @@ public class ApproveController {
 				oRequest.setDocno(docno2);
 				oRequest.setTotPrice(totPrice);
 				oRequest.setStfId(sname);
+				oRequest.setRsvReqDate(orderDate);
 				oRequestList.add(oRequest);
 				System.out.println("for문안 pRequestList : " + oRequestList);
 			}
@@ -756,6 +767,7 @@ public class ApproveController {
 			return "redirect:/documentApproval.ap";
 			
 		}else {
+			oRequestList =  new ArrayList<OrderRequest>();
 			oRequest = new OrderRequest();
 			int vosR = Integer.parseInt(vos);
 			int amountR = Integer.parseInt(amount);
@@ -772,7 +784,6 @@ public class ApproveController {
 			oRequest.setCname(cname);
 			oRequest.setIname(iname);
 			oRequest.setMfg(mfg);
-			oRequestList.add(oRequest);
 			oRequest.setPurDocuno(docuNo);
 			oRequest.setDeptname("구매팀"); 
 			oRequest.setMno(mno);
@@ -782,13 +793,14 @@ public class ApproveController {
 			oRequest.setDocno(docno2);
 			oRequest.setTotPrice(totPrice);
 			oRequest.setStfId(sname);
-			
+			oRequest.setRsvReqDate(orderDate);
 			oRequestList.add(oRequest);
 			
 			//int result = as.insertOrderList(oRequestList);
 			
-			return null;
 		}
+		int result = as.insertOrderList(oRequestList);
+		return "redirect:/documentApproval.ap";
 		
 		
 		
@@ -939,51 +951,90 @@ public class ApproveController {
 		int docNo = Integer.parseInt(docno);
 		int totPrice = Integer.parseInt(totalPrice);
 		
-		//수리비용
-		String[] cName = cnName.split(",");
-		//수리비용 끝
-		
-		String[] iName = iname.split(",");
-		
-		//거래처 이름
-		String[] pr = price.split(",");
-		//거래청 이름 끝
-		
-		//제품코드 
-		String[] in = ino.split(",");
-		int[] ino2 = new int[cName.length];
-		//제품코드 종료
-		
-		//수리비용
-		int[] repairPrice = new int[cName.length];
-		
-		//수리 사유
-		String[] repairRsn = rsn.split(",");
-		
-		//
-		
-		
-		
 		RepRequest rRequest = null;
 		
-		
-		
-		
-		for(int j = 0; j < repairPrice.length; j++) {
+		if(iname.contains(",")) {
+			//수리비용
+			String[] cName = cnName.split(",");
+			//수리비용 끝
+			
+			String[] iName = iname.split(",");
+			
+			//거래처 이름
+			String[] pr = price.split(",");
+			//거래청 이름 끝
+			
+			//제품코드 
+			String[] in = ino.split(",");
+			int[] ino2 = new int[cName.length];
+			//제품코드 종료
+			
+			//수리비용
+			int[] repairPrice = new int[cName.length];
+			
+			//수리 사유
+			String[] repairRsn = rsn.split(",");
+			
+			//
+			
+			for(int j = 0; j < repairPrice.length; j++) {
+				rRequest = new RepRequest();
+				
+				//수리요청서 밑에 항목 5개
+				ino2[j] = Integer.parseInt(in[j]);
+				repairPrice[j] = Integer.parseInt(cName[j]);
+				
+				rRequest.setPrice(repairPrice[j]);
+				rRequest.setIno(ino2[j]);
+				rRequest.setCnName(pr[j]);
+				rRequest.setRsn(repairRsn[j]);
+				rRequest.setIname(iName[j]);
+				//5개 항목 끝
+				
+				
+				rRequest.setDeptName(("시설팀")); 
+				rRequest.setMmno(mName);
+				rRequest.setRptDate(rptDate); 
+				rRequest.setSmno(sno);
+				rRequest.setSname(sname); 
+				rRequest.setTitle(title);
+				rRequest.setContent(content);
+				rRequest.setDocno(docNo);
+				rRequest.setTotalPrice((totPrice));
+				rRequestList.add(rRequest);
+				
+				System.out.println("for문안 pRequestList : " + rRequestList);
+				
+				
+			}
+			
+			
+			try {
+				int result = as.insertRepairRequestList(rRequestList);
+				
+				model.addAttribute("rRequestList", rRequestList);
+				return "redirect:/documentApproval.ap";
+				
+			} catch (ReportException e) {
+				model.addAttribute("msg", e.getMessage());
+				return "common/errorPage";
+			}
+		}else {
+			
+			
+			
+			
+			int repairPrice = Integer.parseInt(cnName);
+			int inoR = Integer.parseInt(ino);
+			
 			rRequest = new RepRequest();
-			
-			//수리요청서 밑에 항목 5개
-			ino2[j] = Integer.parseInt(in[j]);
-			repairPrice[j] = Integer.parseInt(cName[j]);
-			
-			rRequest.setPrice(repairPrice[j]);
-			rRequest.setIno(ino2[j]);
-			rRequest.setCnName(pr[j]);
-			rRequest.setRsn(repairRsn[j]);
-			rRequest.setIname(iName[j]);
-			//5개 항목 끝
+			rRequest.setIno(inoR);
+			rRequest.setPrice(repairPrice);
+			rRequest.setRsn(rsn);
+			rRequest.setIname(iname);
 			
 			
+			rRequest.setCnName(price);
 			rRequest.setDeptName(("시설팀")); 
 			rRequest.setMmno(mName);
 			rRequest.setRptDate(rptDate); 
@@ -995,21 +1046,18 @@ public class ApproveController {
 			rRequest.setTotalPrice((totPrice));
 			rRequestList.add(rRequest);
 			
+			
 			System.out.println("for문안 pRequestList : " + rRequestList);
-			
-			
-		}
-		
-		
-		try {
-			int result = as.insertRepairRequestList(rRequestList);
-			
-			model.addAttribute("rRequestList", rRequestList);
-			return "redirect:/documentApproval.ap";
-			
-		} catch (ReportException e) {
-			model.addAttribute("msg", e.getMessage());
-			return "common/errorPage";
+			try {
+				int result = as.insertRepairRequestList(rRequestList);
+				
+				model.addAttribute("rRequestList", rRequestList);
+				return "redirect:/documentApproval.ap";
+				
+			} catch (ReportException e) {
+				model.addAttribute("msg", e.getMessage());
+				return "common/errorPage";
+			}
 		}
 		
 		

@@ -561,7 +561,7 @@ public class SettingController {
 	public String goHotelInfo(HttpServletRequest request, Model model) {
 		
 		
-		ArrayList<HashMap<String, Object>> list = ss.selectHotelInfo();
+ArrayList<HashMap<String, Object>> list = ss.selectHotelInfo();
 		
 		//RFD SEASON, WEEK
 		ArrayList<HashMap<String, Object>> noShowList = ss.selectHotelNoshowInfo();

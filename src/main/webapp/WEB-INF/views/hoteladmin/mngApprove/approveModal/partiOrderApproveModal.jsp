@@ -174,35 +174,42 @@
 						<col width="10%">
 						</colgroup>
 						<tr>
-							<td>문서번호</td>
-							<td colspan="2" id="docuNum"></td>
-							<td colspan="2">부서장</td>
-							<td colspan="2">총지배인</td>
-						</tr>
-						<tr>
-							<td>기안부서</td>
-							<td colspan="2"></td>
-							<td rowspan="2" colspan="2"></td>
-							<td rowspan="2" colspan="2"></td>
-						</tr>
-						<tr>
-							<td>기안자</td>
-							<td colspan="2"></td>
-
-						</tr>
-						<tr>
-							<td>기안일</td>
-							<td colspan="2"></td>
-							<td rowspan="2" colspan="4"></td>
-
-						</tr>
-						<tr>
-							<td>수신자</td>
-							<td colspan="2"></td>
-
-
-
-						</tr>
+						<td>문서번호</td> 
+						<td colspan="2">
+						</td>
+						<td colspan="2">부서장</td>
+						<td colspan="2">총지배인</td>
+					</tr>
+					<tr>
+						<td>기안부서</td>
+						<td colspan="2">
+							
+						</td>
+						<td rowspan="2" colspan="2" class="boss"></td>
+						<td rowspan="2" colspan="2" class="head"></td>
+					</tr>
+					<tr>
+						<td>기안자</td>
+						<td colspan="2">
+						</td>
+						
+						
+					</tr>
+					<tr>
+						<td>기안일</td>
+						<td colspan="2">
+						</td>
+						<td rowspan="2" colspan="2">입고 요청일</td>
+						<td rowspan="2" colspan="2"></td>
+					</tr>
+					<tr>
+						<td>수신자</td>
+						<td colspan="2">
+						</td>
+						
+						
+						
+					</tr>
 						<tr>
 							<td>제목</td>
 							<td colspan="6"></td>
@@ -249,6 +256,8 @@
 					$(".approveTitle").text("");
 					$(".rpt").text("");
 					
+					$(".boss").text("");
+					$(".head").text("");
 					
 					$(".modal_order").fadeOut();
 				})

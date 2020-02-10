@@ -15,7 +15,7 @@ public class OrderHistory {
 	private String rcvStatus;
 	private String orderDate;
 	private String rcvDate;
-	private Date rcvReqDate;
+	private String rcvReqDate;
 	private int rptNo;
 	
 	

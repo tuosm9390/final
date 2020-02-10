@@ -335,11 +335,44 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public int updateApproveStatus(Report report) {
 		
 		int result = ad.updateApproveStatus(sqlSession, report);
-		
 		//int result2 = ad.updateApprovePurRequest(sqlSession, report);
+		ArrayList<HashMap<String, Object>> list = ad.selectOrderRequestList(sqlSession, report.getRptNo());
+		ArrayList<HashMap<String, Object>> list2 = null;
+	System.out.println("list혹쉬 : " + list);
+	System.out.println(list.get(0).get("RPT_TYPE"));
+	
+	if(list.get(0).get("RPT_TYPE").equals("ORDER")) {
+		System.out.println("들어오니?");
+			list2 = new ArrayList<HashMap<String, Object>>();
+			list2 = ad.selectOrderListInfo(sqlSession, report.getRptNo());
+		System.out.println("여기는 나오나혹쉬?");
+		String orderDate = report.getApprDate();
+		System.out.println("orderDate : " + orderDate);
+		String reqDate = (String)list2.get(0).get("REQDATE");
+		System.out.println("reqDate : " + reqDate);
+		int rpt = report.getRptNo();
+		System.out.println("rpt : " + rpt);
+		HashMap<String, Object> hmap = new HashMap<>();
+		hmap.put("orderDate", orderDate);
+		hmap.put("reqDate", reqDate);
+		hmap.put("rpt", rpt);
+		System.out.println("여기까지는 담기나혹시");
+		ArrayList<HashMap<String, Object>> finalList = new ArrayList<HashMap<String, Object>>();
+		finalList.add(hmap);
+		int finalResult = 0;
 		
-		
+		System.out.println("여기들어와라 : " + report.getRptStatus());
+		if(report.getRptStatus().equals("APPR")) {
+			finalResult = ad.insertOrderHis(sqlSession, finalList);
+			return finalResult;
+		}
+		else {
+			return result;
+		}
+	}else {
 		return result;
+	}
+	
 	}
 
 
@@ -413,8 +446,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int docno = oRequestList.get(0).getPurDocuno();
 		
 		ArrayList<OrderRequest>list = ad.selectPurRequestInfo(sqlSession, docno);
-		System.out.println("여기씨발 : " + list.size());
-		System.out.println("씨발list : " + list);
 		
 		for(int i = 0; i < list.size(); i++) {
 			//cnName=  new ArrayList<OrderRequest>();
