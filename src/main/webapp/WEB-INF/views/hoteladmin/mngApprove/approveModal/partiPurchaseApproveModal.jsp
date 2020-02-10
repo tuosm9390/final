@@ -185,8 +185,8 @@
 						<tr>
 							<td>기안부서</td>
 							<td colspan="2"></td>
-							<td rowspan="2" colspan="2"></td>
-							<td rowspan="2" colspan="2"></td>
+							<td rowspan="2" colspan="2" class="boss"></td>
+							<td rowspan="2" colspan="2" class="head"></td>
 						</tr>
 						<tr>
 							<td>기안자</td>
@@ -251,6 +251,10 @@
 		$(document).ready(function() {
 				$(".btn_close_plus").click(function(){
 					$(".repeat").children().remove();
+					
+					$(".boss").text("");
+					$(".head").text("");
+					
 					
 					$(".modal_parti").fadeOut();
 				})

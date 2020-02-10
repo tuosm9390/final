@@ -147,6 +147,7 @@
 					<tr>
 						<td>문서번호</td> 
 						<td colspan="2">
+							
 						</td>
 						<td colspan="2">부서장</td>
 						<td colspan="2">총지배인</td>
@@ -164,13 +165,14 @@
 						<td colspan="2">
 						</td>
 						
+						
 					</tr>
 					<tr>
 						<td>기안일</td>
 						<td colspan="2">
 						</td>
-						<td rowspan="2" colspan="4"></td>
-						
+						<td rowspan="2" colspan="2">입고 요청일</td>
+						<td rowspan="2" colspan="2"></td>
 					</tr>
 					<tr>
 						<td>수신자</td>
@@ -227,7 +229,11 @@
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
 				
+				
+				
 				$(".repeatOrder").children().remove();
+				
+				
 				
 				$(".modal_order").fadeOut();
 			});

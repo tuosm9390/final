@@ -489,15 +489,17 @@ solid
 
 								});
 
-								/* $("#tbl_modal_order tr:first-child").children()
-										.eq(1).text(data.list[0].DOCNO); */
+								 $("#tbl_modal_order tr:first-child").children()
+										.eq(1).text(data.list[0].DOCNO); 
 								if (data.list[0].RSTATUS == 'WAIT') {
 
 								} else {
-									$("#tbl_modal_order tr:nth-child(2)")
-											.children().eq(3).text(
+									$("#tbl_modal_order tr")
+											.find(".head").text(
 													data.list[0].SNAME);
 								}
+	    				   			 	$("#tbl_modal_order tr:nth-child(4)").children().eq(3).text(data.list[0].REQDATE2);
+
 								$("#tbl_modal_order tr:nth-child(2)")
 										.children().eq(2).text(
 												data.list[0].MNAME);
@@ -519,7 +521,7 @@ solid
 												data.list[0].RTITLE);
 								$("#tbl_modal_order #totalPrice").text(data.list[0].TPRICE + "원");
 								// console.log(list.PRSN)
-								$("#tbl_modal_order tr").find(".txtArea").text(data.list[0].ORSN);
+								$("#tbl_modal_order tr").children().find(".txtArea").text(data.list[0].ORSN);
 
 								$(".modal_order").fadeIn();
 
@@ -592,8 +594,8 @@ solid
 								$("#tbl_modal_repair #totalPrice").text(
 										data.list[0].TPRICE + "원");
 								//console.log(list.PRSN)
-								$("#tbl_modal_repair #content_repair")
-										.children().children().text(
+								$("#tbl_modal_repair tr")
+										.children().find(".txtArea").text(
 												data.list[0].RSN);
 
 								$(".modal_repair").fadeIn();
@@ -640,8 +642,7 @@ solid
 
 								$(".tbl_modal.parti tr:first-child").children()
 								.eq(1).text(data.list[0].DOCNO);
-								if (data.list[0].RSTATUS == 'WAIT'
-										|| data.list[0].RSTATUS == 'REJECT') {
+								if (data.list[0].RSTATUS == 'WAIT') {
 									$(".tbl_modal.parti tr:nth-child(2)")
 											.children().eq(2).text("");
 
@@ -841,14 +842,14 @@ solid
 												$pagingArea.append($pageDiv[p]);
 											}
 
-											if (scurrentPage != sendPage) {
+											if (scurrentPage < sendPage) {
 												$pageDiv2 = $("<li class='pager_com pager_arr next on'>");
 												$button2 = $(
 														"<a href='#' onclick='paging(this);' value='p'>")
 														.text('>');
 												$input3 = $(
 														"<input type='hidden' id='lastPage'>")
-														.val(sendPage);
+														.val(p);
 												$pageDiv2.append($button2);
 												$pageDiv2.append($input3);
 												$pagingArea.append($pageDiv2);
@@ -955,6 +956,8 @@ solid
 																									data.list[0].DOCNO);
 																					if (data.list[0].RSTATUS == 'WAIT'
 																							) {
+
+																					} else {
 																						$(
 																								"#tbl_modal_order tr:nth-child(2)")
 																								.children()
@@ -962,9 +965,9 @@ solid
 																										3)
 																								.text(
 																										data.list[0].SNAME);
-
-																					} else {
 																					}
+												    				   			 	$("#tbl_modal_order tr:nth-child(4)").children().eq(3).text(data.list[0].REQDATE2);
+
 																					$(
 																							"#tbl_modal_order tr:nth-child(2)")
 																							.children()
@@ -1018,15 +1021,14 @@ solid
 																									data.list[0].TPRICE
 																											+ "원");
 																					$(
-																							"#tbl_modal_order_order #content")
-																							.children()
-																							.children()
+																							"#tbl_modal_order tr")
+																							
+																							.children().find(".txtArea")
 																							.text(
 																									data.list[0].ORSN);
 
-																					$(
-																							".modal_order")
-																							.fadeIn();
+																					$(".modal_order").fadeIn();
+																							
 
 																				},
 																				error : function(
@@ -1077,6 +1079,8 @@ solid
 																										3)
 																								.text(
 																										data.list[0].SNAME);
+																					}else {
+																						
 																					}
 																					$(
 																							"#tbl_modal_repair tr:nth-child(2)")
@@ -1145,9 +1149,9 @@ solid
 																									data.list[0].TPRICE
 																											+ "원");
 																					$(
-																							"#tbl_modal_repair #content_repair")
-																							.children()
-																							.children()
+																							"#tbl_modal_repair tr")
+																							
+																							.children().find(".txtArea")
 																							.text(
 																									data.list[0].RSN);
 
@@ -1197,76 +1201,72 @@ solid
 
 
 																					$(
-																							"#tbl_modal tr:first-child")
+																							".tbl_modal.parti tr:first-child")
 																							.children()
 																							.eq(
 																									1)
 																							.text(
 																									data.list[0].DOCNO);
-																					if (data.list[0].RSTATUS == 'WAIT'
+																					if (data.list[0].RSTATUS == 'APPR'
 																							|| data.list[0].RSTATUS == 'REJECT') {
 																						$(
-																								"#tbl_modal tr:nth-child(1)")
-																								.children()
-																								.eq(
-																										2)
-																								.text(
-																										"");
+																						".tbl_modal.parti tr:nth-child(2)")
+																						.children()
+																						.eq(
+																								2)
+																						.text(
+																								data.list[0].SNAME);
 
 																					} else {
-																						$(
-																								"#tbl_modal tr:nth-child(1)")
-																								.children()
-																								.eq(
-																										2)
-																								.text(
-																										data.list[0].SNAME);
+																					
+																								
 																					}
 
 																					$(
-																							"#tbl_modal tr:nth-child(2)")
+																							".tbl_modal.parti tr:nth-child(2)")
 																							.children()
 																							.eq(
 																									1)
 																							.text(
 																									data.list[0].DNAME);
 																					$(
-																							"#tbl_modal tr:nth-child(3)")
+																							".tbl_modal.parti tr:nth-child(3)")
 																							.children()
 																							.eq(
 																									1)
 																							.text(
 																									data.list[0].MNAME);
 																					$(
-																							"#tbl_modal tr:nth-child(4)")
+																							".tbl_modal.parti tr:nth-child(4)")
 																							.children()
 																							.eq(
 																									1)
 																							.text(
 																									data.list[0].RDATE);
 																					$(
-																							"#tbl_modal tr:nth-child(5)")
+																							".tbl_modal.parti tr:nth-child(5)")
 																							.children()
 																							.eq(
 																									1)
 																							.text(
 																									data.list[0].SNAME);
 																					$(
-																							"#tbl_modal tr:nth-child(6)")
+																							".tbl_modal.parti tr:nth-child(6)")
 																							.children()
 																							.eq(
 																									1)
 																							.text(
 																									data.list[0].RTITLE);
 																					$(
-																							"#tbl_modal #content")
+																							".tbl_modal.parti #content")
 																							.children()
 																							.children()
 																							.text(
 																									data.list[0].PRSN);
+																					$(".tbl_modal.parti #totalPrice").text(data.list[0].TPRICE);
 
 																					$(
-																							".modal")
+																							".modal_parti")
 																							.fadeIn();
 
 																				},
@@ -1299,6 +1299,11 @@ solid
 			console.log(cate);
 
 			var cu = $(this);
+			
+			if(scurrentPage == '>') {
+				scurrentPage=  $("#lastPage").val();
+			}
+			
 
 			$
 					.ajax({
@@ -1418,14 +1423,14 @@ solid
 								$pagingArea.append($pageDiv[p]);
 							}
 
-							if (scurrentPage != sendPage) {
+							if (scurrentPage < smaxPage) {
 								$pageDiv2 = $("<li class='pager_com pager_arr next on'>");
 								$button2 = $(
 										"<a href='#' onclick='paging(this);' value='p'>")
 										.text('>');
 								$input3 = $(
 										"<input type='hidden' id='lastPage'>")
-										.val(sendPage);
+										.val(p);
 								$pageDiv2.append($button2);
 								$pageDiv2.append($input3);
 								$pagingArea.append($pageDiv2);
@@ -1435,7 +1440,7 @@ solid
 										.text('>');
 								$input3 = $(
 										"<input type='hidden' id='lastPage'>")
-										.val(sendPage);
+										.val(p);
 								$pageDiv2.append($button2);
 								$pageDiv2.append($input3);
 								$pagingArea.append($pageDiv2);
@@ -1517,23 +1522,17 @@ solid
 																					data.list[0].DOCNO);
 																	if (data.list[0].RSTATUS == 'WAIT'
 																			) {
-																		$(
-																				"#tbl_modal_order tr:nth-child(2)")
-																				.children()
-																				.eq(
-																						3)
-																				.text(
-																						data.list[0].SNAME);
 
 																	} else {
+																		$(
+																				"#tbl_modal_order tr")
+																				.children().find(".boss").val(data.list[0].SNAME);
 																	}
+								    				   			 	$("#tbl_modal_order tr:nth-child(4)").children().eq(3).text(data.list[0].REQDATE2);
+
 																	$(
-																			"#tbl_modal_order tr:nth-child(2)")
-																			.children()
-																			.eq(
-																					2)
-																			.text(
-																					data.list[0].MNAME);
+																			"#tbl_modal_order tr")
+																			.children().find(".head").val(data.list[0].MNAME);
 
 																	//$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
 																	$(
@@ -1581,9 +1580,9 @@ solid
 																							+ "원");
 																	// console.log(list.PRSN)
 																	$(
-																			"#tbl_modal_order_order#contenta")
-																			.children()
-																			.children()
+																			"#tbl_modal_order_order tr")
+																			
+																			.children().find(".txtArea")
 																			.text(
 																					data.list[0].ORSN);
 
@@ -1708,9 +1707,9 @@ solid
 																					data.list[0].TPRICE
 																							+ "원");
 																	$(
-																			"#tbl_modal_repair #content_repair")
-																			.children()
-																			.children()
+																			"#tbl_modal_repair tr")
+																			
+																			.children().find(".txtArea")
 																			.text(
 																					data.list[0].RSN);
 
@@ -1751,7 +1750,7 @@ solid
 																							index,
 																							list) {
 																						$(
-																								'#tbl_modal .temp')
+																								'.tbl_modal.parti .temp')
 																								.after(
 																										"<tr class='repeat'><input type='hidden' value='"+list.RPT_NO+"' class='rpt'><td>"
 																												+ list.ITYPE
@@ -1773,75 +1772,70 @@ solid
 																					});
 
 																	$(
-																			"#tbl_modal tr:first-child")
+																			".tbl_modal.parti tr:first-child")
 																			.children()
 																			.eq(
 																					1)
 																			.text(
 																					data.list[0].DOCNO);
-																	if (data.list[0].RSTATUS == 'WAIT'
+																	if (data.list[0].RSTATUS == 'APPR'
 																			|| data.list[0].RSTATUS == 'REJECT') {
 																		$(
-																				"#tbl_modal tr:nth-child(2)")
-																				.children()
-																				.eq(
-																						2)
-																				.text(
-																						"");
+																		".tbl_modal.parti tr:nth-child(2)")
+																		.children()
+																		.eq(
+																				2)
+																		.text(
+																				data.list[0].SNAME);
 
 																	} else {
-																		$(
-																				"#tbl_modal tr:nth-child(2)")
-																				.children()
-																				.eq(
-																						2)
-																				.text(
-																						data.list[0].SNAME);
+																		
 																	}
 
 																	$(
-																			"#tbl_modal tr:nth-child(2)")
+																			".tbl_modal.parti tr:nth-child(2)")
 																			.children()
 																			.eq(
 																					1)
 																			.text(
 																					data.list[0].DNAME);
 																	$(
-																			"#tbl_modal tr:nth-child(3)")
+																			".tbl_modal.parti tr:nth-child(3)")
 																			.children()
 																			.eq(
 																					1)
 																			.text(
 																					data.list[0].MNAME);
 																	$(
-																			"#tbl_modal tr:nth-child(4)")
+																			".tbl_modal.parti tr:nth-child(4)")
 																			.children()
 																			.eq(
 																					1)
 																			.text(
 																					data.list[0].RDATE);
 																	$(
-																			"#tbl_modal tr:nth-child(5)")
+																			".tbl_modal.parti tr:nth-child(5)")
 																			.children()
 																			.eq(
 																					1)
 																			.text(
 																					data.list[0].SNAME);
 																	$(
-																			"#tbl_modal tr:nth-child(6)")
+																			".tbl_modal.parti tr:nth-child(6)")
 																			.children()
 																			.eq(
 																					1)
 																			.text(
 																					data.list[0].RTITLE);
 																	$(
-																			"#tbl_modal #content")
+																			".tbl_modal.parti #content")
 																			.children()
 																			.children()
 																			.text(
 																					data.list[0].PRSN);
+																	$(".tbl_modal.parti #totalPrice").text(data.list[0].TPRICE);
 
-																	$(".modal")
+																	$(".modal_parti")
 																			.fadeIn();
 
 																},
@@ -1866,4 +1860,4 @@ solid
 	</script>
 
 </body>
-</html>
+</html>                                                         

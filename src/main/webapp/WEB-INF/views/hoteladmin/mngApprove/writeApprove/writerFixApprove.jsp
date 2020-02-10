@@ -333,7 +333,7 @@ textarea {
 	       }
 	        // ""을 빼면 year + month (숫자+숫자) 됨.. ex) 2018 + 12 = 2030이 리턴됨.
 	       var today = ""+year + month; 
-	      var random = Math.floor(Math.random() * 1000) + 1;
+	      var random = Math.floor(Math.random() * 100000) + 1;
 	      var docuNum = today.concat(random);
 	      //var docuNum = 
 	      

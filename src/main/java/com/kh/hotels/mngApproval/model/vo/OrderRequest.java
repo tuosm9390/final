@@ -1,5 +1,7 @@
 package com.kh.hotels.mngApproval.model.vo;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,5 +42,6 @@ public class OrderRequest {
 	private int mno;
 	private String stfId;
 	private int purDocuno;
+	private String rsvReqDate;
 	
 }

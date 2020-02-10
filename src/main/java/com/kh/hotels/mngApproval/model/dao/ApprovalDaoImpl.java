@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.hotels.mngApproval.model.exception.ReportException;
+import com.kh.hotels.mngApproval.model.vo.OrderHistory;
 import com.kh.hotels.mngApproval.model.vo.OrderRequest;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
 import com.kh.hotels.mngApproval.model.vo.PartiReport;
@@ -96,10 +97,21 @@ public class ApprovalDaoImpl implements ApprovalDao{
 	public List<HashMap<String, Object>> selectApproveOrderDetail(SqlSessionTemplate sqlSession, int rptNo,
 			String type) {
 		List<HashMap<String, Object>> list = null;
-		
+		System.out.println("송기주");
 		
 		list = (List) sqlSession.selectList("Report.selectApproveOrderDetail", rptNo);
+		System.out.println("여긴 들어와?");
 		
+		String chDate = String.valueOf(list.get(0).get("REQDATE"));
+		String chDate2 = chDate.substring(0,11);
+		
+		for(int i = 0; i < list.size(); i++) {
+			list.get(i).put("REQDATE2", chDate2);
+		}
+		
+		
+		
+		System.out.println("list : " + list);
 		return list;
 	}
 
@@ -344,11 +356,16 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		int result = sqlSession.update("Report.updateApproveStatus", report);
 		
 		
+		
+		
 		return result;
 	}
 
 	@Override
 	public int updateApprovePurRequest(SqlSessionTemplate sqlSession, Report report) {
+		
+		
+		
 		
 		int result = sqlSession.update("Report.updateApprovePurchase", report);
 		
@@ -533,6 +550,44 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		
 		
 		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectOrderRequestList(SqlSessionTemplate sqlSession, int rptNo) {
+		
+		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectRepList", rptNo);
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectOrderListInfo(SqlSessionTemplate sqlSession, int rptNo) {
+		System.out.println("RPTNO : " + rptNo);
+		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectOrderReqList", rptNo);
+		
+		System.out.println("list : " + list);
+		
+		return list;
+	}
+
+	@Override
+	public int insertOrderHis(SqlSessionTemplate sqlSession, ArrayList<HashMap<String, Object>> finalList) {
+		
+		int result = 0;
+		System.out.println("송기준 디에이오");
+		System.out.println("finalList : " + finalList);
+		OrderHistory oHis = new OrderHistory();
+		oHis.setOrderDate((String)finalList.get(0).get("orderDate"));
+		oHis.setRcvReqDate((String)finalList.get(0).get("reqDate"));
+		oHis.setRptNo((int)finalList.get(0).get("rpt"));
+		
+		System.out.println("ohis : " + oHis);
+		
+		 result = sqlSession.insert("Report.insertOrderHis", oHis);
+		
+		System.out.println("result : " + result);
+		
+		return result;
 	}
 
 	

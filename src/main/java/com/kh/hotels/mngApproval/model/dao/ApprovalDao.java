@@ -110,5 +110,11 @@ public interface ApprovalDao {
 
 	ArrayList<HashMap<String, Object>> selectMyApproveList(SqlSessionTemplate sqlSession, PageInfo pi, int myMno);
 
+	ArrayList<HashMap<String, Object>> selectOrderRequestList(SqlSessionTemplate sqlSession, int rptNo);
+
+	ArrayList<HashMap<String, Object>> selectOrderListInfo(SqlSessionTemplate sqlSession, int rptNo);
+
+	int insertOrderHis(SqlSessionTemplate sqlSession, ArrayList<HashMap<String, Object>> finalList);
+
 
 }
