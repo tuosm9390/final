@@ -43,5 +43,7 @@ public interface CommonService {
 
 	int deleteInfomation();
 
+	int deleteRoomType();
+
 
 }

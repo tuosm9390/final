@@ -56,5 +56,7 @@ public interface CommonDao {
 
 	int deleteInformation(SqlSessionTemplate sqlSession);
 
+	int deleteRoomType(SqlSessionTemplate sqlSession);
+
 
 }

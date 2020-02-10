@@ -198,7 +198,7 @@ cursor: pointer;
 							<c:if test="${ list.qtype eq 'SERVICE'}">
 							서비스
 							</c:if>
-							<c:if test="${ list.qtype eq 'RESERV'}">
+							<c:if test="${ list.qtype eq 'RESERVE'}">
 							예약
 							</c:if>
 							<c:if test="${ list.qtype eq 'ETC'}">

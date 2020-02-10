@@ -110,6 +110,7 @@
 				AND QTYPE LIKE '%'||#{searchValue}||'%'
 			</when>
 		</choose>
+		AND QUE_DIVISION = 'ONLINE'
 		ORDER BY QNO
 	</select>
 	
@@ -118,12 +119,13 @@
 		SELECT *
 		FROM QUE Q
 		LEFT JOIN MEMBER M ON (Q.MNO = M.MNO)
+		WHERE QUE_DIVISION = 'ONLINE'
 		<choose>
 			<when test="searchCondition == 'qtitle'">
-				WHERE QTITLE LIKE '%'||#{searchValue}||'%'
+				AND QTITLE LIKE '%'||#{searchValue}||'%'
 			</when>
 			<when test="searchCondition == 'qtype'">
-				WHERE QTYPE LIKE '%'||#{searchValue}||'%'
+				AND QTYPE LIKE '%'||#{searchValue}||'%'
 			</when>
 		</choose>
 		ORDER BY QNO
@@ -205,7 +207,7 @@
 	<!-- 예약 정보 조회용 쿼리 -->
 	<select id="reservationCheck" resultType="ReservationCheck"
 		resultMap="ReservationCheck" parameterType="ReservationCheck">
-		SELECT RSV_NO, M.NAME, M.PHONE, M.EMAIL, RS.STAY_PRICE, RS.CHECKIN, RS.CHECKOUT, RS.CI_TIME, RT_NAME, RS.ADULT, RS.CHILD, RS.RSV_REQ, RS.RSV_OPTION
+		SELECT RSV_NO, M.NAME, M.PHONE, M.EMAIL, RS.STAY_PRICE, RS.CHECKIN, RS.CHECKOUT, RS.RSV_DATE, RS.CI_TIME, RT_NAME, RS.ADULT, RS.CHILD, RS.RSV_REQ, RS.RSV_OPTION
 		FROM ROOM R
 		JOIN ROOM_TYPE RT ON(R.RT_NO = RT.RT_NO)
 		JOIN RSV RS ON (R.RM_NO = RS.RM_NO)
@@ -214,8 +216,8 @@
 		AND RSV_NO = #{rsvNo}
 		AND M.NAME = #{userName}
 		AND M.PHONE = #{phone}
-		GROUP BY RT_NAME, RSV_NO, RS.MNO, M.NAME, RS.STAY_PRICE,M.PHONE, M.EMAIL,
-		RS.CHECKIN, RS.CHECKOUT, RS.CI_TIME,RS.ADULT, RS.CHILD, RS.RSV_REQ, RS.RSV_OPTION
+		GROUP BY RT_NAME, RSV_NO, RS.MNO, M.NAME, RS.STAY_PRICE, M.PHONE, M.EMAIL,
+		RS.CHECKIN, RS.CHECKOUT, RS.RSV_DATE, RS.CI_TIME,RS.ADULT, RS.CHILD, RS.RSV_REQ, RS.RSV_OPTION
 	</select>
 
 	<!-- 예약번호 생성용 예약내역 조회 쿼리 -->
@@ -326,7 +328,7 @@
 	
 	<insert id="insertQnA" parameterType="Que">
 		INSERT INTO QUE
-		VALUES (SEQ_QNO.NEXTVAL, #{mno}, #{qtype}, #{qtitle}, SYSDATE, #{qcontent}, 'N', 'N', #{qpwd}, #{pwdStatus})
+		VALUES (SEQ_QNO.NEXTVAL, #{mno}, #{qtype}, #{qtitle}, SYSDATE, #{qcontent}, 'N', 'N', #{qpwd}, #{pwdStatus}, 'ONLINE')
 	</insert>
 	
 	<select id="selectOneQnA" resultType="Que" resultMap="QueResultSet">
@@ -346,6 +348,11 @@
 		FROM RFD
 		WHERE HNAME = 'HotelBoutique'
 		AND LTYPE = 'RFD'
+		<if test="termType != null">
+			AND TERM_TYPE = #{termType}
+			AND DAY_TYPE = #{dayType}
+			AND RFD_DATE = #{rfdDate}
+		</if>
 		ORDER BY TERM_TYPE DESC, DAY_TYPE, TO_NUMBER(RFD_DATE) DESC
 	</select>
 	

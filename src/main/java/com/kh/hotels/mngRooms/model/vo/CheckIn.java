@@ -32,6 +32,7 @@ public class CheckIn implements java.io.Serializable {
 	private int totalSvc;
 	private int totalPrc;
 	private String lastPayDay;
+	private String payStatus;
 
 	private int creditCard;
 	private int cash;

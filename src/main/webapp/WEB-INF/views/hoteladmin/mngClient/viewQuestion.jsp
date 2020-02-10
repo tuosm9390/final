@@ -335,11 +335,12 @@ section{
 						$(".queModalQtitle").val(data.queModal.qtitle);
 						$(".queModalQcontent").val(data.queModal.qcontent);
 						$(".queModalQno").val(data.queModal.qno);
-						if(data.queModal.acontent != null){
-							$(".queModalAcontent").val(data.queModal.acontent);
+						$(".queModalAcontent").val(data.queModal.acontent);
+						if($(".queModalAcontent").val() != ""){
 							$(".queModalAcontent").attr("readonly","readonly");
 							$(".answerBtn").css("display","none");
 						}
+						
 						
 					},
 					error:function(data){

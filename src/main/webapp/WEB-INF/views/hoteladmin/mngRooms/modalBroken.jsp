@@ -114,6 +114,7 @@
 		$(document).ready(function() {
 			$(".btn_close_broken").click(function() {
 				$(".modalBroken").fadeOut();
+				$("#endBroken").show();
 			});
 		});
 		

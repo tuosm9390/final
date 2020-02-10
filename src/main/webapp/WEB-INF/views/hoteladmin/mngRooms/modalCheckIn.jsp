@@ -594,6 +594,8 @@ input[type=number]:disabled {
 			<div class="infoETC">
 				<h4>기타정보</h4>
 				<button id="openMemoMD" type="button">메모</button>
+				<input type="hidden" value="" id="rsvNoModal">
+				<input type="hidden" value="" id="stayNoModal">
 			</div>
 			<br>
 			<button id="checkinBtn" onclick="doCheckIn()" type="button">입실</button>
@@ -719,10 +721,10 @@ input[type=number]:disabled {
 					<button id="memoInsertBtn" type="button">+　추가</button>
 					<hr>
 					<div class="memolist">
-						<div class="memocontent">
+						<div class="memocontent rsvRequest">
 							<div class="memoread">
-								<span>관리자 2020-01-11 22:35:17</span>
-								<p>메모내용내용내용</p>
+								<span>예약 요청사항</span>
+								<p><input type="text" style="border:0;" id="rsvRequest"></p>
 							</div>
 							<button id="memoDelBtn" type="button">×</button>
 						</div>
@@ -820,6 +822,10 @@ input[type=number]:disabled {
 				$("#ciCancelBtn").hide();
 				$("#rsvCancelBtn").hide();
 				
+				$("#rsvCancelBtn").text('× 예약취소');
+				$("#rsvCancelBtn").prop('disabled', false);
+				$("#rentYN").prop('disabled', false);
+				
 				$(".statusColor").removeClass('mediumseagreen');
 				$(".totalPrice").removeClass('mediumseagreen');
 				$(".statusColor").removeClass('lightsteelblue');
@@ -831,6 +837,8 @@ input[type=number]:disabled {
 				
 				$("#rentYN").prop('checked', false);
 				$("#checkinBtn").text('입실').attr('onclick', 'doCheckIn();');
+				
+				$(".memocontent").remove();
 				
 				$(".modal").fadeOut();
 			});
@@ -861,9 +869,39 @@ input[type=number]:disabled {
 				$(".modal_content3").hide();
 				$("#viewMemo").hide();
 				$("#viewHistory").hide();
+				$("#rsvRequest").remove();
+				$(".memocontent").remove();
 			});
 			
+			
+			/// 메모 영역
 			$("#openMemoMD").click(function(){
+				
+				$.ajax({
+					url:"requestInformation.ro",
+					type:"post",
+					data:{
+						rsvNo:rsvNoModalNew,
+						stayNo:stayNoModalNew
+					},
+					success:function(data){
+						console.log(data.rsrList[0].rsvReq);
+						$("#rsvRequest").val(data.rsrList[0].rsvReq);
+						var lengths = data.rsrList.length;
+						$.each(data.rsrList, function(index, rsrList){
+							$(".memolist").append("<div class='memocontent'> <div class='memoread'> <span>요청사항일시 : "+rsrList.reqDate+"</span> <p>"+rsrList.reqContent+"</p> </div> <button id='memoDelBtn' type='button'>×</button> </div>");
+						});
+						
+					},
+					error:function(data){
+						
+					}
+					
+				});
+				
+				console.log(rsvNoModalNew);				
+				console.log(stayNoModalNew);				
+				
 				$(".modal_content3").show();
 				$("#viewMemo").show();
 				//$("#viewHistory").show();
@@ -877,7 +915,8 @@ input[type=number]:disabled {
 		
 		$("select[name=stayDay]").change(function(){
 			var plusDay = $(this).val() * 1;
-			var coDay = new Date(today); coDay.setDate(coDay.getDate() + plusDay); coDay = coDay.format("yyyy-MM-dd");
+			var coDay = new Date(today); 
+			coDay.setDate(coDay.getDate() + plusDay); coDay = dateToStr(coDay);
 			$("#checkOut").val(coDay);
 		});
 
@@ -888,7 +927,9 @@ input[type=number]:disabled {
 			cloneSvc.find('select').attr('id', 'selSvc' + tempsvccnt);
 			cloneSvc.find('input[type=number]').eq(0).attr('id', 'svcCnt' + tempsvccnt);
 			$(".svcDetailSec table").append(cloneSvc);
-			$(".svcDetailSec tr:last-child").children().eq(0).text(new Date().format('MM-dd'));
+			var svcday = new Date();
+			var tempsvcday = ((svcday.getMonth()+1)>9?(svcday.getMonth()+1):"0"+(svcday.getMonth()+1)) + "-" + (svcday.getDate()>9?svcday.getDate():"0"+svcday.getDate());
+			$(".svcDetailSec tr:last-child").children().eq(0).text(tempsvcday);
 			tempsvccnt++;
 		});
 		
@@ -1049,6 +1090,12 @@ input[type=number]:disabled {
 			}
 		}
 		
+		//예약 등록 함수
+		function doSaveReserv() {
+			$("#checkinModal").attr("action", "insertReserv.re");
+			$("#checkinModal").submit();
+		}
+		
 		//예약취소 버튼
 		$("#rsvCancelBtn").click(function(){
 			var checkin = $("#checkIn").val();
@@ -1070,7 +1117,7 @@ input[type=number]:disabled {
 					default : dayt = '주말'; break;
 					}
 					rfdr = data.ajxRfdRate.rfdRate;
-					rfdp = parseInt($("#totalRoom").text().replace(/,/g , '')) * (rfdr / 100);
+					rfdp = (parseInt($("#totalRoom").text().replace(/,/g , '')) + parseInt($("#totalVlt").text().replace(/,/g , ''))) * (rfdr / 100);
 					var daybef = data.ajxRfdRate.rfdDate;
 					
 					if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 취소하시겠습니까?\n"
@@ -1189,6 +1236,35 @@ input[type=number]:disabled {
 				});
 			});
 			
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$("#memoInsertBtn").click(function(){
+				
+				memoModal = $(".memoInsert").val();
+				
+				if($(".memoInsert").val() == ""){
+					alert("메모를 입력해주세요.");
+				}else{
+					if(confirm("메모를 저장하시겠습니까?")){
+						$.ajax({
+							url:"insertMemo.ro",
+							type:"post",
+							data:{
+								memoContent:memoModal,
+								stayNo:stayNoModalNew
+							},
+							success:function(data){
+								
+							},
+							error:function(data){
+								
+							}
+						});
+					}
+				}
+			});
 		});
 	</script>
 </body>

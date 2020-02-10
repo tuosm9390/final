@@ -1,6 +1,7 @@
 package com.kh.hotels.hotel.controller;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -297,7 +298,10 @@ public class HotelMainContoller {
 			System.out.println("filePathList[" + i + "] : " + filePathList[i]);
 			str = null;
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
+		String date = sdf.format(rsvCheck.getRsvDate());
 		
+		System.out.println("rsvDate : " + date);
 		System.out.println("rsvCheck : " + rsvCheck);
 		mv.addObject("roomType", roomType);
 		mv.addObject("filePathList", filePathList);
@@ -310,20 +314,20 @@ public class HotelMainContoller {
 	// 예약 취소 환불규정 호출 메소드
 	@RequestMapping("ajaxCallRefund.hmain")
 	public ModelAndView ajaxCallRefund(ModelAndView mv, int roomType,
-			String termType, String dayType, String checkIn, String checkOut) {
+			String termType, String dayType, String rfdDate) {
 		
 		System.out.println("roomType : " + roomType);
 		System.out.println("termType : " + termType);
 		System.out.println("dayType : " + dayType);
-		System.out.println("checkIn : " + checkIn);
-		System.out.println("checkOut : " + checkOut);
+		System.out.println("rfdDate : " + rfdDate);
 		
 		Map<String, String> map = new HashMap<String, String>();
+		map.put("termType", termType);
+		map.put("dayType", dayType);
+		map.put("rfdDate", rfdDate);
 		
-		ArrayList<Prc> roomprice = hs.selectRoomPrice(roomType);
 		ArrayList<Rfd> rfdList = hs.selectRfdList(map);
 		
-		mv.addObject("roomprice", roomprice);
 		mv.addObject("rfdList", rfdList);
 		mv.setViewName("jsonView");
 		return mv;
