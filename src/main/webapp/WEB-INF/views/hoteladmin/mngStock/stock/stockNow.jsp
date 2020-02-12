@@ -232,7 +232,7 @@ cursor: pointer;
 			<select style="margin-left:615px;   width:80px;height:25px;" id="filter" class="searchOption" >
 				<option value="iname" selected="selected">물품명</option> 
 			</select>
-			<input type="text" name="serachValue" class="searchCondition" style="height: 20px;width: 150px;"> 
+			<input type="text" name="serachValue"  class="searchCondition" style="height: 20px;width: 150px;"> 
 			<button class="searchCondition" style="width: 50px; height: 25px; width: 56px;" id="sbtn" onclick="return search();">검색</button>
 	</form>
 		</div>
@@ -557,7 +557,10 @@ cursor: pointer;
 			}
 			return true;
 		}
+		
+		
 	</script>
+	
 	
 	
 </body>

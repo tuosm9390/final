@@ -125,6 +125,9 @@ height:0px;
 #acTbody2 td input[type=text]{
 width: 150px;
 }
+.label:hover{
+cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -180,7 +183,10 @@ width: 150px;
 				<td><c:out value="${i.cnPhone }"/></td>
 				<td><c:out value="${i.cnItem }"/></td>
 				<td><c:out value="${i.cnStatus }"/></td>
-				<td class="checkCn"><label style="color:#005B9E;">확인</label></td>
+				<td class="checkCn"><label style="color:#005B9E;" class="label">
+				<c:if test="${i.account==null}">미확인</c:if>
+				<c:if test="${i.account!=null}">확인</c:if>
+				</label></td>
 				<td><c:out value="${i.cnAdd }" /></td>
 			</tr>  
 			</tbody>
@@ -242,11 +248,14 @@ width: 150px;
 	//테이블
 	$(function(){
 		$("#Table").find("td:not(.checkTd)").mouseenter(function(){
-			$(this).parent("tr").css({"background":"lightgray","cursor":"pointer"});
+			$(this).parent("tr").css({"background":"lightgray"});
 		}).mouseout(function(){
 			$(this).parent("tr").css({"background":"white"});
 		}).click(function(){
 			var cnCode = $(this).parent().children("td").eq(1).text();
+			if( $(this).parent().children("td").eq(7).text()=='N'){
+				return false;
+			}
 			$(".modal").fadeIn();
 			console.log("cnCOde : " + cnCode)
 			$("#cnCodee").val(cnCode);
@@ -294,7 +303,21 @@ width: 150px;
 		$(".modalState").fadeIn();
 	});
 	
+	///
+	function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    for( var i=0; i < 8; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+	//
+	
 	$("#print").click(function(){
+		$("#cnCode").val(makeid());
 		$(".modalEnroll").fadeIn();
 	});
 	
@@ -394,6 +417,7 @@ width: 150px;
 					   },
 				  success:function(data){
 					  console.log(data);
+					  alert("수정되었습니다.")
 					  location.reload(true);
 				  },
 				  error:function(status){

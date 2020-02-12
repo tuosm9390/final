@@ -12,6 +12,8 @@ import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -136,6 +138,84 @@ public class StockDaoImpl implements StockDao{
 		
 		return (ArrayList)sqlSession.selectList("Stock.getRepairList", null, rowBounds);
 	}
+
+	@Override
+	public int getPurchaseHisListCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("Stock.getPurchaseHisListCount");
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisList(PageInfo pi, SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHis> orderHisList = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		orderHisList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisList", null, rowBounds);
+		
+		return orderHisList;
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisInfoList(SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHis> orderHisInfoList = null;
+		
+		orderHisInfoList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisInfoList");
+		
+		return orderHisInfoList;
+	}
+
+	@Override
+	public ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo, SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHisDetail> orderHisDetailList = null;
+		
+		orderHisDetailList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisDetail", reportNo);
+		
+		return orderHisDetailList;
+	}
+
+	@Override
+	public ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList) {
+
+		ArrayList<Item> itemList = new ArrayList<>();
+		
+		Item item = null;
+		
+		for(int i = 0; i < orderHisDetailList.size(); i++) {
+			item = new Item();
+			item = sqlSession.selectOne("Stock.selectItemList", orderHisDetailList.get(i));
+			itemList.add(item);
+		}
+		
+		
+		return itemList;
+	}
+
+	@Override
+	public int insertItemList(SqlSessionTemplate sqlSession, ArrayList<Item> itemList) {
+		
+		int result = 0;
+		
+		for(int i = 0; i < itemList.size(); i++) {
+			for(int j = 0; j < itemList.get(i).getAmount(); j++) {
+				result = sqlSession.insert("Stock.insertItemList", itemList.get(i));
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int updateOrderHisStatus(SqlSessionTemplate sqlSession, int reportNo) {
+		
+		return sqlSession.update("Stock.updateOrderHisStatus", reportNo);
+	}
+
 
 
 }

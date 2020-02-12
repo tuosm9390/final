@@ -88,6 +88,36 @@
 		width: 145px;
 		border-bottom: 1px solid black;
 	}
+	#pager_wrap {
+width:1000px;
+	padding: 60px 0;
+	text-align: center;
+	height: 5px;
+}
+
+#pager_wrap .pager_com {
+	display: inline-block;
+	width: 40px;
+	margin: 0 2px;
+	background-color: #f1f1f1;
+}
+
+#pager_wrap .pager_num.on {
+	background-color: #171f57;
+}
+
+#pager_wrap .pager_com a {
+	padding: 10px 0;
+	text-align: center;
+	color: #171f57;
+	font-size:5px; 
+	font-weight:none;
+	
+}
+
+#pager_wrap .pager_num.on a {
+	color: #fff;
+}
 </style>
 </head>
 <body>
@@ -102,7 +132,7 @@
 		<div id="titlemsg"><h1>재고변동이력</h1></div>
 		<div id=line></div>
 		<div id="searchZone" style="width: 1000px;"> 
-		<div>
+		<div style="width: 1010px;">
 			<select class="searchCondition"  id="purSearch" style="margin-left:70% ; height: 26px;">
 				<option value="default">검색조건</option>
 			</select>
@@ -122,36 +152,82 @@
 	<table id="Table">
 		<tr>
 			<th><input type=checkbox></th>
-			<th>No</th>
 			<th>구분</th>
+			<th>물품코드</th>
+			<th>물품명</th>
+			<th>수량</th>
 			<th>변동일자</th>
 			<th>창고</th>
 			<th>구역명</th>
-			<th>품목</th>
-			<th>수량</th>
-			<th>담당자</th>
-		
+			<th>객실번호<th>
 		</tr>
 		
 		
-		 <c:forEach var="list" begin="1" end="10">
+		 <c:forEach var="i"  items="${stockHisList}">
 		<tr>
 		<td><input type=checkbox></td>
-		<td>${list }</td>
-		<td><c:out value="구분구분"/></td>
-		<td><c:out value="2020-01-12"/></td>
-		<td><c:out value="aaaa창고"/></td>
-		<td><c:out value="b-c8"/></td>
-		<td><c:out value="코카콜라 사이다"/></td>
-		<td><c:out value="30box"/></td>
-		<td><c:out value="김상찬"/></td>
+		<td><c:out value="${i.type}"/></td>
+		<td><c:out value="${i.ino}"/></td>
+		<td style="color: #005B9E"><c:out value="${i.iname}"/></td>
+		<td><c:out value="${i.amount}"/></td>
+		<td><c:out value="${i.modDate}"/></td>
+		<td><c:out value="${i.aftStrgName}"/></td>
+		<td><c:out value="${i.aftName}"/></td>
+		<td><c:out value="${i.aftRmNum}"/></td>
 		</tr>
 		</c:forEach>
 	
 	</table>
 	</div><!-- purDivv end -->
-	<div class="btns"><button id="excel">Excel</button>&nbsp;<button id="print">인쇄</button></div>
+  	
+  	<!-- 페이저 시작 -->
+			<!-- 페이징 영역 시작 -->
+			<div id="pager_wrap" align="center">
+				<ul class="pager_cnt clearfix add">
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="pager_com pager_arr prev on"><a
+							href="javascirpt: void(0);">&#x003C;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="blistBack" value="selectStockHis.sto">
+							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
+							<c:param name="scurrentPage" value=""/>
+						</c:url>
+						<li class="pager_com pager_arr prev "><a href="${blistBack }">&#x003C;</a></li>
+					</c:if>
 
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<li class="pager_com pager_num on"><a
+								href="javascript: void(0);">${p }</a></li>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+
+							<c:url var="blistCheck" value="selectStockHis.sto">
+								<c:param name="currentPage" value="${p }" />
+							</c:url>
+							<li class="pager_com pager_num"><a href="${blistCheck }">${p }</a></li>
+						</c:if>
+					</c:forEach>
+
+
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="pager_com pager_arr next on"><a
+							href="javascript: void(0);">&#x003E;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="blistEnd" value="selectStockHis.sto">
+							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
+						</c:url>
+						<li class="pager_com pager_arr next"><a href="${blistEnd }">&#x003E;</a></li>
+					</c:if>
+				</ul>
+			</div>
+		
+			<!-- 페이징 영역 종료 -->
+  
+  
+  
 	</section>
 	
 	

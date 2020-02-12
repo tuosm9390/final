@@ -273,6 +273,23 @@ width:700px;
 				
 				$(".modal").fadeIn();
 				console.log(rptNo);
+				
+				//////
+				$.ajax({
+					url:"selectRepairDetail.sto",
+					type:"post",
+					data:{rptNo:rptNo},
+					success:function(data){
+						console.log(data);
+					},
+					error:function(status){
+						console.log(status);
+					}
+				})
+				
+				///////
+				
+				
 			});
 		});
 		

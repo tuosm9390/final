@@ -51,7 +51,8 @@ public class AccountDaoImpl implements AccountDao{
 	
 	@Override
 	public int updateAcc(SqlSessionTemplate sqlSession, Conn c) {
-		// TODO Auto-generated method stub   
+		System.out.println(c.getCnCode());
+		System.out.println(c.getCnStatus());
 		return sqlSession.update("Account.updateAcc",c);
 	} 
 	

@@ -46,7 +46,7 @@
 	border-radius: 2px;
 }
 
-.titleSec + hr {
+hr {
 	width: 100px;
 	margin-right: 1465px;
 	margin-bottom: 10px;
@@ -274,8 +274,6 @@
 		var ruleInfo;
 		var rfdRate;
 		var startDay = '${ startDay }';
-		var rsvNoModalNew;
-		var stayNoModalNew;
 		
 		function strToDate(str) {
 			var year = str.substr(0,4);
@@ -623,8 +621,6 @@
 		var reservCheckinTime;
 		var selRoomNumm;
 		function goReserv(rsvNo) {
-			rsvNoModalNew = rsvNo;
-			stayNoModalNew = 0;
 			$(".statusColor").addClass('lightsteelblue');
 			$(".totalPrice").addClass('lightsteelblue');
 			$("#modalStt").text('　예약');
@@ -734,8 +730,6 @@
 		//모달3 : [ 대실 ] 객실 클릭
 		var checkoutStayNo;
 		function goLent(stayNo) {
-			rsvNoModalNew = 0;
-			stayNoModalNew = stayNo;
 			$(".statusColor").addClass('gold');
 			$(".totalPrice").addClass('gold');
 			$("#staycode").text('　　');
@@ -832,13 +826,6 @@
 		
 		//모달4 : [ 투숙 ] 객실 클릭
 		function goStay(stayNo) {
-			stayNoModalNew = stayNo;
-			for(var i = 0; i < roomlist.length; i++) {
-				if(roomlist[i].stayNo == stayNo) {
-					rsvNoModalNew = roomlist[i].rsvNo;
-				}
-			}
-			
 			$(".statusColor").addClass('mediumseagreen');
 			$(".totalPrice").addClass('mediumseagreen');
 			$("#staycode").text('　　');

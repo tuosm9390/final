@@ -257,6 +257,7 @@ public class RoomsServiceImpl implements RoomsService {
 
 	@Override
 	public ArrayList<RequestStayRsv> selectRsrList(RequestStayRsv rsr) {
+
 		return rd.selectRsrList(sqlSession, rsr);
 	}
 

@@ -13,6 +13,8 @@ import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -140,6 +142,44 @@ public class StockServiceImpl implements StockService{
 	public ArrayList<Repair> repairList(PageInfo pi) {
 		// TODO Auto-generated method stub
 		return sd.getRepairList(sqlSession,pi);
+	}
+
+	@Override
+	public int getPurchaseHisListCount() {
+
+		return sd.getPurchaseHisListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisList(PageInfo pi) {
+
+		return sd.selectOrderHisList(pi,sqlSession);
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisInfoList() {
+		
+		return sd.selectOrderHisInfoList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo) {
+		
+		return sd.selectOrderHisDetail(reportNo, sqlSession);
+	}
+
+	@Override
+	public int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList) {
+		
+		ArrayList<Item> itemList = sd.selectItemList(sqlSession, orderHisDetailList);
+		
+		return sd.insertItemList(sqlSession, itemList);
+	}
+
+	@Override
+	public int updateOrderHisStatus(int reportNo) {
+		
+		return sd.updateOrderHisStatus(sqlSession, reportNo);
 	}
 
 	

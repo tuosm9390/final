@@ -10,6 +10,8 @@ import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -55,6 +57,21 @@ public interface StockDao {
 	int getRepairListCount(SqlSessionTemplate sqlSession);
 
 	ArrayList<Repair> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi);
+
+	int getPurchaseHisListCount(SqlSessionTemplate sqlSession);
+
+	ArrayList<OrderHis> selectOrderHisList(PageInfo pi, SqlSessionTemplate sqlSession);
+
+	ArrayList<OrderHis> selectOrderHisInfoList(SqlSessionTemplate sqlSession);
+
+	ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo, SqlSessionTemplate sqlSession);
+
+	ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList);
+
+	int insertItemList(SqlSessionTemplate sqlSession, ArrayList<Item> itemList);
+
+	int updateOrderHisStatus(SqlSessionTemplate sqlSession, int reportNo);
+
 
 
 
