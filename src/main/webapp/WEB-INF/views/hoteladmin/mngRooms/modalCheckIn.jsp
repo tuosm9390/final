@@ -777,7 +777,7 @@ input[type=number]:disabled {
 			$("#checkinModal").attr("action", "insertReserv.re");
 			$("#checkinModal").submit();
 		}
-	
+	 
 		//총금액 변경 함수
 		function changeTotalPrcTxt() {
 			var prc1 = parseInt($("#totalRoom").text().replace(/,/g , '')); 

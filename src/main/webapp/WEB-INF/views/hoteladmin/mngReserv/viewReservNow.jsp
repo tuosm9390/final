@@ -482,7 +482,7 @@
 			$("#payRfd").prop("disabled", true).css("background-color", "#E4E2E2");
 			$("#checkIn").val(selDay);
 			today = strToDate($("#checkIn").val());
-			
+			 
 			//datepicker
 			date = new Date();
 			var sttfeeday = strToDate(selDay);

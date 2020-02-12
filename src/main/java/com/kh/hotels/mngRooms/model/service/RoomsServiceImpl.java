@@ -29,7 +29,7 @@ import com.kh.hotels.mngRooms.model.voEtc.RsvMemo;
 
 @Service
 public class RoomsServiceImpl implements RoomsService {
-	
+	 
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	

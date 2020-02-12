@@ -398,7 +398,7 @@
 					$("#clientEmail").val(data.stayInfo.clientEmail);
 					$("#checkinBtn").show();
 					$("#checkinBtn").text('저장').attr('onclick', 'doSave();');
-					
+					 
 					$("#checkIn").val(data.stayInfo.scheckin);
 					var sttday = new Date(data.stayInfo.scheckin.substring(0,4), data.stayInfo.scheckin.substring(5,7) - 1, data.stayInfo.scheckin.substring(8,10));
 					$("#checkOut").val(data.stayInfo.scheckout);
