@@ -11,6 +11,7 @@
 		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SearchService" alias="SearchService"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Strg" alias="Strg"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.StrgArea" alias="StrgArea"/>
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.OrderHis" alias="OrderHis"/>
 		<typeAlias type="com.kh.hotels.mngReserv.model.vo.Reservation" alias="Reservation"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Info" alias="Info"/>
 		<typeAlias type="com.kh.hotels.common.model.vo.Rule" alias="Rule"/>
@@ -38,6 +39,7 @@
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.Report" alias="Report"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Stock" alias="Stock"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.His" alias="His"/>
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.OrderHisDetail" alias="OrderHisDetail"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Conn" alias="Conn"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.StockDetail" alias="StockDetail"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.WarehouseDetail" alias="WarehouseDetail"/>
@@ -54,6 +56,7 @@
 		<typeAlias type="com.kh.hotels.mngRooms.model.vo.ServiceList" alias="ServiceList" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurRequest" alias="PurRequest"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.ItemType" alias="ItemType" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.Item" alias="Item" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PageInfo" alias="PageInfo"/>
 		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.SalesDetail" alias="SalesDetail"/>
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.RepRequest" alias="RepRequest"/>
@@ -63,6 +66,7 @@
 		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.DailySpendStock" alias="DailySpendStock"/>
 		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.SpendDetail" alias="SpendDetail"/>
 		<typeAlias alias="OrderHistory" type="com.kh.hotels.mngApproval.model.vo.OrderHistory"/>
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.RepHistory" alias="RepHistory"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>

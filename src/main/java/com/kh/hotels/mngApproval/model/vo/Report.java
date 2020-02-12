@@ -16,7 +16,7 @@ public class Report {
 	private String rptTitle;
 	private String rptStatus;
 	private String apprDate;
-	private int docNo;
+	private Long docNo;
 	private String rptType;
 	private String mname;
 	private String sname;
