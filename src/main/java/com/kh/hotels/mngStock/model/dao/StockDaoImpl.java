@@ -12,6 +12,7 @@ import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
@@ -261,6 +262,24 @@ public class StockDaoImpl implements StockDao{
 		return 0;
 	}
 
+	@Override
+	public int getStockHisCount(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("Stock.getStockHisCount");
+	}
+
+	@Override
+	public ArrayList<ItemHistory> getstockHisList(SqlSessionTemplate sqlSession) {
+
+		
+		return (ArrayList)sqlSession.selectList("Stock.getStockHisList");
+	}
+
+	@Override
+	public ItemHistory getItemHis(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("Stock.getStockHisList");
+	}
 
 
 }

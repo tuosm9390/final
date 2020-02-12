@@ -12,6 +12,7 @@ import com.kh.hotels.mngStock.model.dao.StockDao;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
@@ -219,8 +220,27 @@ public class StockServiceImpl implements StockService{
 	public String selectReceiver(int receiver) {
 		
 		String name = sd.selectReceiverName(sqlSession, receiver);
+		 
+		return name; 
+	}
+	@Override
+	public int getStockHisList() {
+		// TODO Auto-generated method stub
+		return sd.getStockHisCount(sqlSession);
+	}
+	@Override
+	public ArrayList<ItemHistory> stockHisList() {
+		// TODO Auto-generated method stub
+		return sd.getstockHisList(sqlSession);
+	}
+	@Override
+	public ItemHistory itemHis() {
+		// TODO Auto-generated method stub
+		ItemHistory his = new ItemHistory();
 		
-		return name;
+		
+		
+		return sd.getItemHis(sqlSession); 
 	}
 
 	
