@@ -275,17 +275,12 @@ public class RoomsDaoImpl implements RoomsDao {
 
 	@Override
 	public ArrayList<RequestStayRsv> selectRsrList(SqlSessionTemplate sqlSession, RequestStayRsv rsr) {
-
-		ArrayList<RequestStayRsv> rsrList = null;
-		
-		rsrList = (ArrayList)sqlSession.selectList("Rooms.selectRsrList", rsr);
-		
+		ArrayList<RequestStayRsv> rsrList = (ArrayList)sqlSession.selectList("Rooms.selectRsrList", rsr);
 		return rsrList;
 	}
 
 	@Override
 	public int insertMemo(SqlSessionTemplate sqlSession, RsvMemo rm) {
-		
 		return sqlSession.insert("Rooms.insertMemo", rm);
 	}
 
