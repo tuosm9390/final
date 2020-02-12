@@ -12,9 +12,9 @@
 		<result property="totPrice" column="TOT_PRICE"></result>
 		<result property="purRsn" column="PUR_RSN"></result>
 		<result property="deptNo" column="DEPT_NO"></result>
-		<result property="mName" column="NAME"></result>
+		<result property="mname" column="NAME"></result>
 		<result property="rptDate" column="RPT_DATE"></result>
-		<result property="sName" column="NAME"></result>
+		<result property="sname" column="NAME"></result>
 		<result property="title" column="RPT_TITLE"></result>
 		<result property="type" column="TYPE"></result>
 		<result property="cname" column="CN_NAME"></result>

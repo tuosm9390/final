@@ -30,6 +30,7 @@ import com.kh.hotels.mngStock.model.Service.warehouseService;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
@@ -256,75 +257,102 @@ public class StockController {
 		return mv;
 	}
 	
-@RequestMapping("updateStockOk.sto")
-public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strgName,int areaNo,int rmNo
-		,int zino,int zamount,String zstrgName,int zareaNo,int zrmNo) {
-	
-	System.out.println("//////바꾼값////");
-	System.out.println(ino);
-	System.out.println(amount);
-	System.out.println(strgName);
-	System.out.println(areaNo);
-	System.out.println(rmNo);
-	System.out.println("///////전값///////");
-	System.out.println(zino);
-	System.out.println(zamount);
-	System.out.println(zstrgName);
-	System.out.println(zareaNo);
-	System.out.println(zrmNo);
-	Stock st = new Stock();
-	st.setIno(ino);
-	st.setAmount(amount);
-	st.setStrgName(strgName);
-	if(rmNo==0) {
+	@RequestMapping("updateStockOk.sto")
+	public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strgName,int areaNo,int rmNo
+			,int zino,int zamount,String zstrgName,int zareaNo,int zrmNo) {
 		
-	}else {
-		st.setRmNo(rmNo);
-	}
-	st.setAreaNo(areaNo);
-	int result = ss.updateStockOk(st);
-	
-	His h = new His();
-	
-	if(result>0) {
-		if(st.getStrgName().equals(zstrgName)) {
+		System.out.println("//////바꾼값////");
+		System.out.println(ino);
+		System.out.println(amount);
+		System.out.println(strgName);
+		System.out.println(areaNo);
+		System.out.println(rmNo);
+		System.out.println("///////전값///////");
+		System.out.println(zino);
+		System.out.println(zamount);
+		System.out.println(zstrgName);
+		System.out.println(zareaNo);
+		System.out.println(zrmNo);
+		Stock st = new Stock();
+		st.setIno(ino);
+		st.setAmount(amount);
+		st.setStrgName(strgName);
+		if(rmNo==0) {
+			st.setRmNo(0);
 		}else {
-			h.setIno(zino);
-			h.setModCol("STRG_NO");
-			h.setBefData(strgName);
-			h.setAftData(zstrgName);
-			int result1 = ss.updateStockHis(h);
+			st.setRmNo(rmNo);
 		}
-		if(st.getAmount()!=zamount) {
-			h.setIno(zino);
-			h.setModCol("AMOUNT");
-			h.setBefData(amount+"");
-			h.setAftData(zamount+"");
-			int result2 = ss.updateStockHis(h);
-		}
-		if(st.getAreaNo()!=zareaNo) {
-			h.setIno(zino);
-			h.setModCol("AREA_NO");
-			h.setBefData(areaNo+"");
-			h.setAftData(zareaNo+"");
-			int result3 = ss.updateStockHis(h);
-		}
-		if(st.getRmNo()!=zrmNo) {
-			h.setIno(zino);
-			h.setModCol("RM_NO");
-			h.setBefData(rmNo+"");
-			h.setAftData(zrmNo+"");
-			int result4 = ss.updateStockHis(h);
-		}
+		st.setAreaNo(areaNo);
+		int result = ss.updateStockOk(st);
 		
-	}else {
-		System.out.println("xx");
-	}
+		His h = new His();
 		
-	mv.setViewName("jsonView");
-		
-	return mv;
-	}
+		if(result>0) {
+			if(st.getStrgName().equals(zstrgName)) {
+				h.setIno(zino);
+				h.setModCol("STRG_NO");
+				h.setBefData(zstrgName);
+				h.setAftData(strgName);
+				int result1 = ss.updateStockHis(h);
+			}else {
+				h.setIno(zino);
+				h.setModCol("STRG_NO");
+				h.setBefData(zstrgName);
+				h.setAftData(strgName);
+				int result1 = ss.updateStockHis(h);
+			}
+			
+			if(st.getAmount()!=zamount) {
+				h.setIno(zino);
+				h.setModCol("AMOUNT");
+				h.setBefData(zamount+"");
+				h.setAftData(amount+"");
+				int result2 = ss.updateStockHis(h);
+			}else {
+				h.setIno(zino);
+				h.setModCol("AMOUNT");
+				h.setBefData(zamount+"");
+				h.setAftData(amount+"");
+				int result2 = ss.updateStockHis(h);
+			}
+			
+			if(st.getAreaNo()!=zareaNo) {
+				h.setIno(zino);
+				h.setModCol("AREA_NO");
+				h.setBefData(zareaNo+"");
+				h.setAftData(areaNo+"");
+				int result3 = ss.updateStockHis(h);
+				h.setAftData(null);
+			}else {
+				h.setIno(zino);
+				h.setModCol("AREA_NO");
+				h.setBefData(zareaNo+"");
+				h.setAftData(areaNo+"");
+				int result3 = ss.updateStockHis(h);
+				h.setAftData(null);
+			}
+			if(st.getRmNo()!=zrmNo) {
+				h.setIno(zino);
+				h.setModCol("RM_NO");
+				h.setBefData(zrmNo+"");
+				h.setAftData(rmNo+"");
+				int result4 = ss.updateStockHis(h);
+			}else {
+				h.setIno(zino);
+				h.setModCol("RM_NO");
+				h.setBefData(zrmNo+"");
+				h.setAftData(rmNo+"");
+				int result4 = ss.updateStockHis(h);
+			}
+			
+		}else {
+			System.out.println("xx");
+		}
+			
+		mv.setViewName("jsonView");
+			
+		return mv;
+		}
 
 
 	@PostMapping("searchItem.sto")
@@ -391,5 +419,85 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 		}
 		
 	}
+	/////////////////////////////////////////////////////
+	@RequestMapping("selectStockHis.sto")
+	public String selectStockHis(HttpServletRequest request,Model m){
+
+	
+		try {
+			ArrayList<ItemHistory> stockHisList = ss.stockHisList();
+			ArrayList<ItemHistory> stockHis = new ArrayList<ItemHistory>(); 
+			ItemHistory itemHistory = new ItemHistory();
+			ArrayList<ItemHistory> real = new ArrayList<ItemHistory>();
+			for(int i=0;i<stockHisList.size();i++) {
+				
+				/*
+				 * if(stockHisList.get(i).getType().equals("EQUIP")) {
+				 * stockHisList.get(i).setType("비품"); }else {
+				 * stockHisList.get(i).setType("소모품"); }
+				 */
+				//System.out.println(stockHisList.get(i)+"geti");
+				
+				 if(stockHisList.get(i).getAftName()!=null&&stockHisList.get(i).getAmount()!=null) { 
+					 stockHisList.get(i).setAftName(null);
+					 }
+				 
+				for(int j=0;j<stockHisList.size();j++) {
+					if(stockHisList.get(i).getModDate().equals(stockHisList.get(j).getModDate())&&stockHisList.get(i).getIno()==stockHisList.get(j).getIno()){
+						//System.out.println(stockHisList.get(j).getModDate()+"...........");
+						
+						itemHistory.setIno(stockHisList.get(j).getIno());
+						itemHistory.setIname(stockHisList.get(j).getIname());
+						itemHistory.setModDate(stockHisList.get(j).getModDate());
+						itemHistory.setType(stockHisList.get(j).getType());
+						
+						if(stockHisList.get(j).getModCol().equals("AMOUNT")) {
+							itemHistory.setAmount(stockHisList.get(j).getAmount());
+						}
+						if(stockHisList.get(j).getModCol().equals("RM_NO")) {
+							itemHistory.setAftRmNum(stockHisList.get(j).getAftRmNum());
+						}
+						if(stockHisList.get(j).getModCol().equals("AREA_NO")) {
+							itemHistory.setAftName(stockHisList.get(j).getAftName());
+						}
+						if(stockHisList.get(j).getModCol().equals("STRG_NO")) {
+							itemHistory.setAftStrgName(stockHisList.get(j).getAftStrgName());
+						}
+						
+						if(itemHistory.getIname() != null && itemHistory.getIno() > 0 && itemHistory.getModDate() !=null && itemHistory.getAmount() != null && itemHistory.getType() != null && itemHistory.getAftRmNum() != null) {
+							stockHis.add(itemHistory);
+							itemHistory = new ItemHistory();
+						}else if(itemHistory.getIname() != null && itemHistory.getIno() > 0 && itemHistory.getModDate() !=null && itemHistory.getAmount() != null && itemHistory.getType() != null && itemHistory.getAftName()!=null && itemHistory.getAftStrgName()!=null) {
+							stockHis.add(itemHistory);
+							itemHistory = new ItemHistory();
+						}
+						//stockHis.add(itemHistory);			
+					}
+				}
+				
+			}
+			for(int i =0; i<stockHis.size();i+=4) {
+				
+				real.add(stockHis.get(i));
+			}
+			
+			for(int i=0; i<real.size();i++) {
+				System.out.println("전체리스트...");
+				System.out.println(real.get(i));
+			}
+			
+			
+			
+			m.addAttribute("stockHis", real);
+			return "hoteladmin/mngStock/stock/stockHis";
+
+		} catch (Exception e) {
+			m.addAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
+	}
+
+
+
 
 }
