@@ -43,5 +43,6 @@ public class OrderRequest {
 	private String stfId;
 	private Long purDocuno;
 	private String rsvReqDate;
+	private String orderReq;
 	
 }

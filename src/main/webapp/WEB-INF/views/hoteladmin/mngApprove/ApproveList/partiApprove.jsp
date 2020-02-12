@@ -165,10 +165,9 @@ border-bottom:1px solid #aaa;
 				<table class="tbl">
 					<colgroup>
 						<col width="12%">
-						<col width="15%">
 						<col width="20%">
+						<col width="25%">
 						<col width="13%">
-						<col width="10%">
 						<col width="10%">
 						<col width="10%">
 						<col width="10%">
@@ -179,10 +178,9 @@ border-bottom:1px solid #aaa;
 						<th>기안일시</th>
 						<th>제목</th>
 						<th>구분</th>
-						<th>기안자</th>
+						<th>기안자<input type="hidden" value="${sessionScope.loginUser.mno }" class="mnoUser"></th>
 						<th>결재자<input type="hidden" value="${sessionScope.loginUser.authNo }" class="authNo"></th>
 						<th>진행상태<input type="hidden" value="${sessionScope.loginUser.deptNo }" class="deptNo"></th>
-						<th>결재<input type="hidden" value="${sessionScope.loginUser.mno }" class="mnoUser"></th>
 
 					</tr>
 
@@ -206,7 +204,6 @@ border-bottom:1px solid #aaa;
 							 </c:otherwise> 
 							 </c:choose>
 							<td><c:out value="${b.RPSTATUS }" /></td>
-							<td><a>보기</a></td>
 
 						</tr>
 					</c:forEach>
@@ -503,7 +500,7 @@ border-bottom:1px solid #aaa;
 												data.list[0].RTITLE);
 								$("#tbl_modal_order #totalPrice").text(data.list[0].TPRICE + "원");
 								// console.log(list.PRSN)
-								$("#tbl_modal_order tr").children().find(".txtArea").text(data.list[0].ORSN);
+								$("#tbl_modal_order tr").children().find(".txtArea").text(data.list[0].CONTENT);
 
 								$(".modal_order").fadeIn();
 								
@@ -579,7 +576,7 @@ border-bottom:1px solid #aaa;
 								//console.log(list.PRSN)
 								$("#tbl_modal_repair tr")
 										.children().find(".txtArea").text(
-												data.list[0].RSN);
+												data.list[0].CONTENT);
 
 								$(".modal_repair").fadeIn();
 
@@ -656,7 +653,7 @@ border-bottom:1px solid #aaa;
 												data.list[0].TPRICE + "원");
 								// console.log(list.PRSN)
 								$(".tbl_modal.parti #content").children()
-										.children().text(data.list[0].PRSN);
+										.children().text(data.list[0].CONTENT);
 
 								$(".modal_parti").fadeIn();
 
@@ -759,7 +756,6 @@ border-bottom:1px solid #aaa;
 												var $ctr8 = "<td>"
 														+ partiReportList[i].RPSTATUS
 														+ "</td>";
-												var $ctr9 = "<td>  보기 <input type='hidden' value='${sessionScope.loginUser.mno }' class='mnoUser'> </td>"
 
 												$sumTr.append($ctr1);
 												$sumTr.append($ctr2);
@@ -769,7 +765,6 @@ border-bottom:1px solid #aaa;
 												$sumTr.append($ctr6);
 												$sumTr.append($ctr7);
 												$sumTr.append($ctr8);
-												$sumTr.append($ctr9);
 												$tableBody.append($sumTr);
 
 												//$tableBody.append($total );
@@ -1008,7 +1003,7 @@ border-bottom:1px solid #aaa;
 																							
 																							.children().find(".txtArea")
 																							.text(
-																									data.list[0].ORSN);
+																									data.list[0].CONTENT);
 
 																					$(".modal_order").fadeIn();
 																							
@@ -1136,7 +1131,7 @@ border-bottom:1px solid #aaa;
 																							
 																							.children().find(".txtArea")
 																							.text(
-																									data.list[0].RSN);
+																									data.list[0].CONTENT);
 
 																					$(
 																							".modal_repair")
@@ -1245,7 +1240,7 @@ border-bottom:1px solid #aaa;
 																							.children()
 																							.children()
 																							.text(
-																									data.list[0].PRSN);
+																									data.list[0].CONTENT);
 																					$(".tbl_modal.parti #totalPrice").text(data.list[0].TPRICE);
 
 																					$(
@@ -1342,7 +1337,6 @@ border-bottom:1px solid #aaa;
 								}
 								var $ctr8 = "<td>"
 										+ partiReportList[i].RPSTATUS + "</td>";
-								var $ctr9 = "<td>  보기 <input type='hidden' value='${sessionScope.loginUser.mno }' class='mnoUser'>  </td></tr>";
 								$sumTr.append($ctr1);
 								$sumTr.append($ctr2);
 								$sumTr.append($ctr3);
@@ -1351,7 +1345,6 @@ border-bottom:1px solid #aaa;
 								$sumTr.append($ctr6);
 								$sumTr.append($ctr7);
 								$sumTr.append($ctr8);
-								$sumTr.append($ctr9);
 								$tableBody.append($sumTr);
 
 								//$tableBody.append($total );
@@ -1567,7 +1560,7 @@ border-bottom:1px solid #aaa;
 																			
 																			.children().find(".txtArea")
 																			.text(
-																					data.list[0].ORSN);
+																					data.list[0].CONTENT);
 
 																	$(
 																			".modal_order")
@@ -1694,7 +1687,7 @@ border-bottom:1px solid #aaa;
 																			
 																			.children().find(".txtArea")
 																			.text(
-																					data.list[0].RSN);
+																					data.list[0].CONTENT);
 
 																	$(
 																			".modal_repair")
@@ -1815,7 +1808,7 @@ border-bottom:1px solid #aaa;
 																			.children()
 																			.children()
 																			.text(
-																					data.list[0].PRSN);
+																					data.list[0].CONTENT);
 																	$(".tbl_modal.parti #totalPrice").text(data.list[0].TPRICE);
 
 																	$(".modal_parti")
