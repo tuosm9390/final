@@ -5,65 +5,68 @@
    
 <configuration>
 	<typeAliases>
-		<typeAlias alias="Member" type="com.kh.hotels.mngMember.model.vo.Member"/>
-		<typeAlias alias="SettingRoomType" type="com.kh.hotels.mngSetting.model.vo.SettingRoomType"/>
-		<typeAlias alias="SearchStaff" type="com.kh.hotels.mngSetting.model.vo.SearchStaff"/>
-		<typeAlias alias="SearchService" type="com.kh.hotels.mngSetting.model.vo.SearchService"/>
-		<typeAlias alias="Strg" type="com.kh.hotels.mngStock.model.vo.Strg"/>
-		<typeAlias alias="StrgArea" type="com.kh.hotels.mngStock.model.vo.StrgArea"/>
-		<typeAlias alias="Reservation" type="com.kh.hotels.mngReserv.model.vo.Reservation"/>
-		<typeAlias alias="Info" type="com.kh.hotels.common.model.vo.Info"/>
-		<typeAlias alias="Rule" type="com.kh.hotels.common.model.vo.Rule"/>
-		<typeAlias alias="Law" type="com.kh.hotels.common.model.vo.Law"/>
-		<typeAlias alias="Basic" type="com.kh.hotels.common.model.vo.Basic"/>
-		<typeAlias alias="NoShow" type="com.kh.hotels.common.model.vo.NoShow"/>
-		<typeAlias alias="Cal" type="com.kh.hotels.common.model.vo.Cal"/>
-		<typeAlias alias="Rfd" type="com.kh.hotels.common.model.vo.Rfd"/>
-		<typeAlias alias="Svc" type="com.kh.hotels.common.model.vo.Svc"/>
-		<typeAlias alias="OffSeason" type="com.kh.hotels.common.model.vo.OffSeason"/>
-		<typeAlias alias="Season" type="com.kh.hotels.common.model.vo.Season"/>
-		<typeAlias alias="Attach" type="com.kh.hotels.common.model.vo.Attach"/>
-		<typeAlias alias="Stay" type="com.kh.hotels.mngStay.model.vo.Stay"/>
-		<typeAlias alias="Que" type="com.kh.hotels.mngClient.model.vo.Que"/>
-		<typeAlias alias="BlackList" type="com.kh.hotels.mngClient.model.vo.BlackList"/>
-		<typeAlias alias="RoomInfo" type="com.kh.hotels.mngRooms.model.vo.RoomInfo"/>
-		<typeAlias alias="RoomType" type="com.kh.hotels.mngRooms.model.voEtc.RoomType"/>
-		<typeAlias alias="RsvMemo" type="com.kh.hotels.mngRooms.model.voEtc.RsvMemo"/>
-		<typeAlias alias="BrokenRoom" type="com.kh.hotels.mngRooms.model.vo.BrokenRoom"/>
-		<typeAlias alias="RequestStayRsv" type="com.kh.hotels.mngRooms.model.vo.RequestStayRsv"/>
-		<typeAlias alias="Room" type="com.kh.hotels.mngRooms.model.voEtc.Room"/>
-		<typeAlias alias="BrokenRoom2" type="com.kh.hotels.mngRooms.model.voEtc.BrokenRoom"/>
-		<typeAlias alias="RoomPrc" type="com.kh.hotels.mngRooms.model.voEtc.RoomPrc"/>
-		<typeAlias alias="ReservationCheck" type="com.kh.hotels.mngReserv.model.vo.ReservationCheck"/>
-		<typeAlias alias="Report" type="com.kh.hotels.mngApproval.model.vo.Report"/>
-		<typeAlias alias="Stock" type="com.kh.hotels.mngStock.model.vo.Stock"/>
-		<typeAlias alias="His" type="com.kh.hotels.mngStock.model.vo.His"/>
-		<typeAlias alias="Conn" type="com.kh.hotels.mngStock.model.vo.Conn"/>
-		<typeAlias alias="StockDetail" type="com.kh.hotels.mngStock.model.vo.StockDetail"/>
-		<typeAlias alias="WarehouseDetail" type="com.kh.hotels.mngStock.model.vo.WarehouseDetail"/>
-		<typeAlias alias="Que" type="com.kh.hotels.mngClient.model.vo.Que"/>
-		<typeAlias alias="QueFilter" type="com.kh.hotels.mngClient.model.vo.QueFilter"/>
-		<typeAlias alias="QueModal" type="com.kh.hotels.mngClient.model.vo.QueModal"/>
-		<typeAlias alias="QueSearchCondition" type="com.kh.hotels.mngClient.model.vo.QueSearchCondition"/>
-		<typeAlias alias="Ans" type="com.kh.hotels.mngClient.model.vo.Ans"/>
-		<typeAlias alias="ClientSearchCondition" type="com.kh.hotels.mngClient.model.vo.ClientSearchCondition"/>
-		<typeAlias alias="RoomList" type="com.kh.hotels.mngRooms.model.vo.RoomList"/>
-		<typeAlias alias="RoomPrice" type="com.kh.hotels.mngRooms.model.vo.Prc"/>
-		<typeAlias alias="Prc" type="com.kh.hotels.mngRooms.model.vo.Prc"/>
-		<typeAlias alias="PurVos" type="com.kh.hotels.mngApproval.model.vo.PurVos"/>
-		<typeAlias alias="ServiceList" type="com.kh.hotels.mngRooms.model.vo.ServiceList"/>
-		<typeAlias alias="PurRequest" type="com.kh.hotels.mngApproval.model.vo.PurRequest"/>
-		<typeAlias alias="ItemType" type="com.kh.hotels.mngStock.model.vo.ItemType"/>
-		<typeAlias alias="PageInfo" type="com.kh.hotels.mngApproval.model.vo.PageInfo"/>
-		<typeAlias alias="SalesDetail" type="com.kh.hotels.mngAnalys.model.vo.SalesDetail"/>
-		<typeAlias alias="RepRequest" type="com.kh.hotels.mngApproval.model.vo.RepRequest"/>
-		<typeAlias alias="PartiReport" type="com.kh.hotels.mngApproval.model.vo.PartiReport"/>
-		<typeAlias alias="Payment" type="com.kh.hotels.common.model.vo.Payment"/>
-		<typeAlias alias="OrderRequest" type="com.kh.hotels.mngApproval.model.vo.OrderRequest"/>
-		<typeAlias alias="DailySpendStock" type="com.kh.hotels.mngAnalys.model.vo.DailySpendStock"/>
-		<typeAlias alias="SpendDetail" type="com.kh.hotels.mngAnalys.model.vo.SpendDetail"/>
-		<typeAlias alias="OrderHistory" type="com.kh.hotels.mngApproval.model.vo.OrderHistory"/>
-		<typeAlias alias="RepHistory" type="com.kh.hotels.mngStock.model.vo.RepHistory"/>
+		<typeAlias type="com.kh.hotels.mngMember.model.vo.Member" alias="Member" />
+		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SettingRoomType" alias="SettingRoomType" />
+		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SearchStaff" alias="SearchStaff" />
+		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SearchService" alias="SearchService" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.Strg" alias="Strg" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.StrgArea" alias="StrgArea" />
+		<typeAlias type="com.kh.hotels.mngReserv.model.vo.Reservation" alias="Reservation" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Info" alias="Info" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Rule" alias="Rule" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Law" alias="Law" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Basic" alias="Basic" />
+		<typeAlias type="com.kh.hotels.common.model.vo.NoShow" alias="NoShow" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Cal" alias="Cal" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Rfd" alias="Rfd" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Svc" alias="Svc" />
+		<typeAlias type="com.kh.hotels.common.model.vo.OffSeason" alias="OffSeason" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Season" alias="Season" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Attach" alias="Attach" />
+		<typeAlias type="com.kh.hotels.mngStay.model.vo.Stay" alias="Stay" />
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.Que" alias="Que" />
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.BlackList" alias="BlackList" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomInfo" alias="RoomInfo" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomType" alias="RoomType" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RsvMemo" alias="RsvMemo" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.BrokenRoom" alias="BrokenRoom" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RequestStayRsv" alias="RequestStayRsv" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.Room" alias="Room" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.BrokenRoom" alias="BrokenRoom2" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.voEtc.RoomPrc" alias="RoomPrc" />
+		<typeAlias type="com.kh.hotels.mngReserv.model.vo.ReservationCheck" alias="ReservationCheck" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.Report" alias="Report" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.Stock" alias="Stock" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.His" alias="His" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.Conn" alias="Conn" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.StockDetail" alias="StockDetail" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.WarehouseDetail" alias="WarehouseDetail" />
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.Que" alias="Que" />
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.QueFilter" alias="QueFilter" />
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.QueModal" alias="QueModal" />
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.QueSearchCondition" alias="QueSearchCondition" />
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.Ans" alias="Ans" />
+		<typeAlias type="com.kh.hotels.mngClient.model.vo.ClientSearchCondition" alias="ClientSearchCondition" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.RoomList" alias="RoomList" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.Prc" alias="RoomPrice" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.Prc" alias="Prc" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurVos" alias="PurVos" />
+		<typeAlias type="com.kh.hotels.mngRooms.model.vo.ServiceList" alias="ServiceList" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PurRequest" alias="PurRequest" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.ItemType" alias="ItemType" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PageInfo" alias="PageInfo" />
+		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.SalesDetail" alias="SalesDetail" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.RepRequest" alias="RepRequest" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.PartiReport" alias="PartiReport" />
+		<typeAlias type="com.kh.hotels.common.model.vo.Payment" alias="Payment" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.OrderRequest" alias="OrderRequest" />
+		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.DailySpendStock" alias="DailySpendStock" />
+		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.SpendDetail" alias="SpendDetail" />
+		<typeAlias type="com.kh.hotels.mngApproval.model.vo.OrderHistory" alias="OrderHistory" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.RepHistory" alias="RepHistory" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.Item" alias="Item" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.OrderHis" alias="OrderHis" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.OrderHisDetail" alias="OrderHisDetail" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
