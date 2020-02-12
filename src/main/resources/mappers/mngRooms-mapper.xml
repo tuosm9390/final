@@ -5,14 +5,6 @@
   
 <mapper namespace="Rooms">
 
-	<resultMap type="RequestStayRsv" id="requestStayRsvResultSet">
-		<result property="rsvReq" column="RSV_REQ" />
-		<result property="reqDate" column="REQ_DATE" />
-		<result property="reqContent" column="REQ_CONTENT" />
-		<result property="hdrDate" column="HDR_DATE" />
-		<result property="hdrStatus" column="HDR_STATUS" />
-	</resultMap>
-
 	<resultMap type="RoomList" id="roomListSet">
 		<id property="rmNo" column="RM_NO" />
 		<result property="rmNum" column="RM_NUM" />
@@ -167,35 +159,43 @@
 		<result property="ltype" column="LTYPE" />
 	</resultMap>
 	
-    <select id="viewRoomList" resultMap="roomListSet">
-      SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
-             S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
-             V.RSV_NO, TO_CHAR(V.CHECKIN, 'yyyy-MM-dd') AS "R_CHECKIN", TO_CHAR(V.CHECKOUT, 'yyyy-MM-dd') AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
-             M1.MNO AS "RMNO", M1.NAME AS "RNAME", M2.MNO AS "SMNO", M2.NAME AS "SNAME", TO_CHAR(B.BRK_BEGIN, 'yyyy-MM-dd') AS "BRK_BEGIN", TO_CHAR(B.BRK_END, 'yyyy-MM-dd') AS "BRK_END",
-             BRK_RSN, R.STD_PER, T.MAXPER, M1.PHONE AS "RPHONE", M2.PHONE AS "SPHONE"
-      FROM ROOM R
-      LEFT JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
-      LEFT JOIN ROOM_STT N ON (R.RM_NO = N.RM_NO)
-      LEFT JOIN (SELECT *
-                 FROM STAY
-                 WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
-                 AND TO_CHAR(CHECKOUT, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
-                 AND STAY_STATUS = 'N') S ON (R.RM_NO = S.RM_NO)
-      LEFT JOIN (SELECT *
-                 FROM RSV
-                 WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
-                 AND RSV_STATUS = 'OK') V ON (R.RM_NO = V.RM_NO)
-      LEFT JOIN MEMBER M1 ON (V.MNO = M1.MNO)
-      LEFT JOIN MEMBER M2 ON (S.MNO = M2.MNO)
+	<resultMap type="RequestStayRsv" id="requestStayRsvResultSet">
+      <result property="rsvReq" column="RSV_REQ" />
+      <result property="reqDate" column="REQ_DATE" />
+      <result property="reqContent" column="REQ_CONTENT" />
+      <result property="hdrDate" column="HDR_DATE" />
+      <result property="hdrStatus" column="HDR_STATUS" />
+   </resultMap>
+	
+	<select id="viewRoomList" resultMap="roomListSet">
+		SELECT R.RM_NO, R.RM_NUM, R.FLOOR, R.RM_STATUS, T.RT_NO, T.RT_NAME, N.CLEAN_STATUS, S.REAL_CI,
+		       S.STAY_NO, TO_CHAR(S.CHECKIN, 'yyyy-MM-dd') AS "S_CHECKIN", TO_CHAR(S.CHECKOUT, 'yyyy-MM-dd') AS "S_CHECKOUT", S.STAY_STATUS, S.STAY_TYPE, S.PRICE AS "STAY_PRICE",
+		       V.RSV_NO, TO_CHAR(V.CHECKIN, 'yyyy-MM-dd') AS "R_CHECKIN", TO_CHAR(V.CHECKOUT, 'yyyy-MM-dd') AS "R_CHECKOUT", V.STAY_PRICE AS "RSV_PRICE", V.RSV_STATUS, V.CI_TIME,
+		       M1.MNO AS "RMNO", M1.NAME AS "RNAME", M2.MNO AS "SMNO", M2.NAME AS "SNAME", TO_CHAR(B.BRK_BEGIN, 'yyyy-MM-dd') AS "BRK_BEGIN", TO_CHAR(B.BRK_END, 'yyyy-MM-dd') AS "BRK_END",
+		       BRK_RSN, R.STD_PER, T.MAXPER, M1.PHONE AS "RPHONE", M2.PHONE AS "SPHONE"
+		FROM ROOM R
+		LEFT JOIN ROOM_TYPE T ON (R.RT_NO = T.RT_NO)
+		LEFT JOIN ROOM_STT N ON (R.RM_NO = N.RM_NO)
+		LEFT JOIN (SELECT *
+		           FROM STAY
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		           AND TO_CHAR(CHECKOUT, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		           AND STAY_STATUS = 'N') S ON (R.RM_NO = S.RM_NO)
+		LEFT JOIN (SELECT *
+		           FROM RSV
+		           WHERE TO_CHAR(CHECKIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
+		           AND RSV_STATUS = 'OK') V ON (R.RM_NO = V.RM_NO)
+		LEFT JOIN MEMBER M1 ON (V.MNO = M1.MNO)
+		LEFT JOIN MEMBER M2 ON (S.MNO = M2.MNO)
         LEFT JOIN (SELECT RM_NO, BRK_BEGIN, BRK_END, BRK_RSN
                    FROM ROOM
                    LEFT JOIN BROKEN_HIS USING (RM_NO)
                    WHERE TO_CHAR(BRK_BEGIN, 'YYYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
                    AND TO_CHAR(BRK_END, 'YYYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD')
                    AND BRK_STATUS = 'Y') B ON (R.RM_NO = B.RM_NO)
-      WHERE R.RM_STATUS = 'Y'
-      ORDER BY FLOOR, RM_NUM
-   </select>
+		WHERE R.RM_STATUS = 'Y'
+		ORDER BY FLOOR, RM_NUM
+	</select>
 	
 	<select id="viewRoomPrice" resultMap="roomPriceSet">
 		SELECT *
@@ -541,22 +541,16 @@
 	</select>
 	
 	<select id="selectRsrList" parameterType="RequestStayRsv" resultMap="requestStayRsvResultSet">
-		SELECT RSV_REQ, REQ_DATE, REQ_CONTENT, HDR_DATE, HDR_STATUS
-		FROM RSV R
-		JOIN STAY S ON(R.RSV_NO = S.RSV_NO)
-		LEFT JOIN STAY_REQ_HIS SRH ON(S.STAY_NO = SRH.STAY_NO)
-		WHERE SRH.STAY_NO = #{stayNo} OR R.RSV_NO = #{rsvNo}
-	</select>
-	
-	<select id="insertMemo" parameterType="RsvMemo">
-		INSERT INTO STAY_REQ_HIS(STAY_NO, REQ_DATE, REQ_CONTENT, HDR_DATE, HDR_STATUS)
-		VALUES(#{stayNo},#{reqDate},#{reqContent},NULL,'N')
-	</select>
-	
-	<!-- 문의내역 쿼리문  -->
-	<!-- SELECT RSV_REQ, REQ_DATE, REQ_CONTENT, HDR_DATE, HDR_STATUS
-FROM RSV R
-JOIN STAY S ON(R.RSV_NO = S.RSV_NO)
-LEFT JOIN STAY_REQ_HIS SRH ON(S.STAY_NO = SRH.STAY_NO)
-WHERE SRH.STAY_NO = 62 OR R.RSV_NO = 20200208002; -->
+      SELECT RSV_REQ, REQ_DATE, REQ_CONTENT, HDR_DATE, HDR_STATUS
+      FROM RSV R
+      FULL OUTER JOIN STAY S ON(R.RSV_NO = S.RSV_NO)
+      LEFT JOIN STAY_REQ_HIS SRH ON(S.STAY_NO = SRH.STAY_NO)
+      WHERE SRH.STAY_NO = #{stayNo} OR R.RSV_NO = #{rsvNo}
+      ORDER BY REQ_DATE DESC
+   </select>
+   
+   <select id="insertMemo" parameterType="RsvMemo">
+      INSERT INTO STAY_REQ_HIS(STAY_NO, REQ_DATE, REQ_CONTENT, HDR_DATE, HDR_STATUS)
+      VALUES(#{stayNo},#{reqDate},#{reqContent},NULL,'N')
+   </select>
 </mapper>

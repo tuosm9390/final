@@ -223,7 +223,7 @@ textarea {
 				</tr>
 				<tr class="tbl_tit">
 					<td>문서번호</td>
-					<td style="text-align:center;"><input type="text" name="docno" id="docuNo"></td>
+					<td style="text-align:center;"><input type="text" name="docno" id="docuNo" readonly></td>
 					<td>입고 요청일</td>
 					<td>
 						<input type="text" id="insertDate" placeholder="입고요청 날짜를 선택해주세요" style="width:200px; text-align:center; border-radius:2px; border:1px solid lightgray; height:25px;" >
@@ -242,7 +242,7 @@ textarea {
 				
 				<tr class="tbl_tit">
 					<td>기안일</td>
-					<td><input type="text" id="txt" placeholder="SYSDATE" name="rptDate" style="text-align:center;"></td>
+					<td><input type="text" id="txt" placeholder="SYSDATE" name="rptDate" style="text-align:center;" readonly></td>
 					<td >수신자</td>
 					<td colspan="">
 					<c:forEach var="b" items="${list }">
@@ -253,12 +253,12 @@ textarea {
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3"><input type="text" id="txtLong" name="title"></td>
+					<td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;"></td>
 				</tr>
 				<tr>
 					<td>내용</td>
 					<td colspan="3">
-						<textarea style="resize:none;" id="content" name="content"></textarea>
+						<textarea style="resize:none; text-align:center;" id="content" name="content"></textarea>
 					</td>
 				</tr>
 				

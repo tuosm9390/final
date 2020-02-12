@@ -1,6 +1,7 @@
 package com.kh.hotels.mngStock.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
 import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
+import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -56,7 +58,13 @@ public interface StockDao {
 
 	int getRepairListCount(SqlSessionTemplate sqlSession);
 
-	ArrayList<Repair> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi);
+	ArrayList<RepHistory> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi);
+
+	ArrayList<String> selectRepairInfo(SqlSessionTemplate sqlSession, ArrayList<RepHistory> repList);
+
+	ArrayList<HashMap<String, Object>> selectRepairDetail(SqlSessionTemplate sqlSession, RepHistory rHistory);
+
+	String selectReceiverName(SqlSessionTemplate sqlSession, int receiver);
 
 	int getPurchaseHisListCount(SqlSessionTemplate sqlSession);
 

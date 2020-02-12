@@ -453,7 +453,7 @@ input[type=checkbox] {
 		<!-- roomSec end -->
 		
 	</section>
-		<script>
+	<script>
 			var roomlist;
 			var roomprice;
 			var svclist;
@@ -1508,13 +1508,28 @@ input[type=checkbox] {
 					} break;
 				default : alert("검색 조건을 선택하세요."); $(".roomBox").show(); break;
 				}
-					
 				
 			});
 			
+			function strToDate(str) {
+				var year = str.substr(0,4);
+				var month = (str.substr(5,1)=='0'?str.substr(6,1):str.substr(5,2)) * 1 - 1;
+				var day = str.substr(8,2);
+				var date = new Date(year, month, day);
+				return date;
+			}
+			
+			function dateToStr(date) {
+				var year = date.getFullYear();
+				var month = (date.getMonth()+1)>9?(date.getMonth()+1):"0"+(date.getMonth()+1);
+				var day = date.getDate()>9?date.getDate():"0"+date.getDate();
+				var str = year + "-" + month + "-" + day;
+				return str;
+			}
+			
 		</script>
 		
-		<script>
+	<script>
 		//날짜 포맷맞추기 javascript
 			Date.prototype.format = function(f) {
 				if (!this.valueOf()) return " ";
@@ -1543,7 +1558,7 @@ input[type=checkbox] {
 			Number.prototype.zf = function(len){return this.toString().zf(len);};
 		</script>
 		
-		<script>
+	<script>
 		//대실 남은 시간 계산 javascript
 			function CountDownTimer(dt, rmNo){
 				dt.setHours(dt.getHours() + ruleInfo.rentUnit);
@@ -1607,7 +1622,7 @@ input[type=checkbox] {
 	        }
 		</script>
 		
-		<script>
+	<script>
 			//노쇼고객 알림
 			function warningAction(rmNo){
 				var noshowUnit = ruleInfo.noshowUnit;

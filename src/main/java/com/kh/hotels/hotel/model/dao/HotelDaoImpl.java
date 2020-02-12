@@ -183,4 +183,41 @@ public class HotelDaoImpl implements HotelDao{
 		return (ArrayList)sqlSession.selectList("hotel.selectRfdList", map);
 	}
 
+	@Override
+	public int cancelRsv(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return sqlSession.update("hotel.cancelRsv", map);
+	}
+
+	@Override
+	public int cancelRsvHis(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return sqlSession.insert("hotel.cancelRsvHis", map);
+	}
+
+	@Override
+	public int cancelRsvSvcUse(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return sqlSession.update("hotel.cancelRsvSvcUse", map);
+	}
+
+	@Override
+	public int cancelRsvSvcUseHis(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return sqlSession.insert("hotel.cancelRsvSvcUseHis", map);
+	}
+
+	@Override
+	public int cancelRsvFindSvcNo(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return sqlSession.selectOne("hotel.cancelRsvFindSvcNo", map);
+	}
+
+	@Override
+	public int cancelRsvRFD(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return sqlSession.insert("hotel.cancelRsvRFD", map);
+	}
+
+	@Override
+	public Que matchPwd(SqlSessionTemplate sqlSession, Que matchpwd) {
+		return sqlSession.selectOne("hotel.matchPwd", matchpwd);
+	}
+
+
+
 }

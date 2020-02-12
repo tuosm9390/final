@@ -379,7 +379,7 @@
 	</select>
 	
 	<!-- rptno가져오기 -->
-	<select id="selectRptNo" parameterType="_int" resultType="_int">
+	<select id="selectRptNo" parameterType="_long" resultType="_int">
 		SELECT
 		RPT_NO
 		FROM REPORT
@@ -417,7 +417,7 @@
 		'REPAIR')
 	</select>
 	<!-- 수리 요청서 rptno가져오기 -->
-	<select id="selectRepReqRptNo" parameterType="_int"
+	<select id="selectRepReqRptNo" parameterType="_long"
 		resultType="_int">
 		SELECT RPT_NO
 		FROM REPORT
@@ -564,7 +564,7 @@
 		                   )
 
 	</select>
-	<select id="selectOrderList" parameterType="_int" resultType="java.util.HashMap">
+	<select id="selectOrderList" parameterType="_long" resultType="java.util.HashMap">
 		SELECT R.DOC_NO AS "DOCNO", D.DEPT_NAME AS "DNAME", M.NAME
 		AS "MNAME", R.RPT_DATE AS "RDATE", S.NAME AS "SNAME",
 		RPT_TITLE AS
@@ -613,7 +613,7 @@
 		WHERE DOC_NO = #{docno}
 	</select>
 	
-	<select id="selectPurRequestInfo" parameterType="_int" resultMap="OrderResultSet">
+	<select id="selectPurRequestInfo" parameterType="_long" resultMap="OrderResultSet">
 		SELECT PR.RPT_NO, INO
 		FROM PUR_REQ PR
         JOIN REPORT R ON(PR.RPT_NO = R.RPT_NO)
@@ -690,6 +690,10 @@
 	<select id="insertOrderHis" parameterType="OrderHistory" resultType="_int">
 		INSERT INTO ORDER_HIS
 		VALUES(SEQ_ORDER_NO.NEXTVAL, DEFAULT, #{orderDate}, DEFAULT, TO_DATE(#{rcvReqDate}, 'yy-MM-dd'), #{rptNo})
+	</select>
+	<select id="insertRepairHis" parameterType="Report" resultType="_int">
+		INSERT INTO REP_HIS
+		VALUES (SEQ_REP_NO.NEXTVAL, #{apprDate}, DEFAULT, DEFAULT, #{rptNo})
 	</select>
 	
 	

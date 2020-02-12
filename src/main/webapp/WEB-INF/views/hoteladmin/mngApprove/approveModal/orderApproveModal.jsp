@@ -121,6 +121,14 @@
    margin-bottom: 0;
    margin-left: 10px;
 }
+#printApprove {
+	width:40px;
+	height:40px;
+}
+#printImg {
+	width:30px;
+	height:30px;
+}
 
 </style>
 </head>
@@ -131,7 +139,11 @@
 				<h1 style="text-align: left;">발주 요청서</h1>
 			</div>
 			<a class="btn_close_plus">×</a>
+			
 			<div class="modal_content_real">
+			<div class="approveBtn">
+				<button onclick="print();" id="printApprove"><img src="${ contextPath }/resources/images/print.png" id="printImg"></button>
+			</div>
 			<div class="modalTbl">
 				<table id="tbl_modal_order">
 					<colgroup>
@@ -157,8 +169,8 @@
 						<td colspan="2">
 							
 						</td>
-						<td rowspan="2" colspan="2"></td>
-						<td rowspan="2" colspan="2"></td>
+						<td rowspan="2" colspan="2" class="boss"></td>
+						<td rowspan="2" colspan="2" class="head"></td>
 					</tr>
 					<tr>
 						<td>기안자</td>
@@ -233,6 +245,8 @@
 				
 				$(".repeatOrder").children().remove();
 				
+				$(".boss").text("");
+				$(".head").text("");
 				
 				
 				$(".modal_order").fadeOut();

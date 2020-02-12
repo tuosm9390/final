@@ -1,6 +1,7 @@
 package com.kh.hotels.mngStock.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -14,6 +15,7 @@ import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
 import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
+import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -131,7 +133,7 @@ public class StockDaoImpl implements StockDao{
 	}
 
 	@Override
-	public ArrayList<Repair> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<RepHistory> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
 		
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
@@ -189,6 +191,41 @@ public class StockDaoImpl implements StockDao{
 		return itemList;
 	}
 
+
+	public ArrayList<String> selectRepairInfo(SqlSessionTemplate sqlSession, ArrayList<RepHistory> repList) {
+		
+		ArrayList<String> list = new ArrayList<>();
+		System.out.println("DAOreportList : " + repList);
+		String str ="";
+		for(int i = 0; i < repList.size(); i++) {
+			str = (String)sqlSession.selectOne("Stock.selectRepairInfo", repList.get(i).getRptNo());
+		
+			list.add(str);
+		}
+		System.out.println("daoList : " + list);
+		return list;
+	}
+
+	@Override
+	public ArrayList<HashMap<String, Object>> selectRepairDetail(SqlSessionTemplate sqlSession, RepHistory rHistory) {
+		
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		int rptno = rHistory.getRptNo();
+		
+		list = (ArrayList)sqlSession.selectList("Stock.selectRepairDetail", rptno);
+		
+		System.out.println("daolist : " + list);
+		
+		return list;
+	}
+
+	@Override
+	public String selectReceiverName(SqlSessionTemplate sqlSession, int receiver) {
+		
+		String name = (String)sqlSession.selectOne("Stock.selectReceiverName", receiver);
+		
+		return name;
+	}
 
 
 }
