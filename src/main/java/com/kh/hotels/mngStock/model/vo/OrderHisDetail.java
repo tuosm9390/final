@@ -7,16 +7,21 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StockDetail {
+public class OrderHisDetail implements java.io.Serializable {
+
+	private String rptDate;
+	private String name;
+	private int ino;
 	private String lcategory;
 	private String mcategory;
 	private String scategory;
-	private int ino;
-	private int vos;
-	private int vat;
+	private String iname;
 	private int up;
-	private String mfg;
+	private int vat;
+	private int vos;
 	private String cnname;
-	private String strgname;
-	private String areaname;
+	private int amount;
+	private int rptNo;
+	
+	
 }

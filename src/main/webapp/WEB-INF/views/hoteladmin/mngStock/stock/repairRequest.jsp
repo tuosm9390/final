@@ -15,7 +15,7 @@
 	}
  
 	.searchCondition{
- 
+
 	margin-top: -50px;
 	display: inline-block; 
 	width: 100px;
@@ -198,9 +198,9 @@ width:700px;
 				<c:forEach var="i" items="${repairList}">
 					<tr>
 						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="${i.rptNo} "/></td>
-						<td style="color: #005B9E"><c:out value="${i.rptTitle}"/></td>
-						<td><c:out value="${i.rptStatus}"/></td>
+						<td style="color: #005B9E"><c:out value="${i.repNo} "/></td>
+						<td style="color: #005B9E"><c:out value="${i.rpTitle}"/></td>
+						<td><c:out value="${i.repStatus}"/><input type="hidden" value="${i.rptNo }" class="rptno"></td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -269,28 +269,48 @@ width:700px;
 			}).mouseout(function(){
 				$(this).parent("tr").css({"background":"white"});
 			}).click(function(){
-				var rptNo = $(this).parent().children("td").eq(1).text();
-				
-				$(".modal").fadeIn();
+				var rptNo = $(this).parent("tr").find(".rptno").val();
+				var repNo = $(this).parent("tr").children().eq(1).text();
 				console.log(rptNo);
+				console.log(repNo);
 				
-				//////
 				$.ajax({
-					url:"selectRepairDetail.sto",
-					type:"post",
-					data:{rptNo:rptNo},
-					success:function(data){
-						console.log(data);
+					url:"repairFilter.sto",
+					type:"get",
+					data:{
+						rptNo:rptNo,
+						repNo:repNo
 					},
-					error:function(status){
-						console.log(status);
+					success:function(data) {
+						
+						 $.each(data.list, function(index, list) {
+			                  $('#Table .repairDetail').after("<tr class='repeatOrder'><td><input type='checkbox'></td><td>"+list.INO+"</td><td>" + list.SCATEGORY + "</td><td>"+list.VOS+"</td><td>" + list.INAME +"</td><td>"+list.VOS + "</td><td>" + list.REP_PRICE + "</td></tr>");
+			              	
+			                  
+			 			  });
+						 $("#day1").val(data.list[0].REP_BEGIN);
+						 
+						 if(data.list[0].REP_STATUS == 'Y') {
+							 $("#day2").val(data.list[0].REP_END)
+						 }
+						 
+						 $("#person1").val(data.list[0].RECEIVER);
+						 $("#etcText").val(data.list[0].CN_NAME);
+						 $("#person2").val(data.list[0].REP_NO);
+						 
+						
+						
+						$(".modal").fadeIn();
+					},
+					error:function(data) {
+						
 					}
-				})
+				});
 				
-				///////
 				
 				
 			});
+			
 		});
 		
 		//물품현황탭

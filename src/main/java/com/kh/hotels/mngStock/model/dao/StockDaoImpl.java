@@ -1,6 +1,7 @@
 package com.kh.hotels.mngStock.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,17 +9,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
-import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
-import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.RepHistory;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
-import com.kh.hotels.mngStock.model.vo.StockDetail;
-import com.kh.hotels.mngStock.model.vo.Strg;
 
 
 @Repository
@@ -29,10 +29,10 @@ public class StockDaoImpl implements StockDao{
 		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
 		
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
-		 
+		
 		return (ArrayList)sqlSession.selectList("Stock.selectStockList", null, rowBounds);
 	}
- 
+
 	@Override
 	public int insertStock(SqlSessionTemplate sqlSession, Model m, Stock st) {
 		// TODO Auto-generated method stub
@@ -130,8 +130,86 @@ public class StockDaoImpl implements StockDao{
 		return sqlSession.selectOne("Stock.getRepairListCount");
 	}
 
+	
+
 	@Override
-	public ArrayList<Repair> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public int getPurchaseHisListCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("Stock.getPurchaseHisListCount");
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisList(PageInfo pi, SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHis> orderHisList = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		orderHisList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisList", null, rowBounds);
+		
+		return orderHisList;
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisInfoList(SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHis> orderHisInfoList = null;
+		
+		orderHisInfoList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisInfoList");
+		
+		return orderHisInfoList;
+	}
+
+	@Override
+	public ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo, SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHisDetail> orderHisDetailList = null;
+		
+		orderHisDetailList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisDetail", reportNo);
+		
+		return orderHisDetailList;
+	}
+
+	@Override
+	public ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList) {
+
+		ArrayList<Item> itemList = new ArrayList<>();
+		
+		Item item = null;
+		
+		for(int i = 0; i < orderHisDetailList.size(); i++) {
+			item = new Item();
+			item = sqlSession.selectOne("Stock.selectItemList", orderHisDetailList.get(i));
+			itemList.add(item);
+		}
+		
+		
+		return itemList;
+	}
+
+	@Override
+	public int insertItemList(SqlSessionTemplate sqlSession, ArrayList<Item> itemList) {
+		
+		int result = 0;
+		
+		for(int i = 0; i < itemList.size(); i++) {
+			for(int j = 0; j < itemList.get(i).getAmount(); j++) {
+				result = sqlSession.insert("Stock.insertItemList", itemList.get(i));
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int updateOrderHisStatus(SqlSessionTemplate sqlSession, int reportNo) {
+		
+		return sqlSession.update("Stock.updateOrderHisStatus", reportNo);
+	}
+	@Override
+	public ArrayList<RepHistory> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
 		
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
@@ -139,37 +217,42 @@ public class StockDaoImpl implements StockDao{
 		return (ArrayList)sqlSession.selectList("Stock.getRepairList", null, rowBounds);
 	}
 
-	
 	@Override
-	public int getStockHisCount(SqlSessionTemplate sqlSession) {
+	public ArrayList<String> selectRepairInfo(SqlSessionTemplate sqlSession, ArrayList<RepHistory> repList) {
 		
-		return sqlSession.selectOne("Stock.getStockHisCount");
+		ArrayList<String> list = new ArrayList<>();
+		System.out.println("DAOreportList : " + repList);
+		String str ="";
+		for(int i = 0; i < repList.size(); i++) {
+			str = (String)sqlSession.selectOne("Stock.selectRepairInfo", repList.get(i).getRptNo());
+		
+			list.add(str);
+		}
+		System.out.println("daoList : " + list);
+		return list;
 	}
 
 	@Override
-	public ArrayList<ItemHistory> getstockHisList(SqlSessionTemplate sqlSession, PageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+	public ArrayList<HashMap<String, Object>> selectRepairDetail(SqlSessionTemplate sqlSession, RepHistory rHistory) {
 		
-		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		int rptno = rHistory.getRptNo();
 		
-		return (ArrayList)sqlSession.selectList("Stock.getStockHisList", null, rowBounds);// TODO Auto-generated method stub
-	}
-
-	
-	@Override
-	public ArrayList<Stock> selectSearchStockList(SqlSessionTemplate sqlSession, SearchItem s, PageInfo pi) {
-		// TODO Auto-generated method stub
-		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		list = (ArrayList)sqlSession.selectList("Stock.selectRepairDetail", rptno);
 		
-		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		System.out.println("daolist : " + list);
 		
-		return (ArrayList)sqlSession.selectList("Stock.getStockHisList", s, rowBounds);
+		return list;
 	}
 
 	@Override
-	public int getSearchStockListCount(SqlSessionTemplate sqlSession) {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("Stock.getSearchStockListCount");
+	public String selectReceiverName(SqlSessionTemplate sqlSession, int receiver) {
+		
+		String name = (String)sqlSession.selectOne("Stock.selectReceiverName", receiver);
+		
+		System.out.println("daoName : " + name);
+		
+		return name;
 	}
 
 

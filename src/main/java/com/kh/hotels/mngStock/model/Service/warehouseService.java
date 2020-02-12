@@ -11,7 +11,7 @@ import com.kh.hotels.mngStock.model.vo.StrgArea;
 public interface warehouseService {
 
 	int insertWarehouse(Model m, Strg st);
- 
+
 	ArrayList<Strg> selectList();
 
 	ArrayList<Strg> searchList(SearchCondition sc);

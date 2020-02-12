@@ -10,4 +10,4 @@ import lombok.NoArgsConstructor;
 public class SearchItem {
 	private String searchOption;
 	private String searchValue;
-} 
+}

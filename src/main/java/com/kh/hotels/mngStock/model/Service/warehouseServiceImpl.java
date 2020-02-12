@@ -18,7 +18,7 @@ public class warehouseServiceImpl implements warehouseService{
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private warehouseDao wd;
-	 
+	
 	@Override
 	public int insertWarehouse(Model m, Strg st) {
 		// TODO Auto-generated method stub

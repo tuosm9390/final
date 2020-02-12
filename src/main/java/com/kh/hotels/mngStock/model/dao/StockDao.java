@@ -1,22 +1,22 @@
 package com.kh.hotels.mngStock.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
-import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
-import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.RepHistory;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
-import com.kh.hotels.mngStock.model.vo.StockDetail;
-import com.kh.hotels.mngStock.model.vo.Strg;
 
 
 public interface StockDao {
@@ -26,7 +26,7 @@ public interface StockDao {
 	int insertStock(SqlSessionTemplate sqlSession, Model m, Stock st);
 
 	ArrayList<Repair> selectRepairList(SqlSessionTemplate sqlSession);
- 
+
 	int getListCount(SqlSessionTemplate sqlSession);
 
 	ArrayList<Stock> selectStockDetailList(SqlSessionTemplate sqlSession, String iName);
@@ -56,16 +56,30 @@ public interface StockDao {
 
 	int getRepairListCount(SqlSessionTemplate sqlSession);
 
-	ArrayList<Repair> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi);
 
-	int getStockHisCount(SqlSessionTemplate sqlSession);
+	int getPurchaseHisListCount(SqlSessionTemplate sqlSession);
 
-	ArrayList<ItemHistory> getstockHisList(SqlSessionTemplate sqlSession, PageInfo pi);
+	ArrayList<OrderHis> selectOrderHisList(PageInfo pi, SqlSessionTemplate sqlSession);
 
+	ArrayList<OrderHis> selectOrderHisInfoList(SqlSessionTemplate sqlSession);
 
-	ArrayList<Stock> selectSearchStockList(SqlSessionTemplate sqlSession, SearchItem s, PageInfo pi);
+	ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo, SqlSessionTemplate sqlSession);
+
+	ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList);
+
+	int insertItemList(SqlSessionTemplate sqlSession, ArrayList<Item> itemList);
+
+	int updateOrderHisStatus(SqlSessionTemplate sqlSession, int reportNo);
 
 	int getSearchStockListCount(SqlSessionTemplate sqlSession);
+	
+	ArrayList<RepHistory> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi);
+
+	ArrayList<String> selectRepairInfo(SqlSessionTemplate sqlSession, ArrayList<RepHistory> repList);
+
+	ArrayList<HashMap<String, Object>> selectRepairDetail(SqlSessionTemplate sqlSession, RepHistory rHistory);
+
+	String selectReceiverName(SqlSessionTemplate sqlSession, int receiver);
 
 
 }

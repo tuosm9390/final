@@ -11,7 +11,7 @@
 		<result property="strgStatus" column="STRG_STATUS" />
 		<result property="strgSite" column="STRG_SITE" />
 	</resultMap>
-	 
+	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.WarehouseDetail" id="resultSetStrgArea">
 		<id property="ino" column="INO" />
 		<result property="amount" column="AMOUNT" />

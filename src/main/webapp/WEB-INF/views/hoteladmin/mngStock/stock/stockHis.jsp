@@ -14,8 +14,7 @@
 	#Table{
 	width:100%;
 	border-collapse: collapse;
-	} 
-	 
+	}
 	#filter{
 	position: relative;
     bottom: 28px;

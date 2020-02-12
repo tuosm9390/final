@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +25,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
-import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.Service.StockService;
 import com.kh.hotels.mngStock.model.Service.warehouseService;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
-import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.RepHistory;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -47,7 +49,7 @@ public class StockController {
 	private StockService ss;
 	@Autowired
 	private warehouseService ws;
-	 
+	
 	@RequestMapping("selectStock.sto")
 	public String selectStockList(HttpServletRequest request, Model  m) {
 		
@@ -80,32 +82,34 @@ public class StockController {
 	}
 	
 	@RequestMapping("selectRepair.sto")
-	public String selectRepairList(HttpServletRequest request,Model m){
+	public String selectRepairList(HttpServletRequest request,Model m, String currentPage){
 		
-		int currentPage = 1;
+		System.out.println("들어오니??");
+		int scurrentPage = 1;
 		
 		if(request.getParameter("currentPage") != null) {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+			scurrentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 		int listCount = ss.getRepairListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(scurrentPage, listCount);
 		try {
-			ArrayList<Repair> repairList = ss.repairList(pi);
+			ArrayList<RepHistory> repairList = ss.repairList(pi);
 			
+			System.out.println("어디까지 들어오니?");
 			for(int i=0;i<repairList.size();i++) {
-				if(repairList.get(i).getRptStatus().equals("WAIT")) {
-					repairList.get(i).setRptStatus("대기");
-				}else if(repairList.get(i).getRptStatus().equals("APPR")){
-					repairList.get(i).setRptStatus("승인");
-				}else if(repairList.get(i).getRptStatus().equals("REJECT")) {
-					repairList.get(i).setRptStatus("반려");
+				if(repairList.get(i).getRepStatus().equals("Y")) {
+					repairList.get(i).setRepStatus("수리완료");
 				}else {
-					repairList.get(i).setRptStatus("오류");
+					repairList.get(i).setRepStatus("수리중");
 				}
+				
+				System.out.println("여기들어가라진짜 : " + repairList);
 			}
+			
 			
 			m.addAttribute("repairList", repairList);
 			m.addAttribute("pi", pi);
+			System.out.println("마지막 repairList : " + repairList);
 			
 			return "hoteladmin/mngStock/stock/repairRequest";
 			
@@ -273,7 +277,7 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 	st.setAmount(amount);
 	st.setStrgName(strgName);
 	if(rmNo==0) {
-		st.setRmNo(0);
+		
 	}else {
 		st.setRmNo(rmNo);
 	}
@@ -284,59 +288,32 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 	
 	if(result>0) {
 		if(st.getStrgName().equals(zstrgName)) {
-			h.setIno(zino);
-			h.setModCol("STRG_NO");
-			h.setBefData(zstrgName);
-			h.setAftData(strgName);
-			int result1 = ss.updateStockHis(h);
 		}else {
 			h.setIno(zino);
 			h.setModCol("STRG_NO");
-			h.setBefData(zstrgName);
-			h.setAftData(strgName);
+			h.setBefData(strgName);
+			h.setAftData(zstrgName);
 			int result1 = ss.updateStockHis(h);
 		}
-		
 		if(st.getAmount()!=zamount) {
 			h.setIno(zino);
 			h.setModCol("AMOUNT");
-			h.setBefData(zamount+"");
-			h.setAftData(amount+"");
-			int result2 = ss.updateStockHis(h);
-		}else {
-			h.setIno(zino);
-			h.setModCol("AMOUNT");
-			h.setBefData(zamount+"");
-			h.setAftData(amount+"");
+			h.setBefData(amount+"");
+			h.setAftData(zamount+"");
 			int result2 = ss.updateStockHis(h);
 		}
-		
 		if(st.getAreaNo()!=zareaNo) {
 			h.setIno(zino);
 			h.setModCol("AREA_NO");
-			h.setBefData(zareaNo+"");
-			h.setAftData(areaNo+"");
+			h.setBefData(areaNo+"");
+			h.setAftData(zareaNo+"");
 			int result3 = ss.updateStockHis(h);
-			h.setAftData(null);
-		}else {
-			h.setIno(zino);
-			h.setModCol("AREA_NO");
-			h.setBefData(zareaNo+"");
-			h.setAftData(areaNo+"");
-			int result3 = ss.updateStockHis(h);
-			h.setAftData(null);
 		}
 		if(st.getRmNo()!=zrmNo) {
 			h.setIno(zino);
 			h.setModCol("RM_NO");
-			h.setBefData(zrmNo+"");
-			h.setAftData(rmNo+"");
-			int result4 = ss.updateStockHis(h);
-		}else {
-			h.setIno(zino);
-			h.setModCol("RM_NO");
-			h.setBefData(zrmNo+"");
-			h.setAftData(rmNo+"");
+			h.setBefData(rmNo+"");
+			h.setAftData(zrmNo+"");
 			int result4 = ss.updateStockHis(h);
 		}
 		
@@ -351,84 +328,68 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 
 
 	@PostMapping("searchItem.sto")
-	public String searchItem(HttpServletRequest request,Model model ,SearchItem s) {
+	public String searchItem(Model m ,SearchItem s) {
 		
 		ArrayList<Stock> searchList = ss.serachList(s);
-		
-		int currentPage = 1;
-		
-		if(request.getParameter("currentPage") != null) {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		}
-		
-		int searchStockList = ss.getSearchStockListCount(s);
-
-		PageInfo pi = Pagination.getPageInfo(currentPage, searchStockList);
-		
-		ArrayList<Stock> searchClientList = ss.selectSearchStockList(s, pi);
-		
-		model.addAttribute("check", "ok");
-		/*
-		 * model.addAttribute("searchOption", searchOption);
-		 * model.addAttribute("searchContent", searchContent);
-		 * model.addAttribute("clientCount", clientCount);
-		 */
-		model.addAttribute("clientList", searchClientList);
-		model.addAttribute("pi", pi);
 		
 		return "redirect:selectStock.sto";
 		
 	}
 	
-	/////////////////////////////////////////////////////
-	@RequestMapping("selectStockHis.sto")
-	public String selectStockHis(HttpServletRequest request,Model m){
+	@GetMapping("goPurchaseHis.st")
+	public String showPurchaseHis(HttpServletRequest request, Model model) {
 		
 		int currentPage = 1;
 		
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		int listCount = ss.getStockHisList();
+		
+		int listCount = ss.getPurchaseHisListCount();
+		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		try {
-			ArrayList<ItemHistory> stockHisList = ss.stockHisList(pi);
-			System.out.println("????????????????////");
-			System.out.println(stockHisList);
-			ArrayList<ItemHistory> stockHis = new ArrayList<ItemHistory>(); 
-			for(int i=0;i<stockHisList.size();i++) {
-				if(stockHisList.get(i).getType().equals("EQUIP")) {
-					stockHisList.get(i).setType("비품");
-				}else {
-					stockHisList.get(i).setType("소모품");
-				}
-				
-				if(stockHisList.get(i).getAftName()!=null&&stockHisList.get(i).getAmount()!=null) {
-					stockHisList.get(i).setAmount(null);
-				}
-				
-				/*
-				 * if(stockHis.get(i).getModCol().equals("AMOUNT")) {
-				 * 
-				 * }
-				 */
-				//////////
-				
-				
-				
-			}
-			
-			m.addAttribute("stockHisList", stockHisList);
-			m.addAttribute("pi", pi);
-			
-			return "hoteladmin/mngStock/stock/stockHis";
-			
-		} catch (Exception e) {
-			m.addAttribute("msg", e.getMessage());
-			return "common/errorPage";
-		}
+		
+		ArrayList<OrderHis> orderHisList = ss.selectOrderHisList(pi);
+		
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("orderHisList", orderHisList);
+		
+		return "hoteladmin/mngStock/stock/purchaseHis";
+	}
+
+	@PostMapping("orderHisDetail.st")
+	public ModelAndView orderHisDetail(ModelAndView mv, String rptNo) {
+		
+		int reportNo = Integer.parseInt(rptNo);
+		
+		ArrayList<OrderHisDetail> orderHisDetailList = ss.selectOrderHisDetail(reportNo);
+		
+		mv.addObject("orderHisDetailList", orderHisDetailList);
+		mv.setViewName("jsonView");
+		
+		return mv;
 	}
 	
-	
+	@RequestMapping("updateCheckProduct.st")
+	public String updateCheckProduct(Model model, String rptNo) {
+		
+		int reportNo = Integer.parseInt(rptNo);
+		
+		ArrayList<OrderHisDetail> orderHisDetailList = ss.selectOrderHisDetail(reportNo);
+		
+		
+		int result = ss.insertCheckItem(orderHisDetailList);
+		
+		int result2 = ss.updateOrderHisStatus(reportNo);
+				
+		if(result > 0 && result2 > 0) {
+			return "redirect:/goPurchaseHis.st";
+		}else {
+			model.addAttribute("msg", "물품수령실패");
+			return "common/errorPage";
+		}
+		
+	}
 
 }

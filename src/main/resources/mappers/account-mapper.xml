@@ -19,7 +19,7 @@
 		<result property="accName" column="ACC_NAME" />
 		<result property="accMemo" column="ACC_MEMO" />
 		<result property="cnManager" column="CN_MANAGER" />
-	</resultMap> 
+	</resultMap>
 	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*) FROM

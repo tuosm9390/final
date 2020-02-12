@@ -762,6 +762,25 @@ input[type=number]:disabled {
 	</form>
 
 	<script>
+		//체크인 등록 함수
+		function doCheckIn() {
+			if($(".statusColor").hasClass('mediumseagreen')) {
+				$("#checkinModal").attr("action", "insertCI.ro");
+				$("#checkinModal").submit();
+			} else {
+				$("#rsvNo").val($("#staycode").text());
+				$("#selRoomNumm").val(selRoomNumm);
+				$("#checkinModal").attr("action", "insertRsvCI.ro");
+				$("#checkinModal").submit();
+			}
+		}
+		
+		//예약 등록 함수
+		function doSaveReserv() {
+			$("#checkinModal").attr("action", "insertReserv.re");
+			$("#checkinModal").submit();
+		}
+	 
 		//총금액 변경 함수
 		function changeTotalPrcTxt() {
 			var prc1 = parseInt($("#totalRoom").text().replace(/,/g , '')); 

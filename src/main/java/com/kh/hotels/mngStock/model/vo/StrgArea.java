@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StrgArea {
- 
+
 	private int areaNo;
 	private String strgNo;
 	private String areaName;

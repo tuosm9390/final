@@ -4,7 +4,7 @@ package com.kh.hotels.mngStock.model.vo;
 
 
 public class Stock implements java.io.Serializable{
-	 
+	
 	private int ino;
 	private String iName;
 	private String lCategory;

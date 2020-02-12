@@ -1,21 +1,21 @@
 package com.kh.hotels.mngStock.model.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
-import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
-import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.RepHistory;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
-import com.kh.hotels.mngStock.model.vo.Strg;
-import com.kh.hotels.mngStock.model.vo.StrgArea;
 
 
 public interface StockService {
@@ -27,10 +27,10 @@ public interface StockService {
 
 	ArrayList<Stock> selectStockList(PageInfo pi);
 
-	int getListCount(); 
- 
+	int getListCount();
+
 	ArrayList<Stock> stockDetailList(String iName);
- 
+
 	ArrayList<ItemType> categoryList(ItemType it);
 
 	int insertCategory(ItemType it);
@@ -53,17 +53,24 @@ public interface StockService {
 
 	int getRepairListCount();
 
-	ArrayList<Repair> repairList(PageInfo pi);
 
-	int getStockHisList();
+	int getPurchaseHisListCount();
 
-	ArrayList<ItemHistory> stockHisList(PageInfo pi);
+	ArrayList<OrderHis> selectOrderHisList(PageInfo pi);
 
+	ArrayList<OrderHis> selectOrderHisInfoList();
 
-	ArrayList<Stock> selectSearchStockList(SearchItem s, PageInfo pi);
+	ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo);
 
-	int getSearchStockListCount(SearchItem s);
+	int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList);
 
+	int updateOrderHisStatus(int reportNo);
+
+	ArrayList<RepHistory> repairList(PageInfo pi);
+
+	ArrayList<HashMap<String, Object>> selectRepairDetail(RepHistory rHistory);
+
+	String selectReceiver(int receiver);
 
 
 	

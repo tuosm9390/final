@@ -20,7 +20,7 @@ public class warehouseDaoImpl implements warehouseDao{
 		
 		return sqlSession.insert("Strg.insertWarehouse", st);
 	}
-   
+  
 	@Override
 	public ArrayList<Strg> selectList(SqlSessionTemplate sqlSession) {
 		// TODO Auto-generated method stub

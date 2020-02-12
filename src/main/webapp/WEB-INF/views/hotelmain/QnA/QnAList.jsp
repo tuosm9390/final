@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -189,7 +190,10 @@ cursor: pointer;
 							<label class="title">${ list.qtitle }</label><br>
 							<input type="hidden" id="qno" value="${ list.qno }">
 							<input type="hidden" id="status" value="${ list.pwdStatus }" name="${ list.pwdStatus }">
-							<label>${ list.userName }</label>
+							<label id="userName">
+							<c:set var="userName" value="${ list.userName }"/>
+							${fn:substring(userName,0,1) } * ${fn:substring(userName,2,6) }
+							</label>
 							<label>${ list.qdate }</label>
 							<label>
 							<c:if test="${ list.qtype eq 'ROOM'}">
@@ -335,7 +339,7 @@ cursor: pointer;
 				<form id="pwdCheckForm" method="post">
 					<div class="check-password">
 						<h2 style="font-weight: bold;">비밀번호를 입력해주세요</h2>
-						<input type="text" name="pwd" id="pwd">
+						<input type="password" name="pwd" id="pwd">
 					</div>
 				</form>
 			</div>

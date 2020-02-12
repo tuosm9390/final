@@ -15,7 +15,7 @@ public class ItemType implements java.io.Serializable{
 	private String scategory;
 	
 	public ItemType() {}
- 
+
 	public ItemType(int typeNo, String type, String lcategory, String mcategory, String scategory) {
 		super();
 		this.typeNo = typeNo;

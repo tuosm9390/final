@@ -17,7 +17,7 @@
 	background: rgba(0, 0, 0, 0.5);
 	z-index: 2;
 }
- 
+
 .modal_content {
 	position: absolute;
 	left: 50%;
@@ -93,6 +93,9 @@ cursor: pointer;
 	<script>
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
+				
+				$("#Table .repeatOrder").remove();
+				
 				$(".modal").fadeOut();
 			});
 		});

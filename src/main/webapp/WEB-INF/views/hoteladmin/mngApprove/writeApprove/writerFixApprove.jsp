@@ -212,7 +212,7 @@ textarea {
 				</tr>
 				<tr class="tbl_tit">
 					<td>문서번호</td>
-					<td colspan="3"style="text-align:center;"><input type="text" name="docno" id="docuNo" style="text-align:center;"></td>
+					<td colspan="3"style="text-align:center;"><input type="text" name="docno" id="docuNo" style="text-align:center;" readonly></td>
 					
 					
 				</tr>
@@ -226,7 +226,7 @@ textarea {
 				
 				<tr class="tbl_tit">
 					<td>기안일</td>
-					<td><input type="text" id="txt" placeholder="SYSDATE" name="rptDate"></td>
+					<td><input type="text" id="txt" placeholder="SYSDATE" name="rptDate" readonl"></td>
 					<td >수신자</td>
 					<td colspan="">
 						<select id="receiver" name="sname">
@@ -243,12 +243,12 @@ textarea {
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3"><input type="text" id="txtLong" name="title"></td>
+					<td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;"></td>
 				</tr>
 				<tr>
 					<td>내용</td>
 					<td colspan="3">
-						<textarea style="resize:none;" id="content" name="content"></textarea>
+						<textarea style="resize:none; text-align:center;" id="content" name="content" ></textarea>
 					</td>
 				</tr>
 				

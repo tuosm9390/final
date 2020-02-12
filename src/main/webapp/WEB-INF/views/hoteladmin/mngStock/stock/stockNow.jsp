@@ -13,14 +13,10 @@
 	height: 83px; 
 	margin-top: -50px;
 	}
-
 	.searchCondition{
-  
 	margin-top: -50px;
 	display: inline-block; 
 	width: 100px;
-	
-
 	}
 
 	#titlemsg{
