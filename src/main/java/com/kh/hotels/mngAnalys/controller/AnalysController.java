@@ -78,9 +78,9 @@ public class AnalysController {
 		
 		Map<String, String> map = new HashMap<String, String>();
 		
-		System.out.println("searchCondition : " + searchCondition);
-		System.out.println("startDate : " + startDate);
-		System.out.println("endDate : " + endDate);
+//		System.out.println("searchCondition : " + searchCondition);
+//		System.out.println("startDate : " + startDate);
+//		System.out.println("endDate : " + endDate);
 		
 		map.put("searchCondition", searchCondition);
 		map.put("startDate", startDate);
@@ -145,8 +145,9 @@ public class AnalysController {
 		mv.addObject("monthlyRsvList", json);
 		mv.addObject("monthlyStayList", json1);
 		
+		System.out.println("roomList : " + roomList);
 		ArrayList<String> RoomList = new ArrayList<>();
-		for(int i = 0; i < roomList.size() - 1; i++) {
+		for(int i = 0; i < roomList.size(); i++) {
 			RoomList.add(i, "'" + roomList.get(i).getRt_Name() + "'");
 		}
 		
@@ -203,7 +204,7 @@ public class AnalysController {
 				dailyPaymentList.get(i).setPway("환불");
 			}
 		}
-		System.out.println("dailyPaymentList : " + dailyPaymentList);
+//		System.out.println("dailyPaymentList : " + dailyPaymentList);
 		JSONArray json2 = JSONArray.fromObject(dailyPaymentList);
 		mv.addObject("dailyPaymentList", json2);
 		
@@ -256,8 +257,8 @@ public class AnalysController {
 		// 일별 객실 현황
 		} else if(Condition.equals("dailyRoomStatus")){
 			
-			System.out.println("dailyRsvList : " + dailyRsvList);
-			System.out.println("dailyStayList : " + dailyStayList);
+//			System.out.println("dailyRsvList : " + dailyRsvList);
+//			System.out.println("dailyStayList : " + dailyStayList);
 			if(dailyRsvList.size() > dailyStayList.size()) {
 				for(int i = 0; i < dailyRsvList.size(); i++) {
 					for(int j = 0; j < dailyStayList.size(); j++) {

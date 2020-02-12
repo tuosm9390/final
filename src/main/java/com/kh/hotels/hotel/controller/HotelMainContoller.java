@@ -9,7 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.common.model.vo.Email;
 import com.kh.hotels.hotel.model.exception.QnASelectListException;
 import com.kh.hotels.hotel.model.service.HotelService;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
@@ -40,6 +50,47 @@ public class HotelMainContoller {
 	@Autowired
 	private HotelService hs;
 
+	// 메일 전송 메소드
+	@RequestMapping("sendMail.hmain")
+	public ModelAndView sendEmail(ModelAndView mv, ReservationCheck rsvCheck) {
+		System.out.println("메일 버튼 클릭");
+
+		Properties prop = new Properties();
+		prop.put("mail.smtp.user", "gmail");
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+		prop.put("mail.smtp.port", "465");
+		prop.put("mail.smtp.starttls.enable", "true");
+		prop.put("mail.smtp.auth", "true");
+		prop.put("mail.smtp.socketFactory.port", "465");
+		prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		prop.put("mail.smtp.socketFactory.fallback", "false");
+
+		Authenticator auth = new Email();
+
+		Session sess = Session.getInstance(prop, auth);
+
+		sess.setDebug(true);
+		String host = "http://192.168.30.134:8001/hotels/";
+		MimeMessage msg = new MimeMessage(sess); // 메일의 내용을 담을 객체
+		String sendTitle = "Hotel Boutique 인보이스 발송 메일 입니다.";
+		String sendContent = "메일 발송 확인";
+
+		try {
+			Address userEmailAddr = new InternetAddress("tuosm123@naver.com");
+
+			msg.setSubject(sendTitle);
+			msg.setContent(sendContent, "text/html;charset=UTF-8");
+			msg.addRecipient(Message.RecipientType.TO, userEmailAddr);
+
+			Transport.send(msg);
+
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		mv.setViewName("hotelmain/main/main");
+		return mv;
+	}
 	// 호텔 메인 페이지 메소드
 	@RequestMapping("goMain.hmain")
 	public String showHotelMain(SessionStatus session) {
@@ -213,6 +264,7 @@ public class HotelMainContoller {
 	// 예약 및 결제 결과 메소드
 	@PostMapping("reservationResult.hmain")
 	public ModelAndView InsertReservation(ReservationCheck rsvCheck, ModelAndView mv) {
+
 		System.out.println("rsvCheck : " + rsvCheck);
 		
 		// 예약자 회원번호 호출 메소드

@@ -855,6 +855,7 @@ input[type=text] {
 		spa = 0;
 		standard = 0;
 		suite = 0;
+		event = 0;
 		$.each(monthlyRsvList, function(index, monthlyRsvList){
 			if(monthlyRsvList.rtName == '디럭스'){
 				deluxe = monthlyRsvList.price;
@@ -862,6 +863,8 @@ input[type=text] {
 				spa = monthlyRsvList.price;
 			} else if(monthlyRsvList.rtName == '스탠다드'){
 				standard = monthlyRsvList.price;
+			} else if(monthlyRsvList.rtName == '이벤트'){
+				event = monthlyRsvList.price;
 			} else {
 				suite = monthlyRsvList.price;
 			}
@@ -874,11 +877,13 @@ input[type=text] {
 				spa += monthlyStayList.price;
 			} else if(monthlyStayList.rtName == '스탠다드'){
 				standard += monthlyStayList.price;
+			} else if(monthlyStayList.rtName = '이벤트'){
+				event += monthlyStayList.price;
 			} else {
 				suite += monthlyStayList.price;
 			}
 		});
-		selectMaxList = [standard, deluxe, suite, spa];
+		selectMaxList = [standard, deluxe, suite, spa, event];
 		max = Math.max.apply(null, selectMaxList);
 		
 		increment = 0;
