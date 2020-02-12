@@ -199,13 +199,13 @@
 						<td colspan="6"></td>
 					</tr>
 					<tr style="background:lightgray;" class="tempOrder">
-						<td>NO</td>
-						<td>항목</td>
-						<td>품목명</td>
-						<td>수량</td>
-						<td>공급가액</td>
-						<td>업체명</td>
-						<td>금액</td>
+							<td>구분</td>
+							<td>매입처</td>
+							<td>물품명</td>
+							<td>제조사</td>
+							<td>공급가액</td>
+							<td>수량</td>
+							<td>금액</td>
 					</tr>
 					
 					<tr id="totalPrice">

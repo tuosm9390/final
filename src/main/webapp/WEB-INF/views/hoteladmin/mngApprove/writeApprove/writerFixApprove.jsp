@@ -243,7 +243,7 @@ textarea {
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;"></td>
+					<td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;" autocomplete="off" ></td>
 				</tr>
 				<tr>
 					<td>내용</td>
@@ -288,12 +288,12 @@ textarea {
 							
 						</select>
 					</td>
-					<td><input type="text" class="anoTxt_ino" style="text-align:center;" name="ino"></td>
-					<td><input type="text" class="anoTxt_iname" placeholder="제품명" readonly style="text-align:center;" name="iname"></td>
+					<td><input type="text" class="anoTxt_ino" style="text-align:center;" name="ino" autocomplete="off" ></td>
+					<td><input type="text" class="anoTxt_iname" placeholder="제품명" readonly style="text-align:center;" name="iname" autocomplete="off" ></td>
 						
-						<td><input type="text" class="anoTxt_cname" placeholder="수리 업체명" style="text-align:center;" name="cnName"></td>
+						<td><input type="text" class="anoTxt_cname" placeholder="수리 업체명" style="text-align:center;" name="cnName" autocomplete="off" ></td>
 					
-					<td><input type="text" class="anoTxt_rsn" placeholder="사유" style="text-align:center;" name="rsn"></td>
+					<td><input type="text" class="anoTxt_rsn" placeholder="사유" style="text-align:center;" name="rsn" autocomplete="off" ></td>
 				</tr>
 				
 			</table>
@@ -309,7 +309,7 @@ textarea {
 				</colgroup>
 				<tr>
 					<td colspan="2" id="total">총금액</td>
-					<td colspan="3"><input type="text" id="txtLong" style="text-align:center;" name="totalPrice"></td>
+					<td colspan="3"><input type="text" id="txtLong" style="text-align:center;" name="totalPrice" autocomplete="off" ></td>
 					<td><button id="totalPrice" type="button" onclick="showTotalPrice();">보기</button></td>
 				</tr>
 			</table>

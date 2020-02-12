@@ -173,7 +173,7 @@
 		"AMOUNT",IT.LCATEGORY AS "LCATEGORY",
 		I.VOS AS "VOS", PE.TOT_PRICE AS
 		"TPRICE", PE.PUR_RSN AS "PRSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
-		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG", R.RPT_NO AS "RPT_NO"
+		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG", R.RPT_NO AS "RPT_NO", PUR_CONTENT AS "CONTENT"
 		FROM
 		REPORT R, PUR_REQ PE, MEMBER M, ITEM I,
 		DEPT D, STAFF ST,
@@ -219,7 +219,7 @@
 		RR.CN_CODE AS "CCODE",
 		RR.REP_PRICE AS "RPRICE", CON.CN_NAME AS "CNAME", RR.INO
 		AS
-		"INO",IT.TYPE AS "ITYPE", RR.RPT_NO AS "RPT_NO"
+		"INO",IT.TYPE AS "ITYPE", RR.RPT_NO AS "RPT_NO", REP_CONTENT AS "CONTENT"
 		FROM
 		REPORT R, REP_REQ RR, MEMBER M, ITEM I,
 		DEPT D, STAFF ST,
@@ -256,7 +256,7 @@
 		"AMOUNT",IT.LCATEGORY AS "LCATEGORY",
 		I.VOS AS "VOS", ORQ.TOT_PRICE AS
 		"TPRICE", ORQ.ORDER_RSN AS "ORSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
-		"UP",
+		"UP", ORQ.ORDER_CONTENT AS "CONTENT",
 		CON.CN_NAME AS "CNAME",IT.TYPE AS "ITYPE", I.MFG AS "MFG", ORQ.RPT_NO AS "RPT_NO", ORQ.RCV_REQ_DATE AS "REQDATE"
 		FROM
 		REPORT R, ORDER_REQ
@@ -388,9 +388,9 @@
 	<!-- 구매요청서 값 insert -->
 	<select id="insertPurRequest" parameterType="PurRequest">
 		INSERT INTO
-		PUR_REQ(INO, AMOUNT, TOT_PRICE, PUR_RSN, RPT_NO)
+		PUR_REQ(INO, AMOUNT, TOT_PRICE, PUR_RSN, RPT_NO, PUR_CONTENT)
 		VALUES(#{ino},
-		#{amount}, #{totPrice}, #{content}, #{rptNo})
+		#{amount}, #{totPrice}, #{purRsn}, #{rptNo}, #{content})
 	</select>
 	<select id="selectRepairIname" parameterType="_int"
 		resultType="String">
@@ -426,8 +426,8 @@
 	<!-- 수리 요청서 값 insert -->
 	<select id="insertRepReqList" parameterType="RepRequest">
 		INSERT INTO
-		REP_REQ(INO, CN_CODE, REP_RSN, REP_PRICE, TOT_PRICE, RPT_NO)
-		VALUES(#{ino}, #{cnCode}, #{rsn}, #{price}, #{totalPrice}, #{rptNo})
+		REP_REQ(INO, CN_CODE, REP_RSN, REP_PRICE, TOT_PRICE, RPT_NO, REP_CONTENT)
+		VALUES(#{ino}, #{cnCode}, #{rsn}, #{price}, #{totalPrice}, #{rptNo}, #{content})
 	</select>
 	<!-- cncode가져오기 -->
 	<select id="selectCncode" parameterType="String"
@@ -572,7 +572,7 @@
 		"AMOUNT",IT.LCATEGORY AS "LCATEGORY",
 		I.VOS AS "VOS", PE.TOT_PRICE AS
 		"TPRICE", PE.PUR_RSN AS "PRSN", R.RPT_STATUS AS "RSTATUS", I.UP AS
-		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG", R.RPT_NO AS "RPT_NO", I.INO AS "INO"
+		"UP", IT.TYPE AS "ITYPE", C.CN_NAME AS "CNAME", I.MFG AS "MFG", R.RPT_NO AS "RPT_NO", I.INO AS "INO", PUR_CONTENT AS "CONTENT"
 		FROM
 		REPORT R, PUR_REQ PE, MEMBER M, ITEM I,
 		DEPT D, STAFF ST,
@@ -628,7 +628,7 @@
 	
 	<select id="insertOrderResult" parameterType="OrderRequest">
 		INSERT INTO ORDER_REQ
-		VALUES(#{rptNo}, #{ino}, #{cnCode}, #{amount}, #{totPrice}, #{content}, #{purRptNo}, #{purIno}, TO_DATE(#{rsvReqDate}, 'yy-MM-dd'))
+		VALUES(#{rptNo}, #{ino}, #{cnCode}, #{amount}, #{totPrice}, #{orderRsn}, #{purRptNo}, #{purIno}, TO_DATE(#{rsvReqDate}, 'yy-MM-dd'), #{content})
 	</select>
 	<select id="selectCnCode" parameterType="OrderRequest" resultType="String">
 		SELECT CN_CODE

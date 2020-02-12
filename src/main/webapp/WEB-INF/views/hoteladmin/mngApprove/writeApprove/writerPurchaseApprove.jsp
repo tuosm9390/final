@@ -240,7 +240,7 @@ textarea {
             </tr>
             <tr>
                <td>제목</td>
-               <td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;"></td>
+               <td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;" autocomplete="off" ></td>
             </tr>
             <tr>
                <td>내용</td>
@@ -300,10 +300,10 @@ textarea {
                   </select>
                </td>
                <td >
-               <input type="text" class="vos" name="vosprice"><input type="hidden" name='ino' class='ino'>
+               <input type="text" class="vos" name="vosprice" autocomplete="off" ><input type="hidden" name='ino' class='ino' >
                </td>
-               <td><input type="text" class="anoTxt_price" placeholder="수량" name="amount"></td>
-               <td><input type="text" name="price" class="totalPrice"></td>
+               <td><input type="text" class="anoTxt_price" placeholder="수량" name="amount" autocomplete="off" ></td>
+               <td><input type="text" name="price" class="totalPrice" autocomplete="off" ></td>
             </tr>
             
          </table>
@@ -319,7 +319,7 @@ textarea {
             </colgroup>
             <tr>
                <td colspan="2" id="total">총금액</td>
-               <td colspan="3" style="text-align:center;"><input type="text" id="txtLong_price" style="text-align:center;" name="totPrice"></td>
+               <td colspan="3" style="text-align:center;"><input type="text" id="txtLong_price" style="text-align:center;" name="totPrice" autocomplete="off" ></td>
                <td><button type="button" id="btn">보기</button></td>
             </tr>
          </table>
@@ -408,9 +408,9 @@ $(document).ready(function(){
                plusTable += "<td> <select class='anoTxt_name' name='iname'><option selected disabled hidden>선택해주세요</option></select></td>"
                plusTable += "<td><select class='anoTxt_amount' name='mfg'><option selected disabled hidden>선택해주세요</option></select></td>"
                
-               plusTable += "<td><input type='text' name='vosprice' class='vos'><input type='hidden' name='ino' class='ino'></td>"
-               plusTable += "<td><input type='text' class='anoTxt_price' placeholder='수량' name='amount'></td>"
-               plusTable += "<td><input type='text' name='price' class='totalPrice'></td>"
+               plusTable += "<td><input type='text' name='vosprice' class='vos' autocomplete='off' ><input type='hidden' name='ino' class='ino'></td>"
+               plusTable += "<td><input type='text' class='anoTxt_price' placeholder='수량' name='amount' autocomplete='off'></td>"
+               plusTable += "<td><input type='text' name='price' class='totalPrice' autocomplete='off'></td>"
                plusTable += "</tr>"
                var n = $(".payTbl.purchase");
                

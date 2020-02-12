@@ -33,5 +33,6 @@ public class PurRequest {
 	private int smno;
 	private int mmno;
 	private String stfId;
+	private String purReq;
 	
 }

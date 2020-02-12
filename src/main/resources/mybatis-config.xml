@@ -64,6 +64,9 @@
 		<typeAlias alias="SpendDetail" type="com.kh.hotels.mngAnalys.model.vo.SpendDetail"/>
 		<typeAlias alias="OrderHistory" type="com.kh.hotels.mngApproval.model.vo.OrderHistory"/>
 		<typeAlias alias="RepHistory" type="com.kh.hotels.mngStock.model.vo.RepHistory"/>
+		  <typeAlias alias="Item" type="com.kh.hotels.mngStock.model.vo.Item"/>
+	      <typeAlias alias="OrderHis" type="com.kh.hotels.mngStock.model.vo.OrderHis"/>
+	      <typeAlias alias="OrderHisDetail" type="com.kh.hotels.mngStock.model.vo.OrderHisDetail"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
