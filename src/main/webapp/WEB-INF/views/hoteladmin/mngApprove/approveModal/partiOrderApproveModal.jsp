@@ -96,6 +96,7 @@
 	margin-top:20px;
 	position:relative;
 	bottom:-5px;
+	width:500px;
 }
 .approveBtn button {
 	height:30px;
@@ -137,6 +138,10 @@
 	background:forestgreen;
 	color:white;
 }
+#printApprove {
+	background:black;
+	color:white;
+}
 
 
 </style>
@@ -156,6 +161,7 @@
 			<div class="approveBtn">
 				<button onclick="reject();" id="reject">반려</button>
 				<button onclick="submit();" id="confirm">승인</button>
+				
 			</div>
 			<!-- 결재 버튼 end -->
 			

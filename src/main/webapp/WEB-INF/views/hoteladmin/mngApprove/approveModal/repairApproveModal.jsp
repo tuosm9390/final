@@ -134,6 +134,9 @@
 			<div class="modal_content_real">
 			<div class="totalDiv">
 					<div class="modal_tbl">
+					<div class="approveBtn">
+				<button onclick="print();" id="printApprove"><img src="${ contextPath }/resources/images/print.png" id="printImg"></button>
+			</div>
 						<table id="tbl_modal_repair">
 							<colgroup>
 								<col width="10%">
@@ -153,8 +156,8 @@
 							<tr>
 								<td>기안부서</td>
 								<td colspan="2"></td>
-								<td rowspan="2" class="part"></td>
-								<td rowspan="2" colspan="2" class="part2"></td>
+								<td rowspan="2" class="boss"></td>
+								<td rowspan="2" colspan="2" class="head"></td>
 							</tr>
 							<tr>
 								<td>기안자</td>
@@ -216,8 +219,8 @@
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
 				$(".repairTr").remove();
-				$(".part").text("");
-				$(".part2").text("");
+				$(".boss").text("");
+				$(".head").text("");
 				
 				
 				

@@ -121,6 +121,20 @@
 	input[type=text], input[type=tel], input[type=email] {
 		text-align:center;
 	}
+	.downTbl tr td{
+		padding-right: 58px;
+	    padding-bottom: 10px;
+}
+
+.upTbl {
+	width:1130px;
+	
+}
+.upTbl tr td{
+	padding-right: 58px;
+	padding-bottom: 10px;
+	
+}
 	
 </style> 
  
@@ -140,13 +154,13 @@
 				<h3 style="margin-left:30px; color:#060E33;">기본 정보</h3>
 			</div>
 			<div class="basicInfoArea"><!-- 기본정보 영역 -->
-				<table>
+				<table class="upTbl">
 				<c:forEach var="b" items="${list }">
 					<tr>
 						<td>
 							<label>* 호텔명</label>
 						</td>
-						<td class="secondBox">
+						<td class="secondBox" style="width:200px;">
 							<input type="text" name="hname" id="hnameInput" class="inputBox" value="${b.HNAME }" readonly>
 						</td>
 						<td>
@@ -199,19 +213,19 @@
 				<h3 style="margin-left:30px; color:#060E33;">시스템 정보</h3>
 			</div>
 			<div class="systemInfoArea"><!-- systemInfoArea -->
-				<table>
+				<table class="downTbl">
 				<c:forEach var="b" items="${list }">
 					<tr>
-						<td>
+						<td style="width:156px;">
 							<label>* 입실시간</label>
 						</td>
-						<td>
+						<td style="width:310px;">
 							<select class="checkInTime" name="chkIn">
 							
 								<option value="${b. CHKIN}" selected disabled hidden>${b. CHKIN}</option>
 							</select>
 						</td>
-						<td>
+						<td style="width:130px;">
 							<label>* 퇴실시간</label>
 						</td>
 						<td>
@@ -375,9 +389,6 @@
 				
 			</div><!-- 시스템 정보 영역 끝 -->
 			<hr width="1250px" style="float: left;"><br>
-				<div align="right" style="margin-right:40px;margin-bottom:20px;">
-					<button type="submit" class="nextBtn" onclick="return goNextPage();"><b>다음</b></button>			
-				</div>
 		</div>
 	</div>
 	</form>

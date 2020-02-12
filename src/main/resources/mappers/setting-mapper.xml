@@ -455,6 +455,30 @@
 	JOIN RULE R ON (I.HNAME = R.HNAME)
 	JOIN NOSHOW N ON (I.HNAME = N.HNAME)
     </select>
+    <select id="selectHotelRfdInfo" resultType="java.util.HashMap">
+    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
+		FROM RFD
+		WHERE TERM_TYPE = 'SEASON'
+		AND DAY_TYPE = 'WEEK'
+    </select>
+    <select id="selectRfdSWList" resultType="java.util.HashMap">
+    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
+		FROM RFD
+		WHERE TERM_TYPE = 'SEASON'
+		AND DAY_TYPE = 'WEEKEND'
+    </select>
+      <select id="selectRfdOW" resultType="java.util.HashMap">
+    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
+		FROM RFD
+		WHERE TERM_TYPE = 'OFFSEASON'
+		AND DAY_TYPE = 'WEEK'
+    </select>
+    <select id="selectRfdOWE" resultType="java.util.HashMap">
+    	SELECT TERM_TYPE, DAY_TYPE, RFD_DATE, RFD_RATE
+		FROM RFD
+		WHERE TERM_TYPE = 'OFFSEASON'
+		AND DAY_TYPE = 'WEEKEND'
+    </select>
 
 </mapper>
 

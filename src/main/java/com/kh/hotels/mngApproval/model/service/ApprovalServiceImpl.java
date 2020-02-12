@@ -190,12 +190,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public int insertList(ArrayList<PurRequest> pRequestList) throws ReportException {
 		System.out.println("service전 : " + pRequestList);
-		int docNo = pRequestList.get(0).getDocno();
+		Long docNo = pRequestList.get(0).getDocno();
 		System.out.println("docNo : " + docNo);
 		//Report테이블에 정보 넣기
 		int result = ad.insertPurchase(sqlSession,pRequestList);
+		
 		System.out.println("report에 넣기 : ");
 		//rptNo가져오기
+		
 		int result2 = ad.selectRptNo(sqlSession, docNo);
 		System.out.println("result2 :" + result2);
 		for(int i = 0; i < pRequestList.size(); i++) {
@@ -246,7 +248,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	@Override
 	public int insertRepairRequestList(ArrayList<RepRequest> rRequestList) throws ReportException {
-		int docNo = rRequestList.get(0).getDocno();
+		Long docNo = rRequestList.get(0).getDocno();
 		String Code = "";
 		int result = ad.insertRepReqInfo(sqlSession, rRequestList);
 		int result2 = ad.insertRepReqList(sqlSession, docNo);
@@ -338,30 +340,22 @@ public class ApprovalServiceImpl implements ApprovalService {
 		//int result2 = ad.updateApprovePurRequest(sqlSession, report);
 		ArrayList<HashMap<String, Object>> list = ad.selectOrderRequestList(sqlSession, report.getRptNo());
 		ArrayList<HashMap<String, Object>> list2 = null;
-	System.out.println("list혹쉬 : " + list);
-	System.out.println(list.get(0).get("RPT_TYPE"));
 	
 	if(list.get(0).get("RPT_TYPE").equals("ORDER")) {
-		System.out.println("들어오니?");
 			list2 = new ArrayList<HashMap<String, Object>>();
 			list2 = ad.selectOrderListInfo(sqlSession, report.getRptNo());
-		System.out.println("여기는 나오나혹쉬?");
 		String orderDate = report.getApprDate();
-		System.out.println("orderDate : " + orderDate);
 		String reqDate = (String)list2.get(0).get("REQDATE");
-		System.out.println("reqDate : " + reqDate);
 		int rpt = report.getRptNo();
 		System.out.println("rpt : " + rpt);
 		HashMap<String, Object> hmap = new HashMap<>();
 		hmap.put("orderDate", orderDate);
 		hmap.put("reqDate", reqDate);
 		hmap.put("rpt", rpt);
-		System.out.println("여기까지는 담기나혹시");
 		ArrayList<HashMap<String, Object>> finalList = new ArrayList<HashMap<String, Object>>();
 		finalList.add(hmap);
 		int finalResult = 0;
 		
-		System.out.println("여기들어와라 : " + report.getRptStatus());
 		if(report.getRptStatus().equals("APPR")) {
 			finalResult = ad.insertOrderHis(sqlSession, finalList);
 			return finalResult;
@@ -369,6 +363,21 @@ public class ApprovalServiceImpl implements ApprovalService {
 		else {
 			return result;
 		}
+	}else if(list.get(0).get("RPT_TYPE").equals("REPAIR")){
+		
+		if(report.getRptStatus().equals("APPR")) {
+			
+			int result2 = ad.selectRepairListInfo(sqlSession, report);
+			if(result > 0 && result2 > 0) {
+				return result2;
+			}
+			
+			return result;
+		}else {
+			return result;
+		}
+		
+		
 	}else {
 		return result;
 	}
@@ -406,7 +415,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 
 	@Override
-	public ArrayList<HashMap<String, Object>> selectOrderList(int dnum) {
+	public ArrayList<HashMap<String, Object>> selectOrderList(Long dnum) {
 		
 		ArrayList<HashMap<String, Object>> list = ad.selectOrderList(sqlSession, dnum);
 		
@@ -443,7 +452,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		}
 		
 		//선택한 docuNo로 purRequest의 rptNo, ino 가져오기
-		int docno = oRequestList.get(0).getPurDocuno();
+		Long docno = oRequestList.get(0).getPurDocuno();
 		
 		ArrayList<OrderRequest>list = ad.selectPurRequestInfo(sqlSession, docno);
 		
