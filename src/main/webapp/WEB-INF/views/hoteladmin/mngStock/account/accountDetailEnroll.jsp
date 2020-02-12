@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style> 
+<style>
 	#dtTableDiv{
 	width: 400px;
 	height: 360px;

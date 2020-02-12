@@ -16,7 +16,7 @@
 	}
 
 
- 
+
 	#titlemsgg{
 		width: 220px;
 		height: 50px;

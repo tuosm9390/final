@@ -14,7 +14,7 @@
 	height: 620px;
 	border-radius: 5px;
 	border: 1px solid black;
-	} 
+	}
 	#imgDiv{
 	margin-left: 10px;
 	margin-top: 10px;

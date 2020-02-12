@@ -27,5 +27,6 @@ public class Item {
 	private String strgNo;
 	private int rmNo;
 	private int areaNo;
+	private int unit;
 	
 }

@@ -4,6 +4,57 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="Stock">
+
+	<resultMap type="Item" id="selectItemListResultSet">
+		<result property="ino" column="INO" />
+		<result property="iname" column="INAME" />
+		<result property="up" column="UP" />
+		<result property="vat" column="VAT" />
+		<result property="vos" column="VOS" />
+		<result property="mfg" column="MFG" />
+		<result property="itemStatus" column="ITEM_STATUS" />
+		<result property="brkStatus" column="BRK_STATUS" />
+		<result property="useStatus" column="USE_STATUS" />
+		<result property="typeNo" column="TYPE_NO" />
+		<result property="cnCode" column="CN_CODE" />
+		<result property="siteType" column="SITE_TYPE" />
+		<result property="siteCode" column="SITE_CODE" />
+		<result property="rmNo" column="RM_NO" />
+		<result property="areaNo" column="AREA_NO" />
+		<result property="unit" column="UNIT" />
+		<result property="amount" column="AMOUNT" />
+	</resultMap>
+
+	<resultMap type="OrderHisDetail" id="selectOrderHisDetailResultSet">
+		<result property="rptDate" column="RPT_DATE" />
+		<result property="name" column="NAME" />
+		<result property="ino" column="INO" />
+		<result property="lcategory" column="LCATEGORY" />
+		<result property="mcategory" column="MCATEGORY" />
+		<result property="scategory" column="SCATEGORY" />
+		<result property="iname" column="INAME" />
+		<result property="up" column="UP" />
+		<result property="vat" column="VAT" />
+		<result property="vos" column="VOS" />
+		<result property="cnname" column="CN_NAME" />
+		<result property="amount" column="AMOUNT" />
+	</resultMap>
+
+	<resultMap type="OrderHis" id="selectOrderHisInfoListResultSet">
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="rcvReqDate" column="RCV_REQ_DATE" />
+		<result property="rcvStatus" column="RCV_STATUS" />
+		<result property="totPrice" column="TOT_PRICE" />
+		<result property="rptNo" column="RPT_NO" />
+	</resultMap>
+	
+	<resultMap type="OrderHis" id="orderHisResultSet">
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="rcvReqDate" column="RCV_REQ_DATE" />
+		<result property="totPrice" column="TOT_PRICE" />
+		<result property="rcvStatus" column="RCV_STATUS" />
+		<result property="rptNo" column="RPT_NO" />
+	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.Stock" id="resultSetStock">
 		<id property="ino" column="INO" />
@@ -12,7 +63,7 @@
 		<result property="up" column="UP" />
 		<result property="vat" column="VAT" />
 		<result property="vos" column="VOS" />
-		<result property="mfg" column="MFG" /> 
+		<result property="mfg" column="MFG" />
 		<result property="cnName" column="CN_NAME" />
 		<result property="type" column="TYPE" />
 		<result property="cnt" column="CNT" />
@@ -43,25 +94,6 @@
 		<result property="lcategory" column="LCATEGORY" />
 		<result property="mcategory" column="MCATEGORY" />
 		<result property="scategory" column="SCATEGORY" />
-	</resultMap>
-	
-	<resultMap type="com.kh.hotels.mngStock.model.vo.ItemHistory" id="resultSetHis">
-		<id property="ino" column="INO" />
-		<result property="modDate" column="MOD_DATE" />
-		<result property="modCol" column="MOD_COL" />
-		<result property="befData" column="BEF_DATA" />
-		<result property="aftData" column="AFT_DATA" />
-		<result property="modRsn" column="MOD_RSN" />
-		<result property="unit" column="UNIT" />
-		<result property="befName" column="BEF_NAME" />
-		<result property="aftName" column="AFT_NAME" />
-		<result property="befStrgName" column="BER_STRG_NAME" />
-		<result property="aftStrgName" column="AFT_STRG_NAME" />
-		<result property="befRmNum" column="BEF_RM_NUM" />
-		<result property="aftRmNum" column="AFT_RM_NUM" />
-		<result property="iname" column="INAME" />
-		<result property="type" column="TYPE" />
-		<result property="amount" column="AMOUNT" />
 	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.Conn" id="resultSetConn">
@@ -145,17 +177,9 @@
 
 	
 	<!-- 수리 현황 리스트 조회-->
-	<select id="getRepairListCount" resultType="_int">
-		SELECT COUNT(*) FROM(
+	<select id="selectRepairList" resultMap="resultSetRepair">
 		SELECT RPT_NO,RPT_TITLE,RPT_STATUS FROM REP_REQ R
 		JOIN REPORT USING(RPT_NO)
-        ORDER BY RPT_NO ASC)
-	</select>
-	
-	<select id="getRepairList" resultMap="resultSetRepair">
-		SELECT RPT_NO,RPT_TITLE,RPT_STATUS FROM REP_REQ R
-		JOIN REPORT USING(RPT_NO)
-        ORDER BY RPT_NO ASC
 	</select>	
 	
 	<!-- 분류 리스트 -->
@@ -231,53 +255,44 @@
 		INSERT INTO ITEM_HIS VALUES(#{ino},TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'),#{modCol},#{befData},#{aftData},'UPDATE')
 	</insert>
 	
-	<insert id="deleteStockHis" parameterType="His">
-		INSERT INTO ITEM_HIS VALUES(#{ino},TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'),'ALL','ALL',' ','DELETE')
-	</insert>
-	
-	<!-- <select id="">
-		SELECT OH.ORDER_NO, OH.RCV_REQ_DATE, TOT_PRICE, RCV_STATUS, C.CN_NAME, I.INAME
-		FROM ORDER_HIS OH
-		JOIN REPORT R ON(OH.RPT_NO = R.RPT_NO)
-		JOIN ORDER_REQ ORDERR ON(R.RPT_NO = ORDERR.RPT_NO)
-		JOIN CONN C ON(ORDERR.CN_CODE = C.CN_CODE)
-		JOIN ITEM I ON (ORDERR.INO = I.INO)
-		JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
-		ORDER BY ORDER_NO DESC;
-	</select> -->
-	
-	<select id="getStockHisCount" resultType="_int">
-	  SELECT COUNT(*) FROM (
-	  SELECT T.TYPE,H.INO,MOD_DATE,MOD_COL,BEF_DATA,AFT_DATA,MOD_RSN,J8.AMOUNT AS AMOUNT,J1.AREA_NAME AS BEF_NAME, J2.AREA_NAME AS AFT_NAME,J3.STRG_NAME AS BEF_STRG_NAME,J4.STRG_NAME AS AFT_STRG_NAME,J5.RM_NUM AS BEF_RM_NUM,J6.RM_NUM AS AFT_RM_NUM,J7.INAME
-      FROM ITEM_HIS H
-      JOIN ITEM I ON (I.INO=H.INO)
-      LEFT JOIN ITEM_TYPE T ON (I.TYPE_NO=T.TYPE_NO)
-      LEFT JOIN (SELECT AREA_NAME,TO_CHAR(AREA_NO) AS "AREA_NO"  FROM STRG_AREA) J1 ON (H.BEF_DATA = J1.AREA_NO)
-      LEFT JOIN (SELECT AREA_NAME,TO_CHAR(AREA_NO) AS "AREA_NO" FROM STRG_AREA) J2 ON (H.AFT_DATA = J2.AREA_NO)
-      LEFT JOIN (SELECT STRG_NO,STRG_NAME FROM STRG) J3 ON (H.BEF_DATA = J3.STRG_NO)
-      LEFT JOIN (SELECT STRG_NO,STRG_NAME FROM STRG) J4 ON (H.AFT_DATA = J4.STRG_NO)
-      LEFT JOIN (SELECT TO_CHAR(RM_NO) AS "RM_NO" , RM_NUM AS RM_NUM FROM ROOM) J5 ON (H.BEF_DATA = J5.RM_NO)
-      LEFT JOIN (SELECT TO_CHAR(RM_NO) AS "RM_NO" , RM_NUM AS RM_NUM FROM ROOM) J6 ON (H.AFT_DATA = J6.RM_NO)
-      LEFT JOIN (SELECT TO_CHAR(INO) AS INO,INAME FROM ITEM) J7 ON(H.INO=J7.INO)
-      LEFT JOIN (SELECT TO_CHAR(AMOUNT) AS "AMOUNT" FROM ITEM) J8 ON(H.AFT_DATA=J8.AMOUNT)
-      ORDER BY MOD_DATE DESC)
+	<select id="getPurchaseHisListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ORDER_HIS
 	</select>
 	
 	
-	<select id="getStockHisList" resultMap="resultSetHis">
-	  SELECT T.TYPE,H.INO,MOD_DATE,MOD_COL,BEF_DATA,AFT_DATA,MOD_RSN,J8.AMOUNT AS AMOUNT,J1.AREA_NAME AS BEF_NAME, J2.AREA_NAME AS AFT_NAME,J3.STRG_NAME AS BEF_STRG_NAME,J4.STRG_NAME AS AFT_STRG_NAME,J5.RM_NUM AS BEF_RM_NUM,J6.RM_NUM AS AFT_RM_NUM,J7.INAME
-      FROM ITEM_HIS H
-      JOIN ITEM I ON (I.INO=H.INO)
-      LEFT JOIN ITEM_TYPE T ON (I.TYPE_NO=T.TYPE_NO)
-      LEFT JOIN (SELECT AREA_NAME,TO_CHAR(AREA_NO) AS "AREA_NO"  FROM STRG_AREA) J1 ON (H.BEF_DATA = J1.AREA_NO)
-      LEFT JOIN (SELECT AREA_NAME,TO_CHAR(AREA_NO) AS "AREA_NO" FROM STRG_AREA) J2 ON (H.AFT_DATA = J2.AREA_NO)
-      LEFT JOIN (SELECT STRG_NO,STRG_NAME FROM STRG) J3 ON (H.BEF_DATA = J3.STRG_NO)
-      LEFT JOIN (SELECT STRG_NO,STRG_NAME FROM STRG) J4 ON (H.AFT_DATA = J4.STRG_NO)
-      LEFT JOIN (SELECT TO_CHAR(RM_NO) AS "RM_NO" , RM_NUM AS RM_NUM FROM ROOM) J5 ON (H.BEF_DATA = J5.RM_NO)
-      LEFT JOIN (SELECT TO_CHAR(RM_NO) AS "RM_NO" , RM_NUM AS RM_NUM FROM ROOM) J6 ON (H.AFT_DATA = J6.RM_NO)
-      LEFT JOIN (SELECT TO_CHAR(INO) AS INO,INAME FROM ITEM) J7 ON(H.INO=J7.INO)
-      LEFT JOIN (SELECT TO_CHAR(AMOUNT) AS "AMOUNT" FROM ITEM) J8 ON(H.AFT_DATA=J8.AMOUNT)
-      ORDER BY MOD_DATE DESC
+	<select id="selectOrderHisList" resultMap="orderHisResultSet">
+		SELECT DISTINCT OH.ORDER_NO, OH.RCV_REQ_DATE, TOT_PRICE, RCV_STATUS, OH.RPT_NO
+		FROM ORDER_HIS OH
+		JOIN REPORT R ON(OH.RPT_NO = R.RPT_NO)
+		JOIN ORDER_REQ ORDERR ON(R.RPT_NO = ORDERR.RPT_NO)
+        ORDER BY ORDER_NO DESC
+	</select>
+	
+	<select id="selectOrderHisInfoList" resultMap="selectOrderHisInfoListResultSet">
+		SELECT DISTINCT OH.ORDER_NO, OH.RCV_REQ_DATE, TOT_PRICE, RCV_STATUS, OH.RTP_NO
+		FROM ORDER_HIS OH
+		JOIN REPORT R ON(OH.RPT_NO = R.RPT_NO)
+		JOIN ORDER_REQ ORDERR ON(R.RPT_NO = ORDERR.RPT_NO)
+        ORDER BY ORDER_NO DESC
+	</select>
+	
+	<select id="selectOrderHisDetail" parameterType="_int" resultMap="selectOrderHisDetailResultSet">
+		SELECT RPT_DATE, NAME, INO, LCATEGORY, MCATEGORY, SCATEGORY, INAME, UP, VAT, VOS, C.CN_NAME, OREQ.AMOUNT
+		FROM REPORT R
+		JOIN MEMBER M USING(MNO)
+		JOIN ORDER_REQ OREQ USING(RPT_NO)
+		JOIN ITEM I USING(INO)
+		JOIN ITEM_TYPE IT USING(TYPE_NO)
+		JOIN CONN C ON (I.CN_CODE = C.CN_CODE)
+		WHERE RPT_NO = #{reportNo}
+	</select>
+	
+	<select id="selectItemList" parameterType="OrderHisDetail" resultMap="selectItemListResultSet">
+		SELECT I.INO, I.INAME, UP, I.VAT, I.VOS, MFG, I.ITEM_STATUS, I.BRK_STATUS, I.USE_STATUS, I.TYPE_NO, I.CN_CODE, I.SITE_TYPE, I.SITE_CODE, I.RM_NO, AREA_NO, I.UNIT, OREQ.AMOUNT
+		FROM ITEM I
+		LEFT JOIN ORDER_REQ OREQ ON(I.INO = OREQ.INO)
+		WHERE I.INO = #{ino} AND RPT_NO = #{rptNo};
 	</select>
 	
 </mapper>

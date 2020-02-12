@@ -15,4 +15,3 @@ public class His {
 	String aftData;
 	String modRsn;
 } 
- 

@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService{
 	public int getListCount() {
 		// TODO Auto-generated method stub
 		return ad.getListCount(sqlSession);
-	} 
+	}
 
 	@Override
 	public ArrayList<Conn> selectAccountList(PageInfo pi) {

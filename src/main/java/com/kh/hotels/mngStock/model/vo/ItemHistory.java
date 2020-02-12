@@ -15,7 +15,7 @@ public class ItemHistory {
 	private String befData;
 	private String aftData;
 	private String modRsn;
-	private int unit; 
+	private int unit;
 	private String befName;
 	private String aftName;
 	private String befStrgName;

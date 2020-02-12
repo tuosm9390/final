@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style> 
+<style>
 	#TopTable{
 		width: 100%;
 		border-collapse: collapse;

@@ -12,7 +12,7 @@
 	 .top-div{
 	width: 79%;
 	height: 100px; 
-	}  
+	} 
 	#Table{
 	width:100%;
 	border-collapse: collapse;
