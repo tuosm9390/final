@@ -14,6 +14,8 @@ import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
@@ -183,6 +185,38 @@ public class StockServiceImpl implements StockService{
 		String name = sd.selectReceiverName(sqlSession, receiver);
 		
 		return name;
+	}
+
+	@Override
+	public int getPurchaseHisListCount() {
+
+		return sd.getPurchaseHisListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisList(PageInfo pi) {
+
+		return sd.selectOrderHisList(pi,sqlSession);
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisInfoList() {
+		
+		return sd.selectOrderHisInfoList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo) {
+		
+		return sd.selectOrderHisDetail(reportNo, sqlSession);
+	}
+
+	@Override
+	public int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList) {
+		
+		ArrayList<Item> itemList = sd.selectItemList(sqlSession, orderHisDetailList);
+		
+		return sd.insertItemList(sqlSession, itemList);
 	}
 
 	

@@ -13,6 +13,8 @@ import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
@@ -140,6 +142,56 @@ public class StockDaoImpl implements StockDao{
 	}
 
 	@Override
+	public int getPurchaseHisListCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("Stock.getPurchaseHisListCount");
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisList(PageInfo pi, SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHis> orderHisList = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		orderHisList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisList", null, rowBounds);
+		
+		return orderHisList;
+	}
+
+	@Override
+	public ArrayList<OrderHis> selectOrderHisInfoList(SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHis> orderHisInfoList = null;
+		
+		orderHisInfoList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisInfoList");
+		
+		return orderHisInfoList;
+	}
+
+	@Override
+	public ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo, SqlSessionTemplate sqlSession) {
+		
+		ArrayList<OrderHisDetail> orderHisDetailList = null;
+		
+		orderHisDetailList = (ArrayList)sqlSession.selectList("Stock.selectOrderHisDetail", reportNo);
+		
+		return orderHisDetailList;
+	}
+
+	@Override
+	public ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList) {
+
+		ArrayList<Item> itemList = null;
+		
+		itemList = (ArrayList)sqlSession.selectList("Stock.selectItemList", orderHisDetailList);
+		
+		return itemList;
+	}
+
+
 	public ArrayList<String> selectRepairInfo(SqlSessionTemplate sqlSession, ArrayList<RepHistory> repList) {
 		
 		ArrayList<String> list = new ArrayList<>();
