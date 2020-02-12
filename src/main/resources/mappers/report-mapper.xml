@@ -5,6 +5,7 @@
 
 <mapper namespace="Report">
 	<resultMap id="purRequestResultSet" type="PurRequest">
+	
 		<result property="rptNo" column="RPT_NO"></result>
 		<result property="ino" column="INO"></result>
 		<result property="cnCode" column="CN_CODE"></result>
@@ -12,15 +13,16 @@
 		<result property="totPrice" column="TOT_PRICE"></result>
 		<result property="purRsn" column="PUR_RSN"></result>
 		<result property="deptNo" column="DEPT_NO"></result>
-		<result property="mName" column="NAME"></result>
+		<result property="mname" column="NAME"></result>
 		<result property="rptDate" column="RPT_DATE"></result>
-		<result property="sName" column="NAME"></result>
+		<result property="sname" column="NAME"></result>
 		<result property="title" column="RPT_TITLE"></result>
 		<result property="type" column="TYPE"></result>
 		<result property="cname" column="CN_NAME"></result>
 		<result property="iname" column="INAME"></result>
 		<result property="mfg" column="MFG"></result>
 		<result property="vosprice" column="VOS"></result>
+		<result property="mname" column="mname" />
 	</resultMap>
 
 	<resultMap type="com.kh.hotels.mngApproval.model.vo.Report"
