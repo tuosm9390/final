@@ -226,7 +226,7 @@ textarea {
 					<td style="text-align:center;"><input type="text" name="docno" id="docuNo" readonly></td>
 					<td>입고 요청일</td>
 					<td>
-						<input type="text" id="insertDate" placeholder="입고요청 날짜를 선택해주세요" style="width:200px; text-align:center; border-radius:2px; border:1px solid lightgray; height:25px;" >
+						<input type="text" id="insertDate" placeholder="입고요청 날짜를 선택해주세요" style="width:200px; text-align:center; border-radius:2px; border:1px solid lightgray; height:25px;" autocomplete="off" >
 						<input type="hidden" id="orderDate" name="orderDate" value="">
 					</td>
 					
@@ -253,7 +253,7 @@ textarea {
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;"></td>
+					<td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;" autocomplete="off" ></td>
 				</tr>
 				<tr>
 					<td>내용</td>
@@ -307,7 +307,7 @@ textarea {
 				</colgroup>
 				<tr>
 					<td colspan="2" id="total">총금액</td>
-					<td colspan="5"><input type="text" id="txtLong_price" style="text-align:center;" name="totPrice"></td>
+					<td colspan="5"><input type="text" id="txtLong_price" style="text-align:center;" name="totPrice" autocomplete="off" ></td>
 				</tr>
 			</table>
 			</div>
@@ -431,7 +431,7 @@ textarea {
 				  var priceBefore = list.VOS * list.AMOUNT;
 				  var price = priceBefore*1;
 				  console.log(list.VOS);
-				  $(".payTbl.purchase").find(".tempOrder").after("<tr class='repeatOrder'><td><input class='orderTxt' type='text' value='"+ list.ITYPE + "' name='type'></td><td><input class='orderTxt' type='text' value='" + list.CNAME + "' name='cname'></td><td><input class='orderTxt' type='text' value='" + list.MFG + "' name='mfg'></td><td><input class='orderTxt' type='text' value='" + list.INAME + "' name='iname'><input type='hidden' value='" + list.INO +"' name='ino'></td><td><input class='orderTxt' type='text' value='" + list.VOS +"' name='vos'></td><td><input class='orderTxt' type='text' value='" + list.AMOUNT + "' name='amount'></td><td><input class='orderTxt' type='text' value='" + price + "' name='price'></td></tr>");
+				  $(".payTbl.purchase").find(".tempOrder").after("<tr class='repeatOrder'><td><input class='orderTxt' type='text' value='"+ list.ITYPE + "' name='type'></td><td><input class='orderTxt' type='text' value='" + list.CNAME + "' name='cname'></td><td><input class='orderTxt' type='text' value='" + list.MFG + "' name='mfg'></td><td><input class='orderTxt' type='text' value='" + list.INAME + "' name='iname'><input type='hidden' value='" + list.INO +"' name='ino'></td><td><input class='orderTxt' type='text' value='" + list.VOS +"' name='vos'></td><td><input class='orderTxt' type='text' value='" + list.AMOUNT + "' name='amount'></td><td><input class='orderTxt' type='text' value='" + price + "' name='price'><input type='hidden' name='rsn' value='" + list.PRSN +"'></td></tr>");
 			 	  if(index == 0) {
 			 		  totPrice = price;
 			 	  }else {

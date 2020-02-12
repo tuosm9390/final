@@ -82,6 +82,7 @@
 	border: 1px solid lightgray;
 	width: 1000px;
 	margin-top: 2px;
+	overflow-y :auto;
 	}
 	#line{
 		width: 145px;
@@ -148,7 +149,7 @@ width:1000px;
 		
 	<div id="purDivv">
 	
-	<table id="Table">
+	<table id="Table" style="width: 100%">
 		<tr>
 			<th><input type=checkbox></th>
 			<th>구분</th>
@@ -158,14 +159,14 @@ width:1000px;
 			<th>변동일자</th>
 			<th>창고</th>
 			<th>구역명</th>
-			<th>객실번호<th>
+			<th>객실번호</th>
 		</tr>
 		
 		
-		 <c:forEach var="i"  items="${stockHisList}">
+		 <c:forEach var="i"  items="${stockHis}">
 		<tr>
 		<td><input type=checkbox></td>
-		<td><c:out value="${i.type}"/></td>
+		<td><c:if test="${i.type=='CONS'}">소모품</c:if> <c:if test="${i.type=='EQUIP'}">비품</c:if></td>
 		<td><c:out value="${i.ino}"/></td>
 		<td style="color: #005B9E"><c:out value="${i.iname}"/></td>
 		<td><c:out value="${i.amount}"/></td>
@@ -179,7 +180,7 @@ width:1000px;
 	</table>
 	</div><!-- purDivv end -->
   	
-  	<!-- 페이저 시작 -->
+ <%--  	<!-- 페이저 시작 -->
 			<!-- 페이징 영역 시작 -->
 			<div id="pager_wrap" align="center">
 				<ul class="pager_cnt clearfix add">
@@ -223,7 +224,7 @@ width:1000px;
 				</ul>
 			</div>
 		
-			<!-- 페이징 영역 종료 -->
+			<!-- 페이징 영역 종료 --> --%>
   
   
   

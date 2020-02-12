@@ -93,6 +93,7 @@ cursor: pointer;
 	<script>
 		$(document).ready(function() {
 			$(".btn_close").click(function() {
+				$(".orderHisDetailTable tr:not(.thArea)").remove();
 				$(".modal").fadeOut();
 			});
 		});

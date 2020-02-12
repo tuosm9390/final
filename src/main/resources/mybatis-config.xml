@@ -5,6 +5,7 @@
    
 <configuration>
 	<typeAliases>
+<<<<<<< src/main/resources/mybatis-config.xml
 		<typeAlias type="com.kh.hotels.mngMember.model.vo.Member" alias="Member" />
 		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SettingRoomType" alias="SettingRoomType" />
 		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SearchStaff" alias="SearchStaff" />
@@ -64,6 +65,7 @@
 		<typeAlias type="com.kh.hotels.mngAnalys.model.vo.SpendDetail" alias="SpendDetail" />
 		<typeAlias type="com.kh.hotels.mngApproval.model.vo.OrderHistory" alias="OrderHistory" />
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.RepHistory" alias="RepHistory" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.ItemHistory" alias="ItemHistory"/>
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Item" alias="Item" />
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.OrderHis" alias="OrderHis" />
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.OrderHisDetail" alias="OrderHisDetail" />
