@@ -16,8 +16,8 @@
 	#botTable{
 	border-collapse: collapse;
 	width: 100%;
-	}
-	.same{
+	} 
+	.same{ 
 	display: inline-block; 
 
 	margin-top: 20px;

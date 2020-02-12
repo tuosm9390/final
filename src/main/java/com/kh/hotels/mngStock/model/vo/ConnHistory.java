@@ -13,7 +13,7 @@ public class ConnHistory {
 	private String modCol;
 	private String modDate;
 	private String befData;
-	private String aftData;
+	private String aftData; 
 	private String modRsn;
 	
 }

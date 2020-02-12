@@ -14,7 +14,7 @@ public interface AccountService {
 	ArrayList<Conn> selectDetailList(String cnCode);
 
 	int insertAcc(Conn c);
-
+ 
 	int insertDetailAcc(Conn c);
 
 	int updateDetail(Conn c);

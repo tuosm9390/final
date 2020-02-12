@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Strg {
-
+ 
 	private String strgNo;
 	private String strgName;
 	private String strgStatus;

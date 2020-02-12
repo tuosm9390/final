@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +24,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.Service.StockService;
 import com.kh.hotels.mngStock.model.Service.warehouseService;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
-import com.kh.hotels.mngStock.model.vo.OrderHis;
-import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -48,7 +47,7 @@ public class StockController {
 	private StockService ss;
 	@Autowired
 	private warehouseService ws;
-	
+	 
 	@RequestMapping("selectStock.sto")
 	public String selectStockList(HttpServletRequest request, Model  m) {
 		
@@ -274,7 +273,7 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 	st.setAmount(amount);
 	st.setStrgName(strgName);
 	if(rmNo==0) {
-		
+		st.setRmNo(0);
 	}else {
 		st.setRmNo(rmNo);
 	}
@@ -285,32 +284,59 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 	
 	if(result>0) {
 		if(st.getStrgName().equals(zstrgName)) {
+			h.setIno(zino);
+			h.setModCol("STRG_NO");
+			h.setBefData(zstrgName);
+			h.setAftData(strgName);
+			int result1 = ss.updateStockHis(h);
 		}else {
 			h.setIno(zino);
 			h.setModCol("STRG_NO");
-			h.setBefData(strgName);
-			h.setAftData(zstrgName);
+			h.setBefData(zstrgName);
+			h.setAftData(strgName);
 			int result1 = ss.updateStockHis(h);
 		}
+		
 		if(st.getAmount()!=zamount) {
 			h.setIno(zino);
 			h.setModCol("AMOUNT");
-			h.setBefData(amount+"");
-			h.setAftData(zamount+"");
+			h.setBefData(zamount+"");
+			h.setAftData(amount+"");
+			int result2 = ss.updateStockHis(h);
+		}else {
+			h.setIno(zino);
+			h.setModCol("AMOUNT");
+			h.setBefData(zamount+"");
+			h.setAftData(amount+"");
 			int result2 = ss.updateStockHis(h);
 		}
+		
 		if(st.getAreaNo()!=zareaNo) {
 			h.setIno(zino);
 			h.setModCol("AREA_NO");
-			h.setBefData(areaNo+"");
-			h.setAftData(zareaNo+"");
+			h.setBefData(zareaNo+"");
+			h.setAftData(areaNo+"");
 			int result3 = ss.updateStockHis(h);
+			h.setAftData(null);
+		}else {
+			h.setIno(zino);
+			h.setModCol("AREA_NO");
+			h.setBefData(zareaNo+"");
+			h.setAftData(areaNo+"");
+			int result3 = ss.updateStockHis(h);
+			h.setAftData(null);
 		}
 		if(st.getRmNo()!=zrmNo) {
 			h.setIno(zino);
 			h.setModCol("RM_NO");
-			h.setBefData(rmNo+"");
-			h.setAftData(zrmNo+"");
+			h.setBefData(zrmNo+"");
+			h.setAftData(rmNo+"");
+			int result4 = ss.updateStockHis(h);
+		}else {
+			h.setIno(zino);
+			h.setModCol("RM_NO");
+			h.setBefData(zrmNo+"");
+			h.setAftData(rmNo+"");
 			int result4 = ss.updateStockHis(h);
 		}
 		
@@ -325,16 +351,9 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 
 
 	@PostMapping("searchItem.sto")
-	public String searchItem(Model m ,SearchItem s) {
+	public String searchItem(HttpServletRequest request,Model model ,SearchItem s) {
 		
 		ArrayList<Stock> searchList = ss.serachList(s);
-		
-		return "redirect:selectStock.sto";
-		
-	}
-	
-	@GetMapping("goPurchaseHis.st")
-	public String showPurchaseHis(HttpServletRequest request, Model model) {
 		
 		int currentPage = 1;
 		
@@ -342,42 +361,74 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 		
-		int listCount = ss.getPurchaseHisListCount();
-		
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
-		ArrayList<OrderHis> orderHisList = ss.selectOrderHisList(pi);
-		
-		
-		model.addAttribute("pi", pi);
-		model.addAttribute("orderHisList", orderHisList);
-		
-		return "hoteladmin/mngStock/stock/purchaseHis";
-	}
+		int searchStockList = ss.getSearchStockListCount(s);
 
-	@PostMapping("orderHisDetail.st")
-	public ModelAndView orderHisDetail(ModelAndView mv, String rptNo) {
+		PageInfo pi = Pagination.getPageInfo(currentPage, searchStockList);
 		
-		int reportNo = Integer.parseInt(rptNo);
+		ArrayList<Stock> searchClientList = ss.selectSearchStockList(s, pi);
 		
-		ArrayList<OrderHisDetail> orderHisDetailList = ss.selectOrderHisDetail(reportNo);
+		model.addAttribute("check", "ok");
+		/*
+		 * model.addAttribute("searchOption", searchOption);
+		 * model.addAttribute("searchContent", searchContent);
+		 * model.addAttribute("clientCount", clientCount);
+		 */
+		model.addAttribute("clientList", searchClientList);
+		model.addAttribute("pi", pi);
 		
-		mv.addObject("orderHisDetailList", orderHisDetailList);
-		mv.setViewName("jsonView");
+		return "redirect:selectStock.sto";
 		
-		return mv;
 	}
 	
-	@RequestMapping("updateCheckProduct.st")
-	public String updateCheckProduct(Model model, String rptNo) {
+	/////////////////////////////////////////////////////
+	@RequestMapping("selectStockHis.sto")
+	public String selectStockHis(HttpServletRequest request,Model m){
 		
-		int reportNo = Integer.parseInt(rptNo);
+		int currentPage = 1;
 		
-		ArrayList<OrderHisDetail> orderHisDetailList = ss.selectOrderHisDetail(reportNo);
-		
-		int result = ss.insertCheckItem(orderHisDetailList);
-		
-		return "";
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		int listCount = ss.getStockHisList();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		try {
+			ArrayList<ItemHistory> stockHisList = ss.stockHisList(pi);
+			System.out.println("????????????????////");
+			System.out.println(stockHisList);
+			ArrayList<ItemHistory> stockHis = new ArrayList<ItemHistory>(); 
+			for(int i=0;i<stockHisList.size();i++) {
+				if(stockHisList.get(i).getType().equals("EQUIP")) {
+					stockHisList.get(i).setType("비품");
+				}else {
+					stockHisList.get(i).setType("소모품");
+				}
+				
+				if(stockHisList.get(i).getAftName()!=null&&stockHisList.get(i).getAmount()!=null) {
+					stockHisList.get(i).setAmount(null);
+				}
+				
+				/*
+				 * if(stockHis.get(i).getModCol().equals("AMOUNT")) {
+				 * 
+				 * }
+				 */
+				//////////
+				
+				
+				
+			}
+			
+			m.addAttribute("stockHisList", stockHisList);
+			m.addAttribute("pi", pi);
+			
+			return "hoteladmin/mngStock/stock/stockHis";
+			
+		} catch (Exception e) {
+			m.addAttribute("msg", e.getMessage());
+			return "common/errorPage";
+		}
 	}
+	
+	
 
 }

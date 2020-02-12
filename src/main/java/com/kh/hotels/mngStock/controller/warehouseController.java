@@ -22,7 +22,7 @@ import com.kh.hotels.mngStock.model.vo.StrgArea;
 public class warehouseController {
 	@Autowired
 	private warehouseService ws;
-	
+	 
 	@PostMapping("insert.war")
 	public String insertWarehouse(Model m, Strg st) {
 		System.out.println("insert m : " + m);

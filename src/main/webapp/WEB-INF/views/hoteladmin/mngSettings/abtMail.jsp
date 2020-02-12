@@ -16,7 +16,7 @@
 	} 
 	#mailtText{
 	color: #3498DB;
-	}
+	} 
 	#mailSet:hover{
 	cursor: pointer;
 	}

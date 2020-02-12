@@ -17,7 +17,7 @@
 	background: rgba(0, 0, 0, 0.5);
 	z-index: 2;
 }
-
+ 
 .modal_contentState {
 	position: absolute;
 	left: 50%;

@@ -16,7 +16,7 @@
 		border-right-width:1px;
 		border-right-style:solid;
 		border-right-color:lightgray;
-	}
+	}  
 	.settingMenubar{
 		list-style: none;
 		position: relative;

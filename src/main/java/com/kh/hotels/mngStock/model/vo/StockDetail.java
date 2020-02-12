@@ -16,7 +16,7 @@ public class StockDetail {
 	private int vat;
 	private int up;
 	private String mfg;
-	private String cnname;
+	private String cnname; 
 	private String strgname;
 	private String areaname;
 }

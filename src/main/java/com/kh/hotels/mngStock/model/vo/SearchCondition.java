@@ -12,5 +12,5 @@ public class SearchCondition {
 	private String name;
 	private String status;
 	
-	
+	 
 }

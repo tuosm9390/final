@@ -13,7 +13,7 @@ public class Conn {
 	private String cnName;
 	private String ownerName;
 	private String cnPhone;
-	private String cnEmail;
+	private String cnEmail; 
 	private String cnItem;
 	private String cnStatus;
 	private String cnAdd;

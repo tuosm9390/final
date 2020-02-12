@@ -17,7 +17,7 @@
 	#imgDivv{
 	margin-left: 320px; 
 	margin-top: 10px;
-	
+	 
 	
 	}
 	.samee{

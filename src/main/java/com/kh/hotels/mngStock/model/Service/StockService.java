@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
-import com.kh.hotels.mngStock.model.vo.OrderHis;
-import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -28,9 +28,9 @@ public interface StockService {
 	ArrayList<Stock> selectStockList(PageInfo pi);
 
 	int getListCount();
-
+ 
 	ArrayList<Stock> stockDetailList(String iName);
-
+ 
 	ArrayList<ItemType> categoryList(ItemType it);
 
 	int insertCategory(ItemType it);
@@ -55,15 +55,14 @@ public interface StockService {
 
 	ArrayList<Repair> repairList(PageInfo pi);
 
-	int getPurchaseHisListCount();
+	int getStockHisList();
 
-	ArrayList<OrderHis> selectOrderHisList(PageInfo pi);
+	ArrayList<ItemHistory> stockHisList(PageInfo pi);
 
-	ArrayList<OrderHis> selectOrderHisInfoList();
 
-	ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo);
+	ArrayList<Stock> selectSearchStockList(SearchItem s, PageInfo pi);
 
-	int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList);
+	int getSearchStockListCount(SearchItem s);
 
 
 

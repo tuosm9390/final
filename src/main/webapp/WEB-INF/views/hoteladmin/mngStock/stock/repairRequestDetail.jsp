@@ -14,7 +14,7 @@
 	.samee{
 	display: inline-block;
 
-	}
+	} 
 	
 	#resultTap{
 	background-color: lightgray;

@@ -15,7 +15,7 @@
         float: left;
         box-sizing: border-box;
     }
- 
+  
     .borderDiv{
     display:inline-block;
     width:15%;
