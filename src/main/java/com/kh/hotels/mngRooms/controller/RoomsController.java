@@ -34,7 +34,7 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class RoomsController {
-	
+	 
 	@Autowired
 	private RoomsService rs;
 	

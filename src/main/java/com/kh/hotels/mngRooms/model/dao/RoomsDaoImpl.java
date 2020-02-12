@@ -20,7 +20,7 @@ import com.kh.hotels.mngRooms.model.voEtc.RsvMemo;
 
 @Repository
 public class RoomsDaoImpl implements RoomsDao {
-
+ 
 	@Override
 	public ArrayList<RoomList> viewRoomList(SqlSessionTemplate sqlSession) throws RoomListException {
 		ArrayList<RoomList> roomList = (ArrayList) sqlSession.selectList("Rooms.viewRoomList");

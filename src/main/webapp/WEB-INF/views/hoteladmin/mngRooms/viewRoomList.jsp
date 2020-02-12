@@ -14,7 +14,7 @@
 	float: right;
 	display: inline;
 }
-
+ 
 select {
 	height: 25px;
 	width: 80px;
