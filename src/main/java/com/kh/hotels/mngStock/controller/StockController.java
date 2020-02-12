@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,8 @@ import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -330,6 +333,51 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 		
 	}
 	
+	@GetMapping("goPurchaseHis.st")
+	public String showPurchaseHis(HttpServletRequest request, Model model) {
+		
+		int currentPage = 1;
+		
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int listCount = ss.getPurchaseHisListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<OrderHis> orderHisList = ss.selectOrderHisList(pi);
+		
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("orderHisList", orderHisList);
+		
+		return "hoteladmin/mngStock/stock/purchaseHis";
+	}
 
+	@PostMapping("orderHisDetail.st")
+	public ModelAndView orderHisDetail(ModelAndView mv, String rptNo) {
+		
+		int reportNo = Integer.parseInt(rptNo);
+		
+		ArrayList<OrderHisDetail> orderHisDetailList = ss.selectOrderHisDetail(reportNo);
+		
+		mv.addObject("orderHisDetailList", orderHisDetailList);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	@RequestMapping("updateCheckProduct.st")
+	public String updateCheckProduct(Model model, String rptNo) {
+		
+		int reportNo = Integer.parseInt(rptNo);
+		
+		ArrayList<OrderHisDetail> orderHisDetailList = ss.selectOrderHisDetail(reportNo);
+		
+		int result = ss.insertCheckItem(orderHisDetailList);
+		
+		return "";
+	}
 
 }
