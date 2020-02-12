@@ -65,6 +65,8 @@ public interface StockService {
 
 	int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList);
 
+	int updateOrderHisStatus(int reportNo);
+
 
 
 	

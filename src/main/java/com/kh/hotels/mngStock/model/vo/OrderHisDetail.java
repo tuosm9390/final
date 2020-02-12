@@ -21,6 +21,7 @@ public class OrderHisDetail implements java.io.Serializable {
 	private int vos;
 	private String cnname;
 	private int amount;
+	private int rptNo;
 	
 	
 }

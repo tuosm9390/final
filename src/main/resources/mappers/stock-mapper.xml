@@ -38,6 +38,7 @@
 		<result property="vos" column="VOS" />
 		<result property="cnname" column="CN_NAME" />
 		<result property="amount" column="AMOUNT" />
+		<result property="rptNo" column="RPT_NO" />
 	</resultMap>
 
 	<resultMap type="OrderHis" id="selectOrderHisInfoListResultSet">
@@ -278,7 +279,7 @@
 	</select>
 	
 	<select id="selectOrderHisDetail" parameterType="_int" resultMap="selectOrderHisDetailResultSet">
-		SELECT RPT_DATE, NAME, INO, LCATEGORY, MCATEGORY, SCATEGORY, INAME, UP, VAT, VOS, C.CN_NAME, OREQ.AMOUNT
+		SELECT RPT_DATE, NAME, INO, LCATEGORY, MCATEGORY, SCATEGORY, INAME, UP, VAT, VOS, C.CN_NAME, OREQ.AMOUNT, RPT_NO
 		FROM REPORT R
 		JOIN MEMBER M USING(MNO)
 		JOIN ORDER_REQ OREQ USING(RPT_NO)
@@ -292,7 +293,18 @@
 		SELECT I.INO, I.INAME, UP, I.VAT, I.VOS, MFG, I.ITEM_STATUS, I.BRK_STATUS, I.USE_STATUS, I.TYPE_NO, I.CN_CODE, I.SITE_TYPE, I.SITE_CODE, I.RM_NO, AREA_NO, I.UNIT, OREQ.AMOUNT
 		FROM ITEM I
 		LEFT JOIN ORDER_REQ OREQ ON(I.INO = OREQ.INO)
-		WHERE I.INO = #{ino} AND RPT_NO = #{rptNo};
+		WHERE I.INO = #{ino} AND RPT_NO = #{rptNo}
+	</select>
+	
+	<select id="insertItemList" parameterType="Item">
+		INSERT INTO ITEM(INO, INAME, UP, VAT, VOS, MFG, AMOUNT, ITEM_STATUS, BRK_STATUS, USE_STATUS, TYPE_NO, CN_CODE, SITE_TYPE, SITE_CODE, RM_NO, AREA_NO, UNIT)
+		VALUES(SEQ_INO.NEXTVAL, #{iname}, #{up}, #{vat}, #{vos}, #{mfg}, #{unit}, 'N', 'N', 'N', #{typeNo}, #{cnCode}, NULL,NULL,NULL,NULL,#{unit})
+	</select>
+	
+	<select id="updateOrderHisStatus" parameterType="_int">
+		UPDATE ORDER_HIS
+		SET RCV_STATUS = 'Y', RCV_DATE = TO_DATE(SYSDATE, 'RRRR-MM-DD HH24:MI:SS')
+		WHERE RPT_NO = #{reportNo}
 	</select>
 	
 </mapper>

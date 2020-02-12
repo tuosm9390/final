@@ -375,9 +375,18 @@ public ModelAndView updateStockOk(ModelAndView mv,int ino,int amount,String strg
 		
 		ArrayList<OrderHisDetail> orderHisDetailList = ss.selectOrderHisDetail(reportNo);
 		
+		
 		int result = ss.insertCheckItem(orderHisDetailList);
 		
-		return "";
+		int result2 = ss.updateOrderHisStatus(reportNo);
+				
+		if(result > 0 && result2 > 0) {
+			return "redirect:/goPurchaseHis.st";
+		}else {
+			model.addAttribute("msg", "물품수령실패");
+			return "common/errorPage";
+		}
+		
 	}
 
 }
