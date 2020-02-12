@@ -193,13 +193,11 @@ public class ApprovalDaoImpl implements ApprovalDao{
 	}
 
 	@Override
-	public int selectRptNo(SqlSessionTemplate sqlSession, Long docNo) {
+	public int selectRptNo(SqlSessionTemplate sqlSession, int docNo) {
 		int result = 0;
 		
 			result = sqlSession.selectOne("Report.selectRptNo", docNo);
-			
-			System.out.println("daoResult : " + result);
-			
+		
 		return result;
 	}
 
@@ -244,7 +242,7 @@ public class ApprovalDaoImpl implements ApprovalDao{
 	}
 
 	@Override
-	public int insertRepReqList(SqlSessionTemplate sqlSession, Long docNo) {
+	public int insertRepReqList(SqlSessionTemplate sqlSession, int docNo) {
 		int result = sqlSession.selectOne("Report.selectRepReqRptNo", docNo);
 		return result;
 	}
@@ -413,7 +411,7 @@ public class ApprovalDaoImpl implements ApprovalDao{
 	}
 
 	@Override
-	public ArrayList<HashMap<String, Object>> selectOrderList(SqlSessionTemplate sqlSession, Long dnum) {
+	public ArrayList<HashMap<String, Object>> selectOrderList(SqlSessionTemplate sqlSession, int dnum) {
 		
 		ArrayList<HashMap<String, Object>> list = (ArrayList)sqlSession.selectList("Report.selectOrderList", dnum);
 		
@@ -438,7 +436,7 @@ public class ApprovalDaoImpl implements ApprovalDao{
 
 	@Override
 	public ArrayList<OrderRequest> selectPurRequestInfo(SqlSessionTemplate sqlSession,
-			Long docno) {
+			int docno) {
 		
 		ArrayList<OrderRequest> list = (ArrayList)sqlSession.selectList("Report.selectPurRequestInfo", docno);
 		
@@ -588,17 +586,6 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		 result = sqlSession.insert("Report.insertOrderHis", oHis);
 		
 		System.out.println("result : " + result);
-		
-		return result;
-	}
-
-	@Override
-	public int selectRepairListInfo(SqlSessionTemplate sqlSession, Report report) {
-		
-		System.out.println("수리 report : " + report );
-		
-		int result = sqlSession.insert("Report.insertRepairHis", report);
-		
 		
 		return result;
 	}

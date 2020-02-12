@@ -71,12 +71,13 @@ cursor: pointer;
 			
 			<div class="reservation-check-modal_content_real" align="center">
 				<div class="top-content">
-					<h2 style="font-weight: bold;">예약을 취소하시겠습니까?</h2>
-					<li style="font-weight: bold;">본인 확인을 위해 예약번호를 입력해주세요<br><br>
-					<input type="text" name="rsvNo" id="rsvNo">
-					<input type="hidden" name="dfRsvNo" id="dfRsvNo">
-					<input type="hidden" name="rfdprice" id="rfdprice">
-					<input type="hidden" name="rsvDate" id="rsvDate">
+					<form action="">
+						<h2 style="font-weight: bold;">예약을 취소하시겠습니까?</h2>
+						<li style="font-weight: bold;">본인 확인을 위해 예약번호를 입력해주세요<br><br>
+						<input type="text" name="rsvNo">
+						<input type="hidden" name="rfdprice" id="rfdprice">
+						<input type="hidden" name="rsvDate" id="rsvDate">
+					</form>
 				</div>
 				<div class="refund-content">
 					<h2 style="font-weight: bold; text-decoration: underline; text-underline-position: under;">환불규정</h2>
@@ -131,33 +132,9 @@ cursor: pointer;
 		};
 		
 		function goReservationCancel(){
-			console.log($("#rsvDate").val());
-			var rsvNo = $("#rsvNo").val();
-			var dfRsvNo = $("#dfRsvNo").val();
-			var rfdprice = $("#rfdprice").val();
-			var rsvDate = $("#rsvDate").val();
-			if(rsvNo == dfRsvNo){
-				$.ajax({
-					url : "cancelReserv.hmain",
-					type : "post",
-					data : {
-						rsvNo : rsvNo,
-						dfRsvNo : dfRsvNo,
-						rfdprice : rfdprice,
-						rsvDate : rsvDate
-					},
-					success:function(data){
-						$(".reservation-check-modal").fadeOut();
-						$(".reservation-cancel-modal").fadeIn();
-					},
-					error:function(data){
-						console.log("에러");
-					}
-				});
-			} else {
-				alert("예약번호가 일치하지 않습니다.\n다시 입력해주세요.");
-			}
 			
+			$(".reservation-check-modal").fadeOut();
+			$(".reservation-cancel-modal").fadeIn();
 		};
 	</script>
 </body>

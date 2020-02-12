@@ -27,7 +27,7 @@
 	border-radius: 2px;
 }
 
-.titleSec + hr {
+hr {
 	width: 100px;
 	margin-right: 1465px;
 	margin-bottom: 10px;
@@ -238,8 +238,6 @@
 		var svclist;
 		var ruleInfo;
 		var rfdRate;
-		var rsvNoModalNew;
-		var stayNoModalNew;
 		
 		var today = new Date();
 		var day = today.getFullYear() + "-" + (today.getMonth()+1>9?today.getMonth()+1:"0" + (today.getMonth()+1)) + "-" + (today.getDate()>9?today.getDate():("0" + today.getDate()));
@@ -376,8 +374,6 @@
 		}
 		
 		function openModal(rsvNo) {
-			rsvNoModalNew = rsvNo;
-			
 			$(".statusColor").addClass('lightsteelblue');
 			$(".totalPrice").addClass('lightsteelblue');
 			$("#modalStt").text('　예약');

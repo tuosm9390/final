@@ -133,42 +133,24 @@ solid
 
 #pager_wrap .pager_com {
 	display: inline-block;
-	width: 35px;
+	width: 40px;
 	margin: 0 2px;
-	background-color: #f7f7f7;
-	height:35px;
-	padding:auto;
-	border:1px solid lightgray;
-	border-radius:2px;
+	background-color: #f1f1f1;
 }
 
 #pager_wrap .pager_num.on {
 	background-color: #171f57;
-	border:1px solid white;
-	color:black;
-	
 }
 
-#pager_wrap .pager_com .pager_num a {
-	padding:auto;
+#pager_wrap .pager_com a {
+	padding: 10px 0;
 	text-align: center;
-	
+	color: #171f57;
 }
 
-#pager_wrap .pager_num.pager_num.on a {
-	color: white;
+#pager_wrap .pager_num.on a {
+	color: #fff;
 }
-#pager_wrap .pager_com.pager_num a{
-	color:black;
-}
-#pager_wrap .pager_com.pager_arr.prev.on a{
-	color:black;
-}
-#pager_wrap .pager_com.pager_arr.next on a {
-	color:black;
-}
-
-
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -317,7 +299,6 @@ solid
 			
 
 		})
-		
 
 		var dateString = "";
 		function startDate() {
@@ -475,7 +456,7 @@ solid
 				function() {
 					var rptNo = $(this).children().eq(0).val();
 					var type = $(this).children().eq(4).text();
-					//console.log(type);
+					console.log(type);
 					//$(".modal").fadeIn();
 					if (type == "발주 요청서") {
 						$.ajax({
@@ -487,14 +468,11 @@ solid
 							},
 							success : function(data) {
 								var totalPrice = 0;
-								console.log(data.list);
+								console.log(data.list)
 								if(data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
-									$("#reject").hide();
-									$("#confirm").hide();
+									$(".approveBtn").hide();
 								}else {
-									$("#reject").show();
-									$("#confirm").show();
-									
+									$(".approveBtn").show();
 								} 
 
 								$.each(data.list, function(index, list) {
@@ -546,7 +524,6 @@ solid
 								$("#tbl_modal_order tr").children().find(".txtArea").text(data.list[0].ORSN);
 
 								$(".modal_order").fadeIn();
-								
 
 							},
 							error : function(data) {
@@ -823,14 +800,14 @@ solid
 											if (scurrentPage <= 1) {
 												$pageDiv1 = $("<li class='pager_com pager_arr prev on'>");
 												$button1 = $(
-														"<a href='javascirpt: void(0);' style='color:black;'>")
+														"<a href='javascirpt: void(0);'>")
 														.text('<');
 												$pageDiv1.append($button1);
 												$pagingArea.append($pageDiv1);
 											} else {
 												$pageDiv1 = $("<li class='pager_com pager_arr prev '>");
 												$button1 = $(
-														"<a href='#' onclick='paging(this);' style='color:black;'}>")
+														"<a href='#' onclick='paging(this);'}>")
 														.text('<');
 												$pageDiv1.append($button1);
 												$pagingArea.append($pageDiv1);
@@ -868,7 +845,7 @@ solid
 											if (scurrentPage < sendPage) {
 												$pageDiv2 = $("<li class='pager_com pager_arr next on'>");
 												$button2 = $(
-														"<a href='#' onclick='paging(this);' value='p' style='color:black;'>")
+														"<a href='#' onclick='paging(this);' value='p'>")
 														.text('>');
 												$input3 = $(
 														"<input type='hidden' id='lastPage'>")
@@ -1405,7 +1382,7 @@ solid
 
 							if (scurrentPage <= 1) {
 								$pageDiv1 = $("<li class='pager_com pager_arr prev on'>");
-								$button1 = $("<a href='javascirpt: void(0);' style='color:black;'>")
+								$button1 = $("<a href='javascirpt: void(0);'>")
 										.text('<');
 								$pageDiv1.append($button1);
 								$pagingArea.append($pageDiv1);
@@ -1449,7 +1426,7 @@ solid
 							if (scurrentPage < smaxPage) {
 								$pageDiv2 = $("<li class='pager_com pager_arr next on'>");
 								$button2 = $(
-										"<a href='#' onclick='paging(this);' value='p' style='color:black;'>")
+										"<a href='#' onclick='paging(this);' value='p'>")
 										.text('>');
 								$input3 = $(
 										"<input type='hidden' id='lastPage'>")

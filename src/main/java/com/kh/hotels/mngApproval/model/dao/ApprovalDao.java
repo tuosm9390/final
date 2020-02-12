@@ -48,7 +48,7 @@ public interface ApprovalDao {
 
 	int insertPurchase(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
 
-	int selectRptNo(SqlSessionTemplate sqlSession, Long docNo);
+	int selectRptNo(SqlSessionTemplate sqlSession, int docNo);
 
 	int insertPurRequest(SqlSessionTemplate sqlSession, ArrayList<PurRequest> pRequestList);
 
@@ -58,7 +58,7 @@ public interface ApprovalDao {
 
 	int insertRepReqInfo(SqlSessionTemplate sqlSession, ArrayList<RepRequest> rRequestList);
 
-	int insertRepReqList(SqlSessionTemplate sqlSession, Long docNo);
+	int insertRepReqList(SqlSessionTemplate sqlSession, int docNo);
 
 	int insertRepReqListAll(SqlSessionTemplate sqlSession, ArrayList<RepRequest> rRequestList);
 
@@ -87,12 +87,12 @@ public interface ApprovalDao {
 
 	ArrayList<HashMap<String, Object>> selectOrderDocu(SqlSessionTemplate sqlSession);
 
-	ArrayList<HashMap<String, Object>> selectOrderList(SqlSessionTemplate sqlSession, Long dnum);
+	ArrayList<HashMap<String, Object>> selectOrderList(SqlSessionTemplate sqlSession, int dnum);
 
 	int insertOrderList(SqlSessionTemplate sqlSession, ArrayList<OrderRequest> oRequestList);
 
 
-	ArrayList<OrderRequest> selectPurRequestInfo(SqlSessionTemplate sqlSession, Long docno);
+	ArrayList<OrderRequest> selectPurRequestInfo(SqlSessionTemplate sqlSession, int docno);
 
 	int selectOrderRptNo(SqlSessionTemplate sqlSession, ArrayList<OrderRequest> oRequestList);
 
@@ -115,8 +115,6 @@ public interface ApprovalDao {
 	ArrayList<HashMap<String, Object>> selectOrderListInfo(SqlSessionTemplate sqlSession, int rptNo);
 
 	int insertOrderHis(SqlSessionTemplate sqlSession, ArrayList<HashMap<String, Object>> finalList);
-
-	int selectRepairListInfo(SqlSessionTemplate sqlSession, Report report);
 
 
 }

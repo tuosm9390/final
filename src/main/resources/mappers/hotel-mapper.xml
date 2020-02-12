@@ -356,45 +356,10 @@
 		ORDER BY TERM_TYPE DESC, DAY_TYPE, TO_NUMBER(RFD_DATE) DESC
 	</select>
 	
-	<!-- 예약취소 -->
-	<update id="cancelRsv">
-		UPDATE RSV
-		SET RSV_STATUS = 'REFUND', MOD_DATE = TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss')
-		WHERE RSV_NO = #{rsvNo}
-	</update>
 	
-	<insert id="cancelRsvHis">
-		INSERT INTO RSV_HIS
-		VALUES (#{rsvNo}, TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'RSV_STATUS', 'OK', 'REFUND', '예약취소')
-	</insert>
 	
-	<update id="cancelRsvSvcUse">
-		UPDATE SVC_USE
-		SET USE_STATUS = 'N'
-		WHERE RSV_NO = #{rsvNo}
-	</update>
 	
-	<select id="cancelRsvFindSvcNo" resultType="_int">
-		SELECT SVC_NO
-		FROM SVC_USE
-		WHERE RSV_NO = #{rsvNo}
-	</select>
 	
-	<insert id="cancelRsvSvcUseHis">
-		INSERT INTO SVC_USE_HIS
-		VALUES (#{svcNo}, 'USE_STATUS', 'Y', 'N', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), '예약취소')
-	</insert>
-	
-	<insert id="cancelRsvRFD">
-		INSERT INTO PAYMENT
-		VALUES (SEQ_PNO.NEXTVAL, 'ACCOUNT', #{rfdprice}, #{rsvDate}, 'REFUND', TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'), 'Y', #{rsvNo}, NULL)
-	</insert>
-	
-	<select id="matchPwd" parameterType="Que" resultType="Que">
-		SELECT QPWD
-		FROM QUE
-		WHERE QNO = #{qno}
-	</select>
 	
 	
 	

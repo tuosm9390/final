@@ -14,7 +14,6 @@ public class RepHistory {
 	private String repEnd;
 	private String repStatus;
 	private int rptNo;
-	private String rpTitle;
 	
 	
 }

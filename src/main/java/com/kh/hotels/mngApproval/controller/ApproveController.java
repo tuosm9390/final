@@ -46,9 +46,7 @@ public class ApproveController {
 
 	@RequestMapping("documentApproval.ap")
 	public String goApproval(HttpServletRequest request, Model  m) {
-		
-		System.out.println("처음 들어와??");
-		
+
 		int currentPage = 1;
 
 		if(request.getParameter("currentPage") != null) {
@@ -88,8 +86,8 @@ public class ApproveController {
 			m.addAttribute("list", ReportList);
 			m.addAttribute("pi", pi);
 
-			
-			System.out.println("여기여기여기");
+
+
 			return "hoteladmin/mngApprove/ApproveList/allApprove";
 
 
@@ -241,7 +239,6 @@ public class ApproveController {
 	
 	@RequestMapping("joinDocumentApproval.ap")
 	public String goJoinApproval( HttpServletRequest request, @RequestParam("userDept") int userDept, @RequestParam("userAuth") String userAuth, @RequestParam("userMno") int userMno, Model model) {
-		System.out.println("여기는 왜들어오니?");
 		System.out.println("userDept : " + userDept);
 		System.out.println("userAuth : " + userAuth);
 		System.out.println("mno : " + userMno);
@@ -378,8 +375,6 @@ public class ApproveController {
 		ArrayList<HashMap<String, Object>> list = as.selectOrderInfo();
 		ArrayList<HashMap<String, Object>> listDocu = as.selectOrderDocu();
 		
-		System.out.println("listDocu : " + listDocu);
-		
 		m.addAttribute("list", list);
 		m.addAttribute("listDocu", listDocu);
 		
@@ -506,7 +501,6 @@ public class ApproveController {
 			String price, String totPrice, String ino, Model model ) {
 		
 		System.out.println("sname : " + sname);
-		System.out.println("docno : " + docno);
 		
 		if(ino.contains(",")) {
 		
@@ -530,7 +524,7 @@ public class ApproveController {
 				//int docNo = Integer.parseInt(docno);
 		
 				int mno = Integer.parseInt(mname); 
-				Long docNo = Long.parseLong(docno);
+				int docNo = Integer.parseInt(docno);
 				int totalPrice = Integer.parseInt(totPrice);
 				
 				
@@ -617,7 +611,7 @@ public class ApproveController {
 		//int docNo = Integer.parseInt(docno);
 
 		int mno = Integer.parseInt(mname); 
-		Long docNo = Long.parseLong(docno);
+		int docNo = Integer.parseInt(docno);
 		int totalPrice = Integer.parseInt(totPrice);
 		int vos = Integer.parseInt(vosprice);
 		int amountR = Integer.parseInt(amount);
@@ -709,8 +703,8 @@ public class ApproveController {
 		
 		System.out.println("cname.length : " + cname.length());
 		
-		Long docuNo = Long.parseLong(docuNos);
-		Long docno2 = Long.parseLong(docno);
+		int docuNo = Integer.parseInt(docuNos);
+		int docno2 = Integer.parseInt(docno);
 		int mno = Integer.parseInt(mname);
 		
 	
@@ -954,7 +948,7 @@ public class ApproveController {
 
 		int mName = Integer.parseInt(mmno); 
 		int sno = Integer.parseInt(smno);
-		Long docNo = Long.parseLong(docno);
+		int docNo = Integer.parseInt(docno);
 		int totPrice = Integer.parseInt(totalPrice);
 		
 		RepRequest rRequest = null;
@@ -1123,11 +1117,6 @@ public class ApproveController {
 	@PostMapping("docuPartiFilter.ap")
 	public ModelAndView partiCateFilter(ModelAndView mv, String cate, String scurrentPage, String mno) {
 		System.out.println("넘어오니???");
-		
-		System.out.println("cate : " + cate);
-		System.out.println("scurrentPage : " + scurrentPage);
-		System.out.println("mno : " + mno);
-		
 		int currentPage = 1;
 		
 		int mmno = 0;
@@ -1242,7 +1231,7 @@ public class ApproveController {
 		return "redirect:joinDocumentApproval.ap";
 	}
 	@RequestMapping("selectOrderInfo.ap")
-	public ModelAndView OrderInfo(ModelAndView mv, Long dnum) {
+	public ModelAndView OrderInfo(ModelAndView mv, int dnum) {
 		
 		System.out.println("dnum : " + dnum);
 		

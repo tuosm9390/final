@@ -70,18 +70,4 @@ public interface HotelService {
 	ArrayList<Prc> selectRoomPrice(int roomType);
 
 	ArrayList<Rfd> selectRfdList(Map<String, String> map);
-
-	int cancelRsv(Map<String, String> map);
-
-	int cancelRsvHis(Map<String, String> map);
-
-	int cancelRsvSvcUse(Map<String, String> map);
-
-	int cancelRsvSvcUseHis(Map<String, String> map);
-
-	int cancelRsvFindSvcNo(Map<String, String> map);
-
-	int cancelRsvRFD(Map<String, String> map);
-
-	String matchPwd(Que matchpwd);
 }

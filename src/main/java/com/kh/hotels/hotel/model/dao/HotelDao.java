@@ -74,18 +74,4 @@ public interface HotelDao {
 
 	ArrayList<Rfd> selectRfdList(SqlSessionTemplate sqlSession, Map<String, String> map);
 
-	int cancelRsv(SqlSessionTemplate sqlSession, Map<String, String> map);
-
-	int cancelRsvHis(SqlSessionTemplate sqlSession, Map<String, String> map);
-
-	int cancelRsvSvcUse(SqlSessionTemplate sqlSession, Map<String, String> map);
-
-	int cancelRsvSvcUseHis(SqlSessionTemplate sqlSession, Map<String, String> map);
-
-	int cancelRsvFindSvcNo(SqlSessionTemplate sqlSession, Map<String, String> map);
-
-	int cancelRsvRFD(SqlSessionTemplate sqlSession, Map<String, String> map);
-
-	Que matchPwd(SqlSessionTemplate sqlSession, Que matchpwd);
-
 }

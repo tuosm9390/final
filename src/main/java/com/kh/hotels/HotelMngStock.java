@@ -13,6 +13,12 @@ public class HotelMngStock {
 	}
 	
 	
+	@GetMapping("goPurchaseHis.st")
+	public String showPurchaseHis() {
+		
+		return "hoteladmin/mngStock/stock/purchaseHis";
+	}
+	
 	@GetMapping("goStockHis.st")
 	public String showStockHis() {
 		

@@ -209,7 +209,7 @@ textarea {
             </tr>
             <tr class="tbl_tit">
                <td>문서번호</td>
-               <td colspan="3"style="text-align:center;"><input type="text" name="docno" id="docuNo" readonly></td>
+               <td colspan="3"style="text-align:center;"><input type="text" name="docno" id="docuNo"></td>
                
                
             </tr>
@@ -224,7 +224,7 @@ textarea {
             
             <tr class="tbl_tit">
                <td>기안일</td>
-               <td><input type="text" id="txt" placeholder="SYSDATE" name="rptDate" style="text-align:center;" readonly></td>
+               <td><input type="text" id="txt" placeholder="SYSDATE" name="rptDate" style="text-align:center;"></td>
                <td >수신자</td>
                <td colspan="">
                
@@ -240,12 +240,12 @@ textarea {
             </tr>
             <tr>
                <td>제목</td>
-               <td colspan="3"><input type="text" id="txtLong" name="title" style="text-align:center;"></td>
+               <td colspan="3"><input type="text" id="txtLong" name="title"></td>
             </tr>
             <tr>
                <td>내용</td>
                <td colspan="3">
-                  <textarea style="resize:none; text-align:center;" id="content" name="content"></textarea>
+                  <textarea style="resize:none;" id="content" name="content"></textarea>
                </td>
             </tr>
             
@@ -503,11 +503,7 @@ $(document).on("change", ".anoTxt_cate", function() {
     $(".payTbl.purchase").children().find('.anoTxt_name').append($("<option selected disalbed hidden>선택 해주세요</option>"));
    $(".payTbl.purchase").children().find('.anoTxt_amount').find("option:not(:first-child)").remove(); 
     $(".payTbl.purchase").children().find('.anoTxt_amount').append($("<option selected disalbed hidden>선택 해주세요</option>"));
-   $(".payTbl.purchase tr").children().find(".vos").val("");
-   $(".payTbl.purchase tr").children().find(".anoTxt_price").val("");
-   $(".payTbl.purchase tr").children().find(".totalPrice").val("");
-   $(".payTbl.Area tr").children().find("#txtLong_price").val("");
-   
+   /*  */
    var tblVal = $(".payTbl.purchase tr:nth-child(2)").children().eq(0).find('select').val();
     $( ".payTbl.purchase tr:nth-child(n+3)").remove();
    

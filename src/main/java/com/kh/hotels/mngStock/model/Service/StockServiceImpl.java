@@ -1,7 +1,6 @@
 package com.kh.hotels.mngStock.model.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +15,12 @@ import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
-import com.kh.hotels.mngStock.model.vo.OrderHis;
-import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
-import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
+import com.kh.hotels.mngStock.model.vo.StockDetail;
+import com.kh.hotels.mngStock.model.vo.Strg;
+import com.kh.hotels.mngStock.model.vo.StrgArea;
 
 
 @Service
@@ -140,85 +139,9 @@ public class StockServiceImpl implements StockService{
 	}
 
 	@Override
-	public ArrayList<RepHistory> repairList(PageInfo pi) {
-		
-		ArrayList<RepHistory> list = sd.getRepairList(sqlSession,pi);
-		RepHistory rHistory = null;
-		ArrayList<RepHistory> repList = new ArrayList<>();
-		
-		System.out.println("list : " + list);
-		System.out.println("rHistory : " + rHistory);
-		System.out.println("여기는??");
-		
-		for(int i = 0; i < list.size(); i++) {
-			rHistory = new RepHistory();
-			rHistory.setRptNo(list.get(i).getRptNo());
-			repList.add(rHistory);
-			System.out.println("repList : " + repList);
-		}
-		
-		System.out.println("repList : " + repList);
-		
-		ArrayList<String> list2 = sd.selectRepairInfo(sqlSession, repList);
-		System.out.println("list2 : " + list2);
-		
-		for(int i = 0; i < list.size(); i++) {
-			list.get(i).setRpTitle(list2.get(i));
-		}
-		
-		System.out.println("list : " + list);
-		
-		return list;
-	}
-
-	@Override
-	public ArrayList<HashMap<String, Object>> selectRepairDetail(RepHistory rHistory) {
-		System.out.println("여기??????");
-		
-		ArrayList<HashMap<String, Object>> list = sd.selectRepairDetail(sqlSession, rHistory);
-		
-		System.out.println("list : " + list);
-		return list;
-	}
-
-	@Override
-	public String selectReceiver(int receiver) {
-		
-		String name = sd.selectReceiverName(sqlSession, receiver);
-		
-		return name;
-	}
-
-	@Override
-	public int getPurchaseHisListCount() {
-
-		return sd.getPurchaseHisListCount(sqlSession);
-	}
-
-	@Override
-	public ArrayList<OrderHis> selectOrderHisList(PageInfo pi) {
-
-		return sd.selectOrderHisList(pi,sqlSession);
-	}
-
-	@Override
-	public ArrayList<OrderHis> selectOrderHisInfoList() {
-		
-		return sd.selectOrderHisInfoList(sqlSession);
-	}
-
-	@Override
-	public ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo) {
-		
-		return sd.selectOrderHisDetail(reportNo, sqlSession);
-	}
-
-	@Override
-	public int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList) {
-		
-		ArrayList<Item> itemList = sd.selectItemList(sqlSession, orderHisDetailList);
-		
-		return sd.insertItemList(sqlSession, itemList);
+	public ArrayList<Repair> repairList(PageInfo pi) {
+		// TODO Auto-generated method stub
+		return sd.getRepairList(sqlSession,pi);
 	}
 
 	@Override

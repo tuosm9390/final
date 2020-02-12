@@ -1,7 +1,6 @@
 package com.kh.hotels.mngStock.model.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.ui.Model;
@@ -13,9 +12,6 @@ import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
-import com.kh.hotels.mngStock.model.vo.OrderHis;
-import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
-import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -60,24 +56,7 @@ public interface StockDao {
 
 	int getRepairListCount(SqlSessionTemplate sqlSession);
 
-	ArrayList<RepHistory> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi);
-
-	ArrayList<String> selectRepairInfo(SqlSessionTemplate sqlSession, ArrayList<RepHistory> repList);
-
-	ArrayList<HashMap<String, Object>> selectRepairDetail(SqlSessionTemplate sqlSession, RepHistory rHistory);
-
-	String selectReceiverName(SqlSessionTemplate sqlSession, int receiver);
-
-	int getPurchaseHisListCount(SqlSessionTemplate sqlSession);
-
-	ArrayList<OrderHis> selectOrderHisList(PageInfo pi, SqlSessionTemplate sqlSession);
-
-	ArrayList<OrderHis> selectOrderHisInfoList(SqlSessionTemplate sqlSession);
-
-	ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo, SqlSessionTemplate sqlSession);
-
-	ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList);
-
+	ArrayList<Repair> getRepairList(SqlSessionTemplate sqlSession, PageInfo pi);
 
 	int getStockHisCount(SqlSessionTemplate sqlSession);
 

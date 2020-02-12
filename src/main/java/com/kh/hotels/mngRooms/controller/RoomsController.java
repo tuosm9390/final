@@ -282,24 +282,15 @@ public class RoomsController {
 		
 		System.out.println("rsvNo : " +rsvNo);
 		
-		if(rsvNo != null) {
-			if(rsvNo.equals("")) {
-				rsvNo = "0";
-			}
-		} else {
+		if(rsvNo.equals("")) {
 			rsvNo = "0";
 		}
-		
 		int stayNumber;
 		
-		if(stayNo != null) {
-			if(stayNo.equals("")) {
-				stayNumber = 0;
-			}else {
-				stayNumber = Integer.parseInt(stayNo);
-			}
-		} else {
+		if(stayNo.equals("")) {
 			stayNumber = 0;
+		}else {
+			stayNumber = Integer.parseInt(stayNo);
 		}
 		
 		RequestStayRsv rsr = new RequestStayRsv();
