@@ -200,7 +200,6 @@ button{
 			<li><a href="goMain.hmain">HOME</a></li>
 			<li><a>RESERVATION</a></li>
 			<li><a href="goRooms.hmain">ROOMS</a></li>
-			<li><a>SURROUNDINGS</a></li>
 			<li><a href="goQnA.hmain">1:1</a></li>
 		</ul>
 	</div>
@@ -238,10 +237,6 @@ button{
 		$(function(){
 			$(".nav--main li:nth-child(2)").click(function(){
 				$(".reservation-modal").fadeIn();
-			});
-			
-			$(".nav--main li:nth-child(4)").click(function(){
-				$(".sur-modal").fadeIn();
 			});
 		});
 	</script>

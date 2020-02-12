@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,7 +97,9 @@ textarea:focus{
 					</tr>
 					<tr>
 						<td><li>작성자명</li></td>
-						<td>${ q.userName }</td>
+						<td>
+						<c:set var="userName" value="${ q.userName }"/>
+							${fn:substring(userName,0,1) } * ${fn:substring(userName,2,6) }</td>
 						<td><li>문의날짜</li></td>
 						<td>${ q.qdate }</td>
 					</tr>

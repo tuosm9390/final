@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kh.hotels.hotel.model.dao.HotelDao;
@@ -25,6 +26,8 @@ public class HotelServiceImpl implements HotelService{
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private HotelDao hd;
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@Override
 	public ArrayList<RoomInfo> selectRoomList() {
@@ -75,6 +78,9 @@ public class HotelServiceImpl implements HotelService{
 
 	@Override
 	public int insertQnA(Que q) {
+		String encPassword = bcryptPasswordEncoder.encode(q.getQpwd());
+		q.setQpwd(encPassword);
+		
 		return hd.insertQnA(sqlSession, q);
 	}
 
@@ -171,6 +177,53 @@ public class HotelServiceImpl implements HotelService{
 	@Override
 	public ArrayList<Rfd> selectRfdList(Map<String, String> map) {
 		return hd.selectRfdList(sqlSession, map);
+	}
+
+	@Override
+	public int cancelRsv(Map<String, String> map) {
+		return hd.cancelRsv(sqlSession, map);
+	}
+
+	@Override
+	public int cancelRsvHis(Map<String, String> map) {
+		return hd.cancelRsvHis(sqlSession, map);
+	}
+
+	@Override
+	public int cancelRsvSvcUse(Map<String, String> map) {
+		return hd.cancelRsvSvcUse(sqlSession, map);
+	}
+
+	@Override
+	public int cancelRsvSvcUseHis(Map<String, String> map) {
+		return hd.cancelRsvSvcUseHis(sqlSession, map);
+	}
+
+	@Override
+	public int cancelRsvFindSvcNo(Map<String, String> map) {
+		return hd.cancelRsvFindSvcNo(sqlSession, map);
+	}
+
+	@Override
+	public int cancelRsvRFD(Map<String, String> map) {
+		return hd.cancelRsvRFD(sqlSession, map);
+	}
+
+	// 비밀문의글 조회시 비밀번호 확인
+	@Override
+	public String matchPwd(Que matchpwd) {
+		
+		String result = "";
+		
+		Que q = hd.matchPwd(sqlSession, matchpwd);
+		
+		if(bcryptPasswordEncoder.matches(matchpwd.getQpwd(), q.getQpwd())){
+			result = "success";
+		} else {
+			result = "error";
+		}
+		
+		return result;
 	}
 
 }
