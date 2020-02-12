@@ -300,9 +300,9 @@ public class HotelMainContoller {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
 		String date = sdf.format(rsvCheck.getRsvDate());
-		
 		System.out.println("rsvDate : " + date);
 		System.out.println("rsvCheck : " + rsvCheck);
+		mv.addObject("date", date);
 		mv.addObject("roomType", roomType);
 		mv.addObject("filePathList", filePathList);
 		mv.addObject("ReservationCheck", rsvCheck);
@@ -333,12 +333,51 @@ public class HotelMainContoller {
 		return mv;
 	}
 	// 예약 취소 메소드
-	@RequestMapping("")
-	public ModelAndView cancelRsv(ModelAndView mv) {
+	@RequestMapping("cancelReserv.hmain")
+	public ModelAndView cancelRsv(ModelAndView mv, String rsvDate,
+			String rfdprice, String rsvNo, String dfRsvNo) {
+		
+		System.out.println("예약번호 : " + dfRsvNo);
+		System.out.println("입력한 예약번호 : " + rsvNo);
+		System.out.println("환불 금액 : " + rfdprice);
+		System.out.println("예약날짜 : " + rsvDate);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("dfRsvNo", dfRsvNo);	// 예약번호
+		map.put("rsvNo", rsvNo);		// 입력한 예약번호
+		map.put("rfdprice", rfdprice);	// 환불금액
+		map.put("rsvDate", rsvDate);	// 예약날짜
+		
+		// 저장된 예약번호와 입력된 예약번호가 일치할 때
+		if(rsvNo.equals(dfRsvNo)) {
+			// rsv테이블의 RSV_STATUS 'REFUND'로 변경
+			int cancelRsv = hs.cancelRsv(map);
+			if(cancelRsv > 0) {
+				// rsvHis테이블에 행추가
+				int cancelRsvHis = hs.cancelRsvHis(map);
+				if(cancelRsvHis > 0) {
+					// svcUse테이블 변경
+					int cancelRsvSvcUse = hs.cancelRsvSvcUse(map);
+					if(cancelRsvSvcUse > 0) {
+						// svcUseHis테이블에 행추가
+						int cancelRsvFindSvcNo = hs.cancelRsvFindSvcNo(map);
+						if(cancelRsvFindSvcNo > 0) {
+							map.put("svcNo", cancelRsvFindSvcNo + "");
+							int cancelRsvSvcUseHis = hs.cancelRsvSvcUseHis(map);
+							if(cancelRsvSvcUseHis > 0) {
+								int cancelRsvRFD = hs.cancelRsvRFD(map);
+								if(cancelRsvRFD > 0) {
+									
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		
 		
-		
-		
+		mv.setViewName("jsonView");
 		return mv;
 	}
 	
@@ -426,8 +465,10 @@ public class HotelMainContoller {
 			@RequestParam(value="pwd", required=false) String pwd) {
 		
 		Que selectQnA = hs.selectOneQnA(q);
-		System.out.println("비밀번호 : " + selectQnA.getQpwd());
-		System.out.println("입력한 비밀번호 : " + pwd);
+		
+		Que matchpwd = new Que();
+		matchpwd.setQno(selectQnA.getQno());
+		matchpwd.setQpwd(pwd);
 		
 		Member m = hs.selectMember(selectQnA);
 		selectQnA.setUserName(m.getUserName());
@@ -435,7 +476,8 @@ public class HotelMainContoller {
 		// 비밀글일 경우
 		if(type.equals("lock")) {
 			// 비밀번호 일치 시
-			if(selectQnA.getQpwd().equals(pwd)) {
+			String matchPwd = hs.matchPwd(matchpwd);
+			if(matchPwd.equals("success")) {
 				// 답변 있을 경우
 				if(selectQnA.getAnsStatus().equals("Y")) {
 					Ans ans = hs.selectOneAns(q);

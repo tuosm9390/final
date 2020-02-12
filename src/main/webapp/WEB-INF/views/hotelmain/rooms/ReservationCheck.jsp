@@ -285,12 +285,11 @@
 						});
 						
 						var rfdprice = ${ ReservationCheck.stayPrice } * (data.rfdList[0].rfdRate * 1);
-						console.log(rfdprice);
-						$("#rfdprice").val(rfdprice);
-						var rsvDateD = ${ ReservationCheck.rsvDate };
-						var rsvDate = new Date(rsvDateD.getFullYear(), rsvDateD.getMonth(), rsvDateD.getDate(), rsvDateD.getHours(), rsvDateD.getMinutes(), rsvDateD.getSeconds());
+						$("#rfdprice").val(rfdprice);	// 환불 금액
+						var rsvDate = '${date}';	// 예약일자
 						$("#rsvDate").val(rsvDate);
-						console.log($("#rsvDate").val());
+						$("#dfRsvNo").val(${ ReservationCheck.rsvNo });	// 현재 예약번호
+						
 						$(".reservation-check-modal").fadeIn();
 					},
 					error:function(data){
