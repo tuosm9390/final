@@ -9,9 +9,10 @@ import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
-import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -53,14 +54,17 @@ public interface StockService {
 	int getRepairListCount();
 
 
-	int getStockHisList();
+	int getPurchaseHisListCount();
 
-	ArrayList<ItemHistory> stockHisList(PageInfo pi);
+	ArrayList<OrderHis> selectOrderHisList(PageInfo pi);
 
+	ArrayList<OrderHis> selectOrderHisInfoList();
 
-	ArrayList<Stock> selectSearchStockList(SearchItem s, PageInfo pi);
+	ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo);
 
-	int getSearchStockListCount(SearchItem s);
+	int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList);
+
+	int updateOrderHisStatus(int reportNo);
 
 	ArrayList<RepHistory> repairList(PageInfo pi);
 
