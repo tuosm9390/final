@@ -27,7 +27,7 @@ public interface StockService {
 
 	ArrayList<Stock> selectStockList(PageInfo pi);
 
-	int getListCount();
+	int getListCount(); 
  
 	ArrayList<Stock> stockDetailList(String iName);
  

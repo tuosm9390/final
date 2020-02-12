@@ -15,7 +15,7 @@
 /* 	margin-left: 20px; */
 	}
 
-
+ 
  
 	#titlemsgg{
 		width: 220px;

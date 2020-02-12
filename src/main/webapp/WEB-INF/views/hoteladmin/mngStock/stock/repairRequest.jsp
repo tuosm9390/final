@@ -13,7 +13,7 @@
 	height: 100px; 
 	margin-top: -50px;
 	}
-
+ 
 	.searchCondition{
  
 	margin-top: -50px;

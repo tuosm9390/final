@@ -12,7 +12,7 @@
 		<result property="up" column="UP" />
 		<result property="vat" column="VAT" />
 		<result property="vos" column="VOS" />
-		<result property="mfg" column="MFG" /> 
+		<result property="mfg" column="MFG" />  
 		<result property="cnName" column="CN_NAME" />
 		<result property="type" column="TYPE" />
 		<result property="cnt" column="CNT" />

@@ -14,7 +14,7 @@
 		<result property="cnStatus" column="CN_STATUS" />
 		<result property="cnAdd" column="CN_ADD" />
 		<result property="regDate" column="REG_DATE" />
-		<result property="bankName" column="BANK_NAME" />
+		<result property="bankName" column="BANK_NAME" /> 
 		<result property="account" column="ACCOUNT" />
 		<result property="accName" column="ACC_NAME" />
 		<result property="accMemo" column="ACC_MEMO" />

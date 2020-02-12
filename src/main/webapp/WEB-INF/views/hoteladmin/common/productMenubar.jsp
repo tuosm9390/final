@@ -15,7 +15,7 @@
 		border-right-style:solid;
 		border-right-color:lightgray;
 		position: fixed;
-		margin-top: 92px;
+		margin-top: 92px; 
 	} 
 	.productMenubar{
 		list-style: none;
