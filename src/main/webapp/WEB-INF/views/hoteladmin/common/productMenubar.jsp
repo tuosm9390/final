@@ -85,7 +85,7 @@
 		
 		$(function(){
 			$(".stockHis").click(function(){
-				location.href='goStockHis.st';
+				location.href='selectStockHis.sto';
 			});
 		});
 		

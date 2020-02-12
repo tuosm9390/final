@@ -6,9 +6,11 @@ import java.util.HashMap;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
 import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
@@ -70,6 +72,15 @@ public interface StockService {
 	ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo);
 
 	int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList);
+
+	int getStockHisList();
+
+	ArrayList<ItemHistory> stockHisList(PageInfo pi);
+
+
+	ArrayList<Stock> selectSearchStockList(SearchItem s, PageInfo pi);
+
+	int getSearchStockListCount(SearchItem s);
 
 
 

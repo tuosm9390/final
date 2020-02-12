@@ -169,18 +169,14 @@
 			}
 		</script>
 		<!-- 검색 종료 -->
-		<script>
-			function Enroll(){
-				
-			}
-		</script>
+		
 	<div id="purDivv">
 	
 		 
 	<table id="Table" style=""> 
 				<tr>  
 					<th><input type="checkbox"></th>
-					<th style="color: #005B9E">창고코드</th>
+					<th>창고코드</th>
 					<th style="color: #005B9E">창고명</th>
 					<th style="color: #005B9E">사용</th>
 				
@@ -189,9 +185,10 @@
 				<c:forEach var="i" items="${strgList }">
 					<tr>
 						<td><input type="checkbox"></td>
-						<td style="color: #005B9E"><c:out value="${i.strgNo }"/></td>
+						<td><c:out value="${i.strgNo }"/></td>
 						<td style="color: #005B9E"><c:out value="${i.strgName}"/></td>
-						<td><c:out value="${i.strgStatus}"/></td>
+						<td><c:if test="${i.strgStatus=='Y'}">사용</c:if>
+						     <c:if test="${i.strgStatus=='N'}">미사용</c:if></td>
 						<td hidden="hidden"><c:out value="${i.strgSite }"/></td>
 						
 					</tr>
@@ -255,8 +252,21 @@
 		});
 	});
 	
+	////////////
+	function makeid(){
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    for( var i=0; i < 8; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+		}
+	///////////
 	$("#print").click(function(){
 		$(".modalEnroll").fadeIn();
+		$("#strgNo").val(makeid());
+		
 	});
 	 
 	function click() {

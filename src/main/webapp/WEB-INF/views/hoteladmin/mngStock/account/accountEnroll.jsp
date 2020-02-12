@@ -82,7 +82,7 @@
 	<div id="enrollDiv">
 	<form action="insertAcc.ac" id="insertAcc" method="post">
 		<div class="bodyDiv">
-			<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px"  id="cnCode" name="cnCode"></div>  </div>
+			<div>	<div class="same" id="ssam">거래처코드</div>  <div class="same"><input type="text" class="space" style="width:100px;background: #f7f7f7" readonly="readonly" id="cnCode" name="cnCode"></div>  </div>
 			<div>	<div class="same" id="ssam">상호(이름)</div>  <div class="same"><input type="text" class="space" style="width:600px" id="cnName" name="cnName"></div>  </div>
 			<div>	<div class="same" id="ssam">대표자명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="owerName" name="ownerName"></div>  </div>
 			<div>	<div class="same" id="ssam">종목</div>  <div class="same"><input type="text" class="space" style="width:600px" id="cnItem" name="cnItem"></div>  </div>

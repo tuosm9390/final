@@ -96,7 +96,7 @@
 		<div id="wareWrap">
 		<div class="bodyDiv">
 		<form action="update.war" method="post" id="updateWar">
-		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px"  id="detailCode" name="strgNo" readonly="readonly"></div>  </div>
+		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px;background-color: #f7f7f7;"  id="detailCode" name="strgNo" readonly="readonly" ></div>  </div>
 		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:300px" id="detailName" name="strgName"></div>  </div>
 		<div>	<div class="same" id="ssam">사용여부</div>  <div class="same"><input type="radio"  value="Y" id="yCheck" name="strgStatus">사용 &nbsp;&nbsp;<input type="radio" name="strgStatus" value="N" id="nCheck">미사용</div>  </div>
 		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:300px" id="detailArea" name="strgSite" ></div>  </div>
@@ -106,7 +106,6 @@
 	
 			<table id="botTable">
 				<tr>
-					
 					<th>물품코드</th>			
 					<th>물품명</th>			
 					<th>개별수량</th>			
@@ -115,7 +114,6 @@
 				<tbody id="dTbody">
 				<c:forEach var="i" items="${detailList}">
 					<tr>
-						
 						<td>${i.ino}</td>
 						<td>${i.iName}</td>
 						<td>${i.amount}</td>

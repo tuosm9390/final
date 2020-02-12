@@ -122,7 +122,12 @@ public class AccountController {
 		  
 		  for(int i=0;i<list.length;i++) {
 		  c.setCnCode(list[i]);
-		  c.setCnStatus(listStatus[i]); 
+		  
+		  if(listStatus[i].equals("Y")) {
+			  c.setCnStatus("N"); 
+		  } else {
+			  c.setCnStatus("Y"); 
+		  }
 		  int result = as.updateAcc(c);
 		  }
 		 

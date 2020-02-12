@@ -264,7 +264,6 @@
 				return false;
 			}
 			
-			
 				
 			
 			   //itemList 넘기는 ajax

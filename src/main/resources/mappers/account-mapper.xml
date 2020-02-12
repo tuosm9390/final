@@ -23,12 +23,12 @@
 	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*) FROM
-		(SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD,CN_MANAGER FROM CONN)
+		(SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD,CN_MANAGER,ACCOUNT FROM CONN)
 	</select>
 	
 	<select id="selectAccountList" resultMap="resultSetConn">
-		SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD,CN_MANAGER FROM CONN
-		ORDER BY REG_DATE DESC
+		SELECT CN_CODE,CN_NAME,OWNER_NAME,CN_PHONE,CN_ITEM,CN_STATUS,CN_ADD,CN_MANAGER,ACCOUNT FROM CONN
+		ORDER BY CN_STATUS DESC, REG_DATE DESC
 	</select>
 	
 	<select id="selectAccDetailList" resultMap="resultSetConn">
@@ -57,19 +57,10 @@
 			WHERE CN_CODE=#{cnCode}
 	</update>
 	
-	<update id="updateAcc">
-		<choose>
-			<when test="cnStatus=='Y'">
-				UPDATE CONN
-				SET CN_STATUS='N'
-				WHERE CN_CODE=#{cnCode}
-			</when>
-			<when test="cnStatus=='N'">
-				UPDATE CONN
-				SET CN_STATUS='Y'
-				WHERE CN_CODE=#{cnCode}
-			</when>
-		</choose>
+	<update id="updateAcc" parameterType="Conn">
+		UPDATE CONN
+		SET CN_STATUS=#{cnStatus}
+		WHERE CN_CODE=#{cnCode}
 	</update>
 </mapper>
 

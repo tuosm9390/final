@@ -7,9 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
 import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
@@ -77,8 +79,14 @@ public interface StockDao {
 	ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList);
 
 
+	int getStockHisCount(SqlSessionTemplate sqlSession);
+
+	ArrayList<ItemHistory> getstockHisList(SqlSessionTemplate sqlSession, PageInfo pi);
 
 
+	ArrayList<Stock> selectSearchStockList(SqlSessionTemplate sqlSession, SearchItem s, PageInfo pi);
+
+	int getSearchStockListCount(SqlSessionTemplate sqlSession);
 
 
 }

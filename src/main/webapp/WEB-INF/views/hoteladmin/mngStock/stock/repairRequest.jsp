@@ -272,6 +272,21 @@ width:700px;
 				var rptNo = $(this).parent("tr").find(".rptno").val();
 				var repNo = $(this).parent("tr").children().eq(1).text();
 				console.log(rptNo);
+				
+				//////
+				$.ajax({
+					url:"selectRepairDetail.sto",
+					type:"post",
+					data:{rptNo:rptNo},
+					success:function(data){
+						console.log(data);
+					},
+					error:function(status){
+						console.log(status);
+					}
+				})
+				
+				///////
 				console.log(repNo);
 				
 				$.ajax({
