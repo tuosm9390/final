@@ -133,6 +133,9 @@
 			<a class="btn_close_plus">×</a>
 			<div class="modal_content_real">
 			<div class="modalTbl">
+			<div class="approveBtn">
+				<button onclick="print();" id="printApprove"><img src="${ contextPath }/resources/images/print.png" id="printImg"></button>
+			</div>
 				<table id="tbl_modal">
 					<colgroup>
 						<col width="10%">
