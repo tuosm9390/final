@@ -26,4 +26,5 @@ public class RepRequest {
 	private String deptName;
 	private int mmno;
 	private String rptDate;
+	private String repReq;
 }

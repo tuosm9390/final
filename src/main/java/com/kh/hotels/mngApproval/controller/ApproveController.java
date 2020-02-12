@@ -679,7 +679,7 @@ public class ApproveController {
 	@RequestMapping("insertOrder.ap")
 	public String insertOrderApprove(HttpServletRequest request, Model m, String docuNos, String rptDate, 
 			String sname, String mname, String title, String content, String type, String cname, String iname, String mfg, String vos, String amount,
-			String price, String totPrice, String ino, String dnum, String docno, String orderDate)  {
+			String price, String totPrice, String ino, String dnum, String docno, String orderDate, String rsn)  {
 		
 		
 		
@@ -760,6 +760,7 @@ public class ApproveController {
 				oRequest.setTotPrice(totPrice);
 				oRequest.setStfId(sname);
 				oRequest.setRsvReqDate(orderDate);
+				oRequest.setOrderRsn(rsn);
 				oRequestList.add(oRequest);
 				System.out.println("for문안 pRequestList : " + oRequestList);
 			}
@@ -1007,6 +1008,7 @@ public class ApproveController {
 				rRequest.setContent(content);
 				rRequest.setDocno(docNo);
 				rRequest.setTotalPrice((totPrice));
+				rRequest.setRsn(rsn);
 				rRequestList.add(rRequest);
 				
 				System.out.println("for문안 pRequestList : " + rRequestList);

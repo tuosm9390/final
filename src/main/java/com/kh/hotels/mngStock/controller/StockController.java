@@ -120,6 +120,46 @@ public class StockController {
 		}
 	}
 	
+	@GetMapping("repairFilter.sto")
+	public ModelAndView repairFilterDetail(HttpServletRequest request, ModelAndView mv, String rptNo, String repNo) {
+		
+		System.out.println("rptNo : " + rptNo);
+		System.out.println("repNo : " + repNo);
+		
+		int rptno = Integer.parseInt(rptNo);
+		System.out.println("여기들어오니?");
+		System.out.println("rptno : " + rptno);
+		RepHistory rHistory = new RepHistory();
+		rHistory.setRptNo(rptno);
+		System.out.println("여기?2");
+		
+		ArrayList<HashMap<String, Object>> list = ss.selectRepairDetail(rHistory);
+		
+		String str = (String)list.get(0).get("REP_BEGIN");
+		String str2 = str.substring(0,11);
+		System.out.println("str2 : " + str2);
+		
+		list.get(0).put("REP_BEGIN", str2);
+		System.out.println("중간list : " + list);
+		
+		Object receiver = list.get(0).get("RECEIVER");
+		int smno = Integer.parseInt(receiver.toString());
+		System.out.println("receiver : " + smno);
+		
+		String name = ss.selectReceiver(smno);
+		
+		System.out.println("name : " + name);
+		
+		list.get(0).put("RECEIVER", name);
+		
+		System.out.println("마지막리스트 : " + list);
+		
+		mv.addObject("list", list);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
 	@PostMapping("insertStock.sto")
 	public String insertStock(Model m, Stock st) {
 		
