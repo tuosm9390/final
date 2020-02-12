@@ -255,6 +255,12 @@ public class StockDaoImpl implements StockDao{
 		return name;
 	}
 
+	@Override
+	public int getSearchStockListCount(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 
 }

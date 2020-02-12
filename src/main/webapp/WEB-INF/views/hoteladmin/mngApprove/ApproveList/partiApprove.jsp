@@ -51,48 +51,8 @@
 	text-align: center;
 }
 
-.tbl_wrap
-
- 
-
-.tbl
-
- 
-
-tr
-
-
-:not
-
- 
-
-(
-:last-child
-
- 
-
-)
-{
-border-bottom
-
-
-:
-
- 
-
-1
-px
-
- 
-
-solid
-
- 
-
-#aaa
-
-
-;
+.tbl_wrap .tbl tr:not(:last-child){
+border-bottom:1px solid #aaa;
 }
 .tbl_wrap .tbl td, th {
 	border: 1px solid lightgray;
