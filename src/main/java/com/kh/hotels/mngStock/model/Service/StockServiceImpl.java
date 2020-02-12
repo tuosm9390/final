@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
-import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.dao.StockDao;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
-import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.OrderHis;
+import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
@@ -145,27 +145,35 @@ public class StockServiceImpl implements StockService{
 	}
 
 	@Override
-	public int getStockHisList() {
-		// TODO Auto-generated method stub
-		return sd.getStockHisCount(sqlSession);
+	public int getPurchaseHisListCount() {
+
+		return sd.getPurchaseHisListCount(sqlSession);
 	}
 
 	@Override
-	public ArrayList<ItemHistory> stockHisList(PageInfo pi) {
-		// TODO Auto-generated method stub
-		return sd.getstockHisList(sqlSession,pi);
+	public ArrayList<OrderHis> selectOrderHisList(PageInfo pi) {
+
+		return sd.selectOrderHisList(pi,sqlSession);
 	}
 
 	@Override
-	public ArrayList<Stock> selectSearchStockList(SearchItem s, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return sd.selectSearchStockList(sqlSession,s,pi); 
+	public ArrayList<OrderHis> selectOrderHisInfoList() {
+		
+		return sd.selectOrderHisInfoList(sqlSession);
 	}
 
 	@Override
-	public int getSearchStockListCount(SearchItem s) {
-		// TODO Auto-generated method stub
-		return sd.getSearchStockListCount(sqlSession);  
+	public ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo) {
+		
+		return sd.selectOrderHisDetail(reportNo, sqlSession);
+	}
+
+	@Override
+	public int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList) {
+		
+		ArrayList<Item> itemList = sd.selectItemList(sqlSession, orderHisDetailList);
+		
+		return sd.insertItemList(sqlSession, itemList);
 	}
 
 	
