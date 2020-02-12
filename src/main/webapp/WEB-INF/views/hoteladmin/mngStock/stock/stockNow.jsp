@@ -458,7 +458,8 @@ cursor: pointer;
 		
 		//수리현황탭
 		$("#mailText").click(function(){
-			location.href='selectRepair.sto';
+			var currentPage = 1;
+			location.href='selectRepair.sto?currentPage=' + currentPage;
 		})
 		
 		

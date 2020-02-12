@@ -15,7 +15,7 @@ public class RepRequest {
 	private int price;
 	private int totalPrice;
 	private int rptNo;
-	private int docno;
+	private Long docno;
 	private String mname;
 	private String sname;
 	private int smno;
