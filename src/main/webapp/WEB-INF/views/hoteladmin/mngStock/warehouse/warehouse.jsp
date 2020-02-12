@@ -18,7 +18,7 @@
 	}
 	
 	#filter{
-	}
+	} 
 	
 	#Table td, #Table th{
 	border: 1px solid lightgray;

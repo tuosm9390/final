@@ -12,7 +12,7 @@ public class ItemHistory {
 	private int ino;
 	private String modDate;
 	private String modCol;
-	private String befData;
+	private String befData; 
 	private String aftData;
 	private String modRsn;
 	private int unit;

@@ -53,8 +53,8 @@ public class StockController {
 	@RequestMapping("selectStock.sto")
 	public String selectStockList(HttpServletRequest request, Model  m) {
 		
-		int currentPage = 1;
-		
+		int currentPage = 1; 
+		 
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		} 

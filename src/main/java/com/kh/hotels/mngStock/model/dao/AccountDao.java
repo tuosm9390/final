@@ -12,7 +12,7 @@ public interface AccountDao {
 	int getListCount(SqlSessionTemplate sqlSession);
 
 	ArrayList<Conn> selectAccountList(SqlSessionTemplate sqlSession, PageInfo pi);
-
+ 
 	ArrayList<Conn> selectDetailList(SqlSessionTemplate sqlSession, String cnCode);
 
 	int insertAcc(SqlSessionTemplate sqlSession, Conn c);

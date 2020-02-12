@@ -30,10 +30,9 @@ public class StockServiceImpl implements StockService{
 	
 	@Override
 	public ArrayList<Stock> selectStockList(PageInfo pi) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub 
 		return sd.selectStockList(sqlSession,pi);
 	}
-
 	@Override
 	public int insertStock(Model m, Stock st) {
 		int result=0;

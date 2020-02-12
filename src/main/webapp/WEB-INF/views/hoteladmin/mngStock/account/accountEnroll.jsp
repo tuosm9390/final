@@ -11,7 +11,7 @@
 	margin-top:-3px;
 	width: 760px;
 	height: 444px;
-	
+	 
 	} 
 	.same{
 	display: inline-block;

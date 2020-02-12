@@ -14,9 +14,6 @@
 	height: 70px; 
 /* 	margin-left: 20px; */
 	}
-
-
-
 	#titlemsgg{
 		width: 220px;
 		height: 50px;

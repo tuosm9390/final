@@ -22,7 +22,7 @@ import com.kh.hotels.mngStock.model.vo.Stock;
 public interface StockDao {
 
 	ArrayList<Stock> selectStockList(SqlSessionTemplate sqlSession, PageInfo pi);
-
+ 
 	int insertStock(SqlSessionTemplate sqlSession, Model m, Stock st);
 
 	ArrayList<Repair> selectRepairList(SqlSessionTemplate sqlSession);

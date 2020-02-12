@@ -19,7 +19,7 @@
 	}
 	.same{
 	display: inline-block; 
-
+ 
 	margin-top: 20px;
 	}
 	#sam{

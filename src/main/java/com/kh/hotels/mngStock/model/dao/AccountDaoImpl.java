@@ -17,7 +17,6 @@ public class AccountDaoImpl implements AccountDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("Account.selectListCount");
 	}
-	
 	@Override
 	public ArrayList<Conn> selectAccountList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
