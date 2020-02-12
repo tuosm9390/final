@@ -182,11 +182,38 @@ public class StockDaoImpl implements StockDao{
 	@Override
 	public ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList) {
 
-		ArrayList<Item> itemList = null;
+		ArrayList<Item> itemList = new ArrayList<>();
 		
-		itemList = (ArrayList)sqlSession.selectList("Stock.selectItemList", orderHisDetailList);
+		Item item = null;
+		
+		for(int i = 0; i < orderHisDetailList.size(); i++) {
+			item = new Item();
+			item = sqlSession.selectOne("Stock.selectItemList", orderHisDetailList.get(i));
+			itemList.add(item);
+		}
+		
 		
 		return itemList;
+	}
+
+	@Override
+	public int insertItemList(SqlSessionTemplate sqlSession, ArrayList<Item> itemList) {
+		
+		int result = 0;
+		
+		for(int i = 0; i < itemList.size(); i++) {
+			for(int j = 0; j < itemList.get(i).getAmount(); j++) {
+				result = sqlSession.insert("Stock.insertItemList", itemList.get(i));
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int updateOrderHisStatus(SqlSessionTemplate sqlSession, int reportNo) {
+		
+		return sqlSession.update("Stock.updateOrderHisStatus", reportNo);
 	}
 
 

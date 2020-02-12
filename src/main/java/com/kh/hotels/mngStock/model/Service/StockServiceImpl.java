@@ -176,6 +176,12 @@ public class StockServiceImpl implements StockService{
 		return sd.insertItemList(sqlSession, itemList);
 	}
 
+	@Override
+	public int updateOrderHisStatus(int reportNo) {
+		
+		return sd.updateOrderHisStatus(sqlSession, reportNo);
+	}
+
 	
 
 

@@ -68,6 +68,10 @@ public interface StockDao {
 
 	ArrayList<Item> selectItemList(SqlSessionTemplate sqlSession, ArrayList<OrderHisDetail> orderHisDetailList);
 
+	int insertItemList(SqlSessionTemplate sqlSession, ArrayList<Item> itemList);
+
+	int updateOrderHisStatus(SqlSessionTemplate sqlSession, int reportNo);
+
 
 
 
