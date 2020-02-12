@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
@@ -52,6 +54,15 @@ public interface StockService {
 	int getRepairListCount();
 
 	ArrayList<Repair> repairList(PageInfo pi);
+
+	int getStockHisList();
+
+	ArrayList<ItemHistory> stockHisList(PageInfo pi);
+
+
+	ArrayList<Stock> selectSearchStockList(SearchItem s, PageInfo pi);
+
+	int getSearchStockListCount(SearchItem s);
 
 
 

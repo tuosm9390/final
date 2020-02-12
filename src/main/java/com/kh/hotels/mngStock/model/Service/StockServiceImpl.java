@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.dao.StockDao;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
@@ -140,6 +142,30 @@ public class StockServiceImpl implements StockService{
 	public ArrayList<Repair> repairList(PageInfo pi) {
 		// TODO Auto-generated method stub
 		return sd.getRepairList(sqlSession,pi);
+	}
+
+	@Override
+	public int getStockHisList() {
+		// TODO Auto-generated method stub
+		return sd.getStockHisCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<ItemHistory> stockHisList(PageInfo pi) {
+		// TODO Auto-generated method stub
+		return sd.getstockHisList(sqlSession,pi);
+	}
+
+	@Override
+	public ArrayList<Stock> selectSearchStockList(SearchItem s, PageInfo pi) {
+		// TODO Auto-generated method stub
+		return sd.selectSearchStockList(sqlSession,s,pi); 
+	}
+
+	@Override
+	public int getSearchStockListCount(SearchItem s) {
+		// TODO Auto-generated method stub
+		return sd.getSearchStockListCount(sqlSession);  
 	}
 
 	

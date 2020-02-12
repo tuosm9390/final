@@ -91,7 +91,7 @@
 		<div id="enrDiv">
 		<div class="bodyDivx">
 		<form action="insert.war" method="post" id="insertwar">
-		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px"  id="strgNo" name="strgNo"></div>  </div>
+		<div>	<div class="same" id="ssam">창고코드</div>  <div class="same"><input type="text" class="space" style="width:300px;background:#f7f7f7"  id="strgNo" name="strgNo" readonly="readonly"></div>  </div>
 		<div>	<div class="same" id="ssam">창고명</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="strgName"></div>  </div>
 		<div>	<div class="same" id="ssam">사용여부</div>  <div class="same"><input type="radio" name="strgStatus" value="strg">사용 &nbsp;&nbsp;<input type="radio" name="strgStatus" value="etc">미사용 </div>  </div>
 		<div>	<div class="same" id="ssam">창고위치</div>  <div class="same"><input type="text" class="space" style="width:600px" id="sam" name="strgSite"></div>  </div>
@@ -111,5 +111,7 @@
 			$("#insertwar").submit();
 		});
 	});
+	
+	
 </script>
 </html>

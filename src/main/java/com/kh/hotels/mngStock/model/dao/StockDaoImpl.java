@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
@@ -136,6 +138,40 @@ public class StockDaoImpl implements StockDao{
 		
 		return (ArrayList)sqlSession.selectList("Stock.getRepairList", null, rowBounds);
 	}
+
+	
+	@Override
+	public int getStockHisCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("Stock.getStockHisCount");
+	}
+
+	@Override
+	public ArrayList<ItemHistory> getstockHisList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return (ArrayList)sqlSession.selectList("Stock.getStockHisList", null, rowBounds);// TODO Auto-generated method stub
+	}
+
+	
+	@Override
+	public ArrayList<Stock> selectSearchStockList(SqlSessionTemplate sqlSession, SearchItem s, PageInfo pi) {
+		// TODO Auto-generated method stub
+		int offset = (pi.getCurrentPage() - 1) * pi .getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return (ArrayList)sqlSession.selectList("Stock.getStockHisList", s, rowBounds);
+	}
+
+	@Override
+	public int getSearchStockListCount(SqlSessionTemplate sqlSession) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("Stock.getSearchStockListCount");
+	}
+
 
 
 }

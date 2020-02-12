@@ -45,6 +45,25 @@
 		<result property="scategory" column="SCATEGORY" />
 	</resultMap>
 	
+	<resultMap type="com.kh.hotels.mngStock.model.vo.ItemHistory" id="resultSetHis">
+		<id property="ino" column="INO" />
+		<result property="modDate" column="MOD_DATE" />
+		<result property="modCol" column="MOD_COL" />
+		<result property="befData" column="BEF_DATA" />
+		<result property="aftData" column="AFT_DATA" />
+		<result property="modRsn" column="MOD_RSN" />
+		<result property="unit" column="UNIT" />
+		<result property="befName" column="BEF_NAME" />
+		<result property="aftName" column="AFT_NAME" />
+		<result property="befStrgName" column="BER_STRG_NAME" />
+		<result property="aftStrgName" column="AFT_STRG_NAME" />
+		<result property="befRmNum" column="BEF_RM_NUM" />
+		<result property="aftRmNum" column="AFT_RM_NUM" />
+		<result property="iname" column="INAME" />
+		<result property="type" column="TYPE" />
+		<result property="amount" column="AMOUNT" />
+	</resultMap>
+	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.Conn" id="resultSetConn">
 		<id property="cnCode" column="CN_CODE" />
 		<result property="cnName" column="CN_NAME" />
@@ -226,6 +245,41 @@
 		JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
 		ORDER BY ORDER_NO DESC;
 	</select> -->
+	
+	<select id="getStockHisCount" resultType="_int">
+	  SELECT COUNT(*) FROM (
+	  SELECT T.TYPE,H.INO,MOD_DATE,MOD_COL,BEF_DATA,AFT_DATA,MOD_RSN,J8.AMOUNT AS AMOUNT,J1.AREA_NAME AS BEF_NAME, J2.AREA_NAME AS AFT_NAME,J3.STRG_NAME AS BEF_STRG_NAME,J4.STRG_NAME AS AFT_STRG_NAME,J5.RM_NUM AS BEF_RM_NUM,J6.RM_NUM AS AFT_RM_NUM,J7.INAME
+      FROM ITEM_HIS H
+      JOIN ITEM I ON (I.INO=H.INO)
+      LEFT JOIN ITEM_TYPE T ON (I.TYPE_NO=T.TYPE_NO)
+      LEFT JOIN (SELECT AREA_NAME,TO_CHAR(AREA_NO) AS "AREA_NO"  FROM STRG_AREA) J1 ON (H.BEF_DATA = J1.AREA_NO)
+      LEFT JOIN (SELECT AREA_NAME,TO_CHAR(AREA_NO) AS "AREA_NO" FROM STRG_AREA) J2 ON (H.AFT_DATA = J2.AREA_NO)
+      LEFT JOIN (SELECT STRG_NO,STRG_NAME FROM STRG) J3 ON (H.BEF_DATA = J3.STRG_NO)
+      LEFT JOIN (SELECT STRG_NO,STRG_NAME FROM STRG) J4 ON (H.AFT_DATA = J4.STRG_NO)
+      LEFT JOIN (SELECT TO_CHAR(RM_NO) AS "RM_NO" , RM_NUM AS RM_NUM FROM ROOM) J5 ON (H.BEF_DATA = J5.RM_NO)
+      LEFT JOIN (SELECT TO_CHAR(RM_NO) AS "RM_NO" , RM_NUM AS RM_NUM FROM ROOM) J6 ON (H.AFT_DATA = J6.RM_NO)
+      LEFT JOIN (SELECT TO_CHAR(INO) AS INO,INAME FROM ITEM) J7 ON(H.INO=J7.INO)
+      LEFT JOIN (SELECT TO_CHAR(AMOUNT) AS "AMOUNT" FROM ITEM) J8 ON(H.AFT_DATA=J8.AMOUNT)
+      ORDER BY MOD_DATE DESC)
+	</select>
+	
+	
+	<select id="getStockHisList" resultMap="resultSetHis">
+	  SELECT T.TYPE,H.INO,MOD_DATE,MOD_COL,BEF_DATA,AFT_DATA,MOD_RSN,J8.AMOUNT AS AMOUNT,J1.AREA_NAME AS BEF_NAME, J2.AREA_NAME AS AFT_NAME,J3.STRG_NAME AS BEF_STRG_NAME,J4.STRG_NAME AS AFT_STRG_NAME,J5.RM_NUM AS BEF_RM_NUM,J6.RM_NUM AS AFT_RM_NUM,J7.INAME
+      FROM ITEM_HIS H
+      JOIN ITEM I ON (I.INO=H.INO)
+      LEFT JOIN ITEM_TYPE T ON (I.TYPE_NO=T.TYPE_NO)
+      LEFT JOIN (SELECT AREA_NAME,TO_CHAR(AREA_NO) AS "AREA_NO"  FROM STRG_AREA) J1 ON (H.BEF_DATA = J1.AREA_NO)
+      LEFT JOIN (SELECT AREA_NAME,TO_CHAR(AREA_NO) AS "AREA_NO" FROM STRG_AREA) J2 ON (H.AFT_DATA = J2.AREA_NO)
+      LEFT JOIN (SELECT STRG_NO,STRG_NAME FROM STRG) J3 ON (H.BEF_DATA = J3.STRG_NO)
+      LEFT JOIN (SELECT STRG_NO,STRG_NAME FROM STRG) J4 ON (H.AFT_DATA = J4.STRG_NO)
+      LEFT JOIN (SELECT TO_CHAR(RM_NO) AS "RM_NO" , RM_NUM AS RM_NUM FROM ROOM) J5 ON (H.BEF_DATA = J5.RM_NO)
+      LEFT JOIN (SELECT TO_CHAR(RM_NO) AS "RM_NO" , RM_NUM AS RM_NUM FROM ROOM) J6 ON (H.AFT_DATA = J6.RM_NO)
+      LEFT JOIN (SELECT TO_CHAR(INO) AS INO,INAME FROM ITEM) J7 ON(H.INO=J7.INO)
+      LEFT JOIN (SELECT TO_CHAR(AMOUNT) AS "AMOUNT" FROM ITEM) J8 ON(H.AFT_DATA=J8.AMOUNT)
+      ORDER BY MOD_DATE DESC
+	</select>
+	
 </mapper>
 
  
