@@ -35,13 +35,13 @@ public class OrderRequest {
 	private String mfg;
 	private int vosprice;
 	private int price;
-	private int docno;
+	private Long docno;
 	private String deptname;
 	private String sinfo;
 	private int smno;
 	private int mno;
 	private String stfId;
-	private int purDocuno;
+	private Long purDocuno;
 	private String rsvReqDate;
 	
 }

@@ -83,10 +83,13 @@
 	</resultMap>
 	
 	
-	<resultMap type="com.kh.hotels.mngStock.model.vo.Repair" id="resultSetRepair">
+	<resultMap type="com.kh.hotels.mngStock.model.vo.RepHistory" id="resultSetRepair">
 		<id property="rptNo" column="RPT_NO" />
-		<result property="rptTitle" column="RPT_TITLE" />
-		<result property="rptStatus" column="RPT_STATUS" />
+		<result property="repNo" column="REP_NO" />
+		<result property="repBegin" column="REP_BEGIN" />
+		<result property="repEnd" column="REP_END" />
+		<result property="repStatus" column="REP_STATUS" />
+		<result property="rptNo" column="RPT_NO" />
 	</resultMap>
 	
 	<resultMap type="com.kh.hotels.mngStock.model.vo.ItemType" id="resultSetType">
@@ -173,15 +176,33 @@
         AND I.ITEM_STATUS = 'N'
 	</select>
 	
-
-	
-
 	
 	<!-- 수리 현황 리스트 조회-->
+	<select id="getRepairListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM REP_HIS
+	</select>
+	
+	<select id="getRepairList" resultMap="resultSetRepair">
+		SELECT REP_NO, REP_BEGIN, REP_END, REP_STATUS, RPT_NO
+		FROM (SELECT R.REP_NO AS "REP_NO", R.REP_BEGIN AS "REP_BEGIN", R.REP_END AS "REP_END", 
+			R.REP_STATUS AS "REP_STATUS", R.RPT_NO AS "RPT_NO"
+		      FROM REP_HIS R
+		      ORDER BY REP_NO DESC)
+		ORDER BY REP_NO DESC
+	</select>
 	<select id="selectRepairList" resultMap="resultSetRepair">
 		SELECT RPT_NO,RPT_TITLE,RPT_STATUS FROM REP_REQ R
 		JOIN REPORT USING(RPT_NO)
 	</select>	
+	
+	<select id="selectRepairInfo" parameterType="_int" resultType="String">
+		SELECT R.RPT_TITLE AS "RTITLE"
+		FROM REPORT R
+		JOIN REPORT RE ON (R.RPT_NO = RE.RPT_NO)
+		WHERE R.RPT_NO = #{rptNo}
+	</select>
+	
 	
 	<!-- 분류 리스트 -->
 	<select id="selectCategoryList" resultMap="resultSetType">
@@ -305,6 +326,23 @@
 		UPDATE ORDER_HIS
 		SET RCV_STATUS = 'Y', RCV_DATE = TO_DATE(SYSDATE, 'RRRR-MM-DD HH24:MI:SS')
 		WHERE RPT_NO = #{reportNo}
+	</select>
+	
+	<select id="selectRepairDetail" parameterType="_int" resultType="java.util.HashMap">
+		SELECT REP_BEGIN, RECEIVER, CN_NAME, REP_NO, ROWNUM, RQ.INO AS "INO", SCATEGORY,
+        INAME, VOS, VAT, REP_PRICE, REP_END, REP_STATUS
+		FROM REP_HIS RH
+		JOIN REP_REQ RQ ON (RH.RPT_NO = RQ.RPT_NO)
+		JOIN REPORT R ON(RH.RPT_NO = R.RPT_NO)
+		JOIN CONN C ON(RQ.CN_CODE = C.CN_CODE)
+		JOIN ITEM I ON(RQ.INO = I.INO)
+		JOIN ITEM_TYPE IT ON(I.TYPE_NO = IT.TYPE_NO)
+		WHERE RH.RPT_NO = #{rptno}
+	</select>
+	<select id="selectReceiverName" parameterType="_int" resultType="String">
+		SELECT NAME
+		FROM MEMBER
+		WHERE MNO = #{receiver}
 	</select>
 	
 </mapper>

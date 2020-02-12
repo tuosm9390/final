@@ -1,6 +1,7 @@
 package com.kh.hotels.mngStock.model.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.ui.Model;
 
@@ -9,13 +10,12 @@ import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
 import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
 import com.kh.hotels.mngStock.model.vo.SearchItem;
 import com.kh.hotels.mngStock.model.vo.Stock;
-import com.kh.hotels.mngStock.model.vo.Strg;
-import com.kh.hotels.mngStock.model.vo.StrgArea;
 
 
 public interface StockService {
@@ -53,7 +53,6 @@ public interface StockService {
 
 	int getRepairListCount();
 
-	ArrayList<Repair> repairList(PageInfo pi);
 
 	int getPurchaseHisListCount();
 
@@ -67,6 +66,11 @@ public interface StockService {
 
 	int updateOrderHisStatus(int reportNo);
 
+	ArrayList<RepHistory> repairList(PageInfo pi);
+
+	ArrayList<HashMap<String, Object>> selectRepairDetail(RepHistory rHistory);
+
+	String selectReceiver(int receiver);
 
 
 	

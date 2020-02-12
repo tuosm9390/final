@@ -31,6 +31,7 @@ import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
 import com.kh.hotels.mngStock.model.vo.ItemType;
+import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
 import com.kh.hotels.mngStock.model.vo.OrderHisDetail;
 import com.kh.hotels.mngStock.model.vo.Repair;
@@ -81,32 +82,34 @@ public class StockController {
 	}
 	
 	@RequestMapping("selectRepair.sto")
-	public String selectRepairList(HttpServletRequest request,Model m){
+	public String selectRepairList(HttpServletRequest request,Model m, String currentPage){
 		
-		int currentPage = 1;
+		System.out.println("들어오니??");
+		int scurrentPage = 1;
 		
 		if(request.getParameter("currentPage") != null) {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+			scurrentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 		int listCount = ss.getRepairListCount();
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = Pagination.getPageInfo(scurrentPage, listCount);
 		try {
-			ArrayList<Repair> repairList = ss.repairList(pi);
+			ArrayList<RepHistory> repairList = ss.repairList(pi);
 			
+			System.out.println("어디까지 들어오니?");
 			for(int i=0;i<repairList.size();i++) {
-				if(repairList.get(i).getRptStatus().equals("WAIT")) {
-					repairList.get(i).setRptStatus("대기");
-				}else if(repairList.get(i).getRptStatus().equals("APPR")){
-					repairList.get(i).setRptStatus("승인");
-				}else if(repairList.get(i).getRptStatus().equals("REJECT")) {
-					repairList.get(i).setRptStatus("반려");
+				if(repairList.get(i).getRepStatus().equals("Y")) {
+					repairList.get(i).setRepStatus("수리완료");
 				}else {
-					repairList.get(i).setRptStatus("오류");
+					repairList.get(i).setRepStatus("수리중");
 				}
+				
+				System.out.println("여기들어가라진짜 : " + repairList);
 			}
+			
 			
 			m.addAttribute("repairList", repairList);
 			m.addAttribute("pi", pi);
+			System.out.println("마지막 repairList : " + repairList);
 			
 			return "hoteladmin/mngStock/stock/repairRequest";
 			

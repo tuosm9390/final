@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <meta charset="UTF-8">
 <title>구매상세</title>
 <style> 
@@ -43,7 +45,10 @@
 	}
 	#person1{
 	margin-left: 19px;
-	} 
+	}
+	#person2{
+	margin-left: 19px;
+	}  
 	#etc{
 	margin-left: 50px;
 	}
@@ -84,67 +89,37 @@
 	    <div class="top-divv">
 		<div id="day" class="samee">
 			일자
-			<input type="text" id="day1" name="day1">
+			<input type="text" id="day1" name="day1" style="text-align:center;">
 			<input type="text" id="day2" name="day2">
 			
 		</div>
-		   <div id="etc" class="samee">거래처 <input type="text" id="etcText">
+		   <div id="etc" class="samee">거래처 <input type="text" id="etcText" style="text-align:center;">
 		</div>
 			<br> 
 			<div class="person" >
 			결제자
-			<input type="text" id="person1" name="person1">
+			<input type="text" id="person1" name="person1" style="text-align:center;">
 			
 			</div>
 			<div class="person" id="request">
 			수리번호
-			<input type="text" id="person1" name="person1">
+			<input type="text" id="person2" name="person1" style="text-align:center;">
 			</div>
 		</div><!-- top-div end -->
 		
 		<div id="TableDiv">
 		<table id="Table" border="1px solid black;">
-			<tr>
+			<tr class="repairDetail">
 				<th><input type="checkbox"></th>
-				<th>NO</th>
 				<th>번호</th>
-				<th>대분류</th>
-				<th>중분류</th>
 				<th>소분류</th>
-				<th>제품번호</th>
 				<th>공급가액</th>
+				<th>제품명</th>
 				<th>부가세</th>
 				<th>수리비용</th>
 				
 			</tr>
 			<!-- 실사용은 list size -->
-			<c:forEach var="i" begin="1" end="15">
-			<tr>
-				<td><input type="checkbox"></td>
-				<td>${i }</td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td> 
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				
-			</tr>
-			</c:forEach>
-			<tr id="resultTap">
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-				<td><c:out value=""/></td>
-			</tr>
 		</table>
 		
 	</div>
@@ -152,5 +127,6 @@
 	<footer>
 	</footer>
 	
+
 </body>
 </html>

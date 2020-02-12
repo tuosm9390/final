@@ -93,6 +93,9 @@ cursor: pointer;
 	<script>
 		$(document).ready(function() {
 			$(".btn_close_plus").click(function() {
+				
+				$("#Table .repeatOrder").remove();
+				
 				$(".modal").fadeOut();
 			});
 		});
