@@ -22,6 +22,7 @@ public class CheckIn implements java.io.Serializable {
 	private String selRoomNum;
 	private String selRoomNumm; 	//야매 ROOMNUM
 	private String rsvNo;
+	private String stayNo;
 
 	private String selSvc;
 	private String svcCnt; 

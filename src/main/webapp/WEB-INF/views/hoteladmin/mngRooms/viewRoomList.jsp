@@ -453,7 +453,7 @@ input[type=checkbox] {
 		<!-- roomSec end -->
 		
 	</section>
-		<script>
+	<script>
 			var roomlist;
 			var roomprice;
 			var svclist;
@@ -474,7 +474,7 @@ input[type=checkbox] {
 				svclist = JSON.parse('${jsonList3}');
 				ruleInfo = JSON.parse('${jsonObject}');
 				rfdRate = JSON.parse('${jsonObject2}');
-				today = new Date().format('yyyy-MM-dd');
+				today = dateToStr(new Date());
 				console.log(roomlist);
 				
 				var stEmpty = roomlist.length;
@@ -843,7 +843,7 @@ input[type=checkbox] {
 					  n = n + '';
 					  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
 				}
-				var nametoday = new Date().format('yyyyMMdd');
+				var nametoday = dateToStr(new Date()).replace(/-/g , '');
 				var namecnt = 0;
 				$.ajax({
 					url:"ajxFindTempClient.ro",
@@ -956,7 +956,7 @@ input[type=checkbox] {
 				}
 				
 				//요금상세 부분 설정
-				detailModalFee(new Date().format('yyyy-MM-dd'), 'LENT', 0);
+				detailModalFee(dateToStr(new Date()), 'LENT', 0);
 				
 				//요금상세 부분 설정 함수
 				function detailModalFee(feedate, data, totalFee) {
@@ -976,7 +976,9 @@ input[type=checkbox] {
 							$(".feeDetailSec table").append("<tr><td>" + feedate.substring(5) + "</td><td>" + dayfee + "</td></tr>");
 						}
 					}
+					$("#iptTotalRoom").val(totalFee);
 					$("#totalRoom").text(totalFee.toLocaleString());
+					$("#iptTotalVlt").val(totalFee * ruleInfo.serviceRate);
 					$("#totalVlt").text((totalFee * ruleInfo.serviceRate).toLocaleString());
 					changeTotalPrcTxt();
 					
@@ -987,14 +989,14 @@ input[type=checkbox] {
 				function changeModalFee(sttfeeday, endfeeday) {
 					if(endfeeday == 0 || $("#rentYN").prop('checked')) {
 						$(".feeDetailSec tr").remove();
-						detailModalFee(new Date().format('yyyy-MM-dd'), 'LENT', 0);
+						detailModalFee(dateToStr(new Date()), 'LENT', 0);
 					} else {
 						$(".feeDetailSec tr").remove();
 						var feedayscnt = $("select[name=stayDay]").val() * 1;
 						var totalFee = 0;
 						for(var i = 0; i < feedayscnt; i++) {
 							var tempday = new Date(sttfeeday.getFullYear(), sttfeeday.getMonth(), sttfeeday.getDate() + i);
-							var feeday = tempday.format('yyyy-MM-dd');
+							var feeday = dateToStr(tempday);
 							totalFee = detailModalFee(feeday, 'STAY', totalFee);
 						}
 					}	
@@ -1013,12 +1015,13 @@ input[type=checkbox] {
 			var selRoomNumm;
 			function goReserv(rsvNo) {
 				rsvNoModalNew = rsvNo;
-				
+				$("#rsvNo").val(rsvNo);
 				$(".statusColor").addClass('lightsteelblue');
 				$(".totalPrice").addClass('lightsteelblue');
 				$("#modalStt").text('　예약');
 				$("#staycode").text(rsvNo);
 				$("#checkinBtn").show();
+				$("#memoInsertBtn").prop('disabled', true);
 				
 				$("select[name=stayDay]").before("<input type='text' name='checkinTime' id='checkIn' value='" + today + "'>");
 				$("input[name=rentYN]").before("<input type='text' name='checkoutTime' id='checkOut'>");
@@ -1051,7 +1054,7 @@ input[type=checkbox] {
 						$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
 						$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
 						selRoomNumm = data.stayInfo.rmNo;
-						
+						$("#selRoomNumm").val(data.stayInfo.rmNo);
 						
 						var stdPer = data.stayInfo.stdPer;
 						var maxPer = data.stayInfo.maxPer;
@@ -1092,6 +1095,7 @@ input[type=checkbox] {
 							tempSvc.find('button').remove();
 							$(".svcDetailSec table").append(tempSvc);
 						}
+						$("#iptTotalSvc").text(tempSvcTotal);
 						$("#totalSvc").text(tempSvcTotal.toLocaleString());
 						
 						for(var i = 0; i < data.stayPay.length; i++) {
@@ -1103,6 +1107,7 @@ input[type=checkbox] {
 							}
 							
 							if(i == data.stayPay.length - 1) {
+								$("#iptLastPayDay").val(data.stayPay[i].payDate);
 								$("#lastPayDay").text(data.stayPay[i].payDate);
 								reservPayDate = data.stayPay[i].payDate;
 							}
@@ -1125,7 +1130,7 @@ input[type=checkbox] {
 			function goLent(stayNo) {
 				
 				stayNoModalNew = stayNo;
-				
+				$("#stayNo").val(stayNo);
 				$(".statusColor").addClass('gold');
 				$(".totalPrice").addClass('gold');
 				$("#staycode").text('　　');
@@ -1155,7 +1160,7 @@ input[type=checkbox] {
 						
 						$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
 						$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
-						
+						$("#selRoomNumm").val(data.stayInfo.rmNo);
 						
 						var stdPer = data.stayInfo.stdPer;
 						var maxPer = data.stayInfo.maxPer;
@@ -1192,6 +1197,7 @@ input[type=checkbox] {
 							tempSvc.find('button').remove();
 							$(".svcDetailSec table").append(tempSvc);
 						}
+						$("#iptTotalSvc").text(tempSvcTotal);
 						$("#totalSvc").text(tempSvcTotal.toLocaleString());
 						
 						for(var i = 0; i < data.stayPay.length; i++) {
@@ -1203,6 +1209,7 @@ input[type=checkbox] {
 							}
 							
 							if(i == data.stayPay.length - 1) {
+								$("#iptLastPayDay").val(data.stayPay[i].payDate);
 								$("#lastPayDay").text(data.stayPay[i].payDate);
 							}
 						}
@@ -1227,7 +1234,7 @@ input[type=checkbox] {
 				$("#staycode").text('　　');
 				$(".infoBtnSec").show();
 				checkoutStayNo = stayNo;
-				
+				$("#stayNo").val(stayNo);
 				stayNoModalNew = stayNo;
 				for(var i = 0; i < roomlist.length; i++) {
 					if(roomlist[i].stayNo  == stayNo) {
@@ -1258,7 +1265,7 @@ input[type=checkbox] {
 						
 						$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
 						$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
-						
+						$("#selRoomNumm").val(data.stayInfo.rmNo);
 						
 						var stdPer = data.stayInfo.stdPer;
 						var maxPer = data.stayInfo.maxPer;
@@ -1295,6 +1302,7 @@ input[type=checkbox] {
 							tempSvc.find('button').remove();
 							$(".svcDetailSec table").append(tempSvc);
 						}
+						$("#iptTotalSvc").text(tempSvcTotal);
 						$("#totalSvc").text(tempSvcTotal.toLocaleString());
 						
 						for(var i = 0; i < data.stayPay.length; i++) {
@@ -1306,6 +1314,7 @@ input[type=checkbox] {
 							}
 							
 							if(i == data.stayPay.length - 1) {
+								$("#iptLastPayDay").val(data.stayPay[i].payDate);
 								$("#lastPayDay").text(data.stayPay[i].payDate);
 							}
 						}
@@ -1327,14 +1336,14 @@ input[type=checkbox] {
 			function changeModalFee(rtNo, sttfeeday, endfeeday, perday) {
 				if(perday == 0) {
 					$(".feeDetailSec tr").remove();
-					detailModalFee(rtNo, new Date().format('yyyy-MM-dd'), 'LENT', 0);
+					detailModalFee(rtNo, dateToStr(new Date()), 'LENT', 0);
 				} else {
 					$(".feeDetailSec tr").remove();
 					var feedayscnt = $("select[name=stayDay]").val() * 1;
 					var totalFee = 0;
 					for(var i = 0; i < feedayscnt; i++) {
 						var tempday = new Date(sttfeeday.getFullYear(), sttfeeday.getMonth(), sttfeeday.getDate() + i);
-						var feeday = tempday.format('yyyy-MM-dd');
+						var feeday =dateToStr(tempday);
 						totalFee = detailModalFee(rtNo, feeday, 'STAY', totalFee);
 					}
 				}	
@@ -1357,7 +1366,9 @@ input[type=checkbox] {
 						$(".feeDetailSec table").append("<tr><td>" + feedate.substring(5) + "</td><td>" + dayfee + "</td></tr>");
 					}
 				}
+				$("#iptTotalRoom").val(totalFee);
 				$("#totalRoom").text(totalFee.toLocaleString());
+				$("#iptTotalVlt").val(totalFee * ruleInfo.serviceRate);
 				$("#totalVlt").text((totalFee * ruleInfo.serviceRate).toLocaleString());
 				changeTotalPrcTxt();
 				
@@ -1379,10 +1390,10 @@ input[type=checkbox] {
 						
 						var week = new Array('일', '월', '화', '수', '목', '금', '토');
 						var begin = new Date(brkRoom.brkBegin);
-						var dateB = begin.format('MM-dd');
+						var dateB = (begin.getMonth()+1) + "-" + begin.getDate();
 						var dayB = week[begin.getDay()];
 						var end = new Date(brkRoom.brkEnd);
-						var dateE = end.format('MM-dd');
+						var dateE = (end.getMonth()+1) + "-" + end.getDate();;
 						var dayE = week[end.getDay()];
 						$("#brkPeriod").text(dateB + "(" + dayB + ") ~ " + dateE + "(" + dayE + ")");
 						console.log("begin : " + begin + "/" + dateB + dayB);
@@ -1508,13 +1519,28 @@ input[type=checkbox] {
 					} break;
 				default : alert("검색 조건을 선택하세요."); $(".roomBox").show(); break;
 				}
-					
 				
 			});
 			
+			function strToDate(str) {
+				var year = str.substr(0,4);
+				var month = (str.substr(5,1)=='0'?str.substr(6,1):str.substr(5,2)) * 1 - 1;
+				var day = str.substr(8,2);
+				var date = new Date(year, month, day);
+				return date;
+			}
+			
+			function dateToStr(date) {
+				var year = date.getFullYear();
+				var month = (date.getMonth()+1)>9?(date.getMonth()+1):"0"+(date.getMonth()+1);
+				var day = date.getDate()>9?date.getDate():"0"+date.getDate();
+				var str = year + "-" + month + "-" + day;
+				return str;
+			}
+			
 		</script>
 		
-		<script>
+	<script>
 		//날짜 포맷맞추기 javascript
 			Date.prototype.format = function(f) {
 				if (!this.valueOf()) return " ";
@@ -1543,7 +1569,7 @@ input[type=checkbox] {
 			Number.prototype.zf = function(len){return this.toString().zf(len);};
 		</script>
 		
-		<script>
+	<script>
 		//대실 남은 시간 계산 javascript
 			function CountDownTimer(dt, rmNo){
 				dt.setHours(dt.getHours() + ruleInfo.rentUnit);
@@ -1607,7 +1633,7 @@ input[type=checkbox] {
 	        }
 		</script>
 		
-		<script>
+	<script>
 			//노쇼고객 알림
 			function warningAction(rmNo){
 				var noshowUnit = ruleInfo.noshowUnit;

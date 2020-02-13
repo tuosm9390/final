@@ -257,14 +257,136 @@ public class RoomsServiceImpl implements RoomsService {
 
 	@Override
 	public ArrayList<RequestStayRsv> selectRsrList(RequestStayRsv rsr) {
-
 		return rd.selectRsrList(sqlSession, rsr);
 	}
 
 	@Override
 	public int insertMemo(RsvMemo rm) {
-		
 		return rd.insertMemo(sqlSession, rm);
+	}
+
+	@Override
+	public void updateCheckIn(CheckIn checkIn) {
+		int result1 = rd.updateCIstay(sqlSession, checkIn);
+		
+		ArrayList<ModalClient> selStayPay = rd.ajxSelectStayPay(sqlSession, Integer.parseInt(checkIn.getStayNo()));
+
+		int tempCard = 0, tempCash = 0, tempAcc = 0, tempRfd = 0;
+		if(selStayPay.get(0).getPaymentFee() != 0) {
+			for(int i = 0; i < selStayPay.size(); i++) {
+				switch(selStayPay.get(i).getPayWay()) {
+				case "CARD" : tempCard += selStayPay.get(i).getPaymentFee(); break;
+				case "CASH" : tempCash += selStayPay.get(i).getPaymentFee(); break;
+				case "ACCOUNT" : tempAcc += selStayPay.get(i).getPaymentFee(); break;
+				case "REFUND" : tempRfd += selStayPay.get(i).getPaymentFee(); break;
+				}
+			}
+		}
+		int result3 = 0; int result31, result32, result33;
+		if(checkIn.getCreditCard() != 0) {
+			checkIn.setPayWay("CARD"); checkIn.setPayWayMoney(checkIn.getCreditCard() - tempCard);
+			result31 = rd.insertCIpayment(sqlSession, checkIn);
+		} else { result31 = 1; }
+		if(checkIn.getCash() != 0) {
+			checkIn.setPayWay("CASH"); checkIn.setPayWayMoney(checkIn.getCash() - tempCash);
+			result32 = rd.insertCIpayment(sqlSession, checkIn);
+		} else { result32 = 1; }
+		if(checkIn.getAccount() != 0) {
+			checkIn.setPayWay("ACCOUNT"); checkIn.setPayWayMoney(checkIn.getAccount() - tempAcc);
+			result33 = rd.insertCIpayment(sqlSession, checkIn);
+		} else { result33 = 1; }
+		if(checkIn.getRefund() != 0) {
+			checkIn.setPayWay("ACCOUNT"); checkIn.setPayWayMoney(checkIn.getRefund() - tempRfd);
+			result33 = rd.insertCIpayment(sqlSession, checkIn);
+		} else { result33 = 1; }
+		if(result31 > 0 && result32 > 0 && result33 > 0) {
+			result3 = 1;
+		}
+		
+		int result4 = 0;
+		String[] svcList = checkIn.getSelSvc().split(",");
+		String[] svcCnt = checkIn.getSvcCnt().split(",");
+		int tempSvcCnt = svcCnt.length - svcList.length;
+		ArrayList<Integer> tempSvc = new ArrayList<Integer>();
+		if(svcList.length > 1) {
+			for(int i = 1; i < svcList.length; i++) {
+				checkIn.setSvcCode(svcList[i]);
+				checkIn.setSvcCount(Integer.parseInt(svcCnt[tempSvcCnt]));
+				tempSvc.add(rd.insertCIsvcuse(sqlSession, checkIn));
+				tempSvc.add(rd.insertCIsvcuseHis(sqlSession, checkIn));
+				tempSvcCnt++;
+			}
+			for(int j = 0; j < tempSvc.size(); j++) {
+				if(tempSvc.get(j) > 0) {
+					result4 = 1;
+				} else {
+					result4 = 0;
+				}
+			}
+		} else { result4 = 1; }
+		
+	}
+
+	@Override
+	public void updateReserv(CheckIn checkIn) {
+		int result1 = rd.updateReserv(sqlSession, checkIn);
+		
+		ArrayList<ModalClient> selStayPay = rd.ajxSelectRsvPay(sqlSession, checkIn.getRsvNo());
+
+		int tempCard = 0, tempCash = 0, tempAcc = 0, tempRfd = 0;
+		if(selStayPay.get(0).getPaymentFee() != 0) {
+			for(int i = 0; i < selStayPay.size(); i++) {
+				switch(selStayPay.get(i).getPayWay()) {
+				case "CARD" : tempCard += selStayPay.get(i).getPaymentFee(); break;
+				case "CASH" : tempCash += selStayPay.get(i).getPaymentFee(); break;
+				case "ACCOUNT" : tempAcc += selStayPay.get(i).getPaymentFee(); break;
+				case "REFUND" : tempRfd += selStayPay.get(i).getPaymentFee(); break;
+				}
+			}
+			
+		}
+		int result3 = 0; int result31, result32, result33;
+		if(checkIn.getCreditCard() != 0) {
+			checkIn.setPayWay("CARD"); checkIn.setPayWayMoney(checkIn.getCreditCard() - tempCard);
+			result31 = rd.insertReservPayment(sqlSession, checkIn);
+		} else { result31 = 1; }
+		if(checkIn.getCash() != 0) {
+			checkIn.setPayWay("CASH"); checkIn.setPayWayMoney(checkIn.getCash() - tempCash);
+			result32 = rd.insertReservPayment(sqlSession, checkIn);
+		} else { result32 = 1; }
+		if(checkIn.getAccount() != 0) {
+			checkIn.setPayWay("ACCOUNT"); checkIn.setPayWayMoney(checkIn.getAccount() - tempAcc);
+			result33 = rd.insertReservPayment(sqlSession, checkIn);
+		} else { result33 = 1; }
+		if(checkIn.getRefund() != 0) {
+			checkIn.setPayWay("ACCOUNT"); checkIn.setPayWayMoney(checkIn.getRefund() - tempRfd);
+			result33 = rd.insertReservPayment(sqlSession, checkIn);
+		} else { result33 = 1; }
+		if(result31 > 0 && result32 > 0 && result33 > 0) {
+			result3 = 1;
+		}
+		
+		int result4 = 0;
+		String[] svcList = checkIn.getSelSvc().split(",");
+		String[] svcCnt = checkIn.getSvcCnt().split(",");
+		int tempSvcCnt = svcCnt.length - svcList.length;
+		ArrayList<Integer> tempSvc = new ArrayList<Integer>();
+		if(svcList.length > 1) {
+			for(int i = 1; i < svcList.length; i++) {
+				checkIn.setSvcCode(svcList[i]);
+				checkIn.setSvcCount(Integer.parseInt(svcCnt[tempSvcCnt]));
+				tempSvc.add(rd.insertReservSvcUse(sqlSession, checkIn));
+				tempSvc.add(rd.insertReservSvcUseHis(sqlSession, checkIn));
+				tempSvcCnt++;
+			}
+			for(int j = 0; j < tempSvc.size(); j++) {
+				if(tempSvc.get(j) > 0) {
+					result4 = 1;
+				} else {
+					result4 = 0;
+				}
+			}
+		} else { result4 = 1; }
 	}
 
 }
