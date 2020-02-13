@@ -254,11 +254,8 @@
 	
 	<select id="selectCnName" resultMap="resultSetConn">
 		SELECT CN_NAME,CN_CODE
-		FROM CONN
-		JOIN ITEM USING(CN_CODE)
-		JOIN ITEM_TYPE USING(TYPE_NO)
-		WHERE TYPE_NO =#{typeNo}
-		GROUP BY CN_NAME,CN_CODE
+        FROM CONN
+        GROUP BY CN_NAME,CN_CODE
         ORDER BY CN_NAME ASC
 	</select>
 	
