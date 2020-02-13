@@ -399,7 +399,34 @@
 	<insert id="deleteStockHis" parameterType="His">
 		INSERT INTO ITEM_HIS VALUES(#{ino},TO_CHAR(SYSDATE + 9 / (24) + 135 / (24 * 60 * 60), 'YYYY-MM-DD HH24:mi:ss'),'ALL','ALL',' ','DELETE')
 	</insert>
-
+	
+	<select id="getSearchCount" resultType="_int" parameterType="SearchItem">
+	SELECT COUNT(*) FROM
+		(SELECT INAME,TYPE,CNT 
+        FROM(
+        SELECT I.INAME, T.TYPE, SUM(I.AMOUNT) AS CNT
+		FROM (SELECT *
+     	 FROM ITEM
+     	 WHERE ITEM_STATUS = 'N') I
+		JOIN ITEM_TYPE T USING(TYPE_NO)
+		GROUP BY I.INAME, T.TYPE
+		ORDER BY INAME)
+        WHERE INAME LIKE '%' || #{searchValue} || '%')
+	</select>
+	
+	<select id="selectSearchList" resultMap="resultSetStock" parameterType="SearchItem">
+		SELECT INAME,TYPE,CNT 
+        FROM(
+        SELECT I.INAME, T.TYPE, SUM(I.AMOUNT) AS CNT
+		FROM (SELECT *
+     	 FROM ITEM
+     	 WHERE ITEM_STATUS = 'N') I
+		JOIN ITEM_TYPE T USING(TYPE_NO)
+		GROUP BY I.INAME, T.TYPE
+		ORDER BY INAME)
+        WHERE INAME  LIKE '%' || #{searchValue} || '%'
+        
+	</select>
 </mapper>
 
  

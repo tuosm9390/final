@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 
 import com.kh.hotels.common.model.vo.PageInfo;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
@@ -281,5 +282,23 @@ public class StockDaoImpl implements StockDao{
 		return sqlSession.selectOne("Stock.getStockHisList");
 	}
 
+	@Override
+	public int getSearchCount(SqlSessionTemplate sqlSession,SearchItem s) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("Stock.getSearchCount",s);
+	}
+
+	@Override
+	public ArrayList<Stock> selectSearchList(SqlSessionTemplate sqlSession, SearchItem s,PageInfo pi) {
+		ArrayList<Stock> searchList = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		searchList = (ArrayList) sqlSession.selectList("Stock.selectSearchList", s, rowBounds);
+		
+		return searchList;
+	}
 
 }

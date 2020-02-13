@@ -68,6 +68,7 @@
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.Item" alias="Item" />
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.OrderHis" alias="OrderHis" />
 		<typeAlias type="com.kh.hotels.mngStock.model.vo.OrderHisDetail" alias="OrderHisDetail" />
+		<typeAlias type="com.kh.hotels.mngStock.model.vo.SearchItem" alias="SearchItem" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>

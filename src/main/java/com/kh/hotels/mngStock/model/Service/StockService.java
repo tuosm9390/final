@@ -79,6 +79,10 @@ public interface StockService {
 
 	ItemHistory itemHis();
 
+	int getSearchCount(SearchItem s);
+
+	ArrayList<Stock> selectSearchList(SearchItem s, PageInfo pi);
+
 
 	
 

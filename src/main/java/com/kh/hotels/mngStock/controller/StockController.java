@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.common.model.vo.Pagination;
 import com.kh.hotels.mngApproval.model.exception.ReportException;
+import com.kh.hotels.mngMember.model.vo.Member;
 import com.kh.hotels.mngStock.model.Service.StockService;
 import com.kh.hotels.mngStock.model.Service.warehouseService;
 import com.kh.hotels.mngStock.model.vo.Conn;
@@ -396,11 +397,28 @@ public class StockController {
 
 
 	@PostMapping("searchItem.sto")
-	public String searchItem(Model m ,SearchItem s) {
+	public String searchItem(Model model ,SearchItem s, HttpServletRequest request) {
 		
-		ArrayList<Stock> searchList = ss.serachList(s);
+
+		int currentPage = 1;
 		
-		return "redirect:selectStock.sto";
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int searchCount = ss.getSearchCount(s);
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, searchCount);
+		
+		ArrayList<Stock> searchList = ss.selectSearchList(s, pi);
+		
+		model.addAttribute("check", "ok");
+		model.addAttribute("stockList", searchList);
+		model.addAttribute("searchContent", s.getSearchValue());
+		model.addAttribute("searchCount", searchCount);
+		model.addAttribute("pi", pi);
+		
+		return "hoteladmin/mngStock/stock/stockNow";
 		
 	}
 	
@@ -422,6 +440,7 @@ public class StockController {
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("orderHisList", orderHisList);
+		
 		
 		return "hoteladmin/mngStock/stock/purchaseHis";
 	}
