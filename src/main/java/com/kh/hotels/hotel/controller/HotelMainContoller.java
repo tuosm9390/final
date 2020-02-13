@@ -9,7 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hotels.common.model.vo.Email;
 import com.kh.hotels.hotel.model.exception.QnASelectListException;
 import com.kh.hotels.hotel.model.service.HotelService;
 import com.kh.hotels.mngApproval.model.vo.PageInfo;
@@ -46,6 +56,7 @@ public class HotelMainContoller {
 		session.setComplete();
 
 		return "hotelmain/main/main";
+		
 	}
 
 	// 객실 리스트 메소드
@@ -213,6 +224,7 @@ public class HotelMainContoller {
 	// 예약 및 결제 결과 메소드
 	@PostMapping("reservationResult.hmain")
 	public ModelAndView InsertReservation(ReservationCheck rsvCheck, ModelAndView mv) {
+		
 		System.out.println("rsvCheck : " + rsvCheck);
 		
 		// 예약자 회원번호 호출 메소드
@@ -235,7 +247,8 @@ public class HotelMainContoller {
 		// 예약시간 생성
 		java.util.Date date = new java.util.Date();
 		rsvCheck.setRsvDate(date);
-
+		
+		
 		// 예약자 회원번호 호출
 		selectMember = hs.selectMember(rsvCheck);
 		rsvCheck.setMno(selectMember.getMno());
@@ -259,9 +272,44 @@ public class HotelMainContoller {
 				int insertPayment = hs.insertPayment(rsvCheck);
 				System.out.println("insertPayment : " + insertPayment);
 				if (insertPayment > 0) {
-					// 성공시 페이지 호출
-					mv.addObject("rsvCheck", rsvCheck);
-					mv.setViewName("hotelmain/rooms/roomReservationResult");
+					
+					// 성공시 메일 발송
+					Properties prop = new Properties();
+					prop.put("mail.smtp.user", "gmail");
+					prop.put("mail.smtp.host", "smtp.gmail.com");
+					prop.put("mail.smtp.port", "465");
+					prop.put("mail.smtp.starttls.enable", "true");
+					prop.put("mail.smtp.auth", "true");
+					prop.put("mail.smtp.socketFactory.port", "465");
+					prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+					prop.put("mail.smtp.socketFactory.fallback", "false");
+
+					Authenticator auth = new Email();
+
+					Session sess = Session.getInstance(prop, auth);
+
+					sess.setDebug(true);
+					String host = "http://192.168.30.134:8001/hotels/";
+					MimeMessage msg = new MimeMessage(sess); // 메일의 내용을 담을 객체
+					String sendTitle = "Hotel Boutique를 예약해주셔서 감사합니다.";
+					String sendContent = "<div style='background: lightgray; width: 70%;' align='center'> <h2>Hotel Boutique를 예약해주셔서 감사합니다.</h2> <table class='invoice-table'> <tr> <td>예약번호</td> <td>" + rsvCheck.getRsvNo() + "</td> </tr> <tr> <td>이름</td> <td>" + rsvCheck.getUserName() + "</td> </tr> <tr> <td>전화번호</td> <td>" + rsvCheck.getPhone() + "</td> </tr> <tr> <td>체크인</td> <td>" + rsvCheck.getCheckIn() + "</td> </tr> <tr> <td>체크아웃</td> <td>" + rsvCheck.getCheckOut() + "</td> </tr> <tr> <td>예약일자</td> <td>" + rsvCheck.getRsvDate() + "</td> </tr> </table> <pre>체크인 시간에 맞춰 방문해주시기 바랍니다. 미방문시 예약이 취소될 수 있습니다. 문의 사항은 홈페이지 <a href='http://localhost:8001/hotels/goQnA.hmain'>문의 게시판</a>, 혹은 호텔로 전화문의주시면 성심성의껏 답변해드리겠습니다. </pre> </div>";
+
+					try {
+						Address userEmailAddr = new InternetAddress(rsvCheck.getEmail());
+
+						msg.setSubject(sendTitle);
+						msg.setContent(sendContent, "text/html;charset=UTF-8");
+						msg.addRecipient(Message.RecipientType.TO, userEmailAddr);
+
+						Transport.send(msg);
+
+						// 성공시 페이지 호출
+						mv.addObject("rsvCheck", rsvCheck);
+						mv.setViewName("hotelmain/rooms/roomReservationResult");
+					} catch (MessagingException e) {
+						e.printStackTrace();
+					}
+					
 				} else {
 					mv.addObject("error", "예약 정보 입력 실패");
 					mv.setViewName("hotelmain/common/errorPage");

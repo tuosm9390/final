@@ -10,6 +10,7 @@ import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
@@ -80,6 +81,16 @@ public interface StockDao {
 	ArrayList<HashMap<String, Object>> selectRepairDetail(SqlSessionTemplate sqlSession, RepHistory rHistory);
 
 	String selectReceiverName(SqlSessionTemplate sqlSession, int receiver);
+
+	int getStockHisCount(SqlSessionTemplate sqlSession);
+
+	ArrayList<ItemHistory> getstockHisList(SqlSessionTemplate sqlSession);
+
+	ItemHistory getItemHis(SqlSessionTemplate sqlSession);
+
+	int getSearchCount(SqlSessionTemplate sqlSession, SearchItem s);
+
+	ArrayList<Stock> selectSearchList(SqlSessionTemplate sqlSession, SearchItem s, PageInfo pi);
 
 
 }

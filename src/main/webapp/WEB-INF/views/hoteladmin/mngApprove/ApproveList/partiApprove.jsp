@@ -51,48 +51,8 @@
 	text-align: center;
 }
 
-.tbl_wrap
-
- 
-
-.tbl
-
- 
-
-tr
-
-
-:not
-
- 
-
-(
-:last-child
-
- 
-
-)
-{
-border-bottom
-
-
-:
-
- 
-
-1
-px
-
- 
-
-solid
-
- 
-
-#aaa
-
-
-;
+.tbl_wrap .tbl tr:not(:last-child){
+border-bottom:1px solid #aaa;
 }
 .tbl_wrap .tbl td, th {
 	border: 1px solid lightgray;
@@ -167,6 +127,9 @@ solid
 #pager_wrap .pager_com.pager_arr.next on a {
 	color:black;
 }
+a {
+	text-decoration:none;
+}
 
 
 </style>
@@ -205,10 +168,9 @@ solid
 				<table class="tbl">
 					<colgroup>
 						<col width="12%">
-						<col width="15%">
 						<col width="20%">
+						<col width="25%">
 						<col width="13%">
-						<col width="10%">
 						<col width="10%">
 						<col width="10%">
 						<col width="10%">
@@ -219,10 +181,9 @@ solid
 						<th>기안일시</th>
 						<th>제목</th>
 						<th>구분</th>
-						<th>기안자</th>
+						<th>기안자<input type="hidden" value="${sessionScope.loginUser.mno }" class="mnoUser"></th>
 						<th>결재자<input type="hidden" value="${sessionScope.loginUser.authNo }" class="authNo"></th>
 						<th>진행상태<input type="hidden" value="${sessionScope.loginUser.deptNo }" class="deptNo"></th>
-						<th>결재<input type="hidden" value="${sessionScope.loginUser.mno }" class="mnoUser"></th>
 
 					</tr>
 
@@ -246,7 +207,6 @@ solid
 							 </c:otherwise> 
 							 </c:choose>
 							<td><c:out value="${b.RPSTATUS }" /></td>
-							<td><a>보기</a></td>
 
 						</tr>
 					</c:forEach>
@@ -543,7 +503,7 @@ solid
 												data.list[0].RTITLE);
 								$("#tbl_modal_order #totalPrice").text(data.list[0].TPRICE + "원");
 								// console.log(list.PRSN)
-								$("#tbl_modal_order tr").children().find(".txtArea").text(data.list[0].ORSN);
+								$("#tbl_modal_order tr").children().find(".txtArea").text(data.list[0].CONTENT);
 
 								$(".modal_order").fadeIn();
 								
@@ -580,8 +540,8 @@ solid
 												data.list[0].MNAME);
 
 								if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
-									$("#tbl_modal_repair tr:nth-child(2)")
-											.children().eq(3).text(
+									$("#tbl_modal_repair tr")
+											.children().find(".head").text(
 													data.list[0].SNAME);
 								}
 
@@ -619,7 +579,7 @@ solid
 								//console.log(list.PRSN)
 								$("#tbl_modal_repair tr")
 										.children().find(".txtArea").text(
-												data.list[0].RSN);
+												data.list[0].CONTENT);
 
 								$(".modal_repair").fadeIn();
 
@@ -696,7 +656,7 @@ solid
 												data.list[0].TPRICE + "원");
 								// console.log(list.PRSN)
 								$(".tbl_modal.parti #content").children()
-										.children().text(data.list[0].PRSN);
+										.children().text(data.list[0].CONTENT);
 
 								$(".modal_parti").fadeIn();
 
@@ -799,7 +759,6 @@ solid
 												var $ctr8 = "<td>"
 														+ partiReportList[i].RPSTATUS
 														+ "</td>";
-												var $ctr9 = "<td>  보기 <input type='hidden' value='${sessionScope.loginUser.mno }' class='mnoUser'> </td>"
 
 												$sumTr.append($ctr1);
 												$sumTr.append($ctr2);
@@ -809,7 +768,6 @@ solid
 												$sumTr.append($ctr6);
 												$sumTr.append($ctr7);
 												$sumTr.append($ctr8);
-												$sumTr.append($ctr9);
 												$tableBody.append($sumTr);
 
 												//$tableBody.append($total );
@@ -1048,7 +1006,7 @@ solid
 																							
 																							.children().find(".txtArea")
 																							.text(
-																									data.list[0].ORSN);
+																									data.list[0].CONTENT);
 
 																					$(".modal_order").fadeIn();
 																							
@@ -1095,13 +1053,9 @@ solid
 																							.text(
 																									data.list[0].MNAME);
 																					if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
-																						$(
-																								"#tbl_modal_repair tr:nth-child(2)")
-																								.children()
-																								.eq(
-																										3)
-																								.text(
-																										data.list[0].SNAME);
+																						$("#tbl_modal_repair tr")
+																						.children().find(".head").text(
+																								data.list[0].SNAME);
 																					}else {
 																						
 																					}
@@ -1176,7 +1130,7 @@ solid
 																							
 																							.children().find(".txtArea")
 																							.text(
-																									data.list[0].RSN);
+																									data.list[0].CONTENT);
 
 																					$(
 																							".modal_repair")
@@ -1285,7 +1239,7 @@ solid
 																							.children()
 																							.children()
 																							.text(
-																									data.list[0].PRSN);
+																									data.list[0].CONTENT);
 																					$(".tbl_modal.parti #totalPrice").text(data.list[0].TPRICE);
 
 																					$(
@@ -1382,7 +1336,6 @@ solid
 								}
 								var $ctr8 = "<td>"
 										+ partiReportList[i].RPSTATUS + "</td>";
-								var $ctr9 = "<td>  보기 <input type='hidden' value='${sessionScope.loginUser.mno }' class='mnoUser'>  </td></tr>";
 								$sumTr.append($ctr1);
 								$sumTr.append($ctr2);
 								$sumTr.append($ctr3);
@@ -1391,7 +1344,6 @@ solid
 								$sumTr.append($ctr6);
 								$sumTr.append($ctr7);
 								$sumTr.append($ctr8);
-								$sumTr.append($ctr9);
 								$tableBody.append($sumTr);
 
 								//$tableBody.append($total );
@@ -1607,7 +1559,7 @@ solid
 																			
 																			.children().find(".txtArea")
 																			.text(
-																					data.list[0].ORSN);
+																					data.list[0].CONTENT);
 
 																	$(
 																			".modal_order")
@@ -1655,13 +1607,9 @@ solid
 																			.text(
 																					data.list[0].MNAME);
 																	if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
-																		$(
-																				"#tbl_modal_repair tr:nth-child(2)")
-																				.children()
-																				.eq(
-																						3)
-																				.text(
-																						data.list[0].SNAME);
+																		$("#tbl_modal_repair tr")
+																		.children().find(".head").text(
+																				data.list[0].SNAME);
 																	}
 																	//$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
 																	$(
@@ -1734,7 +1682,7 @@ solid
 																			
 																			.children().find(".txtArea")
 																			.text(
-																					data.list[0].RSN);
+																					data.list[0].CONTENT);
 
 																	$(
 																			".modal_repair")
@@ -1855,7 +1803,7 @@ solid
 																			.children()
 																			.children()
 																			.text(
-																					data.list[0].PRSN);
+																					data.list[0].CONTENT);
 																	$(".tbl_modal.parti #totalPrice").text(data.list[0].TPRICE);
 
 																	$(".modal_parti")

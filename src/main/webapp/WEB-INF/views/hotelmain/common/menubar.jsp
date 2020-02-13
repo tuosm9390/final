@@ -201,6 +201,7 @@ button{
 			<li><a>RESERVATION</a></li>
 			<li><a href="goRooms.hmain">ROOMS</a></li>
 			<li><a href="goQnA.hmain">1:1</a></li>
+			<li><a href="sendMail.hmain">메일 테스트</a></li>
 		</ul>
 	</div>
 	

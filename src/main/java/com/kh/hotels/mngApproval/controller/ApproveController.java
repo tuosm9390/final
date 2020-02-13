@@ -493,6 +493,9 @@ public class ApproveController {
 			}
 
 		}
+		
+		
+		
 
 
 
@@ -580,8 +583,9 @@ public class ApproveController {
 					pRequest.setContent(content);
 					pRequest.setType(type);
 					pRequest.setDocno(docNo);
-					pRequest.setTotPrice(totPrice);
+					pRequest.setTotPrice(totalPrice);
 					pRequest.setStfId(stfId);
+					pRequest.setPurRsn("구매");
 					pRequestList.add(pRequest);
 					System.out.println("for문안 pRequestList : " + pRequestList);
 				}
@@ -632,12 +636,12 @@ public class ApproveController {
 		pRequest.setDeptname("구매팀"); 
 		pRequest.setMmno(mno);
 		pRequest.setRptDate(rptDate); 
-		pRequest.setSname(sname); 
+		pRequest.setSname(ssName); 
 		pRequest.setTitle(title);
 		pRequest.setContent(content);
 		pRequest.setType(type);
 		pRequest.setDocno(docNo);
-		pRequest.setTotPrice(totPrice);
+		pRequest.setTotPrice(totalPrice);
 		pRequest.setMname(mname);
 		pRequest.setCname(cname);
 		pRequest.setIname(iname);
@@ -646,6 +650,7 @@ public class ApproveController {
 		pRequest.setAmount(amountR);
 		pRequest.setPrice(priceR);
 		pRequest.setIno(inoR);
+		pRequest.setPurRsn("구매");
 		pRequest.setStfId(stfId);
 		
 		pRequestList.add(pRequest);
@@ -679,7 +684,7 @@ public class ApproveController {
 	@RequestMapping("insertOrder.ap")
 	public String insertOrderApprove(HttpServletRequest request, Model m, String docuNos, String rptDate, 
 			String sname, String mname, String title, String content, String type, String cname, String iname, String mfg, String vos, String amount,
-			String price, String totPrice, String ino, String dnum, String docno, String orderDate)  {
+			String price, String totPrice, String ino, String dnum, String docno, String orderDate, String rsn)  {
 		
 		
 		
@@ -760,6 +765,7 @@ public class ApproveController {
 				oRequest.setTotPrice(totPrice);
 				oRequest.setStfId(sname);
 				oRequest.setRsvReqDate(orderDate);
+				oRequest.setOrderRsn(rsn);
 				oRequestList.add(oRequest);
 				System.out.println("for문안 pRequestList : " + oRequestList);
 			}
@@ -1007,6 +1013,7 @@ public class ApproveController {
 				rRequest.setContent(content);
 				rRequest.setDocno(docNo);
 				rRequest.setTotalPrice((totPrice));
+				rRequest.setRsn(rsn);
 				rRequestList.add(rRequest);
 				
 				System.out.println("for문안 pRequestList : " + rRequestList);

@@ -38,7 +38,7 @@
 	}
 	
 	#day1{
-	margin-left: 35px;
+	margin-left: 34px;
 	}
 	.person{
 	display: inline-block;
@@ -50,10 +50,10 @@
 	margin-left: 19px;
 	}  
 	#etc{
-	margin-left: 50px;
+	margin-left: 226px;
 	}
 	#etcText{
-	margin-left: 26px;  
+	margin-left: 27px;  
 	}
 	#titlemsg{
 	font-size: 20px;
@@ -76,6 +76,15 @@
 	overflow-y: auto;
 	max-height: 300px;
 	width: 1200px;
+	}
+	
+	#day2{
+	display: none;
+	}
+	input[type=text] {
+		border-radius:2px;
+		border:1px solid lightgray;
+		height:20px;
 	}
 </style>
 </head>
@@ -110,7 +119,6 @@
 		<div id="TableDiv">
 		<table id="Table" border="1px solid black;">
 			<tr class="repairDetail">
-				<th><input type="checkbox"></th>
 				<th>번호</th>
 				<th>소분류</th>
 				<th>공급가액</th>

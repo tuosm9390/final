@@ -80,6 +80,56 @@
 section{
 	width:1250px;
 }
+a{
+	color:black;
+	text-decoration:none;
+}
+.pagingArea{
+	text-align:center;
+	margin-left:300px;
+}
+#pager_wrap {
+	padding: 60px 0;
+	text-align: center;
+	margin-top: -45px;
+}
+
+#pager_wrap .pager_com {
+	display: inline-block;
+	width: 35px;
+	margin: 0 2px;
+	background-color: #f7f7f7;
+	height:35px;
+	padding:auto;
+	border:1px solid lightgray;
+	border-radius:2px;
+}
+
+#pager_wrap .pager_num.on {
+	background-color: #171f57;
+	border:1px solid white;
+	color:black;
+	
+}
+
+#pager_wrap .pager_com .pager_num a {
+	padding:auto;
+	text-align: center;
+	
+}
+
+#pager_wrap .pager_num.pager_num.on a {
+	color: white;
+}
+#pager_wrap .pager_com.pager_num a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.prev.on a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.next on a {
+	color:black;
+}
 </style>
 </head>
 <body>
@@ -170,112 +220,97 @@ section{
 		</div>
 		<div class="pagingSec">
 		<c:if test="${ empty check }">
-		<div id="pagingArea" align="center">
-			<c:if test="${ pi.currentPage <=  1 }">
-				[이전] &nbsp;
-			</c:if>
-			<c:if test="${ pi.currentPage > 1 }">
-				<c:if test="${ !empty filterType }">
-					<c:url var="clistBack" value="queFilter.cl">
-						<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
-						<c:param name="filterType" value="${ filterType }"/>
-					</c:url>
-					<a href="${ clistBack }">[이전]</a>&nbsp;
-				</c:if>
-				<c:if test="${ empty filterType }">
-					<c:url var="clistBack" value="question.cl">
-						<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
-					</c:url>
-					<a href="${ clistBack }">[이전]</a>&nbsp;
-				</c:if>
-			</c:if>
-			
-			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<c:if test="${ p eq pi.currentPage }">
-					<font color="red" size="4"><b>${ p }</b></font>
-				</c:if>
-				<c:if test="${ p ne pi.currentPage }">
-					<c:if test="${ !empty filterType }">
-						<c:url var="clistCheck" value="queFilter.cl">
-							<c:param name="currentPage" value="${ p }"/>
+			<div id="pager_wrap" align="center">
+				<ul class="pager_cnt clearfix add">
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="pager_com pager_arr prev on"><a
+							href="javascirpt: void(0);">&#x003C;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="clistBack" value="queFilter.cl">
+							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
 							<c:param name="filterType" value="${ filterType }"/>
 						</c:url>
-						<a href="${ clistCheck }">${ p }</a>
+						<li class="pager_com pager_arr prev "><a href="${clistBack }">&#x003C;</a></li>
 					</c:if>
-					<c:if test="${ empty filterType }">
-						<c:url var="clistCheck" value="question.cl">
-							<c:param name="currentPage" value="${ p }"/>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<li class="pager_com pager_num on"><a
+								href="javascript: void(0);">${p }</a></li>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+							<c:url var="clistCheck" value="queFilter.cl">
+								<c:param name="currentPage" value="${p }" />
+								<c:param name="filterType" value="${ filterType }"/>
+							</c:url>
+							<li class="pager_com pager_num"><a href="${clistCheck }">${p }</a></li>
+						</c:if>
+					</c:forEach>
+
+
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="pager_com pager_arr next on"><a
+							href="javascript: void(0);">&#x003E;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="clistEnd" value="queFilter.cl">
+							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
+							<c:param name="filterType" value="${ filterType }"/>
 						</c:url>
-						<a href="${ clistCheck }">${ p }</a>
+						<li class="pager_com pager_arr next"><a href="${clistEnd }">&#x003E;</a></li>
 					</c:if>
-				</c:if>
-			</c:forEach>
-			
-			<c:if test="${ pi.currentPage >= pi.maxPage }">
-				&nbsp; [다음]
-			</c:if>
-			<c:if test="${ pi.currentPage < pi.maxPage }">
-				<c:if test="${ !empty filterType }">
-					<c:url var="clistEnd" value="queFilter.cl">
-						<input type="hidden" name="currentPage" value="${ pi.currentPage + 1 }"/>
-						<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
-						<c:param name="filterType" value="${ filterType }"/>
-					</c:url>
-					&nbsp;<a href="${ clistEnd }">[다음]</a>
-				</c:if>
-				<c:if test="${ empty filterType }">
-					<c:url var="clistEnd" value="question.cl">
-						<input type="hidden" name="currentPage" value="${ pi.currentPage + 1 }"/>
-						<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
-					</c:url>
-					&nbsp;<a href="${ clistEnd }">[다음]</a>
-				</c:if>
-			</c:if>
-		</div>
+				</ul>
+			</div>
 		</c:if>
-		<!-- pagingArea end -->
-		<!-- pagingArea -->
+		
 		<c:if test="${ !empty check }">
-		<div id="pagingArea" align="center">
-			<c:if test="${ pi.currentPage <=  1 }">
-				[이전] &nbsp;
-			</c:if>
-			<c:if test="${ pi.currentPage > 1 }">
-				<c:url var="clistBack" value="searchQue.cl">
-					<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
-					<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
-					<c:param name="searchOption" value="${ sessionScope.searchOption }"/>
-				</c:url>
-				<a href="${ clistBack }">[이전]</a>&nbsp;
-			</c:if>
-			
-			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<c:if test="${ p eq pi.currentPage }">
-					<font color="red" size="4"><b>${ p }</b></font>
-				</c:if>
-				<c:if test="${ p ne pi.currentPage }">
-					<c:url var="clistCheck" value="searchQue.cl">
-						<c:param name="currentPage" value="${ p }"/>
-						<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
-						<c:param name="searchOption" value="${ sessionScope.searchOption }"/>
-					</c:url>
-					<a href="${ clistCheck }">${ p }</a>
-				</c:if>
-			</c:forEach>
-			
-			<c:if test="${ pi.currentPage >= pi.maxPage }">
-				&nbsp; [다음]
-			</c:if>
-			<c:if test="${ pi.currentPage < pi.maxPage }">
-				<c:url var="clistEnd" value="searchQue.cl">
-					<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
-					<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
-					<c:param name="searchOption" value="${ sessionScope.searchOption }"/>
-				</c:url>
-				&nbsp;<a href="${ clistEnd }">[다음]</a>
-			</c:if>
-		</div>
-		</c:if>
+			<div id="pager_wrap" align="center">
+				<ul class="pager_cnt clearfix add">
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="pager_com pager_arr prev on"><a
+							href="javascirpt: void(0);">&#x003C;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="clistBack" value="searchQue.cl">
+							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
+							<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
+							<c:param name="searchOption" value="${ sessionScope.searchOption }"/>	
+						</c:url>
+						<li class="pager_com pager_arr prev "><a href="${clistBack }">&#x003C;</a></li>
+					</c:if>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<li class="pager_com pager_num on"><a
+								href="javascript: void(0);">${p }</a></li>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+							<c:url var="clistCheck" value="searchQue.cl">
+								<c:param name="currentPage" value="${p }" />
+								<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
+								<c:param name="searchOption" value="${ sessionScope.searchOption }"/>	
+							</c:url>
+							<li class="pager_com pager_num"><a href="${clistCheck }">${p }</a></li>
+						</c:if>
+					</c:forEach>
+
+
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="pager_com pager_arr next on"><a
+							href="javascript: void(0);">&#x003E;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="clistEnd" value="searchQue.cl">
+							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
+							<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
+							<c:param name="searchOption" value="${ sessionScope.searchOption }"/>	
+						</c:url>
+						<li class="pager_com pager_arr next"><a href="${clistEnd }">&#x003E;</a></li>
+					</c:if>
+				</ul>
+			</div>
+		</c:if>>
 		</div>
 	</section>
 	<script>

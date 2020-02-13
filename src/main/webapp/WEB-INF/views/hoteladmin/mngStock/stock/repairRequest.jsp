@@ -121,34 +121,47 @@ background : white;
 }
 
 #pager_wrap {
-width:700px;
-	padding: 40px 0;
+	padding: 60px 0;
 	text-align: center;
-	height: 5px;
+	margin-top: -45px;
+	margin-left:-633px;
 }
 
 #pager_wrap .pager_com {
 	display: inline-block;
-	width: 40px;
+	width: 35px;
 	margin: 0 2px;
-	background-color: #f1f1f1;
+	background-color: #f7f7f7;
+	height:35px;
+	padding:auto;
+	border:1px solid lightgray;
+	border-radius:2px;
 }
 
 #pager_wrap .pager_num.on {
 	background-color: #171f57;
-}
-
-#pager_wrap .pager_com a {
-	padding: 10px 0;
-	text-align: center;
-	color: #171f57;
-	font-size:5px; 
-	font-weight:none;
+	border:1px solid white;
+	color:black;
 	
 }
 
-#pager_wrap .pager_num.on a {
-	color: #fff;
+#pager_wrap .pager_com .pager_num a {
+	padding:auto;
+	text-align: center;
+	
+}
+
+#pager_wrap .pager_num.pager_num.on a {
+	color: white;
+}
+#pager_wrap .pager_com.pager_num a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.prev.on a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.next on a {
+	color:black;
 }
 	
 </style>
@@ -179,12 +192,6 @@ width:700px;
 		</div>
 	<div class="top-div">
 			<div id="titlemsg"><label id="mainMsg">수리현황</label></div>
-			<select style="width: 80px; height: 25px; float: right;
-  	  margin-right: 131px;">
-				<option value="default" hidden="hidden">필터</option>
-				<option>상태</option>
-				<option>상태</option>
-			</select>
 	</div><!-- top div end -->
 		<div id="stockTb">
 			<table style="border-collapse: collapse; width: 100%">  
@@ -207,7 +214,6 @@ width:700px;
 		<div id="hrDiv"></div>
 		</div>
 			<div class="btns">
-			<button id="delete">선택삭제</button>
 			</div> 
 	<!-- 페이저 시작 -->
 			<!-- 페이징 영역 시작 -->
@@ -284,7 +290,7 @@ width:700px;
 					success:function(data) {
 						
 						 $.each(data.list, function(index, list) {
-			                  $('#Table .repairDetail').after("<tr class='repeatOrder'><td><input type='checkbox'></td><td>"+list.INO+"</td><td>" + list.SCATEGORY + "</td><td>"+list.VOS+"</td><td>" + list.INAME +"</td><td>"+list.VOS + "</td><td>" + list.REP_PRICE + "</td></tr>");
+			                  $('#Table .repairDetail').after("<tr class='repeatOrder'><td>"+list.INO+"</td><td>" + list.SCATEGORY + "</td><td>"+list.VOS+"</td><td>" + list.INAME +"</td><td>"+list.VOS + "</td><td>" + list.REP_PRICE + "</td></tr>");
 			              	
 			                  
 			 			  });
@@ -298,7 +304,7 @@ width:700px;
 						 $("#etcText").val(data.list[0].CN_NAME);
 						 $("#person2").val(data.list[0].REP_NO);
 						 
-						
+					
 						
 						$(".modal").fadeIn();
 					},

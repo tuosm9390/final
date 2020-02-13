@@ -12,6 +12,7 @@ import com.kh.hotels.mngStock.model.dao.StockDao;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
@@ -50,117 +51,117 @@ public class StockServiceImpl implements StockService{
 		
 		return result;
 	}
-
+	
 	@Override
 	public ArrayList<Repair> selectRepairList() {
 		// TODO Auto-generated method stub
 		return sd.selectRepairList(sqlSession);
 	}
-
+	
 	@Override
 	public int getListCount() {
 		// TODO Auto-generated method stub
 		return sd.getListCount(sqlSession);
 	}
-
+	
 	@Override
 	public ArrayList<Stock> stockDetailList(String iName) {
 		// TODO Auto-generated method stub
 		return sd.selectStockDetailList(sqlSession,iName);
 	}
-
+	
 	@Override
 	public ArrayList<ItemType> categoryList(ItemType it) {
 		// TODO Auto-generated method stub
 		return sd.selectCategoryList(sqlSession,it);
 	}
-
+	
 	@Override
 	public int insertCategory(ItemType it) {
 		// TODO Auto-generated method stub
 		return sd.insertCategory(sqlSession,it);
 	}
-
+	
 	@Override
 	public ArrayList<ItemType> selectScategory() {
 		// TODO Auto-generated method stub
 		return sd.selectScategory(sqlSession);
 	}
-
+	
 	@Override
 	public ArrayList<Conn> selectCnName(int typeNo) {
 		// TODO Auto-generated method stub
 		return sd.selectCnName(sqlSession,typeNo); 
 	}
-
+	
 	@Override
 	public int deleteStock(int check) {
 		// TODO Auto-generated method stub
 		return sd.deleteStock(sqlSession,check);
 	}
-
+	
 	@Override
 	public ArrayList<Item> selectRmNoList() {
 		// TODO Auto-generated method stub
 		return sd.selectRmNoList(sqlSession);
 	}
-
+	
 	@Override
 	public int updateStockOk(Stock st) {
 		// TODO Auto-generated method stub
 		return sd.updateStockOk(sqlSession,st); 
 	}
-
+	
 	@Override
 	public int updateStockHis(His h) {
 		// TODO Auto-generated method stub
 		return sd.updateStockHis(sqlSession,h);
 	}
-
+	
 	@Override
 	public int deleteStockHis(His h) {
 		// TODO Auto-generated method stub
 		return sd.deleteStockHis(sqlSession,h);
 	}
-
+	
 	@Override
 	public ArrayList<Stock> serachList(SearchItem s) {
 		// TODO Auto-generated method stub
 		return sd.searchList(sqlSession,s);
 	}
-
+	
 	@Override
 	public int getRepairListCount() {
 		// TODO Auto-generated method stub
 		return sd.getRepairListCount(sqlSession);
 	}
-
 	
-
+	
+	
 	@Override
 	public int getPurchaseHisListCount() {
-
+		
 		return sd.getPurchaseHisListCount(sqlSession);
 	}
-
+	
 	@Override
 	public ArrayList<OrderHis> selectOrderHisList(PageInfo pi) {
-
+		
 		return sd.selectOrderHisList(pi,sqlSession);
 	}
-
+	
 	@Override
 	public ArrayList<OrderHis> selectOrderHisInfoList() {
 		
 		return sd.selectOrderHisInfoList(sqlSession);
 	}
-
+	
 	@Override
 	public ArrayList<OrderHisDetail> selectOrderHisDetail(int reportNo) {
 		
 		return sd.selectOrderHisDetail(reportNo, sqlSession);
 	}
-
+	
 	@Override
 	public int insertCheckItem(ArrayList<OrderHisDetail> orderHisDetailList) {
 		
@@ -168,7 +169,7 @@ public class StockServiceImpl implements StockService{
 		
 		return sd.insertItemList(sqlSession, itemList);
 	}
-
+	
 	@Override
 	public int updateOrderHisStatus(int reportNo) {
 		
@@ -214,26 +215,54 @@ public class StockServiceImpl implements StockService{
 		System.out.println("list : " + list);
 		return list;
 	}
-
+	
 	@Override
 	public String selectReceiver(int receiver) {
 		
 		String name = sd.selectReceiverName(sqlSession, receiver);
 		
-		return name;
+		return name; 
 	}
-
+	@Override
+	public int getStockHisList() {
+		// TODO Auto-generated method stub
+		return sd.getStockHisCount(sqlSession);
+	}
+	@Override
+	public ArrayList<ItemHistory> stockHisList() {
+		// TODO Auto-generated method stub
+		return sd.getstockHisList(sqlSession);
+	}
+	@Override
+	public ItemHistory itemHis() {
+		// TODO Auto-generated method stub
+		ItemHistory his = new ItemHistory();
+		
+		return sd.getItemHis(sqlSession); 
+	}
+	@Override
+	public int getSearchCount(SearchItem s) {
+		// TODO Auto-generated method stub
+		return sd.getSearchCount(sqlSession,s);
+	} 
 	
-
-
-
-
-
-	
-
-
+	@Override
+	public ArrayList<Stock> selectSearchList(SearchItem s, PageInfo pi) {
+		// TODO Auto-generated method stub
+		return sd.selectSearchList(sqlSession,s,pi);
+	}
 	
 	
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

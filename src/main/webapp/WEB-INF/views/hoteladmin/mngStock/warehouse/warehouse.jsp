@@ -18,6 +18,7 @@
 	}
 	
 	#filter{
+	display: none;
 	} 
 	
 	#Table td, #Table th{
@@ -112,7 +113,7 @@
  	 		<option value="checkList">사용</option>
  	 		
 		</select> 
-			<select class="searchCondition"  id="purSearch" style="margin-left:22.5% ; height: 26px;">
+			<select class="searchCondition"  id="purSearch" style="margin-left:30.9% ; height: 26px;">
 				<option value="default" hidden="hidden">검색조건</option>
 				<option value="code">창고코드</option>
 				<option value="name">창고이름</option>

@@ -92,35 +92,56 @@
 		width: 120px;
 		border-bottom: 1px solid black;
 	}
-	#pager_wrap {
-width:1100px;
-height:0px;
-	padding: 40px 0;
+.pagingArea{
+	text-align:center;
+	margin-left:300px;
+}
+#pager_wrap {
+	padding: 38px 0;
 	text-align: center;
+	margin-top: -45px;
+	    margin-right: 206px;
 }
 
 #pager_wrap .pager_com {
 	display: inline-block;
-	width: 40px;
+	width: 35px;
 	margin: 0 2px;
-	background-color: #f1f1f1;
+	background-color: #f7f7f7;
+	height:35px;
+	padding:auto;
+	border:1px solid lightgray;
+	border-radius:2px;
 }
 
 #pager_wrap .pager_num.on {
 	background-color: #171f57;
-}
-
-#pager_wrap .pager_com a {
-	padding: 10px 0;
-	text-align: center;
-	color: #171f57;
-	font-size:5px; 
-	font-weight:none;
+	border:1px solid white;
+	color:black;
 	
 }
 
-#pager_wrap .pager_num.on a {
-	color: #fff;
+#pager_wrap .pager_com .pager_num a {
+	padding:auto;
+	text-align: center;
+	
+}
+
+#pager_wrap .pager_num.pager_num.on a {
+	color: white;
+}
+#pager_wrap .pager_com.pager_num a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.prev.on a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.next on a {
+	color:black;
+}
+a{
+	color:black;
+	text-decoration:none;
 }
 #acTbody2 td input[type=text]{
 width: 150px;
@@ -338,7 +359,29 @@ cursor: pointer;
 		var cnCodez = $("#cnCoder").val();
 		console.log(cnCodez);
 	
-		$("#acTbody2").append("<tr><td hidden='hidden'><input type='text' id='cnCodex'></td><td><input type='text' name='bankName' id='bankName'></td><td><input type='text' id='account' name='account'></td><td><input type='text' id='accName' name='accName'></td><td><input type='text' id='accMemo' name='accMemo'></td></tr>")
+		$("#acTbody2").append("<tr><td hidden='hidden'><input type='text' id='cnCodex'></td><td>"+
+				"<select id='bankName' name='bankName'>"+
+				"<option value='기업은행'>기업은행</option>"+
+				"<option value='국민은행'>국민은행</option>"+
+				"<option value='외환은행'>외환은행</option>"+
+				"<option value='수협'>수협</option>"+
+				"<option value='농협'>농협</option>"+
+				"<option value='우리은행'>우리은행</option>"+
+				"<option value='제일은행'>제일은행</option>"+
+				"<option value='씨티은행'>씨티은행</option>"+
+				"<option value='대구은행'>대구은행</option>"+
+				"<option value='부산은행'>부산은행</option>"+
+				"<option value='광주은행'>광주은행</option>"+
+				"<option value='제주은행'>제주은행</option>"+
+				"<option value='전북은행'>전북은행</option>"+
+				"<option value='경남은행'>경남은행</option>"+
+				"<option value='새마을금고'>새마을금고</option>"+
+				"<option value='신협'>신협</option>"+
+				"<option value='우체국'>우체국</option>"+
+				"<option value='하나은행'>하나은행</option>"+
+				"<option value='신한은행'>신한은행</option>"+
+			"</select>"+
+		"</td><td><input type='text' id='account' name='account'></td><td><input type='text' id='accName' name='accName'></td><td><input type='text' id='accMemo' name='accMemo'></td></tr>")
 		//이체정보수정ajax
 		/* $.ajax({
 			url:"updateDetail.ac",

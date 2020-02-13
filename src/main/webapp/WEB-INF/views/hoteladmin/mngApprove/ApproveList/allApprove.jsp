@@ -84,32 +84,51 @@
 	background: royalblue;
 	color: white;
 	font-weight: bold;
-}
-
+	}
 #pager_wrap {
 	padding: 60px 0;
 	text-align: center;
+	margin-top: -45px;
 }
 
 #pager_wrap .pager_com {
 	display: inline-block;
-	width: 40px;
+	width: 35px;
 	margin: 0 2px;
-	background-color: #f1f1f1;
+	background-color: #f7f7f7;
+	height:35px;
+	padding:auto;
+	border:1px solid lightgray;
+	border-radius:2px;
 }
 
 #pager_wrap .pager_num.on {
 	background-color: #171f57;
+	border:1px solid white;
+	color:black;
+	
 }
 
-#pager_wrap .pager_com a {
-	padding: 10px 0;
+#pager_wrap .pager_com .pager_num a {
+	padding:auto;
 	text-align: center;
-	color: #171f57;
+	
 }
 
-#pager_wrap .pager_num.on a {
-	color: #fff;
+#pager_wrap .pager_num.pager_num.on a {
+	color: white;
+}
+#pager_wrap .pager_com.pager_num a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.prev.on a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.next on a {
+	color:black;
+}
+a {
+	text-decoration:none;
 }
 </style>
 <script
@@ -155,10 +174,9 @@
 				<table class="tbl">
 					<colgroup>
 						<col width="7%">
-						<col width="20%">
-						<col width="20%">
+						<col width="25%">
+						<col width="25%">
 						<col width="13%">
-						<col width="10%">
 						<col width="10%">
 						<col width="10%">
 						<col width="10%">
@@ -172,7 +190,6 @@
 						<th>기안자</th>
 						<th>결재자</th>
 						<th>진행상태</th>
-						<th>결재</th>
 					</tr>
 					<c:forEach var="b" items="${list }">
 						<tr class="tbl_tit">
@@ -194,7 +211,6 @@
 							 </c:otherwise> 
 							 </c:choose>
 							<td><c:out value="${b.RPSTATUS }" /></td>
-							<td><a>보기</a></td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -298,7 +314,7 @@
    			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
    		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(data.list[0].TPRICE + "원");
    		 	    // console.log(list.PRSN)
-   		 	    $("#tbl_modal_order #content_order").children().find(".txtArea").text(data.list[0].ORSN);
+   		 	    $("#tbl_modal_order #content_order").children().find(".txtArea").text(data.list[0].CONTENT);
    		 	     
    			   $(".modal_order").fadeIn();
    	
@@ -342,7 +358,7 @@
               			   
               		 	     $("#tbl_modal_repair #totalPrice").text(data.list[0].TPRICE + "원");
               		 	     //console.log(list.PRSN)
-              		 	    $("#tbl_modal_repair #content_repair").children().children().text(data.list[0].RSN);
+              		 	    $("#tbl_modal_repair #content_repair").find(".txtArea").text(data.list[0].CONTENT);
               		 	     
               			   $(".modal_repair").fadeIn();
               	
@@ -388,7 +404,7 @@
              			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
              		 	     $("#tbl_modal tr").children("#totalPrice").text(data.list[0].TPRICE + "원");
              		 	    // console.log(list.PRSN)
-             		 	    $("#tbl_modal #content").children().children().text(data.list[0].PRSN);
+             		 	    $("#tbl_modal #content").find(".txtArea").text(data.list[0].CONTENT);
              		 	     
              			   $(".modal").fadeIn();
              	
@@ -478,7 +494,6 @@
 				 			var $ctr7 = "<td></td>";
 				 		}
 				 		var $ctr8 = "<td>" + reportList[i].RPSTATUS + "</td>";
-				 		var $ctr9 = "<td>  보기  </td></tr>";
 				 		
 				 		 $sumTr.append($ctr1);
 				 		$sumTr.append($ctr2);
@@ -488,7 +503,6 @@
 				 		$sumTr.append($ctr6);
 				 		$sumTr.append($ctr7);
 				 		$sumTr.append($ctr8);
-				 		$sumTr.append($ctr9);
 				 		$tableBody.append($sumTr); 
 				 		
 				 		
@@ -595,7 +609,7 @@
  			   $("#tbl_modal_order tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
  			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
  		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(data.list[0].TPRICE + "원");
- 		 	   $("#tbl_modal_order #content_order").children().find(".txtArea").text(data.list[0].ORSN);
+ 		 	   $("#tbl_modal_order #content_order").children().find(".txtArea").text(data.list[0].CONTENT);
  		 	     
  			   $(".modal_order").fadeIn();
  			   
@@ -644,7 +658,7 @@
      			   
      			  
      		 	     $("#tbl_modal_repair #totalPrice").text(data.list[0].TPRICE + "원");
-     		 	    $("#tbl_modal_repair #content_repair").children().children().text(data.list[0].RSN);
+     		 	   $("#tbl_modal_repair #content_repair").find(".txtArea").text(data.list[0].CONTENT);
      		 	     
      			   $(".modal_repair").fadeIn();
      	
@@ -686,7 +700,7 @@
      			   $("#tbl_modal tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
      			   $("#tbl_modal tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
      			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
-     		 	    $("#tbl_modal #content").children().children().text(data.list[0].PRSN);
+     			  $("#tbl_modal #content").find(".txtArea").text(data.list[0].CONTENT);
      		 	     
      			   $(".modal").fadeIn();
      	
@@ -783,7 +797,6 @@
 				 			var $ctr7 = "<td></td>";
 				 		}
 				 		var $ctr8 = "<td>" + reportList[i].RPSTATUS + "</td>";
-				 		var $ctr9 = "<td>  보기  </td></tr>";
 				 		
 				 		
 				 	
@@ -795,7 +808,6 @@
 				 		$sumTr.append($ctr6);
 				 		$sumTr.append($ctr7);
 				 		$sumTr.append($ctr8);
-				 		$sumTr.append($ctr9);
 				 		$tableBody.append($sumTr); 
 				 		
 				 		 
@@ -902,7 +914,7 @@
 				   			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
 				   		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(data.list[0].TPRICE + "원");
 				   		 	    // console.log(list.PRSN)
-				   		 	   $("#tbl_modal_order #content_order").children().find(".txtArea").text(data.list[0].ORSN);
+				   		 	   $("#tbl_modal_order #content_order").children().find(".txtArea").text(data.list[0].CONTENT);
 				   		 	     
 				   		 	    /* $("#tbl_modal tr:nth-child(i)").children().eq(0).text(list.RNUM);
 					       			   $("#tbl_modal tr:nth-child(i)").children().eq(1).text(list.LCATEGORY);
@@ -951,7 +963,7 @@
 		              			   
 		              			   
 		              		 	     $("#tbl_modal_repair #totalPrice").text(data.list[0].TPRICE + "원");
-		              		 	    $("#tbl_modal_repair #content_repair").children().children().text(data.list[0].RSN);
+		              		 	  $("#tbl_modal_repair #content_repair").find(".txtArea").text(data.list[0].CONTENT);
 		              		 	     
 		              			   $(".modal_repair").fadeIn();
 		              	
@@ -995,7 +1007,7 @@
 		             			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
 		             		 	     //$("#tbl_modal #totalPrice").children().eq(1).text(totalPrice + "원");
 		             		 	    // console.log(list.PRSN)
-		             		 	    $("#tbl_modal #content").children().children().text(data.list[0].PRSN);
+		             		 	   $("#tbl_modal #content").find(".txtArea").text(data.list[0].CONTENT);
 		             		 	     
 		             			   $(".modal").fadeIn();
 		             	
@@ -1088,7 +1100,6 @@
     				 			var $ctr7 = "<td></td>";
     				 		}
     				 		var $ctr8 = "<td>" + reportList[i].RPSTATUS + "</td>";
-    				 		var $ctr9 = "<td>  보기  </td></tr>";
     				 		//var sumTd  = $ctr1.append($ctr2);
     				 		
     				 		
@@ -1107,7 +1118,6 @@
     				 		$sumTr.append($ctr6);
     				 		$sumTr.append($ctr7);
     				 		$sumTr.append($ctr8);
-    				 		$sumTr.append($ctr9);
     				 		$tableBody.append($sumTr); 
     				 		
     				 		 
@@ -1214,7 +1224,7 @@
     				   			   $("#tbl_modal_order tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
     				   		 	     $("#tbl_modal_order #totalPrice").children().eq(1).text(data.list[0].TPRICE + "원");
     				   		 	    // console.log(list.PRSN)
-    				   		 	    $("#tbl_modal_order #content_order").children().find(".txtArea").text(data.list[0].ORSN);
+    				   		 	    $("#tbl_modal_order #content_order").children().find(".txtArea").text(data.list[0].CONTENT);
     				   		 	     
     				   			   $(".modal_order").fadeIn();
     				   	
@@ -1254,7 +1264,7 @@
     		                             
     		            			  });
     		              		 	     $("#tbl_modal_repair #totalPrice").text(data.list[0].TPRICE + "원");
-    		              		 	    $("#tbl_modal_repair #content_repair").children().children().text(data.list[0].RSN);
+    		              		 	  $("#tbl_modal_repair #content_repair").find(".txtArea").text(data.list[0].CONTENT);
     		              		 	     
     		              			   $(".modal_repair").fadeIn();
     		              	
@@ -1296,7 +1306,7 @@
     		             			   $("#tbl_modal tr:nth-child(4)").children().eq(1).text(data.list[0].RDATE);
     		             			   $("#tbl_modal tr:nth-child(5)").children().eq(1).text(data.list[0].SNAME);
     		             			   $("#tbl_modal tr:nth-child(6)").children().eq(1).text(data.list[0].RTITLE);
-    		             		 	    $("#tbl_modal #content").children().children().text(data.list[0].PRSN);
+    		             			  $("#tbl_modal #content").find(".txtArea").text(data.list[0].CONTENT);
     		             		 	     
     		             			   $(".modal").fadeIn();
     		             	

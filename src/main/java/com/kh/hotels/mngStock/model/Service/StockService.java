@@ -9,6 +9,7 @@ import com.kh.hotels.common.model.vo.PageInfo;
 import com.kh.hotels.mngStock.model.vo.Conn;
 import com.kh.hotels.mngStock.model.vo.His;
 import com.kh.hotels.mngStock.model.vo.Item;
+import com.kh.hotels.mngStock.model.vo.ItemHistory;
 import com.kh.hotels.mngStock.model.vo.ItemType;
 import com.kh.hotels.mngStock.model.vo.RepHistory;
 import com.kh.hotels.mngStock.model.vo.OrderHis;
@@ -71,6 +72,16 @@ public interface StockService {
 	ArrayList<HashMap<String, Object>> selectRepairDetail(RepHistory rHistory);
 
 	String selectReceiver(int receiver);
+
+	int getStockHisList();
+
+	ArrayList<ItemHistory> stockHisList();
+
+	ItemHistory itemHis();
+
+	int getSearchCount(SearchItem s);
+
+	ArrayList<Stock> selectSearchList(SearchItem s, PageInfo pi);
 
 
 	
