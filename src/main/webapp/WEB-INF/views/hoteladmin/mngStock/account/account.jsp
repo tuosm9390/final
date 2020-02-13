@@ -92,35 +92,56 @@
 		width: 120px;
 		border-bottom: 1px solid black;
 	}
-	#pager_wrap {
-width:1100px;
-height:0px;
-	padding: 40px 0;
+.pagingArea{
+	text-align:center;
+	margin-left:300px;
+}
+#pager_wrap {
+	padding: 38px 0;
 	text-align: center;
+	margin-top: -45px;
+	    margin-right: 206px;
 }
 
 #pager_wrap .pager_com {
 	display: inline-block;
-	width: 40px;
+	width: 35px;
 	margin: 0 2px;
-	background-color: #f1f1f1;
+	background-color: #f7f7f7;
+	height:35px;
+	padding:auto;
+	border:1px solid lightgray;
+	border-radius:2px;
 }
 
 #pager_wrap .pager_num.on {
 	background-color: #171f57;
-}
-
-#pager_wrap .pager_com a {
-	padding: 10px 0;
-	text-align: center;
-	color: #171f57;
-	font-size:5px; 
-	font-weight:none;
+	border:1px solid white;
+	color:black;
 	
 }
 
-#pager_wrap .pager_num.on a {
-	color: #fff;
+#pager_wrap .pager_com .pager_num a {
+	padding:auto;
+	text-align: center;
+	
+}
+
+#pager_wrap .pager_num.pager_num.on a {
+	color: white;
+}
+#pager_wrap .pager_com.pager_num a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.prev.on a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.next on a {
+	color:black;
+}
+a{
+	color:black;
+	text-decoration:none;
 }
 #acTbody2 td input[type=text]{
 width: 150px;

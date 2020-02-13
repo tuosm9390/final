@@ -93,6 +93,57 @@
 		width: 1000px;
 		margin-top:30px;
 	}
+	.pagingArea{
+	text-align:center;
+	margin-left:300px;
+}
+#pager_wrap {
+	padding: 60px 0;  
+	text-align: center;
+	margin-top: -45px;
+	    margin-right: 206px;
+}
+
+#pager_wrap .pager_com {
+	display: inline-block;
+	width: 35px;
+	margin: 0 2px;
+	background-color: #f7f7f7;
+	height:35px;
+	padding:auto;
+	border:1px solid lightgray;
+	border-radius:2px;
+}
+
+#pager_wrap .pager_num.on {
+	background-color: #171f57;
+	border:1px solid white;
+	color:black;
+	
+}
+
+#pager_wrap .pager_com .pager_num a {
+	padding:auto;
+	text-align: center;
+	
+}
+
+#pager_wrap .pager_num.pager_num.on a {
+	color: white;
+}
+#pager_wrap .pager_com.pager_num a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.prev.on a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.next on a {
+	color:black;
+}
+a{
+	color:black;
+	text-decoration:none;
+}
 </style>
 </head>
 <body>
@@ -144,44 +195,51 @@
 	
 	</table>
 	</div><!-- purDivv end -->
-		<!-- pagingArea -->
-		<c:if test="${ empty check }">
-		<div id="pagingArea" align="center">
-			<c:if test="${ pi.currentPage <=  1 }">
-				[이전] &nbsp;
-			</c:if>
-			<c:if test="${ pi.currentPage > 1 }">
-				<c:url var="clistBack" value="goPurchaseHis.st">
-					<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
-				</c:url>
-				<a href="${ clistBack }">[이전]</a>&nbsp;
-			</c:if>
-			
-			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<c:if test="${ p eq pi.currentPage }">
-					<font color="red" size="4"><b>${ p }</b></font>
-				</c:if>
-				<c:if test="${ p ne pi.currentPage }">
-					<c:url var="clistCheck" value="goPurchaseHis.st">
-						<c:param name="currentPage" value="${ p }"/>
-					</c:url>
-					<a href="${ clistCheck }">${ p }</a>
-				</c:if>
-			</c:forEach>
-			
-			<c:if test="${ pi.currentPage >= pi.maxPage }">
-				&nbsp; [다음]
-			</c:if>
-			<c:if test="${ pi.currentPage < pi.maxPage }">
-				<c:url var="clistEnd" value="goPurchaseHis.st">
-					<input type="hidden" name="currentPage" value="${ pi.currentPage + 1 }"/>
-					<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
-				</c:url>
-				&nbsp;<a href="${ clistEnd }">[다음]</a>
-			</c:if>
-		</div>
-		</c:if>
-		<!-- pagingArea end -->
+		<!-- 페이저 시작 -->
+			<!-- 페이징 영역 시작 -->
+			<div id="pager_wrap" align="center">
+				<ul class="pager_cnt clearfix add">
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="pager_com pager_arr prev on"><a
+							href="javascirpt: void(0);">&#x003C;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="blistBack" value="goPurchaseHis.st">
+							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
+							<c:param name="scurrentPage" value=""/>
+						</c:url>
+						<li class="pager_com pager_arr prev "><a href="${blistBack }">&#x003C;</a></li>
+					</c:if>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<li class="pager_com pager_num on"><a
+								href="javascript: void(0);">${p }</a></li>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+
+							<c:url var="blistCheck" value="goPurchaseHis.st">
+								<c:param name="currentPage" value="${p }" />
+							</c:url>
+							<li class="pager_com pager_num"><a href="${blistCheck }">${p }</a></li>
+						</c:if>
+					</c:forEach>
+
+
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="pager_com pager_arr next on"><a
+							href="javascript: void(0);">&#x003E;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="blistEnd" value="goPurchaseHis.st">
+							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
+						</c:url>
+						<li class="pager_com pager_arr next"><a href="${blistEnd }">&#x003E;</a></li>
+					</c:if>
+				</ul>
+			</div>
+
+			<!-- 페이징 영역 종료 -->
 	</section>
 	
 	

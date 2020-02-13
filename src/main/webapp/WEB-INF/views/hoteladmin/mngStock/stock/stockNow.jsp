@@ -141,35 +141,56 @@
 	font-weight: bold;
 }
 
+.pagingArea{
+	text-align:center;
+	margin-left:300px;
+}
 #pager_wrap {
-width:1000px;
-	padding: 60px 0;
+	padding: 50px 0;  
 	text-align: center;
-	height: 5px;
+	margin-top: -45px;
+	    margin-right: 206px;
 }
 
 #pager_wrap .pager_com {
 	display: inline-block;
-	width: 40px;
+	width: 35px;
 	margin: 0 2px;
-	background-color: #f1f1f1;
+	background-color: #f7f7f7;
+	height:35px;
+	padding:auto;
+	border:1px solid lightgray;
+	border-radius:2px;
 }
 
 #pager_wrap .pager_num.on {
 	background-color: #171f57;
-}
-
-#pager_wrap .pager_com a {
-	padding: 10px 0;
-	text-align: center;
-	color: #171f57;
-	font-size:5px; 
-	font-weight:none;
+	border:1px solid white;
+	color:black;
 	
 }
 
-#pager_wrap .pager_num.on a {
-	color: #fff;
+#pager_wrap .pager_com .pager_num a {
+	padding:auto;
+	text-align: center;
+	
+}
+
+#pager_wrap .pager_num.pager_num.on a {
+	color: white;
+}
+#pager_wrap .pager_com.pager_num a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.prev.on a{
+	color:black;
+}
+#pager_wrap .pager_com.pager_arr.next on a {
+	color:black;
+}
+a{
+	color:black;
+	text-decoration:none;
 }
 #addCategorys{
 	color:white;
@@ -228,7 +249,7 @@ cursor: pointer;
 			<select style="margin-left:615px;   width:80px;height:25px;" id="filter" class="searchOption" >
 				<option value="iname" selected="selected">물품명</option> 
 			</select>
-			<input type="text" name="serachValue"  class="searchCondition" style="height: 20px;width: 150px;"> 
+			<input type="text" name="searchValue"  class="searchCondition" style="height: 20px;width: 150px;"> 
 			<button class="searchCondition" style="width: 50px; height: 25px; width: 56px;" id="sbtn" onclick="return search();">검색</button>
 	</form>
 		</div>
@@ -263,6 +284,7 @@ cursor: pointer;
 	
 	<!-- 페이저 시작 -->
 			<!-- 페이징 영역 시작 -->
+			<c:if test="${ empty check }">
 			<div id="pager_wrap" align="center">
 				<ul class="pager_cnt clearfix add">
 					<c:if test="${pi.currentPage <= 1 }">
@@ -304,7 +326,56 @@ cursor: pointer;
 					</c:if>
 				</ul>
 			</div>
-		
+		</c:if>
+			
+			
+ 		<c:if test="${ !empty check }">
+			<div id="pager_wrap" align="center">
+				<ul class="pager_cnt clearfix add">
+					<c:if test="${pi.currentPage <= 1 }">
+						<li class="pager_com pager_arr prev on"><a
+							href="javascirpt: void(0);">&#x003C;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage > 1 }">
+						<c:url var="blistBack" value="selectStock.sto">
+							<c:param name="currentPage" value="${pi.currentPage - 1 }" />
+							<c:param name="scurrentPage" value=""/>
+							<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
+						</c:url>
+						<li class="pager_com pager_arr prev "><a href="${blistBack }">&#x003C;</a></li>
+					</c:if>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<li class="pager_com pager_num on"><a
+								href="javascript: void(0);">${p }</a></li>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+
+							<c:url var="blistCheck" value="selectStock.sto">
+								<c:param name="currentPage" value="${p }" />
+								<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
+								
+							</c:url>
+							<li class="pager_com pager_num"><a href="${blistCheck }">${p }</a></li>
+						</c:if>
+					</c:forEach>
+
+
+					<c:if test="${pi.currentPage >= pi.maxPage }">
+						<li class="pager_com pager_arr next on"><a
+							href="javascript: void(0);">&#x003E;</a></li>
+					</c:if>
+					<c:if test="${pi.currentPage < pi.maxPage }">
+						<c:url var="blistEnd" value="selectStock.sto">
+							<c:param name="currentPage" value="${pi.currentPage + 1 }" />
+							<c:param name="searchContent" value="${ sessionScope.searchContent }"/>
+						</c:url>
+						<li class="pager_com pager_arr next"><a href="${blistEnd }">&#x003E;</a></li>
+					</c:if>
+				</ul>
+			</div>
+		</c:if>
 			<!-- 페이징 영역 종료 -->
 	
 	</section>

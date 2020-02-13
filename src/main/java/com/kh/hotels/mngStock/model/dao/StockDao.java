@@ -88,5 +88,9 @@ public interface StockDao {
 
 	ItemHistory getItemHis(SqlSessionTemplate sqlSession);
 
+	int getSearchCount(SqlSessionTemplate sqlSession, SearchItem s);
+
+	ArrayList<Stock> selectSearchList(SqlSessionTemplate sqlSession, SearchItem s, PageInfo pi);
+
 
 }
