@@ -181,8 +181,8 @@
 						<tr>
 							<td>기안부서</td>
 							<td colspan="2"></td>
-							<td rowspan="2"></td>
-							<td rowspan="2" colspan="2"></td>
+							<td rowspan="2" class="boss"></td>
+							<td rowspan="2" colspan="2" class="head"></td>
 						</tr>
 						<tr>
 							<td>기안자</td>
@@ -246,6 +246,8 @@
 					$(".repairTr").remove();
 					$(".approveTitle").text("");
 					$(".rpt").text("");
+					$(".head").text("");
+					$(".boss").text("");
 					
 					$(".modal_repair").fadeOut();
 				})

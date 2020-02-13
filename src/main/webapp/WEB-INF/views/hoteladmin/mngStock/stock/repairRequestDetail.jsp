@@ -77,6 +77,11 @@
 	max-height: 300px;
 	width: 1200px;
 	}
+	input[type=text] {
+		border-radius:2px;
+		border:1px solid lightgray;
+		height:20px;
+	}
 </style>
 </head>
 <body>
@@ -110,7 +115,6 @@
 		<div id="TableDiv">
 		<table id="Table" border="1px solid black;">
 			<tr class="repairDetail">
-				<th><input type="checkbox"></th>
 				<th>번호</th>
 				<th>소분류</th>
 				<th>공급가액</th>
