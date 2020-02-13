@@ -83,6 +83,5 @@
         <mapper resource="mappers/setting-mapper.xml"/>
         <mapper resource="mappers/mngReserv-mapper.xml"/>
 	</mappers>
-		
 	
 </configuration>

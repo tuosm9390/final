@@ -10,5 +10,4 @@ public class Email extends Authenticator{
 
       return new PasswordAuthentication("tuosm123@gmail.com", "rlatkdcks1!");
    }
-
 }
