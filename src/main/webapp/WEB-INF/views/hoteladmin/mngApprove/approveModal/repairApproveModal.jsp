@@ -172,8 +172,6 @@
 
 							</tr>
 							<tr>
-							
-							
 								<td>수신자</td>
 								<td colspan="2"></td>
 

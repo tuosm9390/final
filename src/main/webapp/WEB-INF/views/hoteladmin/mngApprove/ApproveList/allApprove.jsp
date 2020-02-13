@@ -807,7 +807,6 @@
 				 		$sumTr.append($ctr8);
 				 		$tableBody.append($sumTr); 
 				 		
-				 		
 				 		 
 				 		
 				 		
