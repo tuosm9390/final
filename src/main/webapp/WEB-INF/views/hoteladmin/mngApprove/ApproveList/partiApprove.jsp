@@ -538,8 +538,9 @@ border-bottom:1px solid #aaa;
 
 								if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
 									$("#tbl_modal_repair tr")
-											.children().find(".head").text(
+											.find(".head").text(
 													data.list[0].SNAME);
+									
 								}
 
 								//$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
@@ -1051,7 +1052,7 @@ border-bottom:1px solid #aaa;
 																									data.list[0].MNAME);
 																					if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
 																						$("#tbl_modal_repair tr")
-																						.children().find(".head").text(
+																						.find(".head").text(
 																								data.list[0].SNAME);
 																					}else {
 																						
@@ -1605,7 +1606,7 @@ border-bottom:1px solid #aaa;
 																					data.list[0].MNAME);
 																	if (data.list[0].RSTATUS == "APPR" || data.list[0].RSTATUS == "REJECT") {
 																		$("#tbl_modal_repair tr")
-																		.children().find(".head").text(
+																		.find(".head").text(
 																				data.list[0].SNAME);
 																	}
 																	//$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
