@@ -5,7 +5,6 @@
    
 <configuration>
 	<typeAliases>
-<<<<<<< src/main/resources/mybatis-config.xml
 		<typeAlias type="com.kh.hotels.mngMember.model.vo.Member" alias="Member" />
 		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SettingRoomType" alias="SettingRoomType" />
 		<typeAlias type="com.kh.hotels.mngSetting.model.vo.SearchStaff" alias="SearchStaff" />
@@ -84,6 +83,5 @@
         <mapper resource="mappers/setting-mapper.xml"/>
         <mapper resource="mappers/mngReserv-mapper.xml"/>
 	</mappers>
-		
 	
 </configuration>
