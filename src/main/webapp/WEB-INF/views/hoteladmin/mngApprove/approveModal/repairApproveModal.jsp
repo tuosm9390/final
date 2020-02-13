@@ -145,6 +145,7 @@
 								<col width="27%">
 								<col width="13%">
 								<col width="13%">
+								
 
 							</colgroup>
 							<tr>
@@ -156,7 +157,7 @@
 							<tr>
 								<td>기안부서</td>
 								<td colspan="2"></td>
-								<td rowspan="2" class="boss"></td>
+								<td rowspan="2" class="boss" colspan="2"></td>
 								<td rowspan="2" colspan="2" class="head"></td>
 							</tr>
 							<tr>
