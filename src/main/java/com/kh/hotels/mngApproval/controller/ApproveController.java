@@ -805,6 +805,7 @@ public class ApproveController {
 			oRequest.setDocno(docno2);
 			oRequest.setTotPrice(totPrice);
 			oRequest.setStfId(sname);
+			oRequest.setOrderRsn(rsn);
 			oRequest.setRsvReqDate(orderDate);
 			oRequestList.add(oRequest);
 			

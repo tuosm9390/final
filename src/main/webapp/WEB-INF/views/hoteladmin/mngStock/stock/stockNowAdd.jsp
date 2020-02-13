@@ -31,7 +31,6 @@ margin-left: 50px;
 			<select style="height: 27px; width:150px; margin-left: 50px;" id="lselect" name="lselect">
 				<option hidden="hidden">대분류</option>
 				<option value="select">직접입력</option>
-				
 			</select>
 			<input type="text" class="categoryText" style="margin-left: 50px; height: 20px;" id="lcategoryText">
 		</div>
@@ -132,10 +131,10 @@ margin-left: 50px;
 		console.log("out : " + type);
 		
 		if($("#lselect").val()==''){
-			alert("lsert");
+			alert("입력되지 않았습니다.");
 		}
 		if($("#mselect").val()==''){
-			alert("msert");
+			alert("입력되지 않았습니다");
 		}
 	
 		
@@ -149,21 +148,15 @@ margin-left: 50px;
 			},
 			success:function(data){
 				console.log(data);
-				alert("성공");
+				alert("등록되었습니다.");
 				location.reload(true);
 			},error:function(status){
 				console.log(status);
-				alert("ㅅㅂ");
+				alert("등록에 실패하셨습니다.");
 			}
 		});
 		
-		
-		
-		
-		
 	})
-	
-	
 	
 </script>
 </body>

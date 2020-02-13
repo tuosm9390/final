@@ -28,9 +28,6 @@ public class ApprovalDaoImpl implements ApprovalDao{
 		int result = 0;
 		result = sqlSession.selectOne("Report.selectListCount");
 		
-		if(result <= 0) {
-			throw new ReportException("게시글 수 조회 실패!");
-		}
 		
 		return result;
 	}

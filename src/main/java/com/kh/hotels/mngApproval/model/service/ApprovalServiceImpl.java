@@ -42,11 +42,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		List<HashMap<String, Object>> list = ad.selectApprovalList(sqlSession, pi);
 
 		System.out.println("service");
-		if(list != null) {
-
-		}else {
-			throw new ReportException("조회중 에러");
-		}
+		
 		return list;
 	}
 

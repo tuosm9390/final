@@ -256,10 +256,7 @@
 				alert("위치를 선택해주세요.")
 				return false;
 			}
-			if(strgNo=="없음"&&strgNo=="없음"){
-				alert("위치를 선택해주세요.")
-				return false;
-			}
+			
 			
 				
 			

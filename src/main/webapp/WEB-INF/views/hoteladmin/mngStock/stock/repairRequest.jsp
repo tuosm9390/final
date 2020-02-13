@@ -163,6 +163,9 @@ background : white;
 #pager_wrap .pager_com.pager_arr.next on a {
 	color:black;
 }
+a {
+	text-decoration:none;
+}
 	
 </style>
 </head>
@@ -195,6 +198,16 @@ background : white;
 	</div><!-- top div end -->
 		<div id="stockTb">
 			<table style="border-collapse: collapse; width: 100%">  
+				<colgroup>
+                  <col width="15%">
+                  <col width="20%">
+                  <col width="40%">
+                  <col width="25%">
+                  
+               </colgroup>
+			
+			
+			
 				<tr>  
 					<th><input type="checkbox"></th>
 					<th style="color: #005B9E">수리번호</th>

@@ -282,9 +282,12 @@ input[type=text] {
 				<p style="font-style: normal; font-weight: bold; font-size: 16px; line-height: 19px;">Introduce by Room</p>
 
 				<ul class="room-item">
-				<c:forEach items="${ roomInfo }" var="option" varStatus="st">
-					<li>${ roomInfo[st.index].rm_Option }</li>
-				</c:forEach>
+<%-- 				<c:forEach items="${ roomInfo }" var="option" varStatus="st"> --%>
+<%-- 					<li>${ roomInfo[st.index].rm_Option }</li> --%>
+<%-- 				</c:forEach> --%>
+				<c:forTokens items="${ roomInfo[0].rm_Option }" var="list" delims=",">
+					<li>${ list }</li>
+				</c:forTokens>
 				</ul>
 			</div>
 			<!-- 우측 내용 끝 -->
