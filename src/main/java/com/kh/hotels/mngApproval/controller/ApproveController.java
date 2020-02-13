@@ -580,8 +580,9 @@ public class ApproveController {
 					pRequest.setContent(content);
 					pRequest.setType(type);
 					pRequest.setDocno(docNo);
-					pRequest.setTotPrice(totPrice);
+					pRequest.setTotPrice(totalPrice);
 					pRequest.setStfId(stfId);
+					pRequest.setPurRsn("구매");
 					pRequestList.add(pRequest);
 					System.out.println("for문안 pRequestList : " + pRequestList);
 				}
@@ -632,12 +633,12 @@ public class ApproveController {
 		pRequest.setDeptname("구매팀"); 
 		pRequest.setMmno(mno);
 		pRequest.setRptDate(rptDate); 
-		pRequest.setSname(sname); 
+		pRequest.setSname(ssName); 
 		pRequest.setTitle(title);
 		pRequest.setContent(content);
 		pRequest.setType(type);
 		pRequest.setDocno(docNo);
-		pRequest.setTotPrice(totPrice);
+		pRequest.setTotPrice(totalPrice);
 		pRequest.setMname(mname);
 		pRequest.setCname(cname);
 		pRequest.setIname(iname);
@@ -646,6 +647,7 @@ public class ApproveController {
 		pRequest.setAmount(amountR);
 		pRequest.setPrice(priceR);
 		pRequest.setIno(inoR);
+		pRequest.setPurRsn("구매");
 		pRequest.setStfId(stfId);
 		
 		pRequestList.add(pRequest);
