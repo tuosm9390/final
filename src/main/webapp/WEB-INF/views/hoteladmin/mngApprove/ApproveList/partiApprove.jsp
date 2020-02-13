@@ -1609,6 +1609,7 @@ border-bottom:1px solid #aaa;
 																		.find(".head").text(
 																				data.list[0].SNAME);
 																	}
+																	
 																	//$("#tbl_modal tr:nth-child(2)").children().eq(2).text(list.SNAME);
 																	$(
 																			"#tbl_modal_repair tr:nth-child(2)")
