@@ -254,7 +254,11 @@ public class RoomsController {
 		rs.cancelReservSVC(rfd);
 		rs.cancelReservRFD(rfd);
 		
-		mv.setViewName("redirect:view.ro");
+		if(rfdType == 0) {
+			mv.setViewName("redirect:viewNow.re");
+		} else {
+			mv.setViewName("redirect:view.ro");
+		}
 		return mv;
 	}
 	
@@ -282,15 +286,24 @@ public class RoomsController {
 		
 		System.out.println("rsvNo : " +rsvNo);
 		
-		if(rsvNo.equals("")) {
+		if(rsvNo != null) {
+			if(rsvNo.equals("")) {
+				rsvNo = "0";
+			}
+		} else {
 			rsvNo = "0";
 		}
+		
 		int stayNumber;
 		
-		if(stayNo.equals("")) {
+		if(stayNo != null) {
+			if(stayNo.equals("")) {
+				stayNumber = 0;
+			}else {
+				stayNumber = Integer.parseInt(stayNo);
+			}
+		} else {
 			stayNumber = 0;
-		}else {
-			stayNumber = Integer.parseInt(stayNo);
 		}
 		
 		RequestStayRsv rsr = new RequestStayRsv();
@@ -323,6 +336,27 @@ public class RoomsController {
 		mv.addObject("success","success");
 		mv.setViewName("jsonView");
 		
+		return mv;
+	}
+
+	@RequestMapping("updateMD.ro")
+	public ModelAndView updateMD(ModelAndView mv, CheckIn checkIn) {
+		checkIn.setTotalPay(checkIn.getCreditCard() + checkIn.getCash() + checkIn.getAccount());
+		
+		if(checkIn.getStayNo() != null && !checkIn.getStayNo().equals("")) {
+			checkIn.setTotalPay(checkIn.getCreditCard() + checkIn.getCash() + checkIn.getAccount());
+			rs.updateCheckIn(checkIn);
+			mv.setViewName("redirect:view.ro");
+		} else if(checkIn.getRsvNo() != null && !checkIn.getRsvNo().equals("")) {
+			checkIn.setTotalPay(checkIn.getCreditCard() + checkIn.getCash() + checkIn.getAccount());
+			if(checkIn.getTotalPrc() == checkIn.getTotalPay()) {
+				checkIn.setPayStatus("OK");
+			} else {
+				checkIn.setPayStatus("WAIT");
+			}
+			rs.updateReserv(checkIn);
+			mv.setViewName("redirect:viewHis.re");
+		}
 		return mv;
 	}
 }

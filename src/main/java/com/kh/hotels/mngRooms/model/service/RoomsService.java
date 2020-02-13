@@ -78,4 +78,8 @@ public interface RoomsService {
 
 	int insertMemo(RsvMemo rm);
 
+	void updateCheckIn(CheckIn checkIn);
+
+	void updateReserv(CheckIn checkIn);
+
 }

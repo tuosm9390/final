@@ -287,7 +287,7 @@
 			</c:if>
 			</div>
 			<div class="menu userArea leftArea">
-				<img alt="" src="${ contextPath }/resources/images/iconBell.png" class="bellimg">
+				
 			</div>
 		</li>
 	</ul>

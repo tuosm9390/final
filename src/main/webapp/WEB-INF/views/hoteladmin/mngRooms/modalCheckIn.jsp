@@ -209,11 +209,11 @@ select[name=selRoomType], select[name=selRoomNum] {
 	display: inline-flex;
 	width: 390px;
 	height: 50px;
-	margin-top: 165px;
+	margin-top: 164px;
 }
 
-#checkoutBtn, #mdSaveBtn {
-	width:130px;
+#mdSaveBtn {
+	width:200px;
 	height:50px;
 	border: none;
 	background-color: black;
@@ -222,8 +222,8 @@ select[name=selRoomType], select[name=selRoomNum] {
 	font-size: 15px;
 }
 
-#openHisMD {
-	width:130px;
+#checkoutBtn {
+	width:200px;
 	height:50px;
 	border: none;
 	background-color: lightgrey;
@@ -444,7 +444,7 @@ input[name=svcFee], input[name=svcTot] {
 .memocontent {
 	display: inline-flex;
 	border-bottom: 1px solid darkgray;
-	width: 240px;
+	width: 230px;
 }
 
 .memoread {
@@ -454,6 +454,12 @@ input[name=svcFee], input[name=svcTot] {
 
 .memoread>span {
 	font-weight: bold;
+	padding-top: 5px;
+	display: inline-block;
+}
+
+.memoread>p {
+	margin-top: 2px;
 }
 
 #memoDelBtn {
@@ -526,6 +532,7 @@ input[type=number]:disabled {
 				<div class="statusColor"></div>
 				<h1 id="modalStt">　입실</h1>&nbsp;<h3 class="staycode" id="staycode" style="margin-top:25px;"></h3>
 				<input type="hidden" name="rsvNo" value="" id="rsvNo"> 
+				<input type="hidden" name="stayNo" value="" id="stayNo"> 
 				<button type="button" id="ciCancelBtn">× NO-SHOW</button>
 				<button type="button" id="rsvCancelBtn">× 예약취소</button>
 			</div>
@@ -598,10 +605,9 @@ input[type=number]:disabled {
 				<input type="hidden" value="" id="stayNoModal">
 			</div>
 			<br>
-			<button id="checkinBtn" onclick="doCheckIn()" type="button">입실</button>
+			<button id="checkinBtn" onclick="doCheckIn();" type="button">입실</button>
 			<div class="infoBtnSec">
 				<button id="checkoutBtn" type="button">퇴실</button>
-				<button id="openHisMD" type="button">변경내역</button>
 				<button id="mdSaveBtn" type="button">저장</button>
 			</div>
 			<!-- 기타정보 section end -->
@@ -677,19 +683,19 @@ input[type=number]:disabled {
 					<table>
 						<tr>
 							<td>신용카드</td>
-							<td><input type="number" name="creditCard" id="payCard" min="0" onchange="payMoney()" value="0"></td>
+							<td><input type="number" name="creditCard" id="payCard" min="0" onchange="payMoney();" value="0"></td>
 						</tr>
 						<tr>
 							<td>현금</td>
-							<td><input type="number" name="cash" min="0" id="payCash" onchange="payMoney()" value="0"></td>
+							<td><input type="number" name="cash" min="0" id="payCash" onchange="payMoney();" value="0"></td>
 						</tr>
 						<tr>
 							<td>계좌이체</td>
-							<td><input type="number" name="account" min="0" id="payAcc" onchange="payMoney()" value="0"></td>
+							<td><input type="number" name="account" min="0" id="payAcc" onchange="payMoney();" value="0"></td>
 						</tr>
 						<tr>
 							<td>환불</td>
-							<td><input type="number" name="refund" min="0" id="payRfd" onchange="payMoney()" value="0"></td>
+							<td><input type="number" name="refund" min="0" id="payRfd" onchange="payMoney();" value="0"></td>
 						</tr>
 						<tr>
 							<td colspan="2">최종결제일 : <span id="lastPayDay"></span></td>
@@ -720,15 +726,7 @@ input[type=number]:disabled {
 					<textarea class="memoInsert" placeholder=" 메모를 입력하세요."></textarea>
 					<button id="memoInsertBtn" type="button">+　추가</button>
 					<hr>
-					<div class="memolist">
-						<div class="memocontent rsvRequest">
-							<div class="memoread">
-								<span>예약 요청사항</span>
-								<p><input type="text" style="border:0;" id="rsvRequest"></p>
-							</div>
-							<button id="memoDelBtn" type="button">×</button>
-						</div>
-					</div>
+					<div class="memolist"></div>
 				</div>
 			</div>
 			
@@ -758,8 +756,8 @@ input[type=number]:disabled {
 			</div>
 		</div>
 		<!-- 사이드모달(메모/변경이력) end -->
-	</div>
 	</form>
+	</div>
 
 	<script>
 		//체크인 등록 함수
@@ -779,6 +777,13 @@ input[type=number]:disabled {
 		function doSaveReserv() {
 			$("#checkinModal").attr("action", "insertReserv.re");
 			$("#checkinModal").submit();
+		}
+		
+		function payMoney() {
+			var today = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+			$("#lastPayDay").text(today);
+			$("#iptLastPayDay").val($("#lastPayDay").text());
+			changeChargePrcTxt();
 		}
 	 
 		//총금액 변경 함수
@@ -812,6 +817,7 @@ input[type=number]:disabled {
 		}
 		
 		$(document).ready(function() {
+			$("#openMemoMD").prop("disabled", false);
 			$("#ciCancelBtn").hide();
 			$("#rsvCancelBtn").hide();
 			
@@ -840,10 +846,13 @@ input[type=number]:disabled {
 				$(".infoBtnSec").hide();
 				$("#ciCancelBtn").hide();
 				$("#rsvCancelBtn").hide();
+				$(".modal_content3").hide();
 				
 				$("#rsvCancelBtn").text('× 예약취소');
 				$("#rsvCancelBtn").prop('disabled', false);
+				$("#openMemoMD").prop('disabled', false);
 				$("#rentYN").prop('disabled', false);
+				$("#memoInsertBtn").prop('disabled', false);
 				
 				$(".statusColor").removeClass('mediumseagreen');
 				$(".totalPrice").removeClass('mediumseagreen');
@@ -853,185 +862,16 @@ input[type=number]:disabled {
 				$(".totalPrice").removeClass('mediumseagreen');
 				$(".statusColor").removeClass('gold');
 				$(".totalPrice").removeClass('gold');
+				$(".memocontent").remove();
 				
 				$("#rentYN").prop('checked', false);
 				$("#checkinBtn").text('입실').attr('onclick', 'doCheckIn();');
 				
-				$(".memocontent").remove();
-				
 				$(".modal").fadeOut();
 			});
-			
-			/* $("#insertClient").click(function(){
-				
-				if($(this).html != "추가"){
-					$(".modalDetailRoomView").fadeIn();
-				}
-				//$(".modalplus").fadeIn();
-				
-				
-			}); */
 		});
 
-		$(function() {
-			$(".modal_content3").hide();
-			$("#viewMemo").hide();
-			$("#viewHistory").hide();
-			$("#checkinBtn").hide();
-			$(".infoBtnSec").hide();
-			$("#printRecipt").hide();
-			$(".svcTR").css('display', 'none');
-			$(".findClientList").hide();
-			
-			
-			$(".btn_close_sub").click(function() {
-				$(".modal_content3").hide();
-				$("#viewMemo").hide();
-				$("#viewHistory").hide();
-				$("#rsvRequest").remove();
-				$(".memocontent").remove();
-			});
-			
-			
-			/// 메모 영역
-			$("#openMemoMD").click(function(){
-				
-				$.ajax({
-					url:"requestInformation.ro",
-					type:"post",
-					data:{
-						rsvNo:rsvNoModalNew,
-						stayNo:stayNoModalNew
-					},
-					success:function(data){
-						console.log(data.rsrList[0].rsvReq);
-						$("#rsvRequest").val(data.rsrList[0].rsvReq);
-						var lengths = data.rsrList.length;
-						$.each(data.rsrList, function(index, rsrList){
-							$(".memolist").append("<div class='memocontent'> <div class='memoread'> <span>요청사항일시 : "+rsrList.reqDate+"</span> <p>"+rsrList.reqContent+"</p> </div> <button id='memoDelBtn' type='button'>×</button> </div>");
-						});
-						
-					},
-					error:function(data){
-						
-					}
-					
-				});
-				
-				console.log(rsvNoModalNew);				
-				console.log(stayNoModalNew);				
-				
-				$(".modal_content3").show();
-				$("#viewMemo").show();
-				//$("#viewHistory").show();
-			});
-		});
-		
-		$("#rentYN").change(function(){
-			$("#checkOut").val(today);
-			$("select[name=stayDay]").val('0').prop('selected', true);
-		});
-		
-		$("select[name=stayDay]").change(function(){
-			var plusDay = $(this).val() * 1;
-			var coDay = new Date(today); 
-			coDay.setDate(coDay.getDate() + plusDay); coDay = dateToStr(coDay);
-			$("#checkOut").val(coDay);
-		});
-
-		var tempsvccnt = 0;
-		$("#svcAddBtn").click(function(){
-			var cloneSvc = $(".svcTR").clone();
-			cloneSvc.attr('class', 'svcTRc').css({'display':'table-row', 'width':'100%'});
-			cloneSvc.find('select').attr('id', 'selSvc' + tempsvccnt);
-			cloneSvc.find('input[type=number]').eq(0).attr('id', 'svcCnt' + tempsvccnt);
-			$(".svcDetailSec table").append(cloneSvc);
-			var svcday = new Date();
-			var tempsvcday = ((svcday.getMonth()+1)>9?(svcday.getMonth()+1):"0"+(svcday.getMonth()+1)) + "-" + (svcday.getDate()>9?svcday.getDate():"0"+svcday.getDate());
-			$(".svcDetailSec tr:last-child").children().eq(0).text(tempsvcday);
-			tempsvccnt++;
-		});
-		
-		var svctotprc = 0;
-		function doSvcDelBtn(data) {
-			svctotprc -= $(data).parent().parent().children().eq(4).children().val();
-			$(data).parent().parent().remove();
-			$("#totalSvc").text(svctotprc.toLocaleString());
-			changeTotalPrcTxt();
-		}
-		
-		function selSvcName(thisEl, svcCode){
-			svctotprc -= $("#" + thisEl).parent().parent().children().eq(4).children().val();
-			for(var i = 0; i < svclist.length; i++) {
-				if(svclist[i].svcCode == svcCode) {
-					var svcPrc = svclist[i].svcPrice;
-				}
-			}
-			var thisElparent = $("#" + thisEl).parent().parent();
-			thisElparent.children().eq(2).children().val('1');
-			thisElparent.children().eq(3).children().val(svcPrc);
-			thisElparent.children().eq(4).children().val(svcPrc);
-			
-			svctotprc += svcPrc;
-			$("#totalSvc").text(svctotprc.toLocaleString());
-			changeTotalPrcTxt();
-		}
-		
-		function selSvcCnt(thisEl) {
-			var thisElparent = $("#" + thisEl).parent().parent();
-			
-			svctotprc -= thisElparent.children().eq(4).children().val();
-			
-			var cnt = $("#" + thisEl).val();
-			var prc = thisElparent.children().eq(3).children().val();
-			thisElparent.children().eq(4).children().val(cnt * prc);
-			
-			svctotprc += cnt * prc;
-			$("#totalSvc").text(svctotprc.toLocaleString());
-			changeTotalPrcTxt();
-		}
-		
-		function payMoney() {
-			$("#lastPayDay").text(new Date().format('yyyy-MM-dd HH:mm:ss'));
-			$("#iptLastPayDay").val($("#lastPayDay").text());
-			changeChargePrcTxt();
-		}
-		
 		var clientList;
-		$("#clientName").keyup(function(){
-			var searchName = $(this).val();
-			$.ajax({
-				url:"ajxFindClient.ro",
-				data:{searchName:searchName},
-				type:"post",
-				success:function(data){
-					clientList = data.clientList;
-					if(clientList.length == 0) {
-						$(".findClientList").hide();
-						$(".findClientList div").remove();
-					} else {
-						$(".findClientList div").remove();
-						for(var i = 0; i < clientList.length; i++) {
-							$infoClient = "<div class='findClientPer' id='per" + clientList[i].mno + "' onclick='findClientClk(this.id)'>" + clientList[i].userName + " | " + clientList[i].phone + "</div>";
-							$(".findClientList").append($infoClient);
-						}
-						$(".findClientList").show();
-					}
-				},
-				error:function(error, status){
-					alert("SYSTEM ERROR!");
-				}
-			});
-
-		}).keydown(function(){
-			$(".findClientList").hide();
-			$(".findClientList div").remove();
-		});
-//		.focusout(function(){
-//			$(".findClientList").hide();
-//			$(".findClientList div").remove();
-//		});
-		
 		function findClientClk(thisEl) {
 			$(".findClientList").hide();
 			var mno = thisEl.substring(3);
@@ -1046,221 +886,215 @@ input[type=number]:disabled {
 			}
 		}
 		
-		$("#selRoomType").change(function(){
-			var rmType = $(this).val();
-			var cnt = 0;
-			var stdPer = 0;
-			var rtNo;
-			for(var i = 0; i < roomlist.length; i++) {
-				if(roomlist[i].rtName != rmType) {
-					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
-				} else {
-					rtNo = roomlist[i].rtNo;
-					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
-					stdPer = roomlist[i].stdPer;
-					if($("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop('disabled')) {
+		$("#clientName").keyup(function(){
+			var searchName = $(this).val();
+			$.ajax({
+				url:"ajxFindClient.ro",
+				data:{searchName:searchName},
+				type:"post",
+				success:function(data){
+					clientList = data.clientList;
+					if(clientList.length == 0) {
+						$(".findClientList").hide();
+						$(".findClientList div").remove();
 					} else {
+						$(".findClientList div").remove();
+						for(var i = 0; i < clientList.length; i++) {
+							$infoClient = "<div class='findClientPer' id='per" + clientList[i].mno + "' onclick='findClientClk(this.id);'>" + clientList[i].userName + " | " + clientList[i].phone + "</div>";
+							$(".findClientList").append($infoClient);
+						}
+						$(".findClientList").show();
+					}
+				},
+				error:function(error, status){
+					alert("SYSTEM ERROR!");
+				}
+			});
+
+		}).keydown(function(){
+			$(".findClientList").hide();
+			$(".findClientList div").remove();
+		});
+		
+		var tempsvccnt = 0;
+		$("#svcAddBtn").click(function(){
+			var cloneSvc = $(".svcTR").clone();
+			cloneSvc.attr('class', 'svcTRc').css({'display':'table-row', 'width':'100%'});
+			cloneSvc.find('select').attr('id', 'selSvc' + tempsvccnt);
+			cloneSvc.find('input[type=number]').eq(0).attr('id', 'svcCnt' + tempsvccnt);
+			$(".svcDetailSec table").append(cloneSvc);
+			var svcday = new Date();
+			var tempsvcday = ((svcday.getMonth()+1)>9?(svcday.getMonth()+1):"0"+(svcday.getMonth()+1)) + "-" + (svcday.getDate()>9?svcday.getDate():"0"+svcday.getDate());
+			$(".svcDetailSec tr:last-child").children().eq(0).text(tempsvcday);
+			tempsvccnt++;
+		});
+		
+		var svctotprc;
+		function doSvcDelBtn(data) {
+			svctotprc -= $(data).parent().parent().children().eq(4).children().val();
+			$(data).parent().parent().remove();
+			$("#iptTotalSvc").text(svctotprc);
+			$("#totalSvc").text(svctotprc.toLocaleString());
+			changeTotalPrcTxt();
+		}
+		
+		function selSvcName(thisEl, svcCode){
+			svctotprc = $("#iptTotalSvc").text() * 1;
+			svctotprc -= $("#" + thisEl).parent().parent().children().eq(4).children().val();
+			for(var i = 0; i < svclist.length; i++) {
+				if(svclist[i].svcCode == svcCode) {
+					var svcPrc = svclist[i].svcPrice;
+				}
+			}
+			var thisElparent = $("#" + thisEl).parent().parent();
+			thisElparent.children().eq(2).children().val('1');
+			thisElparent.children().eq(3).children().val(svcPrc);
+			thisElparent.children().eq(4).children().val(svcPrc);
+			
+			svctotprc += svcPrc;
+			$("#iptTotalSvc").text(svctotprc);
+			$("#totalSvc").text(svctotprc.toLocaleString());
+			changeTotalPrcTxt();
+		}
+		
+		function selSvcCnt(thisEl) {
+			var thisElparent = $("#" + thisEl).parent().parent();
+			
+			svctotprc -= thisElparent.children().eq(4).children().val();
+			
+			var cnt = $("#" + thisEl).val();
+			var prc = thisElparent.children().eq(3).children().val();
+			thisElparent.children().eq(4).children().val(cnt * prc);
+			
+			svctotprc += cnt * prc;
+			$("#iptTotalSvc").text(svctotprc);
+			$("#totalSvc").text(svctotprc.toLocaleString());
+			changeTotalPrcTxt();
+		}
+		
+		$(function() {
+			
+			$(".modal_content3").hide();
+			$("#viewMemo").hide();
+			$("#viewHistory").hide();
+			$("#checkinBtn").hide();
+			$(".infoBtnSec").hide();
+			$("#printRecipt").hide();
+			$(".svcTR").css('display', 'none');
+			$(".findClientList").hide();
+			
+			
+			$(".btn_close_sub").click(function() {
+				$(".memocontent").remove();
+				$(".modal_content3").hide();
+				$("#viewMemo").hide();
+				$("#openMemoMD").prop('disabled', false);
+				$("#memoInsertBtn").prop('disabled', false);
+				$("#viewHistory").hide();
+			});
+			
+			
+			$("#rentYN").change(function(){
+				$("#checkOut").val(today);
+				$("select[name=stayDay]").val('0').prop('selected', true);
+			});
+			
+			$("select[name=stayDay]").change(function(){
+				var plusDay = $(this).val() * 1;
+				var coDay = new Date(today); 
+				coDay.setDate(coDay.getDate() + plusDay); coDay = dateToStr(coDay);
+				$("#checkOut").val(coDay);
+			});
+	
+			
+			$("#selRoomType").change(function(){
+				var rmType = $(this).val();
+				var cnt = 0;
+				var stdPer = 0;
+				var rtNo;
+				for(var i = 0; i < roomlist.length; i++) {
+					if(roomlist[i].rtName != rmType) {
+						$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").hide();
+					} else {
+						rtNo = roomlist[i].rtNo;
+						$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").show();
+						stdPer = roomlist[i].stdPer;
+						if($("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop('disabled')) {
+						} else {
+							cnt++;
+						}
+					}
+					
+					if(cnt == 1) {
+						$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop("selected", true);
 						cnt++;
 					}
 				}
 				
-				if(cnt == 1) {
-					$("#selRoomNum option[value=" + roomlist[i].rmNo + "]").prop("selected", true);
-					cnt++;
+				$("#personCnt option").remove();
+				for(var i = 1; i <= stdPer; i++) {
+					$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
 				}
-			}
-			
-			$("#personCnt option").remove();
-			for(var i = 1; i <= stdPer; i++) {
-				$("#personCnt").append("<option value='" + i + "'>" + i + "</option>");
-			}
-			
-			var sttday = new Date($("#checkIn").val().substring(0,4), $("#checkIn").val().substring(5,7) - 1, $("#checkIn").val().substring(8,10));
-			var endday = new Date($("#checkOut").val().substring(0,4), $("#checkOut").val().substring(5,7) - 1, $("#checkOut").val().substring(8,10));
-			if($("#checkOut").val() == '') {
-				endday = sttday;
-			}
-			var perday = (endday - sttday) / 1000 / 60 / 60 / 24;
-			changeModalFee(rtNo, sttday, endday, perday);
-		});
+				
+				var sttday = new Date($("#checkIn").val().substring(0,4), $("#checkIn").val().substring(5,7) - 1, $("#checkIn").val().substring(8,10));
+				var endday = new Date($("#checkOut").val().substring(0,4), $("#checkOut").val().substring(5,7) - 1, $("#checkOut").val().substring(8,10));
+				if($("#checkOut").val() == '') {
+					endday = sttday;
+				}
+				var perday = (endday - sttday) / 1000 / 60 / 60 / 24;
+				changeModalFee(rtNo, sttday, endday, perday);
+			});
 		
-		$("#clientEmail").keyup(function(event){
-			var email = $("#clientEmail").val();
-			var check = /(\w{4,})@(\w{1,})\.(\w{1,3})/ig;
-			if(check.test(email)){
-				$("#emailSpan").removeClass('redText').addClass('greenText');
-				$("#emailSpan").text("");
-			} else {
-				$("#emailSpan").removeClass('greenText').addClass('redText');
-				$("#emailSpan").text("부적합한 Email 입니다. 다시 입력해 주세요!");
-			}
-		});
-
-		//체크인 등록 함수
-		function doCheckIn() {
-			if($(".statusColor").hasClass('mediumseagreen')) {
-				$("#checkinModal").attr("action", "insertCI.ro");
-				$("#checkinModal").submit();
-			} else {
-				$("#rsvNo").val($("#staycode").text());
-				$("#selRoomNumm").val(selRoomNumm);
-				$("#checkinModal").attr("action", "insertRsvCI.ro");
-				$("#checkinModal").submit();
-			}
-		}
-		
-		//예약 등록 함수
-		function doSaveReserv() {
-			$("#checkinModal").attr("action", "insertReserv.re");
-			$("#checkinModal").submit();
-		}
-		
-		//예약취소 버튼
-		$("#rsvCancelBtn").click(function(){
-			var checkin = $("#checkIn").val();
-			$.ajax({
-				url:"ajxFindRfdRate.ro",
-				data:{checkin:checkin},
-				type:"post",
-				success:function(data){
-					console.log(data.ajxRfdRate);
-					var rsvNo = $("#staycode").text();
-					var termt; var dayt; var rfdr;
-					
-					switch(data.ajxRfdRate.termType) {
-					case 'SEASON' : tert = '성수기'; break;
-					default : tert = '비수기'; break;
-					}
-					switch(data.ajxRfdRate.dayType) {
-					case 'WEEK' : dayt = '주중'; break;
-					default : dayt = '주말'; break;
-					}
-					rfdr = data.ajxRfdRate.rfdRate;
-					rfdp = (parseInt($("#totalRoom").text().replace(/,/g , '')) + parseInt($("#totalVlt").text().replace(/,/g , ''))) * (rfdr / 100);
-					var daybef = data.ajxRfdRate.rfdDate;
-					
-					if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 취소하시겠습니까?\n"
-									+ "환불금액 : " + rfdp + "원 (" + tert + " " + dayt + " [입실 " + daybef + "일 전] 기준 " + rfdr +"% 환불)")) {
-						location.href = "cancelReserv.ro?rsvNo=" + rsvNo + "&rfdM=" + rfdp + "&payd=" + reservPayDate + "&rfdT=" + 0;
-					}
-				},
-				error:function(error, status){
-					console.log('SYSTEM ERROR!')
+			$("#clientEmail").keyup(function(event){
+				var email = $("#clientEmail").val();
+				var check = /(\w{4,})@(\w{1,})\.(\w{1,3})/ig;
+				if(check.test(email)){
+					$("#emailSpan").removeClass('redText').addClass('greenText');
+					$("#emailSpan").text("");
+				} else {
+					$("#emailSpan").removeClass('greenText').addClass('redText');
+					$("#emailSpan").text("부적합한 Email 입니다. 다시 입력해 주세요!");
 				}
 			});
 			
-		});
-		
-		//노쇼처리 버튼
-		$("#ciCancelBtn").click(function(){
-			var rsvNo = $("#staycode").text();
-			
-			rfdr = ruleInfo.nsRate;
-			rfdp = parseInt($("#totalRoom").text().replace(/,/g , '')) * ((100 - rfdr) / 100);
-			console.log(reservCheckinTime);
-			if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 노쇼처리 하시겠습니까?\n"
-							+ "체크인 예정시간 : " + reservCheckinTime + " | 노쇼 기준 시간 : " + (reservCheckinTime.substring(0,2) * 1 + ruleInfo.noshowUnit) +":00\n"
-							+ "환불 금액 : " + rfdp + "원 ( 노쇼고객 수수료 규정 : " + ruleInfo.nsRate + "% )")) {
-				location.href = "cancelReserv.ro?rsvNo=" + rsvNo + "&rfdM=" + rfdp + "&payd=" + reservPayDate + "&rfdT=" + 1;
-			}
-		});
-		
-		//퇴실처리 버튼
-		$("#checkoutBtn").click(function(){
-			if(window.confirm("해당 객실을 퇴실처리 하시겠습니까?")) {
-				console.log(checkoutStayNo);
-				location.href = "doCheckOut.ro?stayNo=" + checkoutStayNo;
-			}
-		});
-		////////////////////////////////////////////////////////////////////
-		var searchCheck = ""; 
-		var clientMno;
-		var clientName;
-		var clientPhone;
-		var clientEmail;
-		
-		$(function(){
-			
-			$("#insertClient").click(function(){
-				if($(this).html() != "추가"){
-					$(".modalDetailRoomView").fadeIn();
-				}
-			});
-			
-		
-			
-			$("#insertClient").click(function(){
-				
-				//var mno = $(this).siblings(".clientMnoRoomView").children().val();
-				var mno = $("#insertClient").html();
-				console.log(mno);
-				
+			// 메모 영역
+ 			$("#openMemoMD").click(function(){
+ 				$(this).prop('disabled', true);
 				$.ajax({
-					url:"clientDetail.cl",
+					url:"requestInformation.ro",
 					type:"post",
 					data:{
-						mno:mno
+						rsvNo:rsvNoModalNew,
+						stayNo:stayNoModalNew
 					},
 					success:function(data){
-						console.log(data.hmap.clientInfo);
-						$(".clientDetailMnoRoomView").val(data.hmap.clientInfo.mno);
-						$(".clientDetailNameRoomView").val(data.hmap.clientInfo.userName);
-						$(".clientDetailPhoneRoomView").val(data.hmap.clientInfo.phone);
-						$(".clientDetailEmailRoomView").val(data.hmap.clientInfo.email);
-						$(".clientDetailVisitCountRoomView").val(data.hmap.visitCount);
-						$(".clientDetailTotalPriceRoomView").val(data.hmap.price);
-						$(".clientDetailStayDayRoomView").val(data.hmap.stayDay);
-						$(".clientDetailLastVisitRoomView").val(data.hmap.lastVisit);
-						
-						$.each(data.hmap.queModalList, function(index, queModalList) {
-							$('.clientDetailQueTableRoomView:last').append("<tr><td colspan='2' style='font-weight: bold'>"+queModalList.qdate+"</td></tr><tr><td style='font-weight: bold'>문의제목 : </td><td>"+queModalList.qtitle+"</td></tr><tr><td style='font-weight: bold'>문의유형 : </td><td>"+queModalList.qtype+"</td></tr><tr><td style='font-weight: bold'>문의내용 : </td><td>"+queModalList.qcontent+"</td></tr><tr><td style='font-weight: bold'>답변내용 : </td><td></td></tr>");
-						});
-						
-						$.each(data.hmap.sarList, function(index, sarList) {
-							
-						var checkInYear = sarList.checkIn.substr(0, 4);
-						var checkInMonth = sarList.checkIn.substr(5, 2);
-						var checkInDay = sarList.checkIn.substr(8, 2);
-						var checkInDate = new Date(checkInYear,checkInMonth-1,checkInDay);
-						
-						var checkOutYear = sarList.checkOut.substr(0, 4);
-						var checkOutMonth = sarList.checkOut.substr(5, 2);
-						var checkOutDay = sarList.checkOut.substr(8, 2);
-						var checkOutDate = new Date(checkOutYear,checkOutMonth-1,checkOutDay);
-						
-						var tempStatus = "";
-						switch(sarList.status){
-						case "REFUND" : tempStatus = "예약취소";break;
-						case "Y" : tempStatus = "체크아웃";break;
-						case "N" : tempStatus = "체크인";break;
-						case "OK" : tempStatus = "예약완료";break;
+						console.log(data.rsrList);
+						var lengths = data.rsrList.length;
+						if(data.rsrList[0] != null) {
+							if(lengths > 0 && data.rsrList[0].rsvReq != null && data.rsrList[0].rsvReq != '') {
+								$(".memolist").append("<div class='memocontent'> <div class='memoread'> <span>예약자 요청사항</span> <p>"+data.rsrList[0].rsvReq+"</p> </div></div>");
+							}
 						}
-						
-							$('.stayAndRsvTabelRoomView tbody:last').after("<tr><td>"+sarList.checkIn+"</td><td>"+sarList.checkOut+"</td><td>"+
-									(checkOutDate-checkInDate)/(24 * 60 * 60 * 1000)
-									+"</td><td>"+sarList.rmNum+"</td><td>"+sarList.price+"</td><td>"+sarList.rsvDate.substr(0,10)+"</td><td>"+tempStatus+"</td></tr>");
+						$.each(data.rsrList, function(index, rsrList){
+							if(rsrList != null) {
+								if(rsrList.reqContent !=  '') {
+									$(".memolist").append("<div class='memocontent'> <div class='memoread'> <span>"+rsrList.reqDate+"</span> <p>"+rsrList.reqContent+"</p> </div></div>");
+								}
+							}
 						});
 						
-						clientMno = $("#clientDetailMnoRoomView").val();
-						clientName = $("#clientDetailNameRoomView").val();
-						clientPhone = $("#clientDetailPhoneRoomView").val();
-						clientEmail = $("#clientDetailEmailRoomView").val();
-						
-						$(".modalDetailRoomView").fadeIn();
 					},
 					error:function(data){
 						
 					}
 					
 				});
+				
+				$(".modal_content3").show();
+				$("#viewMemo").show();
 			});
 			
-		});
-	</script>
-	<script type="text/javascript">
-		$(function(){
-			$("#memoInsertBtn").click(function(){
-				
+ 			$("#memoInsertBtn").click(function(){
 				memoModal = $(".memoInsert").val();
 				
 				if($(".memoInsert").val() == ""){
@@ -1275,7 +1109,8 @@ input[type=number]:disabled {
 								stayNo:stayNoModalNew
 							},
 							success:function(data){
-								
+								$(".memoInsert").val('');
+								$(".memolist").prepend("<div class='memocontent'> <div class='memoread'> <span>방금</span> <p>"+memoModal+"</p> </div></div>");
 							},
 							error:function(data){
 								
@@ -1284,7 +1119,158 @@ input[type=number]:disabled {
 					}
 				}
 			});
+	
+			
+			//예약취소 버튼
+			$("#rsvCancelBtn").click(function(){
+				var checkin = $("#checkIn").val();
+				$.ajax({
+					url:"ajxFindRfdRate.ro",
+					data:{checkin:checkin},
+					type:"post",
+					success:function(data){
+						console.log(data.ajxRfdRate);
+						var rsvNo = $("#staycode").text();
+						var termt; var dayt; var rfdr;
+						
+						switch(data.ajxRfdRate.termType) {
+						case 'SEASON' : tert = '성수기'; break;
+						default : tert = '비수기'; break;
+						}
+						switch(data.ajxRfdRate.dayType) {
+						case 'WEEK' : dayt = '주중'; break;
+						default : dayt = '주말'; break;
+						}
+						rfdr = data.ajxRfdRate.rfdRate;
+						rfdp = (parseInt($("#totalRoom").text().replace(/,/g , '')) + parseInt($("#totalVlt").text().replace(/,/g , ''))) * (rfdr / 100);
+						var daybef = data.ajxRfdRate.rfdDate;
+						reservPayDate = dateToStr(new Date()) + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+						
+						if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 취소하시겠습니까?\n"
+										+ "환불금액 : " + rfdp + "원 (" + tert + " " + dayt + " [입실 " + daybef + "일 전] 기준 " + rfdr +"% 환불)")) {
+							location.href = "cancelReserv.ro?rsvNo=" + rsvNo + "&rfdM=" + rfdp + "&payd=" + reservPayDate + "&rfdT=" + 0;
+						}
+					},
+					error:function(error, status){
+						console.log('SYSTEM ERROR!')
+					}
+				});
+			});
+			
+			//노쇼처리 버튼
+			$("#ciCancelBtn").click(function(){
+				var rsvNo = $("#staycode").text();
+				
+				rfdr = ruleInfo.nsRate;
+				rfdp = parseInt($("#totalRoom").text().replace(/,/g , '')) * ((100 - rfdr) / 100);
+				reservPayDate = dateToStr(new Date()) + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+				console.log(reservCheckinTime);
+				if(window.confirm("[ 예약번호 : " + rsvNo + " ] 해당 예약을 노쇼처리 하시겠습니까?\n"
+								+ "체크인 예정시간 : " + reservCheckinTime + " | 노쇼 기준 시간 : " + (reservCheckinTime.substring(0,2) * 1 + ruleInfo.noshowUnit) +":00\n"
+								+ "환불 금액 : " + rfdp + "원 ( 노쇼고객 수수료 규정 : " + ruleInfo.nsRate + "% )")) {
+					location.href = "cancelReserv.ro?rsvNo=" + rsvNo + "&rfdM=" + rfdp + "&payd=" + reservPayDate + "&rfdT=" + 1;
+				}
+			});
+			
+			//퇴실처리 버튼
+			$("#checkoutBtn").click(function(){
+				if(window.confirm("해당 객실을 퇴실처리 하시겠습니까?")) {
+					console.log(checkoutStayNo);
+					location.href = "doCheckOut.ro?stayNo=" + checkoutStayNo;
+				}
+			});
+			////////////////////////////////////////////////////////////////////
+			var searchCheck = ""; 
+			var clientMno;
+			var clientName;
+			var clientPhone;
+			var clientEmail;
+		
+			$("#insertClient").click(function(){
+				var mno = $("#insertClient").html();
+				if(mno != '추가') {
+					//var mno = $(this).siblings(".clientMnoRoomView").children().val();
+					console.log(mno);
+					
+					$.ajax({
+						url:"clientDetail.cl",
+						type:"post",
+						data:{
+							mno:mno
+						},
+						success:function(data){
+							console.log(data.hmap.clientInfo);
+							$(".clientDetailMnoRoomView").val(data.hmap.clientInfo.mno);
+							$(".clientDetailNameRoomView").val(data.hmap.clientInfo.userName);
+							$(".clientDetailPhoneRoomView").val(data.hmap.clientInfo.phone);
+							$(".clientDetailEmailRoomView").val(data.hmap.clientInfo.email);
+							$(".clientDetailVisitCountRoomView").val(data.hmap.visitCount);
+							$(".clientDetailTotalPriceRoomView").val(data.hmap.price);
+							$(".clientDetailStayDayRoomView").val(data.hmap.stayDay);
+							$(".clientDetailLastVisitRoomView").val(data.hmap.lastVisit);
+							
+							$.each(data.hmap.queModalList, function(index, queModalList) {
+								$('.clientDetailQueTableRoomView:last').append("<tr><td colspan='2' style='font-weight: bold'>"+queModalList.qdate+"</td></tr><tr><td style='font-weight: bold'>문의제목 : </td><td>"+queModalList.qtitle+"</td></tr><tr><td style='font-weight: bold'>문의유형 : </td><td>"+queModalList.qtype+"</td></tr><tr><td style='font-weight: bold'>문의내용 : </td><td>"+queModalList.qcontent+"</td></tr><tr><td style='font-weight: bold'>답변내용 : </td><td></td></tr>");
+							});
+							
+							$.each(data.hmap.sarList, function(index, sarList) {
+								
+							var checkInYear = sarList.checkIn.substr(0, 4);
+							var checkInMonth = sarList.checkIn.substr(5, 2);
+							var checkInDay = sarList.checkIn.substr(8, 2);
+							var checkInDate = new Date(checkInYear,checkInMonth-1,checkInDay);
+							
+							var checkOutYear = sarList.checkOut.substr(0, 4);
+							var checkOutMonth = sarList.checkOut.substr(5, 2);
+							var checkOutDay = sarList.checkOut.substr(8, 2);
+							var checkOutDate = new Date(checkOutYear,checkOutMonth-1,checkOutDay);
+							
+							var tempStatus = "";
+							switch(sarList.status){
+							case "REFUND" : tempStatus = "예약취소";break;
+							case "Y" : tempStatus = "체크아웃";break;
+							case "N" : tempStatus = "체크인";break;
+							case "OK" : tempStatus = "예약완료";break;
+							}
+							
+								$('.stayAndRsvTabelRoomView tbody:last').after("<tr><td>"+sarList.checkIn+"</td><td>"+sarList.checkOut+"</td><td>"+
+										(checkOutDate-checkInDate)/(24 * 60 * 60 * 1000)
+										+"</td><td>"+sarList.rmNum+"</td><td>"+sarList.price+"</td><td>"+sarList.rsvDate.substr(0,10)+"</td><td>"+tempStatus+"</td></tr>");
+							});
+							
+							clientMno = $("#clientDetailMnoRoomView").val();
+							clientName = $("#clientDetailNameRoomView").val();
+							clientPhone = $("#clientDetailPhoneRoomView").val();
+							clientEmail = $("#clientDetailEmailRoomView").val();
+							
+							$(".modalDetailRoomView").fadeIn();
+						},
+						error:function(data){
+							
+						}
+						
+					});
+					
+				} else {
+					$(".modalplus").fadeIn();
+				}			
+			});
 		});
+		
+		
+		
+		
+		
+		//변경사항 저장
+		$("#mdSaveBtn").click(function(){
+			doSave();
+		});
+		
+		function doSave() {
+			$("#checkinModal").attr("action", "updateMD.ro");
+			$("#checkinModal").submit();
+		}
+			
 	</script>
 </body>
 </html>

@@ -275,18 +275,38 @@ public class RoomsDaoImpl implements RoomsDao {
 
 	@Override
 	public ArrayList<RequestStayRsv> selectRsrList(SqlSessionTemplate sqlSession, RequestStayRsv rsr) {
-
-		ArrayList<RequestStayRsv> rsrList = null;
-		
-		rsrList = (ArrayList)sqlSession.selectList("Rooms.selectRsrList", rsr);
-		
+		ArrayList<RequestStayRsv> rsrList = (ArrayList)sqlSession.selectList("Rooms.selectRsrList", rsr);
 		return rsrList;
 	}
 
 	@Override
 	public int insertMemo(SqlSessionTemplate sqlSession, RsvMemo rm) {
-		
 		return sqlSession.insert("Rooms.insertMemo", rm);
+	}
+
+	@Override
+	public int updateCIstay(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		return sqlSession.update("Rooms.updateCIstay", checkIn);
+	}
+
+	@Override
+	public int updateReserv(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		return sqlSession.update("Rooms.updateReserv", checkIn);
+	}
+	
+	@Override
+	public int insertReservPayment(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		return sqlSession.insert("Rooms.insertReservPayment", checkIn);
+	}
+
+	@Override
+	public Integer insertReservSvcUse(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		return sqlSession.insert("Rooms.insertReservSvcUse", checkIn);
+	}
+
+	@Override
+	public Integer insertReservSvcUseHis(SqlSessionTemplate sqlSession, CheckIn checkIn) {
+		return sqlSession.insert("Rooms.insertReservSvcUseHis", checkIn);
 	}
 
 }

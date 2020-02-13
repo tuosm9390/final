@@ -95,4 +95,14 @@ public interface RoomsDao {
 
 	int insertMemo(SqlSessionTemplate sqlSession, RsvMemo rm);
 
+	int updateCIstay(SqlSessionTemplate sqlSession, CheckIn checkIn);
+
+	int updateReserv(SqlSessionTemplate sqlSession, CheckIn checkIn);
+
+	int insertReservPayment(SqlSessionTemplate sqlSession, CheckIn checkIn);
+
+	Integer insertReservSvcUse(SqlSessionTemplate sqlSession, CheckIn checkIn);
+
+	Integer insertReservSvcUseHis(SqlSessionTemplate sqlSession, CheckIn checkIn);
+
 }

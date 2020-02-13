@@ -27,7 +27,7 @@
 	border-radius: 2px;
 }
 
-hr {
+.titleSec + hr {
 	width: 100px;
 	margin-right: 1465px;
 	margin-bottom: 10px;
@@ -238,6 +238,8 @@ hr {
 		var svclist;
 		var ruleInfo;
 		var rfdRate;
+		var rsvNoModalNew;
+		var stayNoModalNew;
 		
 		var today = new Date();
 		var day = today.getFullYear() + "-" + (today.getMonth()+1>9?today.getMonth()+1:"0" + (today.getMonth()+1)) + "-" + (today.getDate()>9?today.getDate():("0" + today.getDate()));
@@ -358,7 +360,9 @@ hr {
 					$(".feeDetailSec table").append("<tr><td>" + feedate.substring(5) + "</td><td>" + dayfee + "</td></tr>");
 				}
 			}
+			$("#iptTotalRoom").val(totalFee);
 			$("#totalRoom").text(totalFee.toLocaleString());
+			$("#iptTotalVlt").val(totalFee * ruleInfo.serviceRate);
 			$("#totalVlt").text((totalFee * ruleInfo.serviceRate).toLocaleString());
 			changeTotalPrcTxt();
 			
@@ -374,6 +378,8 @@ hr {
 		}
 		
 		function openModal(rsvNo) {
+			rsvNoModalNew = rsvNo;
+			
 			$(".statusColor").addClass('lightsteelblue');
 			$(".totalPrice").addClass('lightsteelblue');
 			$("#modalStt").text('　예약');
@@ -394,6 +400,7 @@ hr {
 					$("#clientEmail").val(data.stayInfo.clientEmail);
 					$("#checkinBtn").show();
 					$("#checkinBtn").text('저장').attr('onclick', 'doSave();');
+					$("#rsvNo").val(rsvNo);
 					 
 					$("#checkIn").val(data.stayInfo.scheckin);
 					var sttday = new Date(data.stayInfo.scheckin.substring(0,4), data.stayInfo.scheckin.substring(5,7) - 1, data.stayInfo.scheckin.substring(8,10));
@@ -411,6 +418,7 @@ hr {
 					$("#selRoomType").val(data.stayInfo.roomType).prop("selected", true);
 					$("#selRoomNum").val(data.stayInfo.rmNo).prop("selected", true);
 					selRoomNumm = data.stayInfo.rmNo;
+					$("#selRoomNumm").val(data.stayInfo.rmNo);
 					
 					var stdPer = data.stayInfo.stdPer;
 					var maxPer = data.stayInfo.maxPer;
@@ -451,6 +459,7 @@ hr {
 						tempSvc.find('button').remove();
 						$(".svcDetailSec table").append(tempSvc);
 					}
+					$("#iptTotalSvc").text(tempSvcTotal);
 					$("#totalSvc").text(tempSvcTotal.toLocaleString());
 					
 					for(var i = 0; i < data.stayPay.length; i++) {
@@ -467,13 +476,15 @@ hr {
 						}
 						
 						if(i == data.stayPay.length - 1) {
+							$("#iptLastPayDay").val(data.stayPay[i].payDate);
 							$("#lastPayDay").text(data.stayPay[i].payDate);
 							reservPayDate = data.stayPay[i].payDate;
 						}
 						
 						if(data.stayPay[i].payStatus == 'REFUND') {
-							$("#rsvCancelBtn").text('취소된 예약');
 							$("#rsvCancelBtn").prop('disabled', true);
+							$("#rsvCancelBtn").text('취소된 예약');
+							$("#rsvCancelBtn").show();
 						}
 					}
 					changeTotalPrcTxt();
