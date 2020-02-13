@@ -47,6 +47,7 @@ public class ApproveController {
 	@RequestMapping("documentApproval.ap")
 	public String goApproval(HttpServletRequest request, Model  m) {
 		
+		System.out.println("처음 들어와??");
 		
 		int currentPage = 1;
 
@@ -88,6 +89,7 @@ public class ApproveController {
 			m.addAttribute("pi", pi);
 
 			
+			System.out.println("여기여기여기");
 			return "hoteladmin/mngApprove/ApproveList/allApprove";
 
 
@@ -239,6 +241,10 @@ public class ApproveController {
 	
 	@RequestMapping("joinDocumentApproval.ap")
 	public String goJoinApproval( HttpServletRequest request, @RequestParam("userDept") int userDept, @RequestParam("userAuth") String userAuth, @RequestParam("userMno") int userMno, Model model) {
+		System.out.println("여기는 왜들어오니?");
+		System.out.println("userDept : " + userDept);
+		System.out.println("userAuth : " + userAuth);
+		System.out.println("mno : " + userMno);
 		
 		
 		int currentPage = 1;
@@ -307,6 +313,7 @@ public class ApproveController {
 			
 			model.addAttribute("list", list);
 			model.addAttribute("pi", pi);
+			System.out.println("list : " + list);
 			return "hoteladmin/mngApprove/ApproveList/partiApprove";
 			
 		} catch (ReportException e) {
@@ -371,6 +378,7 @@ public class ApproveController {
 		ArrayList<HashMap<String, Object>> list = as.selectOrderInfo();
 		ArrayList<HashMap<String, Object>> listDocu = as.selectOrderDocu();
 		
+		System.out.println("listDocu : " + listDocu);
 		
 		m.addAttribute("list", list);
 		m.addAttribute("listDocu", listDocu);
@@ -391,6 +399,7 @@ public class ApproveController {
 	public ModelAndView showAllApproveModal(HttpServletRequest request, ModelAndView mv, int rptNo, String type) {
 		
 		if(type.equals("구매 요청서")) {
+			System.out.println("type : " + type );
 			try {
 				type = "";
 				type = "PURCHASE";
@@ -439,6 +448,7 @@ public class ApproveController {
 
 				mv.addObject("list", list);
 				mv.setViewName("jsonView");
+				System.out.println("list : " + list);
 				return mv;
 
 			} catch (ReportException e) {
@@ -495,6 +505,8 @@ public class ApproveController {
 			String sname, String mname, String title, String content, String type, String cname, String iname, String mfg, String vosprice, String amount,
 			String price, String totPrice, String ino, Model model ) {
 		
+		System.out.println("sname : " + sname);
+		System.out.println("docno : " + docno);
 		
 		if(ino.contains(",")) {
 		
@@ -505,6 +517,10 @@ public class ApproveController {
 				String stfId = sname.substring(countStart, countEnd);
 				String ssName = sname.substring(0, count);
 				
+				System.out.println("stfId : " + stfId);
+				System.out.println("count : " + count);
+				System.out.println("countEnd : " + countEnd);
+				System.out.println("ssName : " + ssName);
 				
 				
 		
@@ -535,6 +551,7 @@ public class ApproveController {
 				int[] ino2 = new int[cName.length];
 				
 				
+				System.out.println("cName.length : " + cName.length);
 				
 				PurRequest pRequest = null;
 				
@@ -567,13 +584,15 @@ public class ApproveController {
 					pRequest.setStfId(stfId);
 					pRequest.setPurRsn("구매");
 					pRequestList.add(pRequest);
+					System.out.println("for문안 pRequestList : " + pRequestList);
 				}
 				
 				
 				
 				
-				//.println("중간pRequestList : " + pRequestList);
+				//System.out.println("중간pRequestList : " + pRequestList);
 				try {
+					System.out.println("pRequestList : " + pRequestList);
 					int result = as.insertList(pRequestList);
 					model.addAttribute("pRequestList", pRequestList);
 					
@@ -633,6 +652,7 @@ public class ApproveController {
 		
 		pRequestList.add(pRequest);
 		
+		System.out.println("for문안 pRequestList : " + pRequestList);
 		
 		try {
 			int result = as.insertList(pRequestList);
@@ -665,13 +685,31 @@ public class ApproveController {
 		
 		
 		
-		System.out.println("rsv : " + rsn);
 		
+		
+		System.out.println("orderDate : " + orderDate);
+		System.out.println("sname : " + sname);
+		System.out.println("rptDate : " + rptDate);
+		System.out.println("mname : " + mname);
+		System.out.println("title : " + title);
+		System.out.println("content : " + content);
+		System.out.println("type : " + type);
+		System.out.println("cname : " + cname);
+		System.out.println("iname : " + iname);
+		System.out.println("mfg : " + mfg);
+		System.out.println("vos : " + vos);
+		System.out.println("amount : " + amount);
+		System.out.println("price : " + price);
+		System.out.println("totPrice : " + totPrice);
+		System.out.println("ino : " + ino);
+		System.out.println("docuNos : " + docuNos);
+		System.out.println("docno : " + docno);
 		
 		OrderRequest oRequest = new OrderRequest();
 		
 		ArrayList<OrderRequest> oRequestList = null;
 		
+		System.out.println("cname.length : " + cname.length());
 		
 		Long docuNo = Long.parseLong(docuNos);
 		Long docno2 = Long.parseLong(docno);
@@ -697,6 +735,8 @@ public class ApproveController {
 			int price2[] = new int[cnameR.length];
 			int ino2[] = new int[cnameR.length];
 			
+		System.out.println("cnameR : " + cnameR.length);
+			System.out.println("여기좀되라 : " + oRequestList);
 
 			for(int j = 0; j < cnameR.length; j++) {
 				oRequest = new OrderRequest();
@@ -724,8 +764,10 @@ public class ApproveController {
 				oRequest.setRsvReqDate(orderDate);
 				oRequest.setOrderRsn(rsn);
 				oRequestList.add(oRequest);
+				System.out.println("for문안 pRequestList : " + oRequestList);
 			}
 			
+			System.out.println("controllerlist길이 : " + oRequestList.size());
 			
 			//pRequestList = as.insertOrderList(pRequestList);
 			
@@ -761,7 +803,6 @@ public class ApproveController {
 			oRequest.setTotPrice(totPrice);
 			oRequest.setStfId(sname);
 			oRequest.setRsvReqDate(orderDate);
-			oRequest.setOrderRsn(rsn);
 			oRequestList.add(oRequest);
 			
 			//int result = as.insertOrderList(oRequestList);
@@ -972,6 +1013,7 @@ public class ApproveController {
 				rRequest.setRsn(rsn);
 				rRequestList.add(rRequest);
 				
+				System.out.println("for문안 pRequestList : " + rRequestList);
 				
 				
 			}
@@ -1015,6 +1057,7 @@ public class ApproveController {
 			rRequestList.add(rRequest);
 			
 			
+			System.out.println("for문안 pRequestList : " + rRequestList);
 			try {
 				int result = as.insertRepairRequestList(rRequestList);
 				
@@ -1083,7 +1126,11 @@ public class ApproveController {
 	}
 	@PostMapping("docuPartiFilter.ap")
 	public ModelAndView partiCateFilter(ModelAndView mv, String cate, String scurrentPage, String mno) {
+		System.out.println("넘어오니???");
 		
+		System.out.println("cate : " + cate);
+		System.out.println("scurrentPage : " + scurrentPage);
+		System.out.println("mno : " + mno);
 		
 		int currentPage = 1;
 		
@@ -1158,15 +1205,23 @@ public class ApproveController {
 	public String updateApproveStatus(HttpServletRequest request, String status, String dateString, String mno,
 									RedirectAttributes redirect, String deptNo, String authNo, String rpt) {
 		
+		System.out.println("들어오니??");
 		
 		//int rptno = Integer.parseInt(rptNo);
 		int mmno = Integer.parseInt(mno);
+		System.out.println("1");
 		int deptno = Integer.parseInt(deptNo);
+		System.out.println("2");
 		int rptNum = Integer.parseInt(rpt);
+		System.out.println("3");
 		
 	
 		
-		//.println("rptno : " + rptno);
+		//System.out.println("rptno : " + rptno);
+		System.out.println("docuN : " + rptNum);
+		System.out.println("mno : " + mmno);
+		System.out.println("status : " + status);
+		System.out.println("dateString : " + dateString);
 		
 		
 		Report report = new Report();
@@ -1176,6 +1231,7 @@ public class ApproveController {
 		report.setRptStatus(status);
 		report.setApprDate(dateString);
 		
+		System.out.println("report : " + report);
 		
 		int result = as.updateApproveStatus(report);
 		
@@ -1185,21 +1241,19 @@ public class ApproveController {
 		  redirect.addAttribute("userAuth",authNo );
 		 
 		
+		System.out.println("결과 : " + result);
 		
 		return "redirect:joinDocumentApproval.ap";
-		
 	}
-	
-	
-	
 	@RequestMapping("selectOrderInfo.ap")
 	public ModelAndView OrderInfo(ModelAndView mv, Long dnum) {
 		
+		System.out.println("dnum : " + dnum);
 		
 		
 		
 		ArrayList<HashMap<String, Object>> list = as.selectOrderList(dnum);
-		
+		System.out.println("list : " + list);
 		
 		for(int i = 0; i < list.size(); i++) {
 			if(list.get(i).get("ITYPE").equals("EQUIP")){
