@@ -56,6 +56,7 @@ public class HotelMainContoller {
 		session.setComplete();
 
 		return "hotelmain/main/main";
+		
 	}
 
 	// 객실 리스트 메소드
