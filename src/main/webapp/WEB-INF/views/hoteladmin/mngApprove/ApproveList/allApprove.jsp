@@ -127,6 +127,9 @@
 #pager_wrap .pager_com.pager_arr.next on a {
 	color:black;
 }
+a {
+	text-decoration:none;
+}
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

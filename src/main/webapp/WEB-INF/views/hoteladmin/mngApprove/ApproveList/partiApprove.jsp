@@ -127,6 +127,9 @@ border-bottom:1px solid #aaa;
 #pager_wrap .pager_com.pager_arr.next on a {
 	color:black;
 }
+a {
+	text-decoration:none;
+}
 
 
 </style>
