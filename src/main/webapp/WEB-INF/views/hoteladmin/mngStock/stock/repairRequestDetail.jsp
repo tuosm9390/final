@@ -38,7 +38,7 @@
 	}
 	
 	#day1{
-	margin-left: 35px;
+	margin-left: 34px;
 	}
 	.person{
 	display: inline-block;
@@ -50,10 +50,10 @@
 	margin-left: 19px;
 	}  
 	#etc{
-	margin-left: 50px;
+	margin-left: 226px;
 	}
 	#etcText{
-	margin-left: 26px;  
+	margin-left: 27px;  
 	}
 	#titlemsg{
 	font-size: 20px;
@@ -76,6 +76,10 @@
 	overflow-y: auto;
 	max-height: 300px;
 	width: 1200px;
+	}
+	
+	#day2{
+	display: none;
 	}
 	input[type=text] {
 		border-radius:2px;

@@ -304,7 +304,7 @@ background : white;
 						 $("#etcText").val(data.list[0].CN_NAME);
 						 $("#person2").val(data.list[0].REP_NO);
 						 
-						
+					
 						
 						$(".modal").fadeIn();
 					},
